@@ -1,0 +1,429 @@
+
+/** 交/接房结算单 **/
+
+.content-item-title {
+	position: relative;
+	text-align: center;
+	height: 50px;
+	line-height: 40px;
+	font-size: 20px;
+}
+.content-item-title:BEFORE {
+	content: "";
+	position: absolute;
+	top: 78%;
+	left: 50%;
+	margin-left: -15%;
+	width: 30%;
+	height: 4px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.content-item-title .contract-code-box {
+	position: absolute;
+	top: 96%;
+	left: 40%;
+	margin-left: 14px;
+	display: inline-block;
+	line-height: 20px;
+	font-size: 14px;
+	z-index: 9;
+}
+dl.cancel-main-option{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 14px;
+    line-height: initial;
+}
+dl.cancel-main-option dt{
+    position: relative;
+    line-height: 30px;
+    padding: 0 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+dl.cancel-main-option dt:HOVER{
+    background: #73afd8;
+    color: #fff;
+}
+dl.cancel-main-option dt.option-checked{
+    background: #73afd8;
+    color: #fff;
+}
+dl.cancel-main-option dd{
+	position: absolute;
+    top: 40px;
+    right: 0;
+    width: 400px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    padding: 4px;
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.24);
+    z-index: 9;
+}
+dl.cancel-main-option dd:BEFORE{
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 66px;
+    width: 0;
+    height: 0;
+    border-bottom: 8px solid #c1bfbf;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    z-index: 100;
+}
+dl.cancel-main-option dd:AFTER{
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 66px;
+    width: 0;
+    height: 0;
+    border-bottom: 8px solid #ffffff;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    z-index: 100;
+}
+#cancel-main-option-dd>table{
+	font-size: 12px;
+}
+#cancel-main-option-dd>table tr>th{
+    line-height: 32px;
+    padding: 0 6px;
+    text-align: center;
+}
+#cancel-main-option-dd>table tr>td{
+    line-height: 30px;
+    padding: 0 6px;
+    vertical-align: top;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.content-item-more {
+	position: relative;
+	line-height: 30px;
+	text-align: center;
+	background: #73afd8;
+	color: #fff;
+	cursor: pointer;
+}
+/**  **/
+table.content-table {
+	text-align: center;
+	font-size: 14px;
+}
+
+table.content-table thead tr td {
+	padding: 0 10px;
+	line-height: 36px;
+}
+
+table.content-table tbody tr td {
+	position: relative;
+	line-height: 30px;
+	border: 1px solid #ddd;
+	min-width: 80px;
+	white-space: nowrap;
+	vertical-align: top;
+}
+
+table.content-table tbody tr.content-table-item td {
+	line-height: 28px !important;
+	font-size: 12px;
+}
+
+table.content-table tr td.title {
+	padding: 0 10px;
+	color: #000;
+}
+
+table.content-table tbody tr td input, table.content-table tbody tr td textarea {
+    width: 100%;
+    height: 100%;
+    line-height: 30px;
+    vertical-align: top;
+    max-height: 100%;
+    padding: 0 10px;
+    border: none;
+    font-family: '微软雅黑';
+    resize: none;
+}
+
+table.content-table textarea[disabled],
+table.content-table select[disabled],
+table.content-table input[disabled]{
+	background: #fff;
+}
+
+table.content-table tbody tr.content-table-head td {
+	line-height: 36px;
+}
+
+table.content-table tbody tr.content-table-head td input {
+	line-height: 36px;
+}
+
+.content-table-title {
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 36px !important;
+}
+
+input[name="calCostDate"] {
+	position: relative;
+	width: 100%;
+	vertical-align: top;
+	line-height: 36px;
+	padding: 0 10px;
+	background: #fff;
+	font-family: '微软雅黑';
+}
+table.content-table tfoot tr td {
+	line-height: 36px;
+    border: 1px solid #ddd;
+}
+
+table.content-table tfoot tr td input {
+	height: 100%;
+	line-height: 30px;
+	vertical-align: top;
+	width: 100%;
+	max-height: 100%;
+	padding: 0 10px;
+	border: none;
+	font-family: '微软雅黑';
+}
+
+.cost-add-box {
+	text-align: left;
+}
+
+.cost-add-box .cost-add-box-icon {
+	display: inline-block;
+	line-height: 30px;
+	width: 30px;
+	text-align: center;
+	font-size: 15px;
+	color: #1abc9c;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+.cost-add-box .cost-add-box-content {
+	display: inline-block;
+	position: relative;
+	width: 90%;
+	height: 30px;
+	line-height: 26px;
+	font-size: 12px;
+	border-radius: 2px;
+	vertical-align: top;
+	border: 1px solid #1ABC9C;
+}
+
+.cost-add-box .cost-add-box-content:BEFORE {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: -6px;
+	margin-top: -6px;
+	width: 0;
+	height: 0;
+	border-right: 6px solid #1ABC9C;
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent;
+	z-index: 100;
+}
+
+.cost-add-box .cost-add-box-content:AFTER {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.cost-add-box .cost-add-box-content>span {
+	display: inline-block;
+	width: 45%;
+	vertical-align: top;
+	float: left;
+}
+
+.cost-add-box .cost-add-box-content>span>label {
+	display: inline-block;
+	width: 20%;
+	line-height: 28px;
+	padding: 0 6px;
+	font-size: 12px;
+}
+
+.cost-add-box .cost-add-box-content>span>input {
+	width: 80%;
+	height: 28px;
+	line-height: 28px;
+	vertical-align: top;
+	font-size: 12px;
+}
+
+.cost-add-box .cost-add-box-content>button {
+	line-height: 28px;
+	padding: 0 7px;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
+	background: #1abc9c;
+	color: #fff;
+}
+
+.cost-add-list {
+	text-align: left;
+	font-size: 12px;
+	border-top: 1px solid #ddd;
+}
+
+.cost-add-list:FIRST-CHILD {
+	border-top: 0;
+}
+
+.cost-add-list .cost-add-list-icon {
+	display: inline-block;
+	line-height: 30px;
+	width: 30px;
+	text-align: center;
+	font-size: 15px;
+	color: #E74C3C;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+.cost-add-list .cost-add-list-content {
+	display: inline-block;
+	position: relative;
+	width: 90%;
+	line-height: 24px;
+	font-size: 12px;
+	border-radius: 2px;
+	vertical-align: top;
+}
+
+.cost-add-list .cost-add-list-content:AFTER {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.cost-add-list .cost-add-list-content>span {
+	display: inline-block;
+	width: 45%;
+	vertical-align: top;
+	float: left;
+}
+
+.cost-add-list .cost-add-list-content>span>label {
+	display: inline-block;
+	width: auto;
+	min-width: inherit;
+	line-height: 28px;
+	padding: 0 12px;
+	font-size: 12px;
+	text-align: center;
+}
+
+.cost-add-list .cost-add-list-content>span>input {
+	width: 80%;
+	height: 28px;
+}
+
+/****/
+.moreMessage {
+	position: absolute;
+	right: 395px;
+	top: 130px;
+	height: 35px;
+	line-height: 35px;
+	color: #29e;
+	font-size: 13px;
+}
+
+.contentDiv {
+	max-width: 1090px;
+	border-radius: 2px;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+	margin-left: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	position: relative;
+}
+
+.moreList {
+	/* 	display: none; */
+	
+}
+
+.moreList table {
+	border: 0;
+}
+
+.borderMore {
+	position: absolute;
+	top: 140px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 1px dashed #29e;
+	margin: 0 10px;
+}
+.achievementMore{
+    position: absolute;
+    left: -225px;
+    top: 110%;
+    background: #fff;
+    margin-bottom: 14px;
+    border-radius: 2px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    display: none;
+}
+.achievementMore table{
+	font-size: 12px;
+}
+#contract-manage .achievementMore table tr td{
+	color:#666;
+	height: 30px;
+	line-height: 30px;
+	padding:0 6px;
+    white-space: nowrap;
+}
+.achievementMore thead{
+	height: 35px;
+	line-height: 35px;
+    background-color: #f7f7f7;
+}
+.achievementMore thead td{
+	padding-left: 10px;
+}
+
+#handover-image {
+	position: relative;
+	display: inline-block;
+	font-size: 18px;
+	top: 2px;
+	margin-left: 6px;
+}
+
+#handover-img-box {
+	position: absolute;
+	top: 500px;
+	left: 500px;
+	padding: 6px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+#handover-img-box .images-box-img:LAST-CHILD {
+	margin-right: 0;
+}

@@ -1,0 +1,294 @@
+package com.gjp.model;
+
+import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 合同视图对象信息
+ *
+ * @author JiangQt
+ * @createTime 2015年9月15日下午5:20:30
+ */
+@Data
+public class ViewBusinessContractVo implements Comparable<ViewBusinessContractVo> {
+
+    // 合同对象编号
+    private Integer contractObject_Id;
+    // 合同编号
+    private String contractObject_Code;
+    // 合同编号
+    private String contractObject_No;
+    // 合同模式（E：电子合同、P：纸质合同）
+    private String ContractObject_Mode;
+    // 合同类型
+    private String contractObject_Type;
+    // 合同版本
+    private String contractObject_Version;
+    // 合同来源
+    private String contractObject_Source;
+    // 产品类型
+    private String contractObject_ProductMode;
+    // 甲方
+    private String contractObject_1st;
+    // 甲方
+    private String contractObject_A;
+    // 合同签署日期
+    private Date contractObject_FillTime;
+    // 合同生效日期
+    private Date contractObject_Date;
+    // 合同失效日期
+    private Date contractObject_DeadlineTime;
+    // 合同失效日期
+    private Date contractObject_RealDate;
+    // 合同状态（正常(默认)，租赁：转租、退租、续租，托管：解约、续约）
+    private Integer contractObject_State;
+    // 合同编辑状态（待交接、交接完成、交接失败、待审核、审核通过、审核未通过）
+    private Integer contractObject_OptionState;
+    // 存出房状态（0：正常存出合同、1：续约存出合同）
+    private Integer contractObject_ExtState;
+    // 创建时间
+    private Date contractObject_CreateTime;
+    //
+    private String contractObject_OptionPerson;
+    // 合同附件存储形式
+    private String contractObject_Annex;
+    // 其它约定
+    private String contractObject_Other;
+    // 继承编号
+    private Integer contractObject_Successor;
+    // 业绩
+    private Integer contractObject_Bool;
+    // 招租期-(免租期-招租期)-(剩余免租期) 【业绩计算用】
+    private String contractObject_RentStr;
+    // 免租模式（0：正常模式，1：年付打包）
+    private Integer contractObject_RentFreeMode;
+    // 招租期
+    private Integer contractObject_ForRentDate;
+    // 客户签字
+    private byte[] contractObject_CustomerSign;
+    // 合同模式
+    private Integer contractBody_ContractMode;
+
+    // -------------------------------------
+
+    // 合同起止日期
+    private String contractBody_StartTOEnd;
+    // 托管/租赁期限
+    private String contractBody_TimeLimit;
+    // 租金
+    private double contractBody_Rent;
+    // 租金
+    private double contractBody_Rent1;
+    // 租金加成
+    private String contractBody_RentPlus;
+    // 保修费
+    private String contractBody_GuaranteeCost;
+    // 保证金
+    private double contractBody_Pay;
+    // 诚意金/定金（原：押金）
+    private double contractBody_Depslit;
+    // 服务费
+    private double contractBody_Service;
+    // 支付方式（月付 季付 半年付 年付）
+    private String contractBody_PayStyle;
+    // 支付方式类型（月付：58月付）
+    private String contractBody_PayType;
+    // 首期付租日期
+    private Date contractBody_StartPayTime;
+    // 管家姓名
+    private String contractBody_GjName;
+    // 管家手机号
+    private String contractBody_GjPhone;
+    // 操作人
+    private String contractBody_Optioner;
+    // 房屋用途
+    private String contractBody_Use;
+    // 额外条件
+    private String contractBody_AdditionConditions;
+    // 免租期：天为单位
+    private String contractBody_FreeTime;
+    // 账单日期：付租日期向前20天
+    private Date contractBody_BillTime;
+    // 付租日期：最后付款期限
+    private Date contractBody_PayTime;
+    // 租金递增
+    private String contractBody_Increasing;
+    // 备注
+    private String contractBody_Remark;
+    // 甲方租金分成
+    private double contractBody_RentRate_A;
+    // 乙方租金分成
+    private double contractBody_RentRate_B;
+    // 约定还款时间（日期号）
+    private Integer contractBody_AgreedRepayTime;
+    // 尾期合并账单（1：合并、2：不合并）
+    private Integer contractBody_FinalBillMerge;
+    // 特价
+    private Integer contractBody_Discount;
+    // 服务费是否计算
+    private Integer contractObject_ServiceBool;
+    // 总业绩编号
+    private Integer sa_id;
+    // 物品费用
+    private double contractObject_goodsMoney;
+    // 合作费
+    private double contractBody_WorkMoney;
+    // 管家
+    private String em_name;
+    // 管家电话
+    private String em_phone;
+    // 公司管理费是否计算1、计算 0、未计算
+    private Integer contractObject_gsmanage;
+
+    // -------------------------------------
+
+    // 用户编码
+    private Integer em_id;
+    // 用户编码
+    private String em_ids;
+    // 部门编码
+    private Integer ucc_id;
+    // 部门名称
+    private String ucc_name;
+    // 部门成立时间
+    private Date ucc_time;
+    // 部门名称
+    private Integer contractObject_dateDiff;
+    //父级公司编号
+    private Integer ucc_pid;
+
+    /**
+     * 合同合约订单
+     */
+
+    // 合约订单唯一编号
+    private String cco_code;
+    // 合约订单类型
+    private String cco_applicationType;
+    // 合约订单状态
+    private String cco_state;
+    // 申请时间
+    private Date cco_applicationTime;
+    // 完成时间
+    private Date cco_FinishTime;
+    // 经办时间
+    private Date cco_handleDate;
+
+    /**
+     * 合同客户信息New
+     */
+    // 客户唯一编号
+    private String cc_code;
+    // 客户姓名
+    private String cc_name;
+    // 客户性别
+    private Integer cc_sex;
+    // 客户类型
+    private String cc_type;
+    // 证件类型
+    private Integer cc_cardType;
+    // 证件号
+    private String cc_cardNum;
+    // 客户状态
+    private Integer cc_state;
+    // 客户电话
+    private String ccp_phone;
+    // 现租客名称
+    private String xcc_name;
+    // 现租客电话
+    private String xccp_phone;
+
+    /**
+     * 房屋信息
+     */
+    // 房屋编号
+    private Integer hi_id;
+    // 房屋编号
+    private String hi_code;
+    // 房屋号
+    private String hi_address;
+    // 面积
+    private double hi_measure;
+    private Integer hi_houseT;// 厅
+    private Integer hi_houseS;// 室
+    private Integer hi_houseW;// 卫
+    private String propertyInfo_Name;// 物业名称（小区名称）
+    private String propertyInfo_address;// 物业地址
+    private String contract_intoStatus;// 房屋合同存房状态
+    private String contract_outStatus;// 房屋合同出房状态
+
+    /**
+     * 物业信息
+     */
+    private String upn_sname;// 物业名称
+    private String upn_code;// 物业地址
+    private String house_address;// 地址
+
+    private String md_contactpeople;// 联系人
+    private String md_contactPhone;// 联系电话
+    private List<?> list; // 多个参数
+    private String he_state;// 房屋出租状态
+    private String ydhkDate;// 约定还款日
+    private Integer hi_forRentState;  //  房屋招租状态
+    private Integer hi_isForRent; //
+
+    private double ab_subMoney;// 总业绩
+    private double sa_sumMoneyH;// 总营收
+
+    // 开始时间
+    private Date startDate;
+    // 结束时间
+    private Date endDate;
+
+    // -------扩展---------
+
+    // 合同招租期
+    private int contract_forRentDate;
+    // 查询模式
+    private String query_mode;
+    // 客户电话列表
+    private List<UserCustomerPhone> customerPhones;
+    // 主管
+    private String ucc_corporation;
+    // 财务复核人员
+    private String em_reviewer;
+    // 合同开始时间
+    private String contract_startDate;
+    // 合同结束时间
+    private String contract_endDate;
+    // 用户ID
+    private Integer user_id;
+
+    private String where;
+    private Integer start;
+    private Integer end;
+
+    /**
+     * 合同协议审核
+     */
+    //主键id
+    private Integer caa_id;
+    //合同code
+    private String con_code;
+    //状态
+    private Integer caa_state;
+    //审核内容
+    private String caa_content;
+    //创建时间
+    private Date caa_createTime;
+
+    //合同订单签约时间
+    private Date bcb_repaymentDate;
+    //账单类型
+    private Integer bcb_type;
+    //账单状态
+    private Integer bcb_state;
+
+    @Override
+    public int compareTo(ViewBusinessContractVo o) {
+        return 0;
+    }
+
+}

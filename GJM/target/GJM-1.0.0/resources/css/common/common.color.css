@@ -1,0 +1,42 @@
+.error {color: #e74c3c ! important}
+.error[disabled] {color: #909090 ! important}
+.hint {color: #f39c12 ! important}
+.hint[disabled] {color: #909090 ! important}
+.ok {color: #18bc9c ! important}
+.ok[disabled] {color: #909090 ! important}
+.next {color: #3498db ! important}
+.next[disabled] {color: #909090 ! important}
+.disabled {color: #909090 ! important}
+.error-bg {background: #e74c3c ! important;color: #fff ! important}
+.error-bg:hover {background: rgba(231, 76, 60, 0.78) !important;color: #fff !important}
+.hint-bg {background: #f39c12 ! important;color: #fff ! important}
+.hint-bg:hover {background: rgba(243, 156, 18, 0.78) !important;color: #fff !important}
+.ok-bg {background: #18bc9c ! important;color: #fff ! important}
+.ok-bg:hover {background: rgba(26, 188, 156, 0.78) !important;color: #fff !important}
+.next-bg {background: #3498db ! important;color: #fff ! important}
+.next-bg:hover {background: rgba(52, 152, 219, 0.78) !important;color: #fff !important}
+.disabled-bg {background: #909090 ! important;color: #fff ! important}
+.disabled-bg:hover {background: #909090 !important;color: #fff;cursor: no-drop}
+[class$=-bg] > option {background: #fff ! important;color: #666}
+[class$=-bg][disabled] {background: #c1c1c1 ! important;cursor: no-drop}
+[class$=-bg][disabled]:hover {background: #c1c1c1 ! important;cursor: no-drop}
+.error-border-color {border-color: #e74c3c !important;background: #fff !important;color: #e74c3c !important}
+.hint-border-color {border-color: #f39c12 !important;background: #fff !important;color: #f39c12 !important}
+.ok-border-color {border-color: #18bc9c !important;background: #fff !important;color: #18bc9c !important}
+.next-border-color {border-color: #3498db !important;background: #fff !important;color: #3498db !important}
+[class$=-border-color] > option {background: #fff !important;color: #666}
+[class$=-border-color][disabled] {border-color: #c1c1c1 !important;background: #fff !important;color: #c1c1c1 !important;cursor: no-drop}
+.error-bg-w {background: #fff !important;color: #e74c3c !important}
+.error-bg-w:hover {background: #e74c3c !important;color: #fff !important}
+.hint-bg-w {background: #fff !important;color: #f39c12 !important}
+.hint-bg-w:hover {background: #f6b246 !important;color: #fff !important}
+.ok-bg-w {background: #fff !important;color: #18bc9c !important}
+.ok-bg-w:hover {background: #18bc9c !important;color: #fff !important}
+.next-bg-w {background: #fff !important;color: #3498db !important}
+.next-bg-w:hover {background: #3498db !important;color: #fff !important}
+.disabled-bg-w {background: #fff !important;color: #909090;cursor: no-drop}
+.disabled-bg-w:hover {background: #909090 !important;color: #fff;cursor: no-drop}
+.next-bg-bd-w {background: none;box-shadow: 0 0 0 1px #ddd;color: #3498db;border: none}
+.next-bg-bd-w:hover {box-shadow: none;background: rgba(52, 152, 219, 0.78);color: #fff}
+.error-bg-bd-w {background: none;box-shadow: 0 0 0 1px #ddd;color: #e74c3c;border: none}
+.error-bg-bd-w:hover {box-shadow: none;background: rgba(231, 76, 60, 0.78);color: #fff}

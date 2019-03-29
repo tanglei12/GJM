@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 客户管理 -->
+<mapper namespace="com.gjp.dao.BankDAO">
+
+	<sql id="menberEcpId">
+		bank_Code,
+		bank_Name,
+		bank_CardName,
+		bank_CardType,
+		bank_CardLength,
+		bank_BINLength,
+		bank_BIN
+	</sql>
+
+	<sql id="insert">
+		#{bank_Code },
+		#{bank_Name },
+		#{bank_CardName },
+		#{bank_CardType },
+		#{bank_CardLength},
+		#{bank_BINLength },
+		#{bank_BIN }
+	</sql>
+
+	<!-- 根据银行卡标识查询银行卡信息 -->
+	<select id="selectBankBIN" resultType="com.gjp.model.Bank">
+		SELECT * FROM GJP_Bank bk
+		LEFT JOIN GJP_Bank_Logo bkl ON bk.bank_Code = bkl.bank_Code
+		WHERE
+		1=1
+		<if test="sqlWhere != null and sqlWhere != ''">
+		${sqlWhere}
+		</if>
+	</select>
+
+</mapper>

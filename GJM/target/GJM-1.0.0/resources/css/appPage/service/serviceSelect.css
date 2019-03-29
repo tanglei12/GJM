@@ -1,0 +1,254 @@
+body{
+	margin:0;
+	padding:0;
+	font-family:"Comic Sans MS","幼圆","黑体",sans-serif;
+  	color: #666;
+   	background: #FFF;
+   	font-size: 15px;
+	}
+a{
+	text-decoration:none;
+	color: #666;
+}
+li{
+	margin:0;
+	padding:0;
+	list-style:none;
+	}
+ul{
+	margin:0;
+	padding:0;
+	}
+img{
+	border:0;
+	}
+
+.content{
+	display: flex;
+}
+
+.content-left{
+    width: 25%;
+    background-color: #F9F9F9;
+    border-right: 1px solid #e8e8e8;
+    padding-top: 5%;
+    float: left;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 60px;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.content-left::-webkit-scrollbar  
+{  
+    width: 0px;  
+}  
+  
+/*定义滚动条轨道 内阴影+圆角*/  
+.content-left::-webkit-scrollbar-track  
+{  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+.content-left::-webkit-scrollbar-thumb  
+{  
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.content-right::-webkit-scrollbar  
+{  
+    width: 0px;  
+}  
+  
+/*定义滚动条轨道 内阴影+圆角*/  
+.content-right::-webkit-scrollbar-track  
+{  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+.content-right::-webkit-scrollbar-thumb  
+{  
+}
+.content-left .content-left_button{
+	width: 80%;
+	margin: 0 auto;
+	border-bottom: 1px solid #e8e8e8;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+}
+.content-left .content-left_button.bottom{
+	border-bottom: none;
+}
+.content-left .content-left_button.click{
+	width: 101%;
+	background-color: #FFF;
+	position: relative;
+	border-top: 1px solid #e8e8e8;
+    margin-top: -1px;
+}
+.content-left .content-left_button.click:before{
+	width: 6px;
+	height: 100%;
+	left: 0;
+	top: 0;
+	position: absolute;
+	content: "";
+	background-color: #FF6666;
+}
+.content-right{
+	width: 75%;
+	padding-left: 5%;
+	float: left;
+	padding-bottom: 50px;
+    overflow-y: auto;
+}
+.content-right .content-center{
+	margin-bottom: 51px;
+}
+.content-right .conetent-titles{
+	height: 45px;
+	line-height: 45px;
+    border-bottom: 1px solid #e8e8e8;
+	position: relative;
+}
+.content-right .conetent-titles i{
+	font-size: 17px;
+	position: absolute;
+	right: 4%;
+	top: 13px;
+	color: #CCC;
+}
+.content-right .conetent-titles i.fa-check-square{
+	right: 3%;
+}
+.content-right i.fa-check-square.click{
+	color: #FF6666;
+}
+.content-right .conetent-titles i.fa-caret-down{
+	font-size: 18px;
+}
+.content-title{
+	padding-top: 10px;
+}
+.content-title li{
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	position: relative;
+}
+.content-title li i{
+	font-size: 17px;
+}
+.content-title li i.fa-check-square{
+	position: absolute;
+	right: 3%;
+	top: 6px;
+	color: #CCC;
+}
+
+.content-botttom{
+	position: absolute;
+	bottom: 1px;
+	left: 0;
+	height: 60px;
+	line-height: 60px;
+	width: 100%;
+	border-top: 1px solid #e8e8e8;
+	background-color: #FFF;
+}
+
+.content-botttom .shopCar{
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	margin-left: 8%;
+	margin-top: 11px;
+	position: relative;
+	float: left;
+}
+.content-botttom .shopCar img{
+	width: 100%;
+}
+.content-botttom .shopCar label{
+	background-color: #FF6666;
+	color: #FFF;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 15px;
+	line-height: 16px;
+	padding: 0 4px;
+	font-size: 12px;
+	border-radius: 7px;
+}
+.content-botttom .money{
+	float: right;
+    height: 60px;
+    line-height: 60px;
+}
+.content-botttom .money span{
+	color: #FF6666;
+}
+.content-botttom button{
+	background-color: #FF6666;
+	width: 25%;
+    height: 60px;
+    line-height: 60px;
+	float: right;
+	border: none;
+	color:#FFF;
+	font-size: 16px;
+	margin-left: 4%;
+	padding: 0;
+}
+
+.content-selected{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+.content-selected .content-bg{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background: #000;
+	opacity: 0.3;
+	width: 100%;
+}
+.content-selected .content-select{
+	height: 200px;
+	width: 100%;
+	background-color: #FFF;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+.content-selected .content-select .content-select-title{
+	height: 40px;
+	line-height: 40px;
+	background-color: #F9F9F9;
+	padding-left: 2%;
+}
+.content-selected .content-select .content-select-center{
+	padding-left: 2%;
+    overflow: auto;
+}
+.content-selected .content-select .content-select-center-ul{
+	height: 50px;
+	line-height: 50px;
+	padding-left: 0;
+	border-bottom: 1px solid #e8e8e8;
+}
+.content-selected .content-select .content-select-center .money{
+	color: #FF6666;
+	float: right;
+}
+.content-selected .content-select .content-select-center .fa-minus-circle{
+    color: #FF6666;
+    font-size: 21px;
+    float: right;
+    margin-left: 3%;
+    margin-top: 13px;
+    margin-right: 2%;
+}

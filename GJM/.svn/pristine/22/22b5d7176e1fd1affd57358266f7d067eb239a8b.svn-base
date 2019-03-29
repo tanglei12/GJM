@@ -1,0 +1,142 @@
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f9f9f9;
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .main-footer {
+    position: relative;
+    padding: 10px;
+    box-shadow: 0px -2px 1px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    button {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 46px;
+      border-radius: 3px;
+    }
+  }
+}
+
+.box-dl {
+  position: relative;
+  margin-top: 10px;
+  background: #fff;
+  .box-dl-dt {
+    position: relative;
+    display: flex;
+    line-height: 48px;
+    padding-left: 16px;
+    border-bottom: 1px solid #dddddd;
+    .dl-dt-title {
+      position: relative;
+      font-size: 15px;
+      font-weight: 600;
+      color: #000000;
+      flex: 1;
+    }
+    .dl-dt-content {
+
+    }
+  }
+  .box-dl-dd {
+    .dl-dd-item {
+      position: relative;
+      display: flex;
+      margin-left: 16px;
+      line-height: 44px;
+      font-size: 14px;
+      border-bottom: 1px solid #dddddd;
+      &:last-child {
+        border-bottom: none;
+      }
+      .item-title {
+
+      }
+      .item-content {
+        display: flex;
+        flex: 1;
+        input{
+          &:disabled{
+            color: #808080;
+          }
+        }
+        input[name=itemName] {
+          flex: 1;
+        }
+        input[name=itemCost] {
+          width: 80px;
+          text-align: right;
+        }
+      }
+      .item-option {
+
+      }
+    }
+  }
+  /*common*/
+  .item-add {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    line-height: 47px;
+    font-size: 18px;
+  }
+  .select-label {
+    flex: 1;
+    text-align: right;
+    padding-right: 34px;
+    > select {
+      width: 100%;
+      height: 44px;
+      text-indent: 84%;
+      padding-left: 16px;
+      flex: 1;
+    }
+    &:after {
+      content: "\f107";
+      font: normal normal normal 14px / 1 FontAwesome;
+      position: absolute;
+      display: inline-block;
+      font-size: 20px;
+      top: 50%;
+      right: 11px;
+      height: 8px;
+      line-height: 8px;
+      width: 14px;
+      text-align: center;
+      margin-top: -4px;
+      z-index: 1;
+    }
+  }
+}
+
+.box-msg {
+  padding: 16px;
+  .box-msg-content {
+    text-align: center;
+    line-height: 90px;
+    font-size: 14px;
+  }
+  .box-msg-option {
+    text-align: center;
+    > button {
+      display: inline-block;
+      padding: 0 10px;
+      line-height: 30px;
+      border-radius: 3px;
+    }
+  }
+}
+
+#payCostTotal {
+  position: relative;
+  padding-right: 16px;
+  flex: 1;
+  text-align: right;
+}

@@ -1,0 +1,194 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+    color: #666;
+    background: #F4F4F4;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+}
+
+button {
+    outline: none;
+}
+
+.content{
+    overflow: hidden;
+}
+.content .centerContent{
+    margin-top: 15px;
+    background-color: #FFFFFF;
+}
+.content .centerContent dl{
+    background-color: #FFFFFF;
+    overflow: hidden;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 0px;
+}
+.content .centerContent dl dt{
+    float: left;
+    font-size: 3.8vw;
+    width: 20%;
+    text-align: right;
+    height: 26px;
+    line-height: 26px;
+}
+.content .centerContent dl dd{
+    float: left;
+    margin-left: 3%;
+    width: 74%;
+    text-align: right;
+    color: #999999;
+    padding-right: 3%;
+    font-size: 3.5vw;
+    height: 26px;
+    line-height: 26px;
+}
+.content .centerContent .line{
+    background-color: #E3E3E3;
+    width: 97%;
+    height: 1px;
+    margin-left: 3%;
+}
+.content .centerContent .lines{
+    background-color: #E3E3E3;
+    width: 100%;
+    height: 1px;
+}
+.content button{
+    width: 100%;
+    height: 45px;
+    background-color: #FFFFFF;
+    border: none;
+    color: #FF6666;
+    text-align: center;
+}
+.content button img{
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-left: 36%;
+}
+.content button label{
+    float: left;
+    margin-top: 6px;
+    margin-left: 10px;
+}
+.show-pay{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.show-pay .show-bg{
+    background-color: #000000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+.show-pay .show-content{
+    width: 100%;
+    height: 350px;
+    background-color: #FFFFFF;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+}
+.show-pay .show-content .show-title{
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 40px;
+    line-height: 40px;
+}
+.show-pay .show-content .fa-times{
+    font-size: 18px;
+}
+.show-pay .show-content .text{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    font-size: 3.7vw;
+    font-weight: bold;
+    color: #575757;
+}
+.show-pay .show-content .lines{
+    background-color: #E3E3E3;
+    width: 100%;
+    height: 1px;
+}
+.show-pay .show-content .pay-money{
+    text-align: center;
+    padding-bottom: 15px;
+}
+.show-pay .show-content .pay-money label{
+    font-size: 3.5vw;
+    display: block;
+    margin-top: 12px;
+    color: #999999;
+}
+.show-pay .show-content .pay-money label i{
+    font-style:normal;
+    font-size: 3.5vw;
+}
+.show-pay .show-content .show-payType{
+    position: relative;
+}
+.show-pay .show-content .show-payType dl{
+    height: 35px;
+    line-height: 35px;
+    margin: 0;
+    padding: 4px 0;
+}
+.show-pay .show-content .show-payType dt{
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    width: 13%;
+}
+.show-pay .show-content .show-payType dd{
+    float: left;
+    margin-left: 3%;
+    height: 29px;
+    line-height: 29px;
+    font-size: 3.5vw;
+    position: relative;
+    width: 84%;
+}
+.show-pay .show-content .show-payType dd .fa-check-circle{
+    position: absolute;
+    right: 15px;
+    top: 6px;
+    font-size: 5vw;
+    color: #E8E8E8;
+}
+.show-pay .show-content button{
+    width: 100%;
+    height: 45px;
+    background-color: #FF6666;
+    color: #FFFFFF;
+    border: 0;
+    position: absolute;
+    bottom: 0;
+}

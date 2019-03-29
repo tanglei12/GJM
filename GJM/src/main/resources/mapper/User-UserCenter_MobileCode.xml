@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.MobileCodeDao">
+
+	<!-- 保存验证码 -->
+	<insert id="addMobileCode" useGeneratedKeys="true" keyProperty="mc_id">
+		INSERT INTO GJP_UserCenter_MobileCode(
+		mc_phone,
+		mc_code,
+		mc_type,
+		mc_createTime,
+		mc_destroyTime
+		) VALUES (
+		#{mc_phone},
+		#{mc_code},
+		#{mc_type},
+		#{mc_createTime},
+		#{mc_destroyTime}
+		)
+	</insert>
+	<!-- 更新验证码 -->
+	<update id="updateMobileCode" parameterType="com.gjp.model.MobileCode">
+		update GJP_UserCenter_MobileCode
+		<set>
+			<if test="mc_phone != null and mc_phone !=''">mc_phone=#{mc_phone},</if>
+			<if test="mc_code != null and mc_code !=''">mc_code=#{mc_code},</if>
+			<if test="mc_type != null and mc_type !=''">mc_type=#{mc_type},</if>
+			<if test="mc_createTime != null">mc_createTime=#{mc_createTime},</if>
+			<if test="mc_destroyTime != null">mc_destroyTime=#{mc_destroyTime},</if>
+			<if test="mc_isUse != null">mc_isUse=#{mc_isUse},</if>
+			mc_id = #{mc_id}
+		</set>
+		where mc_id = #{mc_id}
+	</update>
+	
+	<!-- 查询验证码 -->
+	<select id="queryMobileCodeByProperty" resultType="com.gjp.model.MobileCode">
+		SELECT * FROM
+		GJP_UserCenter_MobileCode WHERE 1=1
+		<if test="mc_phone != null and mc_phone != ''">
+		AND mc_phone = #{mc_phone}
+		</if>
+		<if test="mc_type != null and mc_type != ''">
+		AND mc_type = #{mc_type}
+		</if>
+		<if test="mc_code != null and mc_code != ''">
+		AND mc_code = #{mc_code}
+		</if>
+	</select>
+	
+	<!-- 删除验证码 -->
+	<delete id="deleteMobieCodeById" >
+		DELETE FROM GJP_UserCenter_MobileCode WHERE mc_id = #{mc_id}
+	</delete>
+
+</mapper>

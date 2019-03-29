@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋扩展信息 GJP_House_HouseExtended -->
+<mapper namespace="com.gjp.dao.HouseExtendedDao">
+	<sql id="allmenbers">
+		he_id,
+		he_peopleName,
+		he_phone,
+		he_state,
+		he_number,
+		he_cardNumber,
+		he_nature,
+		he_money,
+		he_buyTime,
+		he_address,
+		he_time,
+		he_isPublish
+	</sql>
+
+	<sql id="menberEcpId">
+		he_peopleName,
+		he_phone,
+		he_state,
+		he_number,
+		he_cardNumber,
+		he_nature,
+		he_money,
+		he_buyTime,
+		he_address,
+		he_time
+	</sql>
+
+	<!-- 添加房屋扩展信息 -->
+	<insert id="addHouseExtended" useGeneratedKeys="true" parameterType="com.gjp.model.HouseHouseExtended" keyProperty="he_id">
+		insert into GJP_House_HouseExtended(
+		he_peopleName,
+		he_phone,
+		he_state,
+		he_number,
+		he_cardNumber,
+		he_nature,
+		he_money,
+		he_buyTime,
+		he_address,
+		he_time,
+		he_isPublish
+		)
+		values
+		(
+		#{he_peopleName},
+		#{he_phone},
+		#{he_state},
+		#{he_number},
+		#{he_cardNumber},
+		#{he_nature},
+		#{he_money},
+		#{he_buyTime},
+		#{he_address},
+		#{he_time},
+		#{he_isPublish}
+		)
+	</insert>
+
+	<!-- ajax根据id查询房屋扩展信息 -->
+	<select id="selectHouseExtendedById" resultType="com.gjp.model.HouseHouseExtended">
+		select
+		<include refid="allmenbers" />
+		from GJP_House_HouseExtended where he_id = #{id}
+	</select>
+
+	<!-- ajax查询房屋扩展信息List -->
+	<select id="selectHouseExtended" resultType="com.gjp.model.HouseHouseExtended">
+		select
+		<include refid="allmenbers" />
+		from GJP_House_HouseExtended
+	</select>
+
+	<!-- 查询房屋扩展信息编号 -->
+	<select id="selectHe_id" parameterType="com.gjp.model.HouseHouseExtended" resultType="int">
+		select
+		he_id
+		from GJP_House_HouseExtended
+		where he_number=#{he_number} and he_cardNumber=#{he_cardNumber} and he_time=#{he_time}
+	</select>
+
+	<!-- 根据id查询房屋扩展信息 -->
+	<select id="selectHouseHouseExtendedById" resultType="com.gjp.model.HouseHouseExtended">
+		select
+		<include refid="allmenbers" />
+		from GJP_House_HouseExtended where he_id=#{he_id}
+	</select>
+
+	<!-- 分页查询房屋扩展信息 -->
+	<select id="selectHouseHouseExtended" resultType="com.gjp.model.HouseHouseExtended">
+		SELECT * FROM (SELECT
+		IF (
+		pn.upn_code IS NULL
+		OR pn.upn_code = '',
+		CONCAT(
+		pn.upn_sname,
+		hi.hi_address
+		),
+		CONCAT(
+		pn.upn_sname,
+		pn.upn_code,
+		'-',
+		hi.hi_address
+		)
+		) AS house_address,
+		he.he_id,
+		he_peopleName,
+		he_phone,
+		he_state,
+		he_number,
+		he_cardNumber,
+		he_nature,
+		he_money,
+		he_buyTime,
+		he_address,
+		he_time
+		FROM
+		GJP_House_HouseExtended AS he
+		JOIN GJP_House_HouseInformation_keep AS hi ON he.he_id = hi.he_id
+		JOIN GJP_PropertyInfo AS pi ON hi.propertyInfo_Id = pi.propertyInfo_Id
+		JOIN GJP_PropertyInfo_PropertyInfoName AS pn ON pn.upn_id = pi.upn_id
+		) house_extended
+		where 1=1
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and DATE_FORMAT(he_time,'%Y-%m-%d') >= DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= DATE_FORMAT(he_time,'%Y-%m-%d')
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询房屋扩展信息总条数 -->
+	<select id="selectTotalHouseExtended" resultType="int">
+		SELECT count(*) FROM (SELECT
+		IF (
+		pn.upn_code IS NULL
+		OR pn.upn_code = '',
+		CONCAT(
+		pn.upn_sname,
+		hi.hi_address
+		),
+		CONCAT(
+		pn.upn_sname,
+		pn.upn_code,
+		'-',
+		hi.hi_address
+		)
+		) AS house_address,
+		he.he_id,
+		he_peopleName,
+		he_phone,
+		he_state,
+		he_number,
+		he_cardNumber,
+		he_nature,
+		he_money,
+		he_buyTime,
+		he_address,
+		he_time
+		FROM
+		GJP_House_HouseExtended AS he
+		JOIN GJP_House_HouseInformation_keep AS hi ON he.he_id = hi.he_id
+		JOIN GJP_PropertyInfo AS pi ON hi.propertyInfo_Id = pi.propertyInfo_Id
+		JOIN GJP_PropertyInfo_PropertyInfoName AS pn ON pn.upn_id = pi.upn_id
+		) house_extended
+		where 1=1
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and DATE_FORMAT(he_time,'%Y-%m-%d') >= DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= DATE_FORMAT(he_time,'%Y-%m-%d')
+		</if>
+	</select>
+
+	<!-- 修改房屋基本信息 -->
+	<update id="upDataHouseExtended" parameterType="com.gjp.model.HouseHouseExtended">
+		UPDATE GJP_House_HouseExtended
+		<set>
+			<if test="he_id !=null ">he_id=#{he_id},</if>
+			<if test="he_peopleName !=null and he_peopleName !='' ">he_peopleName=#{he_peopleName},</if>
+			<if test="he_phone !=null and he_phone !='' ">he_phone=#{he_phone},</if>
+			<if test="he_state !=null and he_state !='' ">he_state=#{he_state},</if>
+			<if test="he_number !=null and he_number !='' ">he_number=#{he_number},</if>
+			<if test="he_cardNumber !=null and he_cardNumber !='' ">he_cardNumber=#{he_cardNumber},</if>
+			<if test="he_nature !=null and he_nature !='' ">he_nature=#{he_nature},</if>
+			<if test="he_money !=null ">he_money=#{he_money},</if>
+			<if test="he_buyTime !=null ">he_buyTime=#{he_buyTime},</if>
+			<if test="he_address !=null and he_address !='' ">he_address=#{he_address},</if>
+			<if test="he_isPublish !=null ">he_isPublish=#{he_isPublish},</if>
+			he_id = #{he_id}
+		</set>
+		WHERE
+		he_id = #{he_id}
+	</update>
+
+	<!-- 修改房屋为已租 -->
+	<update id="updateSta" parameterType="com.gjp.model.HouseHouseExtended">
+		update GJP_House_HouseExtended set
+		he_state=#{he_state}
+		where
+		he_id=#{he_id}
+	</update>
+
+
+	<!-- <delete id="deleteStudent" parameterType="int"> delete from users_name where id = #{id} </delete> <update id="updateStudent" parameterType="Student"> update users_name set name = #{name} where id = #{id} </update> <select id="queryStudentById" parameterType="int" resultType="Student"> select * from users_name where id=#{id} </select> <select id="queryAllStudents" resultType="Student"> select * from users_name </select> -->
+
+
+
+</mapper>

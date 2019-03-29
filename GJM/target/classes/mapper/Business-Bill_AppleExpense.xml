@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillApplyExpenseDao">
+	<insert id="addApplyExpense" useGeneratedKeys="true" keyProperty="bx_id">
+		INSERT INTO GJP_Bill_ApplyExpense(
+			bx_id,
+			bx_bk_id,
+			bx_person,
+			bx_partment,
+			bx_custom,
+			bx_expense_money,
+			bx_pay,
+			bx_em_id,
+			bx_category_details,
+			bx_enclasure,
+			bx_number,
+			bx_state,
+			bx_time
+		)VALUES(
+			#{bx_id},
+			#{bx_bk_id},
+			#{bx_person},
+			#{bx_partment},
+			#{bx_custom},
+			#{bx_expense_money},
+			#{bx_pay},
+			#{bx_em_id},
+			#{bx_category_details},
+			#{bx_enclasure},
+			#{bx_number},
+			#{bx_state},
+			#{bx_time}
+		)
+	</insert>
+	
+	<select id="selectApplyList" resultType="com.gjp.model.BillApplyExpense">
+		SELECT
+			*
+		FROM
+			GJP_Bill_ApplyExpense t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.bx_em_id = t2.em_id
+		WHERE 1=1
+		<if test="bx_number !=null and bx_number !=''">
+			and bx_number = #{bx_number}
+		</if>
+		<if test="bx_id !=null and bx_id !=''">
+			and bx_id = #{bx_id}
+		</if> 
+		<if test="bx_state !=null and bx_state !=''">
+			and bx_state &lt;&gt; #{bx_state}
+		</if> 
+	</select>
+	
+	<!-- 更改数据 -->
+	<update id="updateExpense" parameterType="com.gjp.model.BillApplyExpense">
+		 update GJP_Bill_ApplyExpense 
+		 <set>
+		 	<if test="bx_bk_id !=null and bx_bk_id !=''">bx_bk_id = #{bx_bk_id},</if>
+		 	<if test="bx_custom !=null and bx_custom !=''">bx_custom = #{bx_custom},</if>
+		 	<if test="bx_expense_money !=null and bx_expense_money !=''">bx_expense_money = #{bx_expense_money},</if>
+		 	<if test="bx_pay !=null and bx_pay !=''">bx_pay = #{bx_pay},</if>
+		 	<if test="bx_em_id !=null and bx_em_id !=''">bx_em_id = #{bx_em_id},</if>
+		 	<if test="bx_person !=null and bx_person !=''">bx_person = #{bx_person},</if>
+		 	<if test="bx_partment !=null and bx_partment !=''">bx_partment = #{bx_partment},</if>
+		 	<if test="bx_category_details !=null and bx_category_details !=''">bx_category_details = #{bx_category_details},</if>
+		 	<if test="bx_enclasure !=null and bx_enclasure !=''">bx_enclasure = #{bx_enclasure},</if>
+		 	<if test="bx_number !=null and bx_number !=''">bx_number = #{bx_number},</if>
+		 	<if test="bx_state !=null and bx_state !=''">bx_state = #{bx_state},</if>
+		 	<if test="bx_time !=null and bx_time !=''">bx_time = #{bx_time}</if>
+		 </set>
+		 	where bx_id =#{bx_id}
+	</update>
+	
+</mapper>

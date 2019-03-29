@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 物业基础信息 GJP_PropertyInfo -->
+<mapper namespace="com.gjp.dao.PropertyInfoDAO">
+
+    <!-- 添加物业基础信息 -->
+    <insert id="insertPropertyInfo" useGeneratedKeys="true" parameterType="com.gjp.model.PropertyInfo" keyProperty="propertyInfo_Id">
+		insert into GJP_PropertyInfo(
+		propertyInfo_Name,
+		propertyInfo_OpenTime,
+		propertyInfo_State,
+		propertyInfo_Type,
+		propertyInfo_OpenPrice,
+		propertyInfo_TotalArea,
+		propertyInfo_BuildArea,
+		propertyInfo_TotalAmount,
+		propertyInfo_PlotRate,
+		propertyInfo_GreenRate,
+		propertyInfo_Life,
+		propertyInfo_CarPark,
+		propertyInfo_Public,
+		propertyInfo_ManaStyle,
+		propertyInfo_Wuguan,
+		propertyInfo_Tel,
+		propertyInfo_Cost,
+		propertyInfo_address,
+		propertyInfo_remark,
+		propertyInfo_developer,
+		propertyInfo_department,
+		propertyInfo_broadband,
+		propertyInfo_zhou,
+		propertyInfo_coordinate,
+		propertyInfo_company,
+		propertyInfo_transit,
+		propertyInfo_gui,
+		propertyInfo_quan,
+		propertyInfo_you,
+		propertyInfo_qiNum,
+		propertyInfo_quyu,
+		propertyInfo_street,
+		propertyInfo_waddress,
+		propertyInfo_stage,
+		propertyInfo_success,
+		propertyInfo_floor,
+		upn_id,
+		propertyInfo_source
+		) VALUES (
+		#{propertyInfo_Name },
+		#{propertyInfo_OpenTime },
+		#{propertyInfo_State },
+		#{propertyInfo_Type },
+		#{propertyInfo_OpenPrice },
+		#{propertyInfo_TotalArea },
+		#{propertyInfo_BuildArea },
+		#{propertyInfo_TotalAmount},
+		#{propertyInfo_PlotRate },
+		#{propertyInfo_GreenRate },
+		#{propertyInfo_Life },
+		#{propertyInfo_CarPark },
+		#{propertyInfo_Public },
+		#{propertyInfo_ManaStyle },
+		#{propertyInfo_Wuguan },
+		#{propertyInfo_Tel },
+		#{propertyInfo_Cost },
+		#{propertyInfo_address },
+		#{propertyInfo_remark },
+		#{propertyInfo_developer },
+		#{propertyInfo_department },
+		#{propertyInfo_broadband },
+		#{propertyInfo_zhou },
+		#{propertyInfo_coordinate },
+		#{propertyInfo_company },
+		#{propertyInfo_transit },
+		#{propertyInfo_gui },
+		#{propertyInfo_quan },
+		#{propertyInfo_you },
+		#{propertyInfo_qiNum },
+		#{propertyInfo_quyu },
+		#{propertyInfo_street},
+		#{propertyInfo_waddress },
+		#{propertyInfo_stage },
+		#{propertyInfo_success },
+		#{propertyInfo_floor },
+		#{upn_id },
+		#{propertyInfo_source}
+		)
+	</insert>
+
+    <!-- 查询物业信息List -->
+    <select id="selectPropertyInfo" resultType="com.gjp.model.PropertyInfo">
+		select * from GJP_PropertyInfo
+	</select>
+
+    <!-- 修改物业信息 -->
+    <update id="updatePropertyInfo" parameterType="com.gjp.model.PropertyInfo">
+        update GJP_PropertyInfo
+        <set>
+            <if test="propertyInfo_Name != null">
+                propertyInfo_Name=#{propertyInfo_Name },
+            </if>
+            <if test="propertyInfo_OpenTime != null">
+                propertyInfo_OpenTime=#{propertyInfo_OpenTime },
+            </if>
+            <if test="propertyInfo_State != null">
+                propertyInfo_State=#{propertyInfo_State },
+            </if>
+            <if test="propertyInfo_Type != null">
+                propertyInfo_Type=#{propertyInfo_Type },
+            </if>
+            <if test="propertyInfo_OpenPrice != null">
+                propertyInfo_OpenPrice=#{propertyInfo_OpenPrice },
+            </if>
+            <if test="propertyInfo_TotalArea != null">
+                propertyInfo_TotalArea=#{propertyInfo_TotalArea },
+            </if>
+            <if test="propertyInfo_BuildArea != null">
+                propertyInfo_BuildArea=#{propertyInfo_BuildArea },
+            </if>
+            <if test="propertyInfo_TotalAmount != null">
+                propertyInfo_TotalAmount=#{propertyInfo_TotalAmount },
+            </if>
+            <if test="propertyInfo_PlotRate != null">
+                propertyInfo_PlotRate=#{propertyInfo_PlotRate },
+            </if>
+            <if test="propertyInfo_GreenRate != null">
+                propertyInfo_GreenRate=#{propertyInfo_GreenRate },
+            </if>
+            <if test="propertyInfo_Life != null">
+                propertyInfo_Life=#{propertyInfo_Life },
+            </if>
+            <if test="propertyInfo_CarPark != null">
+                propertyInfo_CarPark=#{propertyInfo_CarPark },
+            </if>
+            <if test="propertyInfo_Public != null">
+                propertyInfo_Public=#{propertyInfo_Public },
+            </if>
+            <if test="propertyInfo_ManaStyle != null">
+                propertyInfo_ManaStyle=#{propertyInfo_ManaStyle },
+            </if>
+            <if test="propertyInfo_Wuguan != null">
+                propertyInfo_Wuguan=#{propertyInfo_Wuguan },
+            </if>
+            <if test="propertyInfo_Tel != null">
+                propertyInfo_Tel=#{propertyInfo_Tel },
+            </if>
+            <if test="propertyInfo_Cost != null">
+                propertyInfo_Cost=#{propertyInfo_Cost },
+            </if>
+            <if test="propertyInfo_address != null">
+                propertyInfo_address=#{propertyInfo_address },
+            </if>
+            <if test="propertyInfo_remark != null">
+                propertyInfo_remark=#{propertyInfo_remark },
+            </if>
+            <if test="propertyInfo_developer != null">
+                propertyInfo_developer=#{propertyInfo_developer },
+            </if>
+            <if test="propertyInfo_department != null">
+                propertyInfo_department=#{propertyInfo_department },
+            </if>
+            <if test="propertyInfo_broadband != null">
+                propertyInfo_broadband=#{propertyInfo_broadband },
+            </if>
+            <if test="propertyInfo_zhou != null">
+                propertyInfo_zhou=#{propertyInfo_zhou },
+            </if>
+            <if test="propertyInfo_coordinate != null">
+                propertyInfo_coordinate=#{propertyInfo_coordinate },
+            </if>
+            <if test="propertyInfo_company != null">
+                propertyInfo_company=#{propertyInfo_company },
+            </if>
+            <if test="propertyInfo_transit != null">
+                propertyInfo_transit=#{propertyInfo_transit },
+            </if>
+            <if test="propertyInfo_gui != null">
+                propertyInfo_gui=#{propertyInfo_gui },
+            </if>
+            <if test="propertyInfo_quan != null">
+                propertyInfo_quan=#{propertyInfo_quan },
+            </if>
+            <if test="propertyInfo_you != null and propertyInfo_you != 3">
+                propertyInfo_you=#{propertyInfo_you },
+            </if>
+            <if test="propertyInfo_qiNum != null">
+                propertyInfo_qiNum=#{propertyInfo_qiNum },
+            </if>
+            <if test="propertyInfo_quyu != null">
+                propertyInfo_quyu=#{propertyInfo_quyu },
+            </if>
+            <if test="propertyInfo_waddress != null">
+                propertyInfo_waddress=#{propertyInfo_waddress },
+            </if>
+            <if test="propertyInfo_stage != null">
+                propertyInfo_stage=#{propertyInfo_stage },
+            </if>
+            <if test="propertyInfo_Id != null">
+                propertyInfo_Id=#{propertyInfo_Id },
+            </if>
+            <if test="propertyInfo_success != null">
+                propertyInfo_success=#{propertyInfo_success },
+            </if>
+            <if test="propertyInfo_floor != null">
+                propertyInfo_floor=#{propertyInfo_floor },
+            </if>
+            <if test="upn_id != null">
+                upn_id=#{upn_id },
+            </if>
+        </set>
+        WHERE
+        propertyInfo_Id=#{propertyInfo_Id}
+    </update>
+    <!-- 修改小区的时候修改物业信息 -->
+    <update id="updatePropertyInfo2" parameterType="com.gjp.model.PropertyInfo">
+		update GJP_PropertyInfo
+		<set>
+            <if test="propertyInfo_Name != null">
+                propertyInfo_Name=#{propertyInfo_Name},
+            </if>
+            <if test="propertyInfo_quyu != null">
+                propertyInfo_quyu=#{propertyInfo_quyu},
+            </if>
+            <if test="propertyInfo_street !=null">
+                propertyInfo_street=#{propertyInfo_street},
+            </if>
+            <if test="propertyInfo_department != null">
+                propertyInfo_department=#{propertyInfo_department},
+            </if>
+            <if test="propertyInfo_address != null">
+                propertyInfo_address = #{propertyInfo_address},
+            </if>
+            <if test="propertyInfo_coordinate != null">
+                propertyInfo_coordinate=#{propertyInfo_coordinate},
+            </if>
+            <if test="propertyInfo_gui != null">
+                propertyInfo_gui=#{propertyInfo_gui},
+            </if>
+            <if test="propertyInfo_transit != null">
+                propertyInfo_transit=#{propertyInfo_transit},
+            </if>
+            <if test="propertyInfo_source != null">
+                propertyInfo_source=#{propertyInfo_source}
+            </if>
+        </set>
+		where 1=1
+        <if test="upn_id != null">
+           AND upn_id=#{upn_id}
+        </if>
+        <if test="propertyInfo_Id !=null">
+           AND propertyInfo_Id =#{propertyInfo_Id}
+        </if>
+	</update>
+    <!-- 修改小区的时候修改物业号信息 -->
+    <update id="updatePropertyInfo3" parameterType="com.gjp.model.PropertyInfo">
+		update GJP_PropertyInfo set
+		propertyInfo_Name=#{propertyInfo_Name}
+		where
+		upn_id=#{upn_id}
+	</update>
+
+    <!-- 查询物业 -->
+    <select id="selectcompanyByPiId" parameterType="com.gjp.model.PropertyInfoName" resultType="com.gjp.model.PropertyInfo">
+		select * from GJP_PropertyInfo where upn_id=#{upn_id}
+	</select>
+
+    <!-- 查询物业是否存在 -->
+    <select id="queryPropertyInfoCount" resultType="com.gjp.model.PropertyInfo">
+		select propertyInfo_success,propertyInfo_Id,count(*) as size from GJP_PropertyInfo where upn_id=#{upn_id} GROUP BY propertyInfo_Id
+	</select>
+
+    <!-- 根据物业信息编号查询物业信息 -->
+    <select id="queryPropertyInfoID" resultType="com.gjp.model.PropertyInfo">
+		SELECT
+		GJP_PropertyInfo.*,
+		GJP_PropertyInfo_PropertyInfoName.upn_code,
+		GJP_PropertyInfo_PropertyInfoName.upn_sname
+		FROM
+		GJP_PropertyInfo,
+		GJP_PropertyInfo_PropertyInfoName
+		WHERE
+		GJP_PropertyInfo.upn_id = GJP_PropertyInfo_PropertyInfoName.upn_id
+		AND
+		GJP_PropertyInfo.propertyInfo_Id=#{propertyInfo_Id}
+	</select>
+
+    <!-- 根据模糊条件查询物业信息 -->
+    <select id="selectwuyename" resultType="com.gjp.model.PropertyInfo">
+        select * from GJP_PropertyInfo where 1=1
+        <if test="propertyInfo_Name != null and propertyInfo_Name !=''">
+            and (propertyInfo_Name like CONCAT('%',#{propertyInfo_Name},'%'))
+        </if>
+        limit 0,10
+    </select>
+
+    <!-- ======================后期可能废弃方法============================== -->
+    <!-- 根据模糊条件查询物业信息 -->
+    <select id="selectUserCenterPropertyInfoByParam" resultType="com.gjp.model.PropertyInfo">
+        select * from GJP_PropertyInfo where 1=1
+        <if test="param != null and param !=''">
+            and (propertyInfo_Name like CONCAT('%',#{param},'%')
+            or propertyInfo_address like CONCAT('%',#{param},'%'))
+        </if>
+        limit 0,10
+    </select>
+
+    <!-- 查询小区估价 -->
+    <select id="selectvaluation" resultType="com.gjp.model.HousingValuation">
+        select * from GJP_housingValuation where 1=1
+        <if test="propertyInfo_Id != null and propertyInfo_Id !=''">
+            and propertyInfo_Id=#{propertyInfo_Id}
+        </if>
+    </select>
+
+    <!-- 通过物业名称编号查询该物业所有信息 -->
+    <select id="selectPropertyInfoNameList" resultType="com.gjp.model.PropertyInfoName">
+        SELECT
+        pin.upn_id,
+        pin.upn_name,
+        pin.upn_pid,
+        pin.upn_code,
+        pin.upn_time,
+        pin.upn_sid,
+        pi.propertyInfo_Id
+        FROM
+        GJP_PropertyInfo_PropertyInfoName pin
+        LEFT JOIN GJP_PropertyInfo pi ON pin.upn_id = pi.upn_id
+        WHERE
+        1=1
+        <if test="upn_sid !=null and upn_sid !=''">AND pin.upn_sid =#{upn_sid}</if>
+        <if test="upn_id !=null and upn_id !=''">AND pin.upn_id =#{upn_id}</if>
+        ORDER BY -pin.upn_name DESC
+    </select>
+
+    <!-- 通过物业名称编号查询该物业所有信息 -->
+    <select id="queryPropertyInfoNameList" resultType="com.gjp.model.PropertyInfoName">
+        SELECT
+        pin.upn_id,
+        pin.upn_name,
+        pin.upn_pid,
+        pin.upn_code,
+        pin.upn_time,
+        pin.upn_sid,
+        pin.upn_sname,
+        pi.propertyInfo_Id
+        FROM
+        GJP_PropertyInfo_PropertyInfoName pin
+        LEFT JOIN GJP_PropertyInfo pi ON pin.upn_id = pi.upn_id
+        WHERE
+        1=1
+        <if test="t.upn_sid !=null">AND pin.upn_sid =#{t.upn_sid}</if>
+        AND pin.upn_name like CONCAT('%',#{t.upn_name},'%')
+        <if test="t.propertyNames !=null">
+            OR pin.upn_name in
+            <foreach item="item" index="index" collection="t.propertyNames" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY pin.upn_name
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!--查询所有物业名称-->
+    <select id="queryPropertyInfoNames" resultType="java.lang.String">
+		SELECT
+		pin.upn_name
+		FROM
+		GJP_PropertyInfo_PropertyInfoName pin
+		LEFT JOIN GJP_PropertyInfo pi ON pin.upn_id = pi.upn_id
+		WHERE
+		1=1
+		AND pin.upn_sid = 0
+		ORDER BY pin.upn_name
+	</select>
+
+    <!-- 根据条件查询物业 -->
+    <select id="selectPropertyInfoName" resultType="com.gjp.model.PropertyInfoName">
+		select pn.upn_id,upn_name,upn_pid,upn_code,upn_sid,upn_sname,propertyInfo_Id from GJP_PropertyInfo_PropertyInfoName as pn
+		left join GJP_PropertyInfo as pi on pn.upn_id = pi.upn_id
+		where 1=1 
+		${whereList}
+		order by  pn.upn_code asc, pn.upn_sname asc
+		limit 0,20
+	</select>
+
+    <!-- 查询物业列表信息总条数 -->
+    <select id="queryPropertyInfoNameListRecords" resultType="int">
+        SELECT COUNT(*) FROM
+        GJP_PropertyInfo_PropertyInfoName pin
+        LEFT JOIN GJP_PropertyInfo pi ON pin.upn_id = pi.upn_id
+        WHERE
+        1=1
+        <if test="t.upn_sid !=null">AND pin.upn_sid =#{t.upn_sid}</if>
+        AND pin.upn_name like CONCAT('%',#{t.upn_name},'%')
+        <if test="t.propertyNames !=null">
+            OR pin.upn_name in
+            <foreach item="item" index="index" collection="t.propertyNames" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 通过条件查询物业信息 -->
+    <select id="selectPropertyInfoByWhere" resultType="com.gjp.model.PropertyInfo">
+		SELECT
+		propertyInfo_Id,
+		propertyInfo_Name,
+		propertyInfo_OpenTime,
+		propertyInfo_State,
+		propertyInfo_Type,
+		propertyInfo_OpenPrice,
+		propertyInfo_TotalArea,
+		propertyInfo_BuildArea,
+		propertyInfo_TotalAmount,
+		propertyInfo_PlotRate,
+		propertyInfo_GreenRate,
+		propertyInfo_Life,
+		propertyInfo_CarPark,
+		propertyInfo_Public,
+		propertyInfo_ManaStyle,
+		propertyInfo_Wuguan,
+		propertyInfo_Tel,
+		propertyInfo_Cost,
+		propertyInfo_address,
+		propertyInfo_remark,
+		propertyInfo_introduce,
+		propertyInfo_developer,
+		propertyInfo_department,
+		propertyInfo_broadband,
+		propertyInfo_zhou,
+		propertyInfo_coordinate,
+		propertyInfo_company,
+		propertyInfo_transit,
+		propertyInfo_gui,
+		propertyInfo_quan,
+		propertyInfo_you,
+		propertyInfo_qiNum,
+		propertyInfo_quyu,
+		propertyInfo_waddress,
+		upn_id,
+		propertyInfo_stage,
+		propertyInfo_success,
+		propertyInfo_floor
+		FROM GJP_PropertyInfo
+		WHERE
+		propertyInfo_Id = #{propertyInfo_Id}
+		LIMIT 1
+	</select>
+
+    <!-- 根据条件查询物业名称 -->
+    <select id="selectPropertyInfoNameByWhere" resultType="com.gjp.model.PropertyInfoName">
+		SELECT
+		upn_id,
+		upn_name,
+		upn_pid,
+		upn_code,
+		upn_time,
+		upn_sid,
+		upn_sname
+		FROM
+		GJP_PropertyInfo_PropertyInfoName
+		WHERE
+		upn_id = #{upn_id}
+	</select>
+
+    <!-- 添加物业基础信息 -->
+    <insert id="insertPropertyInfoSubwany" useGeneratedKeys="true" parameterType="com.gjp.model.PropertyInfoSubwany" keyProperty="Subway_Id">
+		insert into GJP_PropertyInfo_Subwany(
+		subway_Id,
+		subway_Name,
+		subway_City,
+		propertyInfo_Id
+		)
+		values
+		(
+		#{subway_Id},
+		#{subway_Name},
+		#{subway_City},
+		#{propertyInfo_Id}
+		)
+	</insert>
+
+    <delete id="deletePropertyInfoSubwany" parameterType="com.gjp.model.PropertyInfoSubwany">
+		delete
+		from
+		GJP_PropertyInfo_Subwany
+		WHERE
+		propertyInfo_Id=#{propertyInfo_Id}
+	</delete>
+
+    <!-- 查询是否存在周边 -->
+    <select id="selectPropertyInfoSubwany" resultType="com.gjp.model.PropertyInfoSubwany">
+		SELECT
+		*
+		FROM
+		GJP_PropertyInfo_Subwany
+		WHERE
+		propertyInfo_Id = #{propertyInfo_Id}
+	</select>
+
+    <!--物业信息关联查询-->
+    <select id="selectProperInfo" resultType="com.gjp.model.PropertyInfoName">
+        SELECT
+            *
+        FROM
+            (
+                SELECT
+                    t1.upn_name,
+                    t1.upn_pid,
+                    t1.upn_code,
+                    t1.upn_sid,
+                    t1.upn_build,
+                    t1.upn_unit,
+                    t1.upn_dong,
+                    t1.upn_sname,
+                    t1.upn_state,
+                    t1.upn_department,
+                    t2.*
+                FROM
+                    GJP_PropertyInfo_PropertyInfoName t1
+                LEFT JOIN GJP_PropertyInfo t2 ON t1.upn_id = t2.upn_id
+            ) T
+        WHERE  1=1
+            <if test="upn_id !=null">
+                AND upn_id =#{upn_id}
+            </if>
+        AND upn_state =0
+    </select>
+
+    <!-- 查询还未同步到支付宝的小区 -->
+    <select id="queryPropertyInfoToZfb" resultType="com.gjp.model.PropertyInfoName">
+        SELECT gpn.*, gpi.propertyInfo_quyu, gpi.propertyInfo_address, gpi.propertyInfo_coordinate
+        FROM GJP_product.GJP_PropertyInfo gpi
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName gpn ON gpi.upn_id = gpn.upn_id
+        WHERE gpn.comm_req_id IS NULL AND gpn.comm_req_status IS NULL AND gpn.upn_pid = 0
+        AND gpn.upn_id NOT IN (5, 108, 186, 637, 21, 105, 335, 66)
+    </select>
+
+    <!-- 修改同步状态 -->
+    <update id="updatePropertyInfoById">
+        UPDATE GJP_product.GJP_PropertyInfo_PropertyInfoName
+        <set>
+            <if test="comm_req_id != null">comm_req_id = #{comm_req_id},</if>
+            <if test="comm_req_status != null">comm_req_status = #{comm_req_status},</if>
+        </set>
+        WHERE upn_id = #{upn_id} OR upn_pid = #{upn_id}
+    </update>
+</mapper>

@@ -1,0 +1,3370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ServiceDao">
+
+    <!-- 添加热点问题 -->
+    <insert id="addHotSpot" keyProperty="id">
+        INSERT INTO GJP_HotspotIssues_Problem(
+        sip_name,
+        sip_content,
+        sip_people,
+        sip_time,
+        st_id
+        ) VALUES (
+        #{sip_name},
+        #{sip_content},
+        #{sip_people},
+        #{sip_time},
+        #{st_id})
+    </insert>
+
+    <insert id="addSerivceSubType" useGeneratedKeys="true" keyProperty="st_id">
+        INSERT INTO GJP_Service_Type(
+        st_name,
+        parent_id,
+        sm_id,
+        em_id,
+        st_moneyBool,
+        st_money,
+        redrict_path,
+        st_logo,
+        st_image,
+        st_content,
+        st_explain
+        )
+        VALUES(
+        #{st_name},
+        #{parent_id},
+        #{sm_id},
+        #{em_id},
+        #{st_moneyBool},
+        #{st_money},
+        #{redrict_path},
+        #{st_logo},
+        #{st_image},
+        #{st_content},
+        #{st_explain}
+        )
+    </insert>
+
+    <!-- 添加派工单 -->
+    <insert id="addDispatching" keyProperty="id">
+        INSERT INTO GJP_Maintenance_Dispatching(
+        em_id,
+        md_id,
+        mdg_time,
+        mdg_state,
+        mdg_moneyCode,
+        mdg_sumMoney
+        )
+        VALUES
+        (
+        #{em_id},
+        #{md_id},
+        #{mdg_time},
+        #{mdg_state},
+        #{mdg_moneyCode},
+        #{mdg_sumMoney}
+        )
+    </insert>
+
+    <!-- 添加维修状态 -->
+    <insert id="addState" keyProperty="id">
+        insert into GJP_Maintenance_State(
+        ms_state,
+        ms_startTime,
+        ms_endTime,
+        mps_id,
+        md_id,
+        ms_infoVerify,
+        ms_verifyState
+        )
+        values
+        (
+        #{ms_state},
+        #{ms_startTime},
+        #{ms_endTime},
+        #{mps_id},
+        #{md_id},
+        #{ms_infoVerify},
+        #{ms_verifyState}
+        )
+    </insert>
+
+    <!-- 添加维修人员安排 -->
+    <insert id="addWorkerTask" useGeneratedKeys="true" keyProperty="wt_id">
+        insert into GJP_Maintenance_WorkerTask (
+            em_id,
+            md_id,
+            task_state,
+            appoint_id,
+            appoint_time,
+            start_time,
+            estimated_time,
+            realEnd_time
+        ) values (
+            #{em_id},
+            #{md_id},
+            #{task_state},
+            #{appoint_id},
+            NOW(),
+            #{start_time},
+            #{estimated_time},
+            #{realEnd_time}
+        )
+    </insert>
+
+    <!-- 添加客服人员完成步骤 -->
+    <insert id="addFinishStep" useGeneratedKeys="true" keyProperty="ws_id">
+        insert into GJP_Maintenance_FinishStep (
+            wt_id,
+            finish_step,
+            finish_time
+        ) values (
+            #{wt_id},
+            #{finish_step},
+            NOW()
+        )
+    </insert>
+
+    <!-- 添加维修订单流程 -->
+    <insert id="addOrder" keyProperty="id">
+        insert
+        into GJP_Maintenance_Order(
+        mo_state,
+        mo_step,
+        mo_date,
+        mo_content,
+        md_id)
+        values
+        (
+        #{mo_state},
+        #{mo_step},
+        #{mo_date},
+        #{mo_content},
+        #{md_id})
+    </insert>
+
+    <!-- 添加服务基本信息 -->
+    <insert id="addServeMessage" keyProperty="id">
+        insert into GJP_Service_Message(
+        sm_name,
+        sm_image,
+        sm_content,
+        sm_time,
+        sm_people,
+        sm_order,
+        ucc_id
+        )values(
+        #{sm_name},
+        #{sm_image},
+        #{sm_content},
+        #{sm_time},
+        #{sm_people},
+        #{sm_order},
+        #{ucc_id})
+    </insert>
+
+    <!-- 添加问题描述列表 -->
+    <insert id="addProblemList" useGeneratedKeys="true" keyProperty="pl_id">
+        INSERT INTO GJP_Problem_list
+        (
+        pl_name,
+        pl_people,
+        pl_time,
+        st_id
+        )
+        VALUES
+        (
+        #{pl_name},
+        #{pl_people},
+        #{pl_time},
+        #{st_id}
+        )
+    </insert>
+
+    <!-- 添加维修申报 -->
+    <insert id="addDeclarationInfo" useGeneratedKeys="true" keyProperty="md_id">
+        INSERT INTO GJP_Maintenance_Declaration (
+        md_number,
+        md_problem,
+        cc_code,
+        md_contactpeople,
+        md_contactPhone,
+        md_time,
+        md_state,
+        user_id,
+        hi_code,
+        md_type,
+        md_source,
+        md_applyType,
+        md_agentApplyer,
+        apply_time,
+        md_remark,
+        md_payType
+        ) VALUES (
+        #{md_number},
+        #{md_problem},
+        #{cc_code},
+        #{md_contactpeople},
+        #{md_contactPhone},
+        #{md_time},
+        #{md_state},
+        #{user_id},
+        #{hi_code},
+        #{md_type},
+        #{md_source},
+        #{md_applyType},
+        #{md_agentApplyer},
+        NOW(),
+        #{md_remark},
+        #{md_payType}
+        )
+    </insert>
+
+    <!-- 添加维修申报图片路径 -->
+    <insert id="addDeclarationImagePath" useGeneratedKeys="true" keyProperty="mi_id">
+    INSERT INTO
+    GJP_Maintenance_Image
+    (
+    mi_id,
+    mi_name,
+    mi_path,
+    md_id,
+    mi_type
+    )
+    VALUES
+    (
+    #{mi_id},
+    #{mi_name},
+    #{mi_path},
+    #{md_id},
+    #{mi_type}
+    )
+    </insert>
+
+    <!-- 新版添加维修申报图片路径 -->
+    <insert id="insertServiceImagePath" useGeneratedKeys="true" keyProperty="si_id">
+        INSERT INTO
+        GJP_Service_Image
+        (
+          so_id,
+          si_type,
+          si_path,
+          si_createTime
+        )
+        VALUES
+        (
+        #{so_id},
+        #{si_type},
+        #{si_path},
+        now()
+        )
+    </insert>
+
+    <select id="queryServiceImage" resultType="com.gjp.model.ServiceImageVo">
+        SELECT
+        si_id,
+        so_id,
+        si_type,
+        si_path,
+        si_createTime
+        FROM GJP_Service_Image
+        <where>
+            1=1
+            <if test="so_id != null and so_id !='' ">
+                AND so_id = #{so_id}
+            </if>
+            <if test="si_type != null and si_type !='' ">
+                AND si_type = #{si_type}
+            </if>
+        </where>
+    </select>
+
+    <!-- 删除图片 -->
+    <delete id="deleteDeclarationImagePath">
+    delete from GJP_Maintenance_Image
+    where
+    mi_id = #{mi_id}
+    or
+    mi_path = #{mi_path}
+    </delete>
+
+    <!-- 分页查询热点问题 -->
+    <select id="selectHotSpot" resultType="com.gjp.model.HotspotIssuesProblem">
+    SELECT
+    sip_id,
+    sip_name,
+    sip_content,
+    sip_people,
+    sip_time,
+    hp.st_id,
+    st.st_name
+    FROM
+    GJP_HotspotIssues_Problem hp,GJP_Service_Type st
+    WHERE hp.st_id =
+    st.st_id
+    LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询热点问题总条数 -->
+    <select id="selectTotalHotspotIssuesProblem" resultType="int">
+    select
+    count(*) from GJP_HotspotIssues_Problem
+    </select>
+
+    <!-- 分页查询维修申报 -->
+    <select id="selectServe" resultType="com.gjp.model.MaintenanceDeclaration">
+    SELECT
+    md_id,
+    md_number,
+    md_problem,
+    md_time,
+    md_state,
+    user_id,
+    hi_code,
+    md_source,
+    md_applyType,
+    md_agentApplyer,
+    typeOfApply_Name,
+    mdg_state,
+    accepter,
+    propertyInfo_address,
+    hi_address,
+    md_type,
+    em_id
+    FROM
+    view_GJP_Service_DeclarationList
+    LIMIT
+    #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 分页查询服务信息列表 -->
+    <select id="queryServiceOrderList" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+        SELECT * FROM (
+        SELECT
+        IF
+        (
+        pn.upn_code IS NULL
+        OR pn.upn_code = '',
+        CONCAT( pn.upn_sname, hi.hi_address ),
+        CONCAT( pn.upn_sname, pn.upn_code, '-', hi.hi_address )
+        ) AS house_address,
+        sd.md_id,
+        sd.md_problem,
+        sd.md_time,
+        sd.apply_time,
+        sd.md_state,
+        sd.user_id,
+        sd.hi_code,
+        sd.md_source,
+        sd.md_type,
+        CONCAT( sd.md_contactpeople, "/" ) AS md_contactpeople,
+        sd.md_contactPhone,
+        sd.md_applyType,
+        sd.md_agentApplyer,
+        sd.mdg_state,
+        sd.md_address,
+        sd.accepter,
+        sm.sm_name,
+        mt.mtk_state,
+        st.st_name,
+        sd.em_id,
+        uc.ucc_name
+        FROM
+        view_GJP_Service_DeclarationList sd
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = sd.md_type
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = sd.md_applyType
+        LEFT JOIN GJP_business.GJP_Maintenance_Tracks mt ON sd.md_id = mt.md_id
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep hi ON sd.hi_code = hi.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = hi.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord hp ON hp.hi_code = hi.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = hp.ucc_id
+        ) t
+        WHERE
+        1 = 1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= DATE_FORMAT(${dateTitle},'%Y-%m-%d')
+        </if>
+        order by md_state asc, mdg_state asc, apply_time desc
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询维修申报 -->
+    <select id="selectTotalselectServe" resultType="int">
+        SELECT count(*) FROM (
+        SELECT
+        IF
+        (
+        pn.upn_code IS NULL
+        OR pn.upn_code = '',
+        CONCAT( pn.upn_sname, hi.hi_address ),
+        CONCAT( pn.upn_sname, pn.upn_code, '-', hi.hi_address )
+        ) AS house_address,
+        sd.md_id,
+        sd.md_problem,
+        sd.md_time,
+        sd.apply_time,
+        sd.md_state,
+        sd.user_id,
+        sd.hi_code,
+        sd.md_source,
+        sd.md_type,
+        CONCAT( sd.md_contactpeople, "/" ) AS md_contactpeople,
+        sd.md_contactPhone,
+        sd.md_applyType,
+        sd.md_agentApplyer,
+        sd.mdg_state,
+        sd.md_address,
+        sd.accepter,
+        sm.sm_name,
+        mt.mtk_state,
+        st.st_name,
+        sd.em_id,
+        uc.ucc_name
+        FROM
+        view_GJP_Service_DeclarationList sd
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = sd.md_type
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = sd.md_applyType
+        LEFT JOIN GJP_business.GJP_Maintenance_Tracks mt ON sd.md_id = mt.md_id
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep hi ON sd.hi_code = hi.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = hi.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord hp ON hp.hi_code = hi.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = hp.ucc_id
+        ) t
+        WHERE
+        1 = 1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= DATE_FORMAT(${dateTitle},'%Y-%m-%d')
+        </if>
+    </select>
+
+    <!-- 根据md_id查询安排人员 -->
+    <select id="selectBusinessDeclarationWhere" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+    SELECT
+    md_id,
+    em_id
+    FROM view_GJP_Service_DeclarationList
+    where md_id=#{md_id}
+    </select>
+
+    <!-- 根据md_id查询安排人员 -->
+    <select id="queryServiceDeclarationOrderList" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+        SELECT
+        *
+        FROM view_GJP_Service_DeclarationList
+        <where>
+            <if test="hi_code != null">hi_code = #{hi_code}</if>
+        </where>
+    </select>
+
+    <!-- 分页查询服务信息 -->
+    <select id="selectServeMessage" resultType="com.gjp.model.ServiceMessage">
+    SELECT
+    sm.sm_id,
+    sm_name,
+    sm_image,
+    sm_content,
+    sm_time,
+    sm_people,
+    st.st_name
+    FROM
+    GJP_Service_Message sm,GJP_Service_Type st
+    WHERE sm.st_id = st.st_id
+    LIMIT
+    #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 分页查询服务信息 -->
+    <select id="selectServiceList" resultType="com.gjp.model.ServiceMessage">
+    SELECT
+    sm_id,
+    sm_name,
+    sm_image,
+    sm_content,
+    sm_time,
+    sm_people
+    FROM GJP_Service_Message
+    WHERE sm_state = 1
+    order by sm_order asc
+    </select>
+
+    <!-- 查询服务类型信息 -->
+    <select id="selectServiceTypeList" resultType="com.gjp.model.ServiceType">
+        SELECT
+        st_id,
+        st_name,
+        parent_id,
+        sm_id
+        FROM GJP_Service_Type
+        WHERE
+        1 = 1
+        AND st_bool = 1
+        <if test="sm_id !=null">
+            AND sm_id=#{sm_id}
+        </if>
+        <if test="st_id !=null">
+            AND st_id=#{st_id}
+        </if>
+        <if test="parent_id !=null">
+            AND parent_id=#{parent_id}
+        </if>
+    </select>
+
+    <!-- 查询服务信息总条数 -->
+    <select id="selectTotalselectServeMessage" resultType="int">
+    select
+    count(*) from GJP_Service_Message
+    </select>
+
+    <!-- 根据编号查询服务信息 -->
+    <select id="selectMessageById" resultType="com.gjp.model.ServiceMessage">
+    select
+    sm_id,
+    sm_name,
+    sm_image,
+    sm_content,
+    sm_time,
+    sm_people,
+    sm_order,
+    ucc_id
+    from GJP_Service_Message where
+    sm_id=#{sm_id}
+    </select>
+
+    <!-- 根据编号查询热点问题 -->
+    <select id="selectHotSpotById" resultType="com.gjp.model.HotspotIssuesProblem">
+    SELECT
+    *
+    FROM
+    GJP_HotspotIssues_Problem where sip_id=#{sip_id}
+    </select>
+
+    <!-- 根据编号查询维修申请信息 -->
+    <select id="selectDeclarationById" resultType="com.gjp.model.MaintenanceDeclaration">
+    SELECT
+    *
+    FROM view_GJP_Service_DeclarationList
+    WHERE md_id=#{md_id}
+    limit 1
+    </select>
+
+
+    <select id="selectDeclarationAppById" resultType="com.gjp.model.MaintenanceDeclaration">
+		SELECT
+		*
+		FROM GJP_Maintenance_Declaration
+		WHERE md_id=#{md_id}
+	</select>
+
+    <select id="selectMaintenanceTracksById" resultType="com.gjp.model.MaintenanceTracks">
+    SELECT
+    *
+    FROM GJP_Maintenance_Tracks
+    WHERE md_id=#{md_id}
+    </select>
+
+    <select id="selectMaintenancePointById" resultType="com.gjp.model.MaintenancePoint">
+    SELECT
+    *
+    FROM GJP_Maintenance_Point
+    WHERE md_id=#{md_id}
+    </select>
+
+    <!-- 根据编号查询维修申请信息 -->
+    <select id="selectDeclarationAllById" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+    SELECT
+        vd.md_id,
+        vd.md_type,
+        vd.md_number,
+        sm.sm_name,
+        st.st_name,
+        vd.md_state,
+        vd.md_applyType,
+        vd.md_contactpeople,
+        vd.md_contactPhone,
+        vd.md_source,
+        vd.md_problem,
+        vd.mdg_money,
+        vd.md_time,
+        vd.apply_time,
+        vd.user_id,
+        vd.typeOfApply_Name,
+        vd.mdg_state,
+        vd.mtk_start_time,
+        vd.mtk_end_time,
+        vd.em_id,
+        vd.accepter,
+        gu.user_realName,
+        vd.mdg_moneyCode,
+        gmp.hi_code,
+        uc.ucc_name,
+        (
+            CASE
+                WHEN sm.sm_id = 6 THEN
+                    gmp.house_address
+                WHEN gmp.hi_code IS NOT NULL AND gmp.hi_code &lt;&gt; '' THEN
+                    va.house_address
+                ELSE
+                    gmp.house_address
+            END
+        ) AS house_address,
+        va2.house_address AS old_address
+    FROM
+        view_GJP_Service_DeclarationList vd
+    LEFT JOIN GJP_user.GJP_UserCenter_User gu ON vd.user_id = gu.user_id
+    LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = vd.md_type
+    LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = vd.md_applyType
+    LEFT JOIN GJP_business.GJP_Maintenance_Point gmp ON gmp.md_id = vd.md_id
+    LEFT JOIN GJP_product.view_GJP_HouseAddress va on va.hi_code = gmp.hi_code
+    LEFT JOIN GJP_product.view_GJP_HouseAddress va2 on va2.hi_code = vd.hi_code
+    LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = gmp.hi_code
+	LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON pr.ucc_id = uc.ucc_id
+    WHERE vd.md_id=#{md_id} LIMIT 1
+    </select>
+
+    <!-- 查询服务类型 -->
+    <select id="selectServiceType" resultType="com.gjp.model.ServiceType">
+    SELECT
+    st_id,
+    st_name,
+    parent_id,
+    sm_id,
+    em_id
+    FROM
+    GJP_Service_Type
+    </select>
+
+    <!-- 查询申请图片 -->
+    <select id="selectMaintenanceImage" resultType="com.gjp.model.MaintenanceImage">
+    SELECT
+    mi_id,
+    mi_name,
+    mi_path,
+    md_id,
+    mi_type
+    FROM GJP_Maintenance_Image
+    WHERE md_id=#{md_id} AND mi_type='fault'
+    </select>
+
+    <!-- 查询维修跟踪 -->
+    <select id="selectMaintenanceTracks" resultType="com.gjp.model.MaintenanceTracks">
+    SELECT
+    mt.mtk_id,
+    mt.mtk_start_time,
+    mt.mtk_end_time,
+    mt.mtk_real_time,
+    mt.mtk_spe_cir,
+    mt.em_id,
+    mt.md_id,
+    mt.mtk_state,
+    em.em_name
+    FROM
+    GJP_business.GJP_Maintenance_Tracks AS mt
+    LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON mt.em_id = em.em_id
+    WHERE
+    mt.md_id=#{md_id} and
+    mt.em_id=#{mps_id}
+    </select>
+
+    <!-- 根据维修员工查询维修状态 -->
+    <select id="selectFreeUserCenterEmployee" resultType="com.gjp.model.MaintenanceState">
+    select
+    ms_id,
+    ms_state,
+    ms_startTime,
+    ms_endTime,
+    mps_id,
+    md_id,
+    ms_infoVerify,
+    ms_verifyState
+    from
+    GJP_Maintenance_State
+    where mps_id=#{em_id}
+    </select>
+
+    <!-- 通过维修申报编号查询状态 -->
+    <select id="selectMaintenanceStateByMd_Id" resultType="com.gjp.model.MaintenanceState">
+    select
+    ms_id,
+    ms_state,
+    ms_startTime,
+    ms_endTime,
+    mps_id,
+    md_id,
+    ms_infoVerify,
+    ms_verifyState
+    from
+    GJP_Maintenance_State
+    where md_id=#{md_id}
+    </select>
+
+    <!-- 服务类型 -->
+    <select id="selectProblemList" resultType="com.gjp.model.ProblemList">
+    select
+    pl_id,
+    pl_name,
+    pl_people,
+    pl_time,
+    st_id
+    from GJP_Problem_list
+    where st_id=#{st_id}
+    </select>
+
+    <!-- 通过编号查询服务描述信息 -->
+    <select id="selectProblemById" resultType="com.gjp.model.ProblemList">
+    SELECT
+    pl_id,
+    pl_name,
+    pl_people,
+    pl_time,
+    st_id
+    from GJP_Problem_list
+    WHERE pl_id=#{pl_id} LIMIT
+    1
+    </select>
+
+    <!-- 通过类型名称查询服务子类型 -->
+    <select id="selectServiceTypeByName" resultType="String">
+    SELECT
+    1 FROM
+    GJP_Service_Type WHERE st_name=#{typeName} AND parent_id=0 LIMIT 1
+    </select>
+
+    <!-- -->
+    <select id="selectServiceTypeBySmId" resultType="com.gjp.model.ServiceType">
+    SELECT
+    st_id,
+    st_name,
+    parent_id,
+    sm_id,
+    em_id
+    FROM
+    GJP_Service_Type WHERE sm_id=#{sm_id}
+    </select>
+
+    <!-- 通过父级编号查询服务子类型分类信息列表 -->
+    <select id="selectServiceTypeListByParentId" resultType="com.gjp.model.ServiceType">
+    SELECT
+    st_id,
+    st_name,
+    parent_id,
+    st_money,
+    sm_id,
+    em_id,
+    st_moneyBool
+    FROM
+    GJP_Service_Type
+    WHERE
+    parent_id=#{parent_id}
+    </select>
+
+    <!-- 通过父级编号查询服务子类型分类信息列表 -->
+    <select id="selectServicePersonStateList" resultType="com.gjp.model.ViewServicePersonStateListVo">
+    SELECT
+    md_id,
+    md_number,
+    md_problem,
+    md_state,
+    mdg_state,
+    em_id,
+    em_name,
+    propertyInfo_Name,
+    hi_address
+    FROM
+    view_GJP_ServicePersonStateList
+    WHERE
+    em_id=#{em_id}
+    AND
+    mdg_state !='完成订单'
+    AND
+    mdg_state !='服务出错'
+    </select>
+
+    <!-- 通过父级编号查询服务子类型分类信息列表 -->
+    <select id="selectServicePersonWorkStateByEmId" resultType="int">
+    SELECT COUNT(*) FROM GJP_Maintenance_Tracks
+    WHERE em_id=#{em_id} AND mtk_state='no'
+    </select>
+
+    <!-- -->
+    <select id="selectServiceTypeById" resultType="com.gjp.model.ServiceType">
+    SELECT
+    st_id,
+    st_name,
+    parent_id,
+    sm_id,
+    em_id,
+    st_bool,
+    st_content,
+    st_money,
+    st_image,
+    st_explain,
+    st_logo,
+    redrict_path,
+    st_moneyBool
+    FROM
+    GJP_Service_Type WHERE st_id=#{st_id}
+    LIMIT 1
+    </select>
+
+    <!-- 更新服务子类型 -->
+    <update id="updateSerivceSubType">
+    UPDATE
+    GJP_Service_Type SET
+    st_name=#{st_name}
+    WHERE
+    st_id=#{st_id} AND em_id=#{em_id}
+    </update>
+
+    <!-- 绑定费用 -->
+    <update id="updateDeclaration">
+        UPDATE GJP_Maintenance_Declaration
+        <set>
+            <if test="mdg_money != null">mdg_money=#{mdg_money},</if>
+            <if test="md_state != null">md_state=#{md_state},</if>
+        </set>
+        WHERE
+        md_id=#{md_id}
+    </update>
+
+    <!-- 删除服务子类型 -->
+    <delete id="deleteSerivceSubType">
+        DELETE FROM GJP_Service_Type
+        WHERE
+        <if test="st_id != null and st_id !=''">
+            st_id=#{st_id} AND
+        </if>
+        <if test="parent_id != null and parent_id !=''">
+            parent_id=#{parent_id} AND
+        </if>
+        em_id=#{em_id}
+    </delete>
+
+    <!-- 删除费用 -->
+    <delete id="deleteSerivceMoney">
+    DELETE FROM GJP_Service_ServiceMoney
+    WHERE
+    md_id = #{md_id}
+    </delete>
+
+    <!-- 删除服务子类型 -->
+    <delete id="deleteSerivceSubTypeToPId">
+    DELETE FROM GJP_Service_Type WHERE
+    parent_id=#{parent_id} AND
+    em_id=#{em_id}
+    </delete>
+
+    <!-- 删除服务描述 -->
+    <delete id="deleteProblemToId">
+    DELETE FROM GJP_Problem_list WHERE pl_id=#{pl_id}
+    </delete>
+
+    <!-- 删除服务服务项目 -->
+    <delete id="deleteProblemToStId">
+    DELETE FROM GJP_Service_Type WHERE st_id=#{st_id}
+    </delete>
+
+    <!-- 通过维修申报编号查询维修订单流程 -->
+    <select id="queryOrderUser" resultType="com.gjp.model.MaintenanceOrder">
+    select
+    mo_id,
+    mo_state,
+    mo_step,
+    mo_date,
+    mo_content,
+    md_id
+    from GJP_Maintenance_Order
+    where md_id=#{md_id}
+    </select>
+
+    <!-- 修改热点问题 -->
+    <update id="updataHotSpot">
+    update
+    GJP_HotspotIssues_Problem set
+    sip_name=#{sip_name},
+    sip_content=#{sip_content},
+    st_id=#{st_id}
+    where
+    sip_id=#{sip_id}
+    </update>
+
+    <!-- 修改服务基本信息 -->
+    <update id="updataMessage">
+        update
+        GJP_Service_Message
+        <set>
+            <if test="sm_name != null">sm_name=#{sm_name},</if>
+            <if test="sm_image != null">sm_image=#{sm_image},</if>
+            <if test="sm_content != null">sm_content=#{sm_content},</if>
+            <if test="sm_order != null">sm_order=#{sm_order},</if>
+            <if test="ucc_id != null">ucc_id=#{ucc_id},</if>
+        </set>
+        where
+        sm_id=#{sm_id}
+    </update>
+
+    <!-- 修改维修状态 -->
+    <update id="updataMaintenanceState">
+        UPDATE
+        GJP_Maintenance_State
+        <set>
+            <if test="ms_startTime != null">ms_startTime=#{ms_startTime}</if>
+            <if test="ms_endTime != null">ms_endTime=#{ms_endTime}</if>
+        </set>
+        WHERE
+        md_id=#{md_id}
+    </update>
+
+    <!-- 修改维修申报状态 -->
+    <update id="updataDeclaration">
+    UPDATE GJP_Maintenance_Declaration set
+    md_state='complete'
+    WHERE
+    md_id=#{md_id}
+    </update>
+
+    <!-- 修改付费对象 -->
+    <update id="updataDeclarationPerson">
+        <!--UPDATE GJP_Maintenance_Declaration
+        SET
+        md_people=#{md_people},
+        <if test="md_applyType != null">
+            md_applyType=#{md_applyType},
+        </if>
+        md_phone=#{md_phone}
+        where
+        md_id=#{md_id}-->
+        UPDATE GJP_Maintenance_Declaration
+        SET
+        mdg_money=#{mdg_money}
+        where
+        md_id=#{md_id}
+    </update>
+
+    <!-- 修改维修申报状态 -->
+    <update id="updataStart">
+    UPDATE GJP_Maintenance_Declaration
+    SET
+    md_state='已受理'
+    where
+    md_id=#{md_id}
+    </update>
+
+    <!-- 修改维修申报状态 -->
+    <update id="updateStates">
+        UPDATE GJP_Maintenance_Declaration
+        <set>
+            <if test="md_state != null">md_state=#{md_state}</if>
+        </set>
+        where
+        md_id=#{md_id}
+    </update>
+
+    <!-- 退回服务进度 -->
+    <update id="updateFollowUp">
+        UPDATE GJP_Maintenance_Dispatching
+        <set>
+            <if test="mdg_state != null">mdg_state=#{mdg_state},</if>
+            <if test="em_id != null">em_id=#{em_id},</if>
+        </set>
+        where
+        md_id=#{md_id}
+    </update>
+
+    <!-- 删除完成维修图片 -->
+    <delete id="deleteOrder">
+    delete from
+    GJP_Maintenance_Order where md_id = #{md_id} and mo_state='客服回访'
+    </delete>
+
+    <delete id="deleteOrderFollow">
+    delete from
+    GJP_Maintenance_Order where md_id = #{md_id} and mo_state !='服务申请'
+    </delete>
+
+    <delete id="deleteDispatching">
+    delete from
+    GJP_Maintenance_Dispatching where md_id = #{md_id}
+    </delete>
+
+    <!-- 客户手写签名 -->
+    <update id="updataCustomerImage">
+        UPDATE GJP_Maintenance_Declaration
+        <set>
+            <if test="md_CustomerImage != null">md_CustomerImage=#{md_CustomerImage}</if>
+        </set>
+        WHERE
+        md_id=#{md_id}
+    </update>
+
+    <!-- 添加服务问题列表 -->
+    <insert id="addProblem" useGeneratedKeys="true" keyProperty="st_id">
+    insert into GJP_Maintenance_problem(
+    mdp_content,
+    md_id,
+    mdp_date
+    )
+    values
+    (
+    #{mdp_content},
+    #{md_id},
+    NOW()
+    )
+    </insert>
+
+    <!-- 添加服务问题列表 -->
+    <insert id="addserviceProcessProblem" useGeneratedKeys="true" keyProperty="spp_id">
+    INSERT INTO GJP_Service_ProcessProblem(
+    spp_content,
+    spp_item,
+    so_id,
+    em_id,
+    spp_isConform,
+    ssp_type,
+    spp_createTime
+    )
+    values
+    (
+    #{spp_content},
+    #{spp_item},
+    #{so_id},
+    #{em_id},
+    #{spp_isConform},
+    #{ssp_type},
+    NOW()
+    )
+    </insert>
+
+    <!-- 删除服务问题列表 -->
+    <delete id="deleteProblem">
+    delete from
+    GJP_Maintenance_problem where md_id = #{md_id}
+    </delete>
+
+    <delete id="deleteServiceProcessProblem">
+        DELETE FROM GJP_Service_ProcessProblem where
+        <if test="so_id!=null">so_id = #{so_id}</if>
+        <if test="spp_id!=null">spp_id = #{spp_id}</if>
+    </delete>
+
+    <!-- 根据服务编码查询服务 -->
+    <select id="selectProblem" resultType="com.gjp.model.Problem">
+        select * from GJP_Maintenance_problem
+        where 1=1
+        <if test="md_id != null">
+            and md_id=#{md_id}
+        </if>
+    </select>
+
+    <update id="perfectService">
+        update GJP_Service_Type
+        <set>
+            <if test="st_content != null">st_content = #{st_content},</if>
+            <if test="st_money != null">st_money = #{st_money},</if>
+            <if test="st_moneyBool != null">st_moneyBool = #{st_moneyBool},</if>
+            <if test="st_image != null">st_image = #{st_image},</if>
+            <if test="st_explain != null">st_explain = #{st_explain},</if>
+            <if test="st_logo != null">st_logo = #{st_logo},</if>
+            <if test="redrict_path != null">redrict_path = #{redrict_path},</if>
+        </set>
+        WHERE st_id = #{st_id}
+    </update>
+
+    <select id="queryHouseCustomerList" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        gcc.hi_code,
+        gcc.contractObject_code,
+        gha.house_address,
+        gha.he_address,
+        gha.propertyInfo_coordinate,
+        t.ContractObject_Type,
+        t.cc_code,
+        t.cc_name,
+        t.ccp_phone,
+        t.user_id,
+        t.em_id,
+        t.em_name,
+        t.em_phone,
+        t.ucc_name,
+        t.ucc_phone
+        FROM GJP_user.GJP_UserCenter_CustomerRelationship gcc
+        LEFT JOIN GJP_product.view_GJP_HouseAddress gha ON gcc.hi_code = gha.hi_code
+        RIGHT JOIN (
+        SELECT
+        guc.cc_code,
+        guc.cc_name,
+        uup.ccp_phone,
+        gco.ContractObject_Code,
+        gco.ContractObject_Type,
+        gue.em_id,
+        gue.em_name,
+        gue.em_phone,
+        guu.user_id,
+        ucc.ucc_name,
+        ucc.ucc_phone
+        FROM
+        GJP_business.GJP_Contract_Object gco
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship gcc1 ON gco.ContractObject_Code =
+        gcc1.contractObject_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer guc ON gcc1.cc_code = guc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee gue ON gue.em_id = gcc1.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone uup ON guc.cc_id = uup.cc_id
+        LEFT JOIN GJP_user.GJP_UserCenter_User guu ON guu.user_cardNumber = guc.cc_cardNum
+        LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = gcc1.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company ucc ON pr.ucc_id = ucc.ucc_id
+        WHERE 1=1
+        <if test="t.ContractObject_Type != null and t.ContractObject_Type != ''">
+            AND gco.ContractObject_Type = #{t.ContractObject_Type}
+        </if>
+        AND (gco.ContractObject_State = 1 OR gco.ContractObject_State = 2)
+        AND uup.ccp_state = 1
+        AND gcc1.crc_role = 0
+        AND gcc1.crc_state = 1
+        AND gco.ContractObject_State &lt;&gt; 4
+        ORDER BY gco.contractObject_CreateTime DESC
+        ) t ON gcc.contractObject_code = t.ContractObject_Code
+        WHERE 1 = 1
+        <if test="t.where != null and t.where != ''">
+            AND gha.house_address LIKE CONCAT('%', #{t.where}, '%')
+            OR t.cc_name LIKE CONCAT('%', #{t.where}, '%')
+            OR t.ccp_phone LIKE CONCAT('%', #{t.where}, '%')
+            OR t.em_name LIKE CONCAT('%', #{t.where}, '%')
+            OR t.em_phone LIKE CONCAT('%', #{t.where}, '%')
+            OR t.ucc_name LIKE CONCAT('%', #{t.where}, '%')
+            OR t.ucc_phone LIKE CONCAT('%', #{t.where}, '%')
+        </if>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <!-- 查询客服人员所有未完成、当前正在做的任务等信息 -->
+    <select id="queryCustomerServiceState" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+    SELECT
+        t1.*, t2.taskCount,
+        t3.mtk_state,
+        t3.mtk_start_time,
+        t3.mtk_end_time,
+        md.*
+    FROM
+    (
+        SELECT
+            ue.em_id,
+            ue.em_name,
+            ue.em_post
+        FROM
+            GJP_user.GJP_UserCenter_Employee ue,
+            GJP_user.GJP_UserCenter_Company uc,
+            GJP_user.GJP_UserCenter_CompanyPserson up
+        WHERE
+            ue.em_id = up.em_id
+        AND uc.ucc_id = up.ucc_id
+        AND uc.ucc_id = 26
+        AND ue.em_state &lt;&gt; 0
+    ) t1
+    LEFT JOIN (
+        SELECT
+            COUNT(mw.mtk_id) AS taskCount,
+            mw.em_id
+        FROM
+            GJP_business.GJP_Maintenance_Tracks mw
+        WHERE
+            mw.mtk_state &lt;&gt; 'yes'
+        GROUP BY mw.em_id
+    ) t2 ON t1.em_id = t2.em_id
+    LEFT JOIN (
+        SELECT
+            mw1.*
+        FROM
+            GJP_business.GJP_Maintenance_Tracks mw1
+        WHERE
+        NOT EXISTS (
+            SELECT
+                1
+            FROM
+                GJP_business.GJP_Maintenance_Tracks mw2
+            WHERE
+                mw1.em_id = mw2.em_id
+            AND mw2.mtk_createTime > mw1.mtk_createTime
+        ) ORDER BY mw1.mtk_updataTime DESC LIMIT 1
+    ) t3 ON t1.em_id = t3.em_id
+    LEFT JOIN GJP_business.GJP_Maintenance_Declaration md ON t3.md_id = md.md_id
+    </select>
+
+    <!--查询客服人员个人未完成订单-->
+    <select id="queryMdOrderByEmId" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+    SELECT
+        t1.*, t2.mtk_end_time, t2.mtk_state, gms.sm_name,
+        (
+            CASE
+                WHEN t1.md_type = 6 THEN
+                (
+                    SELECT
+                        p.house_address
+                    FROM
+                        GJP_business.GJP_Maintenance_Point p
+                    WHERE
+                        p.md_id = t1.md_id
+                    AND p.p_type = 2
+                )
+                WHEN gmp.hi_code IS NOT NULL AND gmp.hi_code &lt;&gt;'' THEN
+                    va.house_address
+                ELSE
+                    gmp.house_address
+            END
+        ) AS house_address
+    FROM
+    (
+        SELECT
+            DISTINCT md.md_id,
+            md.md_problem,
+            md.md_state,
+            md.user_id,
+            md.md_type,
+            mw.em_id,
+            mw.mtk_id
+        FROM
+            GJP_business.GJP_Maintenance_Tracks mw,
+            GJP_business.GJP_Maintenance_Declaration md
+        WHERE
+            mw.md_id = md.md_id
+        AND mw.mtk_state &lt;&gt; 'yes'
+    ) t1
+    LEFT JOIN GJP_business.GJP_Service_Message gms ON gms.sm_id = t1.md_type
+    LEFT JOIN GJP_business.GJP_Maintenance_Point gmp ON gmp.md_id = t1.md_id AND CASE WHEN t1.md_type = 6 THEN gmp.p_type = 2 ELSE gmp.p_type = 1 END
+    LEFT JOIN GJP_product.view_GJP_HouseAddress va ON gmp.hi_code = va.hi_code
+    LEFT JOIN GJP_business.GJP_Maintenance_Tracks t2 ON t1.md_id = t2.md_id
+    WHERE
+        t1.em_id = #{em_id}
+    ORDER BY t2.mtk_end_time DESC
+    LIMIT 0, 5
+    </select>
+
+    <select id="queryOrderCountById" resultType="int">
+    SELECT COUNT(mo_id) FROM GJP_business.GJP_Maintenance_Order WHERE mo_step = #{mo_step} AND md_id = #{md_id}
+    </select>
+
+    <select id="queryEmployee" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        em_id,
+        em_name,
+        em_sex,
+        em_position,
+        em_phone,
+        em_address,
+        em_code,
+        em_account,
+        em_password,
+        em_createTime,
+        em_post,
+        em_state,
+        em_jobState,
+        em_image,
+        em_chiefPos
+        FROM
+        GJP_user.GJP_UserCenter_Employee em
+        WHERE
+        1 = 1
+        <if test="whereList != null and whereList !=''">
+            and (em_name like CONCAT('%',#{whereList},'%')
+            or
+            em_position like CONCAT('%',#{whereList},'%')
+            or em_phone like
+            CONCAT('%',#{whereList},'%')
+            or em_account like
+            CONCAT('%',#{whereList},'%')
+            )
+        </if>
+        ORDER BY
+        <if test="cc_code != null || hi_code != null">
+            (
+            CASE
+            WHEN em_id IN (
+            SELECT
+            pr.hpr_newEmp
+            FROM GJP_product.GJP_House_PositionRecord pr
+            LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON pr.hi_code = cr.hi_code AND cr.crc_state = 1
+            WHERE 1=1
+            <if test="cc_code != null">
+                AND cr.cc_code = #{cc_code}
+            </if>
+            <if test="hi_code != null">
+                AND pr.hi_code = #{hi_code}
+            </if>
+            ) THEN
+            1
+            ELSE
+            4
+            END
+            ),
+        </if>
+        em_name DESC
+        <if test="start !=null and end !=null">
+            LIMIT #{start}, #{end}
+        </if>
+    </select>
+
+    <select id="queryCompany" resultType="com.gjp.model.Company">
+        SELECT *
+        FROM GJP_user.GJP_UserCenter_Company
+        WHERE
+        1=1
+        <if test="t.whereList != null">AND ucc_name LIKE CONCAT('%' , #{t.whereList} , '%') OR ucc_phone LIKE CONCAT('%'
+            , #{t.whereList} , '%')
+        </if>
+        ORDER BY
+        <if test="t.cc_code != null || t.hi_code != null">
+            (
+            CASE
+            WHEN ucc_id IN (
+            SELECT
+            pr.ucc_id
+            FROM GJP_product.GJP_House_PositionRecord pr
+            LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON pr.hi_code = cr.hi_code AND cr.crc_state = 1
+            WHERE 1=1
+            <if test="t.cc_code != null ">
+                AND cr.cc_code = #{t.cc_code}
+            </if>
+            <if test="t.hi_code != null">
+                AND pr.hi_code = #{t.hi_code}
+            </if>
+            ) THEN
+            1
+            ELSE
+            4
+            END
+            ),
+        </if>
+        ucc_name ASC
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <insert id="addPoint" useGeneratedKeys="true" keyProperty="p_id">
+    INSERT INTO GJP_Maintenance_Point (md_id, p_type, hi_code, house_longlat, house_address) VALUES (
+        #{md_id}, #{p_type}, #{hi_code}, #{house_longlat}, #{house_address}
+    )
+    </insert>
+
+    <select id="queryUserVo" resultType="com.gjp.model.UserCenterUserVo">
+    SELECT
+        user_id,
+        user_type,
+        user_lv,
+        user_account,
+        user_nickName,
+        user_phone,
+        user_sex,
+        user_picPath,
+        user_birthday,
+        user_marrState,
+        user_address,
+        user_email,
+        user_state,
+        user_loginState,
+        user_safeState,
+        user_pwdSafeLv,
+        user_realName,
+        user_cardNumber,
+        userExtend_id
+        userVerify_remark
+    FROM
+        GJP_user.GJP_UserCenter_User
+    WHERE
+        user_id = #{user_id}
+    </select>
+
+    <select id="queryCustomerByCradNum" resultType="com.gjp.model.UserCustomer">
+    SELECT
+        DISTINCT
+        cc.cc_id,
+        cc.cc_code,
+        cc.cc_name,
+        cc.cc_type,
+        cp.ccp_phone
+    FROM
+        GJP_user.GJP_UserCenter_Customer cc
+    LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON cr.cc_code = cc.cc_code
+    AND cr.crc_state = 1
+    LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone cp ON cp.cc_id = cc.cc_id
+    AND cp.ccp_state = 1
+    WHERE
+        cc.cc_cardNum = #{cc_cardNum}
+    </select>
+
+    <!-- 查询费用情况 -->
+    <select id="queryServiceMoneyList" resultType="com.gjp.model.ServiceMoney">
+    SELECT * FROM GJP_Service_ServiceMoney WHERE md_id = #{md_id}
+    </select>
+
+    <select id="queryServiceMoney" resultType="com.gjp.model.ServiceMoney">
+        SELECT *
+        FROM GJP_Service_ServiceMoney
+        <where>
+            <if test="so_id != null">AND so_id = #{so_id}</if>
+            <if test="payObject != null">AND payObject = #{payObject}</if>
+        </where>
+    </select>
+
+    <select id="queryContractCodeById" resultType="java.lang.String">
+    SELECT
+        cr.cr.contractObject_code
+    FROM GJP_user.GJP_UserCenter_CustomerRelationship cr
+    LEFT JOIN GJP_business.GJP_Maintenance_Point mp ON mp.hi_code = cr.hi_code
+    LEFT JOIN GJP_business.GJP_Maintenance_Declaration md ON md.md_id = mp.md_id
+    WHERE
+        cr.crc_state = 1
+    AND cr.crc_role = 0
+    AND cr.hi_code = #{hi_code}
+    AND md.user_id = #{user_id}
+    LIMIT 1
+    </select>
+
+    <select id="queryPointByMdId" resultType="com.gjp.model.MaintenancePoint">
+    SELECT * FROM GJP_Maintenance_Point WHERE md_id = #{md_id}
+    </select>
+
+    <update id="updateServiceMoney">
+        UPDATE GJP_Service_ServiceMoney
+        <set>
+            <if test="payObject != null and payObject !=''">payObject = #{payObject},</if>
+            <if test="ssm_source != null and ssm_source !=''">ssm_source = #{ssm_source},</if>
+            <if test="ssm_money != null and ssm_money !=''">ssm_money = #{ssm_money},</if>
+            <if test="ucc_id != null and ucc_id !=''">ucc_id = #{ucc_id},</if>
+            <if test="em_id != null and em_id !=''">em_id = #{em_id},</if>
+            <if test="user_id != null and user_id !=''">user_id = #{user_id},</if>
+            <if test="cc_code != null and cc_code !=''">cc_code = #{cc_code},</if>
+            <if test="is_order != null">is_order = #{is_order},</if>
+        </set>
+        WHERE ssm_id = #{ssm_id}
+    </update>
+
+    <update id="updateTracks">
+        UPDATE GJP_Maintenance_Tracks
+        <set>
+            <if test="mtk_real_time != null">mtk_real_time = #{mtk_real_time},</if>
+            <if test="mtk_state != null">mtk_state = #{mtk_state},</if>
+            <if test="mtk_updataTime != null">mtk_updataTime = #{mtk_updataTime},</if>
+        </set>
+        WHERE md_id = #{md_id}
+    </update>
+
+    <insert id="addMoneyDetail" useGeneratedKeys="true" keyProperty="ssd_id">
+    INSERT INTO GJP_Service_ServiceMoneyDetail (
+        md_id,
+        so_id,
+        ssm_id,
+        ssm_source,
+        ssm_univalent,
+        ssm_money,
+        ssm_num,
+        ssm_company,
+        ssm_beizhu,
+        ssm_date,
+        payObject,
+        ucc_id,
+        em_id,
+        user_id,
+        cc_code
+    ) VALUES (
+        #{md_id},
+        #{so_id},
+        #{ssm_id},
+        #{ssm_source},
+        #{ssm_univalent},
+        #{ssm_money},
+        #{ssm_num},
+        #{ssm_company},
+        #{ssm_beizhu},
+        NOW(),
+        #{payObject},
+        #{ucc_id},
+        #{em_id},
+        #{user_id},
+        #{cc_code}
+    )
+    </insert>
+
+    <select id="queryCustomerByCode" resultType="com.gjp.model.UserCustomer">
+    SELECT
+        cr.hi_code,
+        ha.house_address,
+        cc.cc_code,
+        cc.cc_name,
+        cc.cc_type,
+        cp.ccp_phone
+    FROM GJP_user.GJP_UserCenter_CustomerRelationship cr
+    LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON cr.hi_code = ha.hi_code
+    LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cr.cc_code = cc.cc_code
+    LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone cp ON cp.cc_id = cc.cc_id
+    AND cp.ccp_state = 1
+    WHERE
+        cr.crc_state = 1
+    AND cr.crc_role = 0
+    AND cr.cc_code = #{cc_code}
+    </select>
+
+    <update id="updateMaintenancePoint">
+        UPDATE GJP_Maintenance_Point
+        <set>
+            <if test="p_type != null">p_type = #{p_type},</if>
+            <if test="hi_code != null">hi_code = #{hi_code},</if>
+            <if test="house_longlat != null">house_longlat = #{house_longlat},</if>
+            <if test="house_address != null">house_address = #{house_address},</if>
+        </set>
+        WHERE md_id = #{md_id}
+    </update>
+
+    <update id="updateMaintenanceDeclartion">
+        UPDATE GJP_Maintenance_Declaration
+        <set>
+            <if test="cc_code != null">cc_code = #{cc_code},</if>
+            <if test="contractObject_Code != null">contractObject_Code = #{contractObject_Code},</if>
+            <if test="md_contactpeople != null">md_contactpeople = #{md_contactpeople},</if>
+            <if test="md_contactPhone != null">md_contactPhone = #{md_contactPhone},</if>
+            <if test="md_state != null">md_state = #{md_state},</if>
+            <if test="md_type != null">md_type = #{md_type},</if>
+            <if test="md_source != null">md_source = #{md_source},</if>
+            <if test="md_applyType != null">md_applyType = #{md_applyType},</if>
+            <if test="md_time != null">md_time = #{md_time},</if>
+            <if test="mdg_money != null">mdg_money = #{mdg_money},</if>
+        </set>
+        WHERE md_id = #{md_id}
+    </update>
+
+    <select id="queryServiceMsg" resultType="com.gjp.model.ViewBusinessDeclarationVo">
+    SELECT sm.sm_name, st.st_name FROM GJP_business.GJP_Maintenance_Declaration md
+    LEFT JOIN GJP_business.GJP_Service_Message sm ON md.md_type = sm.sm_id
+    LEFT JOIN GJP_business.GJP_Service_Type st ON md.md_applyType = st.st_id
+    WHERE md.md_id = #{md_id}
+    </select>
+
+    <select id="queryMoneyDetailList" resultType="com.gjp.model.ServiceMoneyDetail">
+        SELECT
+            smd.*, cc.cc_name,
+            COALESCE(uu.user_realName, uu.user_nickName, uu.user_phone) AS user_name,
+         ue.em_name,
+         uc.ucc_name,
+         t.num,
+         t.totalMoney
+        FROM
+            GJP_business.GJP_Service_ServiceMoneyDetail smd
+        LEFT JOIN GJP_business.GJP_Maintenance_Declaration md ON md.md_id = smd.md_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = smd.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User uu ON uu.user_id = smd.user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = smd.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = smd.ucc_id
+        LEFT JOIN (SELECT ssd_id, COUNT(ssd_id) AS num, SUM(ssm_money) AS totalMoney FROM GJP_business.GJP_Service_ServiceMoneyDetail WHERE md_id = #{md_id} GROUP BY payObject, ucc_id, em_id, user_id, cc_code) t ON t.ssd_id = smd.ssd_id
+        WHERE smd.md_id = #{md_id}
+        ORDER BY smd.payObject ASC, smd.cc_code ASC, smd.ucc_id ASC, smd.em_id ASC, smd.ucc_id ASC, t.num DESC
+    </select>
+
+    <select id="queryMoneyDetailListById" resultType="com.gjp.model.ServiceMoneyDetail">
+        SELECT
+        smd.*, cc.cc_name,
+        COALESCE(uu.user_realName, uu.user_nickName, uu.user_phone) AS user_name,
+        ue.em_name,
+        uc.ucc_name,
+        t.num,
+        t.totalMoney
+        FROM
+        GJP_business.GJP_Service_ServiceMoneyDetail smd
+        LEFT JOIN GJP_business.GJP_Maintenance_Declaration md ON md.md_id = smd.md_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = smd.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User uu ON uu.user_id = smd.user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = smd.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = smd.ucc_id
+        LEFT JOIN (
+        SELECT
+        ssd_id,
+        COUNT(ssd_id) AS num,
+        SUM(ssm_money) AS totalMoney
+        FROM
+        GJP_business.GJP_Service_ServiceMoneyDetail
+        WHERE 1=1
+        <if test="md_id != null">
+            AND md_id = #{md_id}
+        </if>
+        <if test="so_id != null">
+            AND so_id = #{so_id}
+        </if>
+        GROUP BY payObject, ucc_id, em_id, user_id, cc_code) t ON t.ssd_id = smd.ssd_id
+        WHERE 1=1
+        <if test="md_id != null">
+            AND smd.md_id = #{md_id}
+        </if>
+        <if test="so_id != null">
+            AND smd.so_id = #{so_id}
+        </if>
+        ORDER BY smd.payObject ASC, smd.cc_code ASC, smd.ucc_id ASC, smd.em_id ASC, smd.ucc_id ASC, t.num DESC
+    </select>
+
+    <select id="selectServiceOrderInfoList" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT
+        gso.so_id,
+        gso.so_applicantEmp,
+        gue.em_name AS so_applicantEmpName,
+        gso.so_applicantUser,
+        guu.user_realName AS so_applicantUserName,
+        gso.so_source,
+        gso.so_type,
+        gsm.sm_name,
+        gso.so_problem,
+        gso.so_targetAddress,
+        gso.so_contractor,
+        gso.so_state,
+        gso.so_currentCharger,
+        gso.so_createTime,
+        (SELECT COUNT(*) FROM GJP_Bill_ContractOrderMD WHERE so_id=gso.so_id) AS cm_number,
+        (SELECT gst.st_name FROM GJP_Service_Type gst WHERE gst.st_id=(SELECT st_id_b FROM GJP_Service_OrderItem gsoi
+        WHERE gsoi.so_id = gso.so_id ORDER BY gsoi.soit_id DESC LIMIT 1) ) AS st_name_b,
+        (
+        CASE
+        WHEN gso.so_applicantEmp IS NOT NULL AND gso.so_applicantUser IS NULL THEN CONCAT("管家-", gue.em_name)
+        WHEN gso.so_applicantUser IS NOT NULL AND gso.so_applicantEmp IS NULL THEN COALESCE(uc.user_realName,
+        uc.user_nickName, uc.user_phone)
+        ELSE "暂无"
+        END
+        ) AS orderPerson
+        FROM GJP_Service_Order gso
+        LEFT JOIN GJP_Service_Message gsm ON gsm.sm_id = gso.so_type
+        LEFT JOIN GJP_Service_Person gsp ON gsp.sp_id=gso.so_currentCharger
+        LEFT JOIN GJP_user.GJP_UserCenter_User guu ON guu.user_id=gso.so_applicantUser
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee gue ON gue.em_id=gso.so_applicantEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_User uc ON gso.so_applicantUser=uc.user_id
+        WHERE 1=1
+        AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(gso.so_createTime)
+        <if test="so_currentCharger != null and type=='person'">
+            AND gsp.em_id=#{so_currentCharger}
+        </if>
+        <if test="so_applicantEmp != null and type=='my'">
+            AND gso.so_applicantEmp=#{so_applicantEmp}
+        </if>
+        <if test="so_department != null and type=='all'">
+            AND gso.so_department=#{so_department}
+        </if>
+        <if test="where != null and where != ''">
+            AND (so_targetAddress LIKE CONCAT('%' , #{where} , '%') or so_contractor LIKE CONCAT('%' , #{where} , '%'))
+        </if>
+        <if test="mdg_state =='未接单' ">
+            AND gso.so_state = 2200
+        </if>
+        <if test="mdg_state =='服务中' ">
+            AND (gso.so_state = 3100 OR gso.so_state = 3200 OR gso.so_state = 3201 OR gso.so_state = 3202 OR
+            gso.so_state = 3203 )
+        </if>
+        <if test="mdg_state =='已完成' ">
+            AND (gso.so_state = 4100 OR gso.so_state = 3400 OR gso.so_state = 3300)
+        </if>
+        ORDER BY gso.so_createTime DESC
+        LIMIT #{pageNo}, 10;
+    </select>
+
+    <select id="queryServicePageList" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT * FROM (
+        SELECT
+        so.*,
+        em1.em_name AS so_currentCharger_name,
+        em2.em_name AS so_handler_name,
+        ucc.ucc_name AS so_department_name,
+        t.st_name_b,
+        t.st_name_c,
+        IF(sp.em_id IS NULL, CONCAT(sp.sp_name,'(外协)'), sp.sp_name) AS sp_name
+        FROM
+        GJP_business.GJP_Service_Order AS so
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em1 ON so.so_currentCharger = em1.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em2 ON so.so_handler = em2.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON so.so_department = ucc.ucc_id
+        LEFT JOIN GJP_Service_Person sp ON so.so_currentCharger = sp.sp_id
+        LEFT JOIN (
+        SELECT
+        oi.so_id,
+        st1.st_name AS st_name_b,
+        GROUP_CONCAT(st2.st_name SEPARATOR '|') AS st_name_c
+        FROM
+        GJP_business.GJP_Service_OrderItem oi
+        LEFT JOIN GJP_business.GJP_Service_Type st1 ON oi.st_id_b = st1.st_id
+        LEFT JOIN GJP_business.GJP_Service_Type st2 ON oi.st_id_c = st2.st_id
+        GROUP BY oi.so_id
+        ) t ON t.so_id = so.so_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.hi_code !=null">AND hi_code = #{t.hi_code}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY CASE WHEN so_state = 5010 OR so_state = 5020 THEN 0 ELSE 1 END DESC, so_createTime DESC,
+                so_state ASC, so_type ASC, so_targetAddress ASC
+            </otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryServicePageRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        so.*,
+        em1.em_name AS so_currentCharger_name,
+        em2.em_name AS so_handler_name,
+        ucc.ucc_name AS so_department_name,
+        t.st_name_b,
+        t.st_name_c,
+        IF(sp.em_id IS NULL, CONCAT(sp.sp_name,'(外协)'), sp.sp_name) AS sp_name
+        FROM
+        GJP_business.GJP_Service_Order AS so
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em1 ON so.so_currentCharger = em1.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em2 ON so.so_handler = em2.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON so.so_department = ucc.ucc_id
+        LEFT JOIN GJP_Service_Person sp ON so.so_currentCharger = sp.sp_id
+        LEFT JOIN (
+        SELECT
+        oi.so_id,
+        st1.st_name AS st_name_b,
+        GROUP_CONCAT(st2.st_name SEPARATOR '|') AS st_name_c
+        FROM
+        GJP_business.GJP_Service_OrderItem oi
+        LEFT JOIN GJP_business.GJP_Service_Type st1 ON oi.st_id_b = st1.st_id
+        LEFT JOIN GJP_business.GJP_Service_Type st2 ON oi.st_id_c = st2.st_id
+        GROUP BY oi.so_id
+        ) t ON t.so_id = so.so_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.hi_code !=null">AND hi_code = #{t.hi_code}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryServiceInfo" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT
+        so.*,
+        sm.sm_name,
+        va.house_address,
+        sp.sp_name AS 'so_currentChargerName',
+        em.em_name AS 'so_handlerName',
+        em2.em_name AS 'so_applicantEmpName',
+        em2.em_phone AS 'so_applicantEmpPhone',
+        COALESCE(cu.user_realName, cu.user_nickName, cu.user_phone) AS 'so_applicantUserName',
+        cu.user_phone AS 'so_applicantUserPhone',
+        st.st_name AS 'st_name_b',
+        soi.soin_moveEndAddress,
+        uc.ucc_name,
+        va.hi_measure, va.hi_houseS, va.hi_houseT, va.hi_houseW,
+        t1.contractObject_Date_z, t1.contractObject_DeadlineTime_z, t1.init_serveMoney_z, t1.surplus_serveMoney_z,
+        t1.contractObject_OptionState_z, t1.cc_name_z,
+        t2.contractObject_Date_f, t2.contractObject_DeadlineTime_f, t2.init_serveMoney_f, t2.surplus_serveMoney_f,
+        t2.contractObject_OptionState_f, t2.cc_name_f
+        FROM GJP_business.GJP_Service_Order so
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = so.so_type
+        LEFT JOIN GJP_business.GJP_Service_OrderItem si ON si.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = si.st_id_b
+        LEFT JOIN GJP_product.view_GJP_HouseAddress va ON va.hi_code = so.hi_code
+        LEFT JOIN GJP_business.GJP_Service_Person sp ON sp.sp_id = so.so_currentCharger
+        LEFT JOIN GJP_business.GJP_Service_OrderInfo soi ON soi.so_id = so.so_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = so.so_handler
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em2 ON em2.em_id = so.so_applicantEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_User cu ON cu.user_id = so.so_applicantUser
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = so.so_department
+        LEFT JOIN (
+        SELECT
+        gcc1.hi_code,
+        co1.contractObject_Date AS contractObject_Date_z,
+        co1.contractObject_DeadlineTime AS contractObject_DeadlineTime_z,
+        co1.ContractObject_OptionState AS contractObject_OptionState_z,
+        uc1.cc_name AS cc_name_z,
+        sc1.init_serveMoney AS init_serveMoney_z,
+        sc1.surplus_serveMoney AS surplus_serveMoney_z
+        FROM GJP_user.GJP_UserCenter_CustomerRelationship gcc1
+        LEFT JOIN GJP_business.GJP_Contract_Object co1 ON co1.ContractObject_Code = gcc1.contractObject_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc1 ON co1.ContractObject_Code = sc1.con_Code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc1 ON uc1.cc_code = gcc1.cc_code
+        WHERE
+        co1.ContractObject_Type = '租赁合同'
+        AND (
+        co1.ContractObject_State = 1
+        OR co1.ContractObject_State = 2
+        )
+        AND gcc1.crc_role = 0
+        ) t1 ON so.hi_code = t1.hi_code
+        LEFT JOIN (
+        SELECT
+        gcc2.hi_code,
+        co2.contractObject_Date AS contractObject_Date_f,
+        co2.contractObject_DeadlineTime AS contractObject_DeadlineTime_f,
+        co2.ContractObject_OptionState AS contractObject_OptionState_f,
+        uc2.cc_name AS cc_name_f,
+        sc2.init_serveMoney AS init_serveMoney_f,
+        sc2.surplus_serveMoney AS surplus_serveMoney_f
+        FROM GJP_user.GJP_UserCenter_CustomerRelationship gcc2
+        LEFT JOIN GJP_business.GJP_Contract_Object co2 ON co2.ContractObject_Code = gcc2.contractObject_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc2 ON co2.ContractObject_Code = sc2.con_Code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc2 ON uc2.cc_code = gcc2.cc_code
+        WHERE
+        co2.ContractObject_Type = '托管合同'
+        AND (
+        co2.ContractObject_State = 1
+        OR co2.ContractObject_State = 2
+        )
+        AND gcc2.crc_role = 0
+        ) t2 ON so.hi_code = t2.hi_code
+        <where>
+            <if test="so_id != null">AND so.so_id = #{so_id}</if>
+            <if test="so_code != null">AND so.so_code = #{so_code}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <select id="selectServiceOrderInfoById" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT
+        gso.*,
+        hi.*,
+        gsm.sm_name,
+        oi.soin_moveStartAddress,
+        oi.soin_moveEndAddress,
+        sp.spro_expectStartTime,
+        sp.spro_expectEndTime,
+        sp.spro_expectEndDuration,
+        sp.spro_followState,
+        spe.sp_name AS so_currentChargerName
+        FROM
+        GJP_Service_Order gso
+        LEFT JOIN GJP_Service_Message gsm ON gsm.sm_id = gso.so_type
+        LEFT JOIN GJP_Service_OrderInfo oi ON oi.so_id = gso.so_id
+        LEFT JOIN GJP_Service_Process sp ON sp.so_id = gso.so_id
+        AND sp.spro_state = 1
+        LEFT JOIN GJP_Service_Person spe ON gso.so_currentCharger = spe.sp_id
+        LEFT JOIN (
+        SELECT
+        hi.hi_code,
+        pi.propertyInfo_coordinate AS coordinate,
+        pi1.propertyInfo_coordinate AS coordinates
+        FROM
+        GJP_product.GJP_House_HouseInformation_keep hi
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON hi.propertyInfo_Id = pi.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn1 ON pn1.upn_id = pi.upn_id
+        LEFT JOIN ( SELECT * FROM GJP_product.GJP_PropertyInfo_PropertyInfoName WHERE upn_sid = 0 ) pn ON pn1.upn_sid =
+        pn.upn_id
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi1 ON pi1.upn_id = pn.upn_id
+        ) hi ON gso.hi_code = hi.hi_code
+        <where>
+            <if test="so_id != null and so_id != ''">
+                gso.so_id=#{so_id}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryContractOrderMD" resultType="com.gjp.model.ContractOrderVo">
+        SELECT *
+        FROM GJP_Bill_ContractOrderMD bcmd
+        LEFT JOIN GJP_Bill_ContractOrder gco ON gco.bco_code = bcmd.order_code
+        <where>
+            <if test="so_id != null and so_id !='' ">
+                AND bcmd.so_id=#{so_id}
+            </if>
+            <if test="bco_state != null and bco_state !='' ">
+                AND gco.bco_state=#{bco_state}
+            </if>
+            <if test="bco_optionState != null and bco_optionState !='' ">
+                AND gco.bco_optionState=#{bco_optionState}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryContractOrderMDList" resultType="com.gjp.model.BillContractOrderMD">
+        SELECT *
+        FROM GJP_Bill_ContractOrderMD bcmd
+        <where>
+            <if test="so_id != null ">
+                AND bcmd.so_id=#{so_id}
+            </if>
+            <if test="co_id != null ">
+                AND bcmd.co_id=#{co_id}
+            </if>
+            <if test="md_id != null ">
+                AND bcmd.md_id=#{md_id}
+            </if>
+            <if test="order_code != null ">
+                AND bcmd.order_code=#{order_code}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectServiceOrderItem" resultType="com.gjp.model.ServiceOrderItemVo">
+        SELECT
+        gso.*,gst.st_name,gs.st_name AS st_namep
+        FROM GJP_Service_OrderItem gso
+        LEFT JOIN GJP_Service_Type gst ON gst.st_id=gso.st_id_c
+        LEFT JOIN GJP_Service_Type gs ON gs.st_id=gso.st_id_b
+        WHERE 1=1
+        <if test="so_id != null">
+            AND gso.so_id=#{so_id}
+        </if>
+    </select>
+
+    <select id="selectServiceProcessProblem" resultType="com.gjp.model.ServiceProcessProblemVo">
+        SELECT
+        gpp.spp_id,
+        gpp.so_id,
+        gpp.em_id,
+        gpp.spp_content,
+        gpp.spp_item,
+        gpp.spp_createTime,
+        gpp.spp_isConform,
+        gpp.ssp_type,
+        em.em_name,
+        em.em_phone
+        FROM
+        GJP_business.GJP_Service_ProcessProblem gpp
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = gpp.em_id
+        WHERE 1=1
+        <if test="so_id != null">
+            AND so_id=#{so_id}
+        </if>
+        <if test="ssp_type != null">
+            AND ssp_type=#{ssp_type}
+        </if>
+
+    </select>
+
+
+    <select id="queryServiceRecordList" resultType="com.gjp.model.ServiceRecordVo">
+        SELECT
+        sr.*, em.em_name
+        FROM
+        GJP_business.GJP_Service_Record AS sr
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = sr.ss_charger
+        <where>
+            <if test="so_id != null">AND sr.so_id = #{so_id}</if>
+            <if test="ss_code != null">AND sr.ss_code = #{ss_code}</if>
+        </where>
+        ORDER BY sr_createTime DESC
+    </select>
+
+    <insert id="addServiceRecord" useGeneratedKeys="true" keyProperty="sr_id">
+        INSERT INTO GJP_Service_Record(
+            so_id,
+            ss_code,
+            sr_content,
+            sr_content_inside,
+            sr_content_outside,
+            sr_content_business,
+            ss_charger,
+            sr_type,
+            sr_createTime
+        ) VALUES (
+            #{so_id},
+            #{ss_code},
+            #{sr_content},
+            #{sr_content_inside},
+            #{sr_content_outside},
+            #{sr_content_business},
+            #{ss_charger},
+            #{sr_type},
+            NOW()
+        )
+    </insert>
+
+    <update id="updateServiceRecord">
+        UPDATE GJP_Service_Record
+        <set>
+            <if test="sr_content != null ">sr_content=#{sr_content},</if>
+            <if test="sr_content_inside != null ">sr_content_inside=#{sr_content_inside},</if>
+            <if test="sr_content_outside != null ">sr_content_outside=#{sr_content_outside},</if>
+            <if test="sr_content_business != null ">sr_content_business=#{sr_content_business},</if>
+        </set>
+        <where>
+            <if test="sr_id != null ">AND sr_id=#{sr_id}</if>
+        </where>
+    </update>
+
+    <insert id="addServiceOrderInfo" useGeneratedKeys="true" keyProperty="so_id">
+        INSERT INTO GJP_Service_Order
+        (
+            so_code,
+            so_source,
+            so_type,
+            so_payObject,
+            so_payName,
+            so_payPhone,
+            so_payNameNew,
+            so_payPhoneNew,
+            contractObject_Code,
+            so_problem,
+            hi_code,
+            so_targetAddress,
+            so_targetPoint,
+            so_targetTime,
+            so_contractor,
+            so_contractPhone,
+            so_currentCharger,
+            so_handler,
+            so_state,
+            so_applicantEmp,
+            so_applicantUser,
+            so_department,
+            so_totalMoney,
+            so_printCode,
+            so_remarks,
+            so_createTime
+        ) VALUES (
+            #{so_code},
+            #{so_source},
+            #{so_type},
+            #{so_payObject},
+            #{so_payName},
+            #{so_payPhone},
+            #{so_payNameNew},
+            #{so_payPhoneNew},
+            #{contractObject_Code},
+            #{so_problem},
+            #{hi_code},
+            #{so_targetAddress},
+            #{so_targetPoint},
+            #{so_targetTime},
+            #{so_contractor},
+            #{so_contractPhone},
+            #{so_currentCharger},
+            #{so_handler},
+            #{so_state},
+            #{so_applicantEmp},
+            #{so_applicantUser},
+            #{so_department},
+            #{so_totalMoney},
+            #{so_printCode},
+            #{so_remarks},
+            #{so_createTime}
+        )
+    </insert>
+
+    <select id="queryAllServiceMessage" resultType="com.gjp.model.ServiceMessage">
+        select * from GJP_Service_Message WHERE sm_state = 1
+    </select>
+
+    <!-- 根据服务ID查询服务类型 -->
+    <select id="queryMessageID" resultType="com.gjp.model.ServiceType">
+        select * from GJP_Service_Type
+        WHERE st_bool = 1
+        <if test="parent_id != null">
+            and parent_id=#{parent_id}
+        </if>
+        <if test="sm_id != null">
+            and sm_id=#{sm_id}
+        </if>
+
+    </select>
+
+    <!-- 根据服务ID查询父级 -->
+    <select id="selectTypeID" resultType="com.gjp.model.ServiceType">
+        select * from GJP_Service_Type where
+        1=1
+        AND st_bool=1
+        <if test="parent_id != null">
+            and parent_id=#{parent_id}
+        </if>
+        <if test="sm_id != null">
+            and sm_id=#{sm_id}
+        </if>
+        <if test="st_id != null">
+            and st_id=#{st_id}
+        </if>
+    </select>
+
+    <select id="queryServiceStepInfo" resultType="com.gjp.model.ServiceStepVo">
+        SELECT
+        *
+        FROM GJP_Service_Step
+        WHERE
+        <if test="ss_code != null">ss_code = #{ss_code}</if>
+    </select>
+
+    <select id="queryServiceProcess" resultType="com.gjp.model.ServiceProcessVo">
+        SELECT
+        sp.*,
+        em.sp_name,
+        em.sp_phone
+        FROM GJP_business.GJP_Service_Process AS sp
+        LEFT JOIN GJP_business.GJP_Service_Person AS em ON sp.sp_id = em.sp_id
+        <where>
+            <if test="so_id != null">AND sp.so_id = #{so_id}</if>
+            <if test="spro_state != null">AND sp.spro_state = #{spro_state}</if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="queryServiceProcessList" resultType="com.gjp.model.ServiceProcessVo">
+        SELECT
+        sp.*,
+        em.sp_name,
+        em.sp_phone
+        FROM GJP_business.GJP_Service_Process AS sp
+        LEFT JOIN GJP_business.GJP_Service_Person AS em ON sp.sp_id = em.sp_id
+        <where>
+            <if test="so_id != null">AND sp.so_id = #{so_id}</if>
+            <if test="spro_state != null">AND sp.spro_state = #{spro_state}</if>
+        </where>
+    </select>
+
+    <select id="queryServiceOrderItemList" resultType="com.gjp.model.ServiceOrderItemVo">
+        SELECT
+        soit.*,
+        stb.st_name AS stb_name,
+        stc.st_name AS stc_name
+        FROM
+        GJP_Service_OrderItem AS soit
+        LEFT JOIN GJP_Service_Type AS stb ON soit.st_id_b = stb.st_id
+        LEFT JOIN GJP_Service_Type AS stc ON soit.st_id_c = stc.st_id
+        <where>
+            <if test="so_id != null">AND soit.so_id = #{so_id}</if>
+            <if test="soit_done != null">AND soit.soit_done = #{soit_done}</if>
+        </where>
+    </select>
+
+    <insert id="addServiceOrderItemInfo" useGeneratedKeys="true" keyProperty="soit_id">
+        INSERT INTO GJP_Service_OrderItem
+        (
+          so_id,
+          st_id_b,
+          st_id_c,
+          soit_createTime
+        ) VALUES (
+          #{so_id},
+          #{st_id_b},
+          #{st_id_c},
+          now()
+        )
+    </insert>
+
+    <insert id="addServiceOrderInfoApp" useGeneratedKeys="true" keyProperty="soin_id">
+        INSERT INTO GJP_Service_OrderInfo(so_id,soin_moveStartAddress,soin_moveStartPoint,soin_moveEndAddress,soin_moveEndPoint,soin_createTime) VALUES (
+        #{so_id},
+        #{soin_moveStartAddress},
+        #{soin_moveStartPoint},
+        #{soin_moveEndAddress},
+        #{soin_moveEndPoint},
+        #{soin_createTime}
+        )
+    </insert>
+
+    <insert id="addServiceProcess" useGeneratedKeys="true" keyProperty="spro_id">
+      INSERT INTO GJP_Service_Process (
+        so_id,
+        sp_id,
+        spro_startTime,
+        spro_endTime,
+        spro_expectStartTime,
+        spro_expectEndTime,
+        spro_state,
+        spro_followState,
+        spro_mutualObject,
+        spro_remarks,
+        spro_createTime
+      ) VALUES (
+        #{so_id},
+        #{sp_id},
+        #{spro_startTime},
+        #{spro_endTime},
+        #{spro_expectStartTime},
+        #{spro_expectEndTime},
+        #{spro_state},
+        #{spro_followState},
+        #{spro_mutualObject},
+        #{spro_remarks},
+        #{spro_createTime}
+      )
+    </insert>
+
+    <update id="updataServiceProcess">
+        UPDATE GJP_Service_Process
+        <set>
+            <if test="sp_id != null">sp_id = #{sp_id},</if>
+            <if test="spro_startTime != null">spro_startTime = #{spro_startTime},</if>
+            <if test="spro_endTime != null">spro_endTime = #{spro_endTime},</if>
+            <if test="spro_expectStartTime != null">spro_expectStartTime = #{spro_expectStartTime},</if>
+            <if test="spro_expectEndTime != null">spro_expectEndTime = #{spro_expectEndTime},</if>
+            <if test="spro_state != null">spro_state = #{spro_state},</if>
+            <if test="spro_followState != null">spro_followState = #{spro_followState},</if>
+            <if test="spro_mutualObject != null">spro_mutualObject = #{spro_mutualObject},</if>
+            <if test="spro_remarks != null">spro_remarks = #{spro_remarks},</if>
+            <if test="spro_createTime != null">spro_createTime = #{spro_createTime},</if>
+            <if test="spro_expectEndDuration != null">spro_expectEndDuration = #{spro_expectEndDuration},</if>
+        </set>
+        <where>
+            <choose>
+                <when test="spro_id != null || so_id !=null">
+                    <if test="spro_id != null">
+                        spro_id = #{spro_id}
+                    </if>
+                    <if test="so_id != null">
+                        so_id = #{so_id}
+                    </if>
+                    and spro_state = 1
+                </when>
+            </choose>
+        </where>
+    </update>
+
+    <insert id="addServicePerson" useGeneratedKeys="true" keyProperty="sp_id">
+        INSERT INTO GJP_Service_Person
+        (
+        sp_code,
+        <if test="em_id != null">
+            em_id,
+        </if>
+        <if test="sp_type != null">
+            sp_type,
+        </if>
+        sp_name,
+        <if test="sp_sex != null">
+            sp_sex,
+        </if>
+        sp_phone,
+        sp_state,
+        sp_createTime
+        ) VALUES (
+        #{sp_code},
+        <if test="em_id != null">
+            #{em_id},
+        </if>
+        <if test="sp_type != null">
+            #{sp_type},
+        </if>
+        #{sp_name},
+        <if test="sp_sex != null">
+            #{sp_sex},
+        </if>
+        #{sp_phone},
+        #{sp_state},
+        NOW()
+        )
+    </insert>
+
+    <update id="updateServiceOrder">
+        UPDATE GJP_Service_Order
+        <set>
+            <if test="so_payObject != null">so_payObject = #{so_payObject},</if>
+            <if test="so_problem != null">so_problem = #{so_problem},</if>
+            <if test="hi_code != null">hi_code = #{hi_code},</if>
+            <if test="so_targetAddress != null">so_targetAddress = #{so_targetAddress},</if>
+            <if test="so_targetPoint != null">so_targetPoint = #{so_targetPoint},</if>
+            <if test="so_targetTime != null">so_targetTime = #{so_targetTime},</if>
+            <if test="so_contractor != null">so_contractor = #{so_contractor},</if>
+            <if test="so_contractPhone != null">so_contractPhone = #{so_contractPhone},</if>
+            <if test="so_currentCharger != null">so_currentCharger = #{so_currentCharger},</if>
+            <if test="so_handler != null">so_handler = #{so_handler},</if>
+            <if test="so_state != null">so_state = #{so_state},</if>
+            <if test="so_totalMoney != null">so_totalMoney = #{so_totalMoney},</if>
+            <if test="so_remarks != null">so_remarks = #{so_remarks},</if>
+            <if test="so_persontype != null">so_persontype = #{so_persontype},</if>
+            <if test="so_payName != null">so_payName = #{so_payName},</if>
+            <if test="so_payPhone != null">so_payPhone = #{so_payPhone},</if>
+            <if test="so_payNameNew != null">so_payNameNew = #{so_payNameNew},</if>
+            <if test="so_payPhoneNew != null">so_payPhoneNew = #{so_payPhoneNew},</if>
+            <if test="contractObject_Code != null">contractObject_Code = #{contractObject_Code},</if>
+            <if test="so_department != null">so_department = #{so_department},</if>
+        </set>
+        where 1=1
+        <if test="so_id != null and so_id != ''">AND so_id = #{so_id}</if>
+        <if test="so_code != null and so_code != ''">AND so_code = #{so_code}</if>
+    </update>
+
+    <!-- 查询外协人员 -->
+    <select id="queryServicePerson" resultType="com.gjp.model.ServicePersonVo">
+        SELECT
+        sp.*, gd.dictionary_name
+        FROM
+        GJP_business.GJP_Service_Person sp
+        LEFT JOIN GJP_user.GJP_Dictionary gd ON sp.sp_type = gd.dictionary_value
+        WHERE
+        sp.em_id IS NULL
+        AND gd.dr_pid = (
+        SELECT
+        dr_id
+        FROM
+        GJP_user.GJP_Dictionary
+        WHERE
+        propertyId = 'outsource_type'
+        ORDER BY update_time
+        LIMIT 1
+        )
+        <if test="param != null">
+            AND (sp.sp_name LIKE CONCAT('%', #{param}, '%') OR sp.sp_phone LIKE CONCAT('%', #{param}, '%'))
+        </if>
+        limit #{start}, #{end}
+    </select>
+
+    <select id="queryServicePersonById" resultType="com.gjp.model.ServicePersonVo">
+        SELECT * FROM GJP_Service_Person WHERE em_id = #{em_id}
+    </select>
+
+    <select id="queryServicePersonBySid" resultType="com.gjp.model.ServicePersonVo">
+        SELECT * FROM GJP_Service_Person WHERE sp_id = #{sp_id}
+    </select>
+
+    <update id="updateServiceProcess">
+        UPDATE GJP_Service_Process
+        <set>
+            <if test="so_id != null">so_id = #{so_id},</if>
+            <if test="sp_id != null">sp_id = #{sp_id},</if>
+            <if test="spro_startTime != null">spro_startTime = #{spro_startTime},</if>
+            <if test="spro_endTime != null">spro_endTime = #{spro_endTime},</if>
+            <if test="spro_expectStartTime != null">spro_expectStartTime = #{spro_expectStartTime},</if>
+            <if test="spro_expectEndTime != null">spro_expectEndTime = #{spro_expectEndTime},</if>
+            <if test="spro_expectEndDuration != null">spro_expectEndDuration = #{spro_expectEndDuration},</if>
+            <if test="spro_state != null">spro_state = #{spro_state},</if>
+            <if test="spro_followState != null">spro_followState = #{spro_followState},</if>
+            <if test="spro_mutualObject != null">spro_mutualObject = #{spro_mutualObject},</if>
+            <if test="spro_remarks != null">spro_remarks = #{spro_remarks},</if>
+        </set>
+        WHERE
+        spro_id = #{spro_id}
+    </update>
+
+    <update id="updateProcessToClosed">
+        UPDATE GJP_Service_Process
+        <set>
+            <if test="so_id != null">so_id = #{so_id},</if>
+            <if test="sp_id != null">sp_id = #{sp_id},</if>
+            <if test="spro_startTime != null">spro_startTime = #{spro_startTime},</if>
+            <if test="spro_endTime != null">spro_endTime = #{spro_endTime},</if>
+            <if test="spro_expectStartTime != null">spro_expectStartTime = #{spro_expectStartTime},</if>
+            <if test="spro_expectEndTime != null">spro_expectEndTime = #{spro_expectEndTime},</if>
+            <if test="spro_expectEndDuration != null">spro_expectEndDuration = #{spro_expectEndDuration},</if>
+            <if test="spro_state != null">spro_state = #{spro_state},</if>
+            <if test="spro_followState != null">spro_followState = #{spro_followState},</if>
+            <if test="spro_mutualObject != null">spro_mutualObject = #{spro_mutualObject},</if>
+            <if test="spro_remarks != null">spro_remarks = #{spro_remarks},</if>
+        </set>
+        WHERE
+        spro_id = #{spro_id} AND spro_state = 1
+    </update>
+
+    <select id="queryServiceMoneyBySoId" resultType="com.gjp.model.ServiceMoney">
+        SELECT
+        sm.*, uc.cc_name,
+        COALESCE(cu.user_realName, cu.user_nickName, cu.user_phone) AS userName,
+        em.em_name,
+        cc.ucc_name,
+        t.order_status,
+        t.order_sn
+        FROM
+        GJP_business.GJP_Service_ServiceMoney sm
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = sm.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User cu ON cu.user_id = sm.user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = sm.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company cc ON cc.ucc_id = sm.ucc_id
+        LEFT JOIN (SELECT cod.so_id, co.order_sn, co.order_status, co.trade_object FROM
+        GJP_business.GJP_Bill_ContractOrderMD cod
+        LEFT JOIN GJP_business.GJP_Order co ON co.order_sn = cod.order_code
+        WHERE co.order_status &lt;&gt; 4) t ON t.so_id = sm.so_id AND t.trade_object =
+        sm.payObject
+        WHERE sm.so_id = #{so_id}
+        <if test="is_order != null">
+            AND is_order = #{is_order}
+        </if>
+        GROUP BY sm.so_id, sm.payObject
+    </select>
+
+    <insert id="addServiceImage" useGeneratedKeys="true" keyProperty="si_id">
+        INSERT INTO GJP_Service_Image
+        (
+            so_id,
+            si_type,
+            si_path,
+            si_createTime
+        ) VALUES (
+            #{so_id},
+            #{si_type},
+            #{si_path},
+            NOW()
+        )
+    </insert>
+
+    <delete id="deleteServiceImageByPath">
+        DELETE FROM GJP_Service_Image WHERE si_path = #{si_path}
+    </delete>
+
+    <select id="queryServiceOrderDetail" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT so.*,
+        sm.sm_name,
+        va.house_address,
+        sp.sp_name AS 'so_currentChargerName',
+        em.em_name AS 'so_handlerName',
+        em2.em_name AS 'so_applicantEmpName',
+        st.st_name AS 'st_name_b',
+        COALESCE(cu.user_realName, cu.user_nickName, cu.user_phone) AS 'so_applicantUserName'
+        FROM GJP_business.GJP_Service_Order so
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = so.so_type
+        LEFT JOIN GJP_business.GJP_Service_OrderItem si ON si.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = si.st_id_b
+        LEFT JOIN GJP_product.view_GJP_HouseAddress va ON va.hi_code = so.hi_code
+        LEFT JOIN GJP_business.GJP_Service_Person sp ON sp.sp_id = so.so_currentCharger
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = so.so_handler
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em2 ON em2.em_id = so.so_applicantEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_User cu ON cu.user_id = so.so_applicantUser
+        WHERE so.so_id = #{so_id}
+    </select>
+
+    <select id="queryServiceUccPeople" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        t1.*, t2.taskCount
+        FROM
+        (
+        SELECT
+        ue.em_id,
+        ue.em_name,
+        ue.em_phone,
+        ue.em_post,
+        uc.ucc_id
+        FROM
+        GJP_user.GJP_UserCenter_Employee ue,
+        GJP_user.GJP_UserCenter_Company uc,
+        GJP_user.GJP_UserCenter_CompanyPserson up
+        WHERE
+        ue.em_id = up.em_id
+        AND uc.ucc_id = up.ucc_id
+        <if test="ucc_id != 26">
+            AND uc.ucc_id &lt;&gt; 26
+        </if>
+        <if test="ucc_id == 26">
+            AND uc.ucc_id = 26
+        </if>
+        AND ue.em_state &lt;&gt; 0
+        ) t1
+        LEFT JOIN (
+        SELECT
+        COUNT(so.so_id) AS taskCount,
+        sp.em_id
+        FROM
+        GJP_business.GJP_Service_Order so
+        LEFT JOIN GJP_business.GJP_Service_Person sp ON so.so_currentCharger = sp.sp_id
+        WHERE
+        so.so_state BETWEEN 2200 AND 3202 AND sp.em_id IS NOT NULL
+        GROUP BY so.so_currentCharger
+        ) t2 ON t1.em_id = t2.em_id
+        WHERE 1=1
+        <if test="whereList != null">
+            AND t1.em_name LIKE CONCAT('%', #{whereList}, '%') OR t1.em_phone LIKE CONCAT('%', #{whereList}, '%')
+        </if>
+        <if test="ucc_id != null">
+            AND t1.ucc_id = #{ucc_id}
+        </if>
+        ORDER BY
+        (
+        CASE
+        WHEN t1.ucc_id = #{ucc_id} THEN
+        1
+        ELSE
+        4
+        END
+        ),
+        t2.taskCount DESC
+        limit 0, 15
+    </select>
+
+    <select id="queryServiceOrderByEmId" resultType="com.gjp.model.ServiceOrderVo">
+        SELECT
+          t1.*, va.house_address, so.so_targetAddress, st.ss_title, sm_name, sr.spro_startTime, sr.spro_expectEndDuration
+        FROM
+        (
+            SELECT
+                ue.em_id,
+                ue.em_name,
+                ue.em_post
+            FROM
+                GJP_user.GJP_UserCenter_Employee ue,
+                GJP_user.GJP_UserCenter_Company uc,
+                GJP_user.GJP_UserCenter_CompanyPserson up
+            WHERE
+                ue.em_id = up.em_id
+            AND uc.ucc_id = up.ucc_id
+            AND ue.em_state &lt;&gt; 0
+        ) t1
+        LEFT JOIN GJP_business.GJP_Service_Person sp ON sp.em_id = t1.em_id
+        LEFT JOIN GJP_business.GJP_Service_Order so ON so.so_currentCharger = sp.sp_id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress va ON va.hi_code = so.hi_code
+        LEFT JOIN GJP_business.GJP_Service_Step st ON st.ss_code = so.so_state
+        LEFT JOIN GJP_business.GJP_Service_Process sr ON sr.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = so.so_type
+        WHERE (so.so_state BETWEEN 2200 AND 3202) AND t1.em_id = #{em_id}
+        ORDER BY sr.spro_expectEndTime DESC
+    </select>
+
+    <select id="queryServiceOrderBySpId" resultType="com.gjp.model.ServicePersonVo">
+        SELECT
+            sp.*, va.house_address, so.so_targetAddress, st.ss_title, sm_name, sr.spro_startTime, sr.spro_expectEndDuration
+        FROM
+        GJP_business.GJP_Service_Person sp
+        LEFT JOIN GJP_business.GJP_Service_Order so ON so.so_currentCharger = sp.sp_id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress va ON va.hi_code = so.hi_code
+        LEFT JOIN GJP_business.GJP_Service_Step st ON st.ss_code = so.so_state
+        LEFT JOIN GJP_business.GJP_Service_Process sr ON sr.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = so.so_type
+        WHERE (so.so_state BETWEEN 2200 AND 3202) AND sp.sp_id = #{sp_id}
+        ORDER BY sr.spro_expectEndTime DESC
+    </select>
+
+    <select id="queryMoneyDetial" resultType="com.gjp.model.ServiceMoneyDetail">
+        SELECT
+        *
+        FROM
+        GJP_Service_ServiceMoneyDetail
+        WHERE 1=1
+        <if test="so_id != null">AND so_id = #{so_id}</if>
+        <if test="ssm_id != null">AND ssm_id = #{ssm_id}</if>
+        <if test="payObject != null">AND payObject = #{payObject}</if>
+        <if test="user_id != null">AND user_id = #{user_id}</if>
+        <if test="cc_code != null">AND cc_code = #{cc_code}</if>
+        <if test="em_id != null">AND em_id = #{em_id}</if>
+        <if test="ucc_id != null">AND ucc_id = #{ucc_id}</if>
+    </select>
+
+    <delete id="deleteMoneyDetial">
+        DELETE FROM GJP_Service_ServiceMoneyDetail
+        WHERE
+        <choose>
+            <when test="ssd_id != null">ssd_id = #{ssd_id}</when>
+            <when test="ssm_id != null">ssm_id = #{ssm_id}</when>
+            <when test="so_id != null">so_id = #{so_id}</when>
+        </choose>
+        <if test="payObject != null">AND payObject = #{payObject}</if>
+        <if test="user_id != null">AND user_id = #{user_id}</if>
+        <if test="cc_code != null">AND cc_code = #{cc_code}</if>
+        <if test="em_id != null">AND em_id = #{em_id}</if>
+        <if test="ucc_id != null">AND ucc_id = #{ucc_id}</if>
+    </delete>
+
+    <select id="queryNewServicePayMoney" resultType="com.gjp.model.ServicePayMoneyVo">
+        SELECT
+        so.so_id,
+        so.so_totalMoney,
+        so.so_targetAddress,
+        so.so_targetAddress AS house_address,
+        cc.cc_code,
+        cc.cc_name,
+        uu.user_id,
+        so.hi_code,
+        sc.con_code,
+        sc.s_id,
+        sc.init_serveMoney,
+        sc.surplus_serveMoney,
+        st.st_moneyBool,
+        pr.ucc_id,
+        pr.hpr_newEmp,
+        uc.ucc_name,
+        COALESCE(uu.user_realName, uu.user_nickName, uu.user_phone) AS md_peopleName
+        FROM
+        GJP_business.GJP_Service_Order so
+        LEFT JOIN (
+        SELECT
+        bc.so_id,
+        bco.order_sn
+        FROM
+        GJP_business.GJP_Bill_ContractOrderMD bc,
+        GJP_business.GJP_Order bco
+        WHERE
+        bco.order_sn = bc.order_code
+        AND bc.so_id IS NOT NULL
+        ) t ON t.so_id = so.so_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON cr.hi_code = so.hi_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc ON cr.hi_code = sc.hi_code AND sc.con_code = cr.contractObject_code
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.contractObject_code = cr.contractObject_code AND CASE WHEN
+        so.hi_code IS NOT NULL THEN (co.ContractObject_State = 1 OR co.ContractObject_State = 2) ELSE 1 = 1 END
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = cr.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User uu ON cc.cc_cardNum = uu.user_cardNumber OR uu.user_id =
+        so.so_applicantUser
+        LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = so.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = pr.ucc_id
+        LEFT JOIN GJP_business.GJP_Service_OrderItem si ON si.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = si.st_id_b
+        WHERE 1=1
+        <if test="user_id != null">
+            AND uu.user_id = #{user_id}
+        </if>
+        <if test="cc_code != null">
+            AND cc.cc_code = #{cc_code}
+        </if>
+        <if test="order_sn != null">
+            AND t.order_sn = #{order_sn}
+        </if>
+        GROUP BY so.so_id
+        LIMIT 1
+    </select>
+
+    <update id="modifyServiceMoney">
+        UPDATE GJP_Server_Charge
+        <set>
+            <if test="used_serveMoney != null">used_serveMoney = #{used_serveMoney},</if>
+            <if test="surplus_serveMoney != null">surplus_serveMoney = #{surplus_serveMoney},</if>
+            <if test="available_serveMoney != null">available_serveMoney = #{available_serveMoney},</if>
+        </set>
+        WHERE s_id = #{s_id}
+    </update>
+
+    <insert id="appAddServiceChargeRecord" useGeneratedKeys="true" keyProperty="re_id">
+        INSERT INTO GJP_Server_ChargeRecord(
+            md_id,
+            so_id,
+            service_charge,
+            discount,
+            hi_code,
+            con_code,
+            cc_code,
+            create_time
+        ) VALUES (
+            #{md_id},
+            #{so_id},
+            #{service_charge},
+            #{discount},
+            #{hi_code},
+            #{con_code},
+            #{cc_code},
+            NOW()
+        )
+    </insert>
+
+    <select id="queryServicePayMoney" resultType="com.gjp.model.ServicePayMoneyVo">
+        SELECT
+            bco.bco_id,
+            bco.bco_currentPayment,
+            bco.hi_code,
+            bco.contractObject_code,
+            sc.init_serveMoney,
+            sc.surplus_serveMoney,
+            so.so_type,
+            so.so_totalMoney,
+            st.st_moneyBool,
+            bc.*
+        FROM
+            GJP_Bill_ContractOrder bco
+        LEFT JOIN GJP_Server_Charge sc ON bco.contractObject_code = sc.con_code
+        LEFT JOIN GJP_Bill_ContractOrderMD bc ON bco.bco_code = bc.order_code
+        LEFT JOIN GJP_Service_Order so ON so.so_id = bc.so_id
+        LEFT JOIN GJP_Service_Type st ON st.st_id = (
+            SELECT
+                st_id_b
+            FROM
+                GJP_Service_OrderItem
+            WHERE
+                so_id = so.so_id
+            LIMIT 1
+        )
+        WHERE
+            bco.bco_code = #{bco_code}
+    </select>
+
+    <select id="queryServicePayMoneyInfo" resultType="com.gjp.model.ServicePayMoneyVo">
+        SELECT
+        so.so_id,
+        so.so_totalMoney,
+        so.so_targetAddress,
+        so.so_targetAddress AS house_address,
+        cc.cc_code,
+        cc.cc_name,
+        uu.user_id,
+        uu.user_phone,
+        so.hi_code,
+        sc.con_code,
+        sc.s_id,
+        sc.init_serveMoney,
+        sc.used_serveMoney,
+        sc.surplus_serveMoney,
+        sc.available_serveMoney,
+        st.st_moneyBool,
+        pr.ucc_id,
+        pr.hpr_newEmp,
+        uc.ucc_name,
+        co.contractObject_code,
+        co.contractObject_Type,
+        sm.sm_name,
+        hpr.em_name AS hpr_newEmpName,
+        hpr.em_phone AS hpr_newEmpPhone,
+        uc.ucc_person AS ucc_managerName,
+        uc.ucc_phone AS ucc_managerPhone,
+        COALESCE(uu.user_realName, uu.user_nickName, uu.user_phone) AS md_peopleName,
+        COALESCE(uu.user_realName, uu.user_nickName, uu.user_phone) AS user_name
+        FROM
+        GJP_business.GJP_Service_Order so
+        LEFT JOIN (
+        SELECT
+        bc.so_id,
+        bco.order_sn
+        FROM
+        GJP_business.GJP_Bill_ContractOrderMD bc,
+        GJP_business.GJP_Order bco
+        WHERE
+        bco.order_sn = bc.order_code
+        AND bc.so_id IS NOT NULL
+        ) t ON t.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Server_Charge sc ON so.hi_code = sc.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.contractObject_code = sc.con_code AND CASE WHEN
+        so.hi_code IS NOT NULL THEN (co.ContractObject_State = 1 OR co.ContractObject_State = 2) ELSE 1 = 1 END
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship ccr ON ccr.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = ccr.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User uu ON cc.cc_cardNum = uu.user_cardNumber OR uu.user_id =
+        so.so_applicantUser
+        LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = so.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = pr.ucc_id
+        LEFT JOIN GJP_business.GJP_Service_OrderItem si ON si.so_id = so.so_id
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON so.so_type = sm.sm_id
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = si.st_id_b
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee hpr ON pr.hpr_newEmp = hpr.em_id
+        WHERE 1=1
+        <if test="user_id != null">
+            AND uu.user_id = #{user_id}
+        </if>
+        <if test="cc_code != null">
+            AND cc.cc_code = #{cc_code}
+        </if>
+        <if test="hi_code != null">
+            AND sc.hi_code = #{hi_code}
+        </if>
+        <if test="order_sn != null">
+            AND t.order_sn = #{order_sn}
+        </if>
+        <if test="so_id != null">
+            AND so.so_id = #{so_id}
+        </if>
+        GROUP BY so.so_id
+        LIMIT 1
+    </select>
+
+    <!-- 根据客户编码查询合同信息 -->
+    <select id="queryContractCustomerByCode" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        ha.house_address,
+        co.ContractObject_Type,
+        co.contractObject_Date,
+        co.contractObject_DeadlineTime,
+        sc.init_serveMoney,
+        sc.surplus_serveMoney
+        FROM GJP_business.GJP_Contract_Object co
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON co.ContractObject_Code = cr.contractObject_code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON ha.hi_code = cr.hi_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc ON sc.con_code = co.ContractObject_Code AND sc.hi_code = cr.hi_code
+        WHERE
+        (
+        co.ContractObject_State = 1
+        OR co.ContractObject_State = 2
+        )
+        <if test="cc_code != null">
+            AND cr.cc_code = #{cc_code}
+        </if>
+        <if test="hi_code != null">
+            AND co.hi_code = #{hi_code}
+        </if>
+        <if test="contractObject_Type != null">
+            AND co.contractObject_Type = #{contractObject_Type}
+        </if>
+    </select>
+
+    <!-- 查询所有合同房屋信息 -->
+    <select id="queryAllContractHouse" resultType="com.gjp.model.ContractObjectVo">
+        SELECT * FROM(
+        SELECT
+        IF
+        (
+        pn.upn_code IS NULL OR pn.upn_code = '',
+        CONCAT( pn.upn_sname, gha.hi_address ),
+        CONCAT( pn.upn_sname, pn.upn_code, '-', gha.hi_address )
+        ) AS house_address,
+        gha.hi_code,
+        pi.propertyInfo_coordinate,
+        gha.hi_measure,
+        gha.hi_houseS,
+        gha.hi_houseT,
+        gha.hi_houseW,
+        t1.cc_name_z,
+        t1.ccp_phone_z,
+        t1.contractObject_Code_z,
+        t1.contractObject_Date_z,
+        t1.contractObject_DeadlineTime_z,
+        t1.contractObject_OptionState_z,
+        t1.init_serveMoney_z,
+        t1.surplus_serveMoney_z,
+        t2.cc_name_f,
+        t2.ccp_phone_f,
+        t2.contractObject_Code_f,
+        t2.contractObject_Date_f,
+        t2.contractObject_DeadlineTime_f,
+        t2.contractObject_OptionState_f,
+        t2.init_serveMoney_f,
+        t2.surplus_serveMoney_f,
+        t3.em_name,
+        t3.em_phone,
+        t3.ucc_name,
+        t3.ucc_phone
+        FROM
+        GJP_product.GJP_House_HouseInformation_keep gha
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = gha.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        LEFT JOIN (
+        SELECT
+        co1.hi_code,
+        uc1.cc_name AS cc_name_z,
+        up1.ccp_phone AS ccp_phone_z,
+        co1.ContractObject_Code AS contractObject_Code_z,
+        co1.contractObject_Date AS contractObject_Date_z,
+        co1.contractObject_DeadlineTime AS contractObject_DeadlineTime_z,
+        co1.ContractObject_OptionState AS contractObject_OptionState_z,
+        sc1.init_serveMoney AS init_serveMoney_z,
+        sc1.surplus_serveMoney AS surplus_serveMoney_z
+        FROM GJP_business.GJP_Contract_Object co1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc1 ON uc1.cc_code = co1.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up1 ON uc1.cc_id = up1.cc_id AND up1.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Server_Charge sc1 ON co1.ContractObject_Code = sc1.con_Code
+        WHERE
+        co1.ContractObject_Type = '租赁合同'
+        AND (
+        co1.ContractObject_State = 1
+        OR co1.ContractObject_State = 2
+        )
+        ) t1 ON gha.hi_code = t1.hi_code
+        LEFT JOIN (
+        SELECT
+        co2.hi_code,
+        uc2.cc_name AS cc_name_f,
+        up2.ccp_phone AS ccp_phone_f,
+        co2.ContractObject_Code AS contractObject_Code_f,
+        co2.contractObject_Date AS contractObject_Date_f,
+        co2.contractObject_DeadlineTime AS contractObject_DeadlineTime_f,
+        co2.ContractObject_OptionState AS contractObject_OptionState_f,
+        sc2.init_serveMoney AS init_serveMoney_f,
+        sc2.surplus_serveMoney AS surplus_serveMoney_f
+        FROM GJP_business.GJP_Contract_Object co2
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc2 ON uc2.cc_code = co2.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up2 ON uc2.cc_id = up2.cc_id AND up2.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Server_Charge sc2 ON co2.ContractObject_Code = sc2.con_Code
+        WHERE
+        co2.ContractObject_Type = '托管合同'
+        -- AND (
+        -- co2.ContractObject_State = 1
+        -- OR co2.ContractObject_State = 2
+        -- )
+        )t2 ON gha.hi_code = t2.hi_code
+        LEFT JOIN (
+        SELECT pr.hi_code, gue.em_name, gue.em_phone, ucc.ucc_name, ucc.ucc_phone
+        FROM GJP_product.GJP_House_PositionRecord pr
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee gue ON gue.em_id = pr.hpr_newEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_Company ucc ON pr.ucc_id = ucc.ucc_id
+        ) t3 ON gha.hi_code = t3.hi_code
+        WHERE gha.hi_forRentState &lt;&gt; 1021
+        AND gha.hi_forRentState &lt;&gt; 1022
+        GROUP BY gha.hi_code
+        ) t
+        WHERE
+        1 = 1
+        <if test="t.where != null and t.where != ''">
+            AND (house_address LIKE CONCAT('%', #{t.where}, '%')
+            OR cc_name_z LIKE CONCAT('%', #{t.where}, '%')
+            OR ccp_phone_z LIKE CONCAT('%', #{t.where}, '%')
+            OR cc_name_f LIKE CONCAT('%', #{t.where}, '%')
+            OR ccp_phone_f LIKE CONCAT('%', #{t.where}, '%')
+            OR em_name LIKE CONCAT('%', #{t.where}, '%')
+            OR em_phone LIKE CONCAT('%', #{t.where}, '%')
+            OR ucc_name LIKE CONCAT('%', #{t.where}, '%')
+            OR ucc_phone LIKE CONCAT('%', #{t.where}, '%'))
+        </if>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryAllContractHouseCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM (
+        SELECT
+        IF
+        (
+        pn.upn_code IS NULL OR pn.upn_code = '',
+        CONCAT( pn.upn_sname, gha.hi_address ),
+        CONCAT( pn.upn_sname, pn.upn_code, '-', gha.hi_address )
+        ) AS house_address,
+        gha.hi_code,
+        pi.propertyInfo_coordinate,
+        gha.hi_measure,
+        gha.hi_houseS,
+        gha.hi_houseT,
+        gha.hi_houseW,
+        t1.cc_name_z,
+        t1.ccp_phone_z,
+        t1.contractObject_Code_z,
+        t1.contractObject_Date_z,
+        t1.contractObject_DeadlineTime_z,
+        t1.contractObject_OptionState_z,
+        t1.init_serveMoney_z,
+        t1.surplus_serveMoney_z,
+        t2.cc_name_f,
+        t2.ccp_phone_f,
+        t2.contractObject_Code_f,
+        t2.contractObject_Date_f,
+        t2.contractObject_DeadlineTime_f,
+        t2.contractObject_OptionState_f,
+        t2.init_serveMoney_f,
+        t2.surplus_serveMoney_f,
+        t3.em_name,
+        t3.em_phone,
+        t3.ucc_name,
+        t3.ucc_phone
+        FROM
+        GJP_product.GJP_House_HouseInformation_keep gha
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = gha.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        LEFT JOIN (
+        SELECT
+        co1.hi_code,
+        uc1.cc_name AS cc_name_z,
+        up1.ccp_phone AS ccp_phone_z,
+        co1.ContractObject_Code AS contractObject_Code_z,
+        co1.contractObject_Date AS contractObject_Date_z,
+        co1.contractObject_DeadlineTime AS contractObject_DeadlineTime_z,
+        co1.ContractObject_OptionState AS contractObject_OptionState_z,
+        sc1.init_serveMoney AS init_serveMoney_z,
+        sc1.surplus_serveMoney AS surplus_serveMoney_z
+        FROM GJP_business.GJP_Contract_Object co1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc1 ON uc1.cc_code = co1.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up1 ON uc1.cc_id = up1.cc_id AND up1.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Server_Charge sc1 ON co1.ContractObject_Code = sc1.con_Code
+        WHERE
+        co1.ContractObject_Type = '租赁合同'
+        AND (
+        co1.ContractObject_State = 1
+        OR co1.ContractObject_State = 2
+        )
+        ) t1 ON gha.hi_code = t1.hi_code
+        LEFT JOIN (
+        SELECT
+        co2.hi_code,
+        uc2.cc_name AS cc_name_f,
+        up2.ccp_phone AS ccp_phone_f,
+        co2.ContractObject_Code AS contractObject_Code_f,
+        co2.contractObject_Date AS contractObject_Date_f,
+        co2.contractObject_DeadlineTime AS contractObject_DeadlineTime_f,
+        co2.ContractObject_OptionState AS contractObject_OptionState_f,
+        sc2.init_serveMoney AS init_serveMoney_f,
+        sc2.surplus_serveMoney AS surplus_serveMoney_f
+        FROM GJP_business.GJP_Contract_Object co2
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc2 ON uc2.cc_code = co2.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up2 ON uc2.cc_id = up2.cc_id AND up2.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Server_Charge sc2 ON co2.ContractObject_Code = sc2.con_Code
+        WHERE
+        co2.ContractObject_Type = '托管合同'
+        AND (
+        co2.ContractObject_State = 1
+        OR co2.ContractObject_State = 2
+        )
+        ) t2 ON gha.hi_code = t2.hi_code
+        LEFT JOIN (
+        SELECT pr.hi_code, gue.em_name, gue.em_phone, ucc.ucc_name, ucc.ucc_phone
+        FROM GJP_product.GJP_House_PositionRecord pr
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee gue ON gue.em_id = pr.hpr_newEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_Company ucc ON pr.ucc_id = ucc.ucc_id
+        ) t3 ON gha.hi_code = t3.hi_code
+        WHERE gha.hi_forRentState &lt;&gt; 1021
+        AND gha.hi_forRentState &lt;&gt; 1022
+        GROUP BY gha.hi_code
+        ) t
+        WHERE
+        1 = 1
+        <if test="t.where != null and t.where != ''">
+            AND (house_address LIKE CONCAT('%', #{t.where}, '%')
+            OR cc_name_z LIKE CONCAT('%', #{t.where}, '%')
+            OR ccp_phone_z LIKE CONCAT('%', #{t.where}, '%')
+            OR cc_name_f LIKE CONCAT('%', #{t.where}, '%')
+            OR ccp_phone_f LIKE CONCAT('%', #{t.where}, '%')
+            OR em_name LIKE CONCAT('%', #{t.where}, '%')
+            OR em_phone LIKE CONCAT('%', #{t.where}, '%')
+            OR ucc_name LIKE CONCAT('%', #{t.where}, '%')
+            OR ucc_phone LIKE CONCAT('%', #{t.where}, '%'))
+        </if>
+    </select>
+
+    <select id="queryCustomerByHiCode" resultType="com.gjp.model.UserCustomer">
+        SELECT cc.*,cp.ccp_phone, cr.crc_role FROM GJP_user.GJP_UserCenter_Customer cc
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON cr.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone cp ON cp.cc_id = cc.cc_id AND cp.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = cr.ContractObject_Code
+        WHERE (co.ContractObject_State = 1 OR co.ContractObject_State = 2) AND cr.hi_code = #{hi_code}
+        <if test="contractObject_Type != null">
+            AND co.contractObject_type = #{contractObject_Type}
+        </if>
+    </select>
+
+    <insert id="saveServceMoneyInfo" useGeneratedKeys="true" keyProperty="sm_id">
+        INSERT INTO GJP_Service_MoneyInfo
+        (
+            so_id,
+            payObject,
+            deductMoney,
+            discountMoney,
+            annulMoney,
+            reallyMoney,
+            totalMoney,
+            otherMoney,
+            bco_code,
+            create_time
+        ) VALUES (
+            #{so_id},
+            #{payObject},
+            #{deductMoney},
+            #{discountMoney},
+            #{annulMoney},
+            #{reallyMoney},
+            #{totalMoney},
+            #{otherMoney},
+            #{bco_code},
+            NOW()
+        )
+    </insert>
+
+    <update id="updataServceMoneyInfo">
+        UPDATE
+        GJP_Service_MoneyInfo
+        <set>
+            <if test="deductMoney != null and deductMoney !=''">deductMoney=#{deductMoney},</if>
+            <if test="discountMoney != null and discountMoney !=''">discountMoney=#{discountMoney},</if>
+            <if test="annulMoney != null and annulMoney !=''">annulMoney=#{annulMoney},</if>
+            <if test="reallyMoney != null and reallyMoney !=''">reallyMoney=#{reallyMoney},</if>
+            <if test="totalMoney != null and totalMoney !=''">totalMoney=#{totalMoney},</if>
+            <if test="otherMoney != null and otherMoney !=''">otherMoney=#{otherMoney},</if>
+            <if test="bco_code != null and bco_code !=''">bco_code=#{bco_code},</if>
+            <if test="payObject != null and payObject !=''">payObject=#{payObject},</if>
+        </set>
+        where
+        so_id=#{so_id}
+    </update>
+
+    <select id="queryServiceMoneyInfo" resultType="com.gjp.model.ServiceMoneyInfoVo">
+        SELECT * FROM GJP_Service_MoneyInfo
+        WHERE 1=1
+        <if test="so_id != null and so_id != ''">
+            AND so_id=#{so_id}
+        </if>
+        <if test="payObject != null and payObject != ''">
+            AND payObject=#{payObject}
+        </if>
+
+    </select>
+
+    <select id="queryPayObjectByHiCode" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        gha.hi_code,
+        gha.house_address,
+        gha.hi_measure,
+        gha.hi_houseS,
+        gha.hi_houseT,
+        gha.hi_houseW,
+        t1.cc_name_z,
+        t1.ccp_phone_z,
+        t1.contractObject_Code_z,
+        t1.contractObject_Date_z,
+        t1.contractObject_DeadlineTime_z,
+        t1.contractObject_OptionState_z,
+        t1.init_serveMoney_z,
+        t1.surplus_serveMoney_z,
+        t2.cc_name_f,
+        t2.ccp_phone_f,
+        t2.contractObject_Code_f,
+        t2.contractObject_Date_f,
+        t2.contractObject_DeadlineTime_f,
+        t2.contractObject_OptionState_f,
+        t2.init_serveMoney_f,
+        t2.surplus_serveMoney_f,
+        gue.em_id,
+        gue.em_name,
+        gue.em_phone,
+        ucc.ucc_name,
+        ucc.ucc_phone
+        FROM
+        GJP_product.view_GJP_HouseAddress gha
+        LEFT JOIN (
+        SELECT
+        gcc1.hi_code,
+        uc1.cc_name AS cc_name_z,
+        up1.ccp_phone AS ccp_phone_z,
+        co1.contractObject_Code AS contractObject_Code_z,
+        co1.contractObject_Date AS contractObject_Date_z,
+        co1.contractObject_DeadlineTime AS contractObject_DeadlineTime_z,
+        co1.ContractObject_OptionState AS contractObject_OptionState_z,
+        sc1.init_serveMoney AS init_serveMoney_z,
+        sc1.surplus_serveMoney AS surplus_serveMoney_z
+        FROM
+        GJP_user.GJP_UserCenter_CustomerRelationship gcc1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc1 ON uc1.cc_code = gcc1.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up1 ON uc1.cc_id = up1.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_Object co1 ON co1.ContractObject_Code = gcc1.contractObject_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc1 ON co1.ContractObject_Code = sc1.con_Code
+        WHERE
+        up1.ccp_state = 1
+        AND co1.ContractObject_Type = '租赁合同'
+        AND (
+        co1.ContractObject_State = 1
+        OR co1.ContractObject_State = 2
+        )
+        ) t1 ON gha.hi_code = t1.hi_code
+        LEFT JOIN (
+        SELECT
+        gcc2.hi_code,
+        uc2.cc_name AS cc_name_f,
+        up2.ccp_phone AS ccp_phone_f,
+        co2.contractObject_Code AS contractObject_Code_f,
+        co2.contractObject_Date AS contractObject_Date_f,
+        co2.contractObject_DeadlineTime AS contractObject_DeadlineTime_f,
+        co2.ContractObject_OptionState AS contractObject_OptionState_f,
+        sc2.init_serveMoney AS init_serveMoney_f,
+        sc2.surplus_serveMoney AS surplus_serveMoney_f
+        FROM
+        GJP_user.GJP_UserCenter_CustomerRelationship gcc2
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc2 ON uc2.cc_code = gcc2.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone up2 ON uc2.cc_id = up2.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_Object co2 ON co2.ContractObject_Code = gcc2.contractObject_code
+        LEFT JOIN GJP_business.GJP_Server_Charge sc2 ON co2.ContractObject_Code = sc2.con_Code
+        WHERE
+        up2.ccp_state = 1
+        AND co2.ContractObject_Type = '托管合同'
+        AND gcc2.crc_role = 0
+        AND (
+        co2.ContractObject_State = 1
+        OR co2.ContractObject_State = 2
+        )
+        ) t2 ON gha.hi_code = t2.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = gha.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee gue ON gue.em_id = pr.hpr_newEmp
+        LEFT JOIN GJP_user.GJP_UserCenter_Company ucc ON pr.ucc_id = ucc.ucc_id
+        WHERE
+        1 = 1
+        <if test="hi_code != null">
+            AND pr.hi_code = #{hi_code}
+        </if>
+        GROUP BY
+        gha.house_address,
+        t1.cc_name_z,
+        t1.ccp_phone_z,
+        t2.cc_name_f,
+        t2.ccp_phone_f
+    </select>
+
+    <select id="queryEmployeeById" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT * FROM GJP_user.GJP_UserCenter_Employee WHERE em_id = #{em_id}
+    </select>
+
+    <select id="queryServiceChargeByCode" resultType="com.gjp.model.ServiceCharge">
+        SELECT * FROM GJP_business.GJP_Server_Charge where con_code = #{con_code} AND hi_code = #{hi_code} AND cc_code = #{cc_code}
+    </select>
+
+    <!-- 同一个房屋在处理完成前不能重复下单 -->
+    <select id="queryServiceItemCountByCode" resultType="java.lang.Integer">
+        SELECT
+        COUNT(si.soit_id)
+        FROM
+        GJP_business.GJP_Service_OrderItem si
+        LEFT JOIN GJP_business.GJP_Service_Order so ON so.so_id = si.so_id
+        WHERE
+        so.hi_code = #{hi_code}
+        AND so.so_state BETWEEN 1100 AND 3300
+        AND si.st_id_b = #{st_id_b}
+        <if test="itemArray != null">
+            AND si.st_id_c IN
+            <foreach collection="itemArray" item="item" index="index"
+                     open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <update id="updateserviceOrderItem">
+        UPDATE GJP_Service_OrderItem
+        <set>
+            <if test="soit_done != null ">soit_done=#{soit_done},</if>
+        </set>
+        <where>
+            and soit_id=#{soit_id}
+        </where>
+    </update>
+
+
+    <select id="selectContractObjectPeople" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_ObjectList
+        WHERE
+        1=1
+        <if test="contractObject_Type !=null and contractObject_Type !=''">
+            AND contractObject_Type=#{contractObject_Type}
+        </if>
+        AND hi_code=#{hi_code} and (ContractObject_State = 1 or
+        ContractObject_State = 2)
+    </select>
+
+    <select id="queryContractInfo" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        co.*
+        FROM GJP_business.GJP_Contract_Object co
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON co.ContractObject_Code = cr.contractObject_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON cr.cc_code = uc.cc_code
+        WHERE
+        1 = 1
+        AND (
+        co.ContractObject_State = 1
+        OR co.ContractObject_State = 2
+        )
+        <if test="contractObject_Type != null">
+            AND co.contractObject_Type = #{contractObject_Type}
+        </if>
+        <if test="hi_code != null">
+            AND co.hi_code = #{hi_code}
+        </if>
+        <if test="cc_name != null">
+            AND uc.cc_name = #{cc_name}
+        </if>
+        <if test="cc_code != null">
+            AND cr.cc_code = #{cc_code}
+        </if>
+        ORDER BY co.ContractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!--更改订单-->
+    <update id="updateOrder">
+        UPDATE GJP_Order
+        <set>
+            <if test="order_type !=null">order_type=#{order_type},</if>
+            <if test="order_channel !=null">order_channel=#{order_channel},</if>
+            <if test="order_balpay !=null">order_balpay=#{order_balpay},</if>
+            <if test="order_title !=null">order_title=#{order_title},</if>
+            <if test="order_status !=null">order_status=#{order_status},</if>
+            <if test="order_ucc_id !=null">order_ucc_id=#{order_ucc_id},</if>
+            <if test="trade_object !=null">trade_object=#{trade_object},</if>
+            <if test="trade_ucc_id !=null">trade_ucc_id=#{trade_ucc_id},</if>
+            <if test="trade_cc_code !=null">trade_cc_code=#{trade_cc_code},</if>
+            <if test="trade_user_id !=null">trade_user_id=#{trade_user_id},</if>
+            <if test="trade_em_id !=null">trade_em_id=#{trade_em_id},</if>
+            <if test="detail_count !=null">detail_count=#{detail_count},</if>
+            <if test="detail_amount_total !=null">detail_amount_total=#{detail_amount_total},</if>
+            <if test="detail_amount_coupon !=null">detail_amount_coupon=#{detail_amount_coupon},</if>
+            <if test="order_amount_total !=null">order_amount_total=#{order_amount_total},</if>
+            <if test="order_balance_deduction !=null">order_balance_deduction=#{order_balance_deduction},</if>
+            <if test="order_amount_pay !=null">order_amount_pay=#{order_amount_pay},</if>
+            <if test="recharge_amount_give !=null">recharge_amount_give=#{recharge_amount_give},</if>
+            <if test="pay_sn !=null">pay_sn=#{pay_sn},</if>
+            <if test="pay_channel !=null">pay_channel=#{pay_channel},</if>
+            <if test="pay_time !=null">pay_time=#{pay_time},</if>
+            <if test="order_operator !=null">order_operator=#{order_operator},</if>
+            <if test="order_remarks !=null">order_remarks=#{order_remarks},</if>
+        </set>
+        <where>
+            <if test="order_id !=null">AND order_id=#{order_id}</if>
+            <if test="order_sn !=null">AND order_sn=#{order_sn}</if>
+            <if test="pay_sn !=null">AND pay_sn=#{pay_sn}</if>
+        </where>
+    </update>
+
+    <!--查询订单详情-->
+    <select id="queryOrderDetailList" resultType="com.gjp.model.OrderDetailVo">
+        SELECT * FROM GJP_Order_Detail
+        <where>
+            <if test=" order_sn !=null">AND order_sn=#{order_sn}</if>
+        </where>
+    </select>
+    <select id="queryServicePersonVo" resultType="com.gjp.model.ServicePersonVo">
+        SELECT em_id,sp_id FROM GJP_Service_Person
+        <where>
+            <if test="em_id != null">AND em_id=#{em_id}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <delete id="deleteServiceMoney">
+        DELETE FROM GJP_Service_ServiceMoney WHERE ssm_id = #{ssm_id}
+    </delete>
+
+    <select id="queryOrderByssmId" resultType="com.gjp.model.OrderVo">
+        SELECT o.* FROM GJP_Order o
+        LEFT JOIN GJP_Bill_ContractOrderMD md ON md.order_code = o.order_sn
+        LEFT JOIN GJP_Service_ServiceMoney sm ON sm.so_id = md.so_id AND sm.payObject = o.trade_object
+        WHERE sm.ssm_id = #{ssm_id}
+        limit 1
+    </select>
+
+    <select id="queryContractCharge" resultType="com.gjp.model.ContractInfoVo">
+        SELECT
+            co.ContractObject_Code,
+            co.hi_code,
+            co.ContractObject_1st,
+            co.ContractObject_Date,
+            co.ContractObject_DeadlineTime,
+            co.ContractObject_Type,
+            cb.ContractBody_GuaranteeCost,
+            cb.ContractBody_Service
+        FROM GJP_business.GJP_Contract_Object co
+        JOIN GJP_business.GJP_Contract_Body cb ON co.ContractObject_Code = cb.ContractObject_Code
+        WHERE
+            (co.ContractObject_State = 1 OR co.ContractObject_State = 2)
+        AND co.ContractObject_Code NOT IN (
+            SELECT
+                con_code
+            FROM
+                GJP_business.GJP_Server_Charge
+        )
+        AND DATE_FORMAT(co.ContractObject_Date,'%Y') = #{dateYear}
+    </select>
+
+    <select id="queryPayOrderAndServiceOrder" resultType="com.gjp.model.OrderVo">
+        SELECT
+            gor.order_sn,
+            gor.order_type,
+            gor.order_status,
+            gor.trade_object,
+            gbc.so_id,
+            gor.order_title
+        FROM
+            GJP_Order gor
+        LEFT JOIN
+            GJP_Bill_ContractOrderMD gbc ON gbc.order_code=gor.order_sn
+        WHERE
+            gbc.so_id = #{so_id} AND (trade_object=#{trade_object} or trade_object=3)
+    </select>
+
+    <select id="initServiceOrder" resultType="com.gjp.model.MaintenanceDeclaration">
+        SELECT *
+        FROM GJP_Maintenance_Declaration WHERE DATE_FORMAT(apply_time,'%Y-%m') = '2018-01' AND md_id >= 6135
+    </select>
+
+    <select id="queryContractType" resultType="com.gjp.model.ContractObjectVo">
+        SELECT *
+        FROM GJP_Contract_Object WHERE hi_code = #{hi_code} AND ContractObject_1st = #{contractObject_1st} AND ContractObject_State &lt;&gt; 4 limit 1
+    </select>
+
+    <select id="queryOutside" resultType="com.gjp.model.ServiceRecordVo">
+        SELECT
+        sr.*
+        FROM
+        GJP_Service_Order so
+        LEFT JOIN GJP_Service_Record sr ON so.so_id = sr.so_id
+        AND sr.ss_code = 1100
+        WHERE
+        so.so_applicantUser IS NOT NULL
+        AND so.so_createTime BETWEEN '2018-02-12 00:00:00'
+        AND '2018-02-23 12:00:00'
+        AND sr.sr_content_outside &lt;&gt; '订单已提交'
+    </select>
+</mapper>

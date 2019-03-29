@@ -1,0 +1,249 @@
+body {
+    background: #efefef;
+}
+.content {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background: #ffffff;
+    padding: 10px 0;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+    .content-item {
+        position: relative;
+        display: flex;
+        width: 100%;
+        .content-item-title {
+            position: relative;
+            flex: 1;
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 50px;
+            padding-left: 10px;
+            &:before {
+                content: "\f015";
+                font: normal normal normal 14px/1 FontAwesome;
+                position: relative;
+                top: 1px;
+                margin-right: 4px;
+                font-size: 18px;
+            }
+        }
+        .contract-item {
+            display: flex;
+            flex: 1;
+            font-size: 14px;
+            flex-direction: column;
+            border-top: 1px solid #efefef;
+            padding: 0 10px;
+            &:first-child {
+                border-top: none;
+            }
+            .contract-item-header {
+                display: flex;
+                justify-content: space-between;
+                line-height: 48px;
+            }
+            .contract-item-footer {
+                display: flex;
+                justify-content: space-between;
+                line-height: 3;
+                > button {
+                    flex: 1;
+                    line-height: 3;
+                }
+            }
+        }
+
+        .item-image-box {
+            position: relative;
+            width: 32%;
+            margin-right: 1%;
+            > img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+            > .title {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                text-align: center;
+                line-height: 1.6;
+                background: rgba(0, 0, 0, 0.47);
+                color: #fff;
+            }
+        }
+
+        .item-state {
+            position: relative;
+            line-height: 28px;
+            padding: 0 6px;
+            border-radius: 3px;
+        }
+
+        .item-label {
+            position: relative;
+            display: block;
+            margin-right: 10px;
+            margin-left: 10px;
+            text-align: center;
+            color: #fff;
+            padding: 0 3px;
+            border-radius: 3px;
+        }
+
+        .item-title {
+            position: relative;
+            display: flex;
+            font-size: 14px;
+            line-height: 36px;
+            color: #000;
+            .item-title-content {
+                em {
+                    position: relative;
+                    top: 2px;
+                    display: inline-block;
+                    height: 20px;
+                    width: 14px;
+                    text-align: center;
+                    color: #E74C3C;
+                }
+            }
+
+            .item-title-option {
+                flex: 1;
+                padding-left: 10px;
+            }
+        }
+
+        &:first-child {
+            .item-content {
+                border-top: none;
+            }
+        }
+
+        .item-content {
+            position: relative;
+            display: flex;
+            flex: 1;
+            font-size: 14px;
+            line-height: 24px;
+            padding: 10px 0;
+            border-top: solid 1px #f1f1f1;
+            > input {
+                flex: 1;
+                font-size: 14px;
+                line-height: 40px;
+            }
+
+            > select {
+                flex: 1;
+                font-size: 14px;
+                padding: 0 6px;
+                line-height: 40px;
+            }
+
+            > textarea {
+                flex: 1;
+                line-height: 24px;
+                font-size: 14px;
+                padding: 0 10px;
+                padding-top: 8px;
+                height: 80px;
+                resize: none;
+            }
+
+            .item-option {
+                position: relative;
+                width: 40px;
+                background: none;
+                text-align: center;
+            }
+
+            .item-content-icon {
+                border: 1px solid #f1f1f1;
+                width: 48px;
+                height: 48px;
+                line-height: 48px;
+                border-radius: 2px;
+                text-align: center;
+                > img {
+                    width: 100%;
+                    height: 100%;
+                    font-size: 12px;
+                }
+            }
+
+            .item-content-main {
+                flex: 1;
+                padding-left: 10px;
+            }
+
+            .item-content-option {
+                width: 48px;
+                font-size: 14px;
+                padding-right: 12px;
+            }
+        }
+    }
+
+    .item-mask {
+        position: fixed;
+        top: 101px;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        display: none;
+        background: rgba(0, 0, 0, 0.18);
+        z-index: 10;
+        .item-mask-main {
+            background: #fff;
+            line-height: 41px;
+            max-height: 336px;
+            overflow: hidden;
+            overflow-y: auto;
+            .mask-main-item {
+                border-bottom: 1px solid #e8e8e8;
+                padding: 0 10px;
+                font-size: 14px;
+                color: #222;
+            }
+        }
+    }
+
+    .content-submmit {
+        background: #ddd;
+        line-height: 48px;
+        font-size: 14px;
+        text-align: center;
+        margin: 0 10px;
+        border-radius: 3px;
+        position: relative;
+        display: block;
+        flex: 1;
+    }
+}
+button.contract-add {
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #18bc9c;
+    &:before {
+        content: "\f055";
+        font: normal normal normal 14px/1 FontAwesome;
+        display: block;
+        font-size: 22px;
+        line-height: inherit;
+    }
+    > i {
+        font-size: 22px;
+        position: relative;
+        top: 3px;
+    }
+    &:disabled {
+        color: #909090;
+    }
+}
+

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋图片 -->
+<mapper namespace="com.gjp.dao.HouseHouseImageDAO">
+
+    <!-- 添加房屋图片 -->
+    <insert id="addHouseImage" useGeneratedKeys="true" parameterType="com.gjp.model.HouseImageVo" keyProperty="hm_id">
+		INSERT INTO
+		GJP_House_HouseImage(
+		hi_code,
+		hm_type,
+		hm_path,
+		hm_code,
+		hm_state,
+		hm_creator,
+		hif_id,
+		hm_createTime
+		)
+		VALUES
+		(
+		#{hi_code},
+		#{hm_type},
+		#{hm_path},
+		#{hm_code},
+		#{hm_state},
+		#{hm_creator},
+		#{hif_id},
+		#{hm_createTime}
+		)
+	</insert>
+
+    <!-- 添加意向房源图片进表 -->
+    <insert id="addHouseIntentionImage" useGeneratedKeys="true" parameterType="com.gjp.model.HouseIntentionImage" keyProperty="him_id">
+		INSERT
+		INTO GJP_House_Intention_Image(
+		him_name,
+		him_type,
+		him_path,
+		hi_code,
+		him_time
+		) VALUES (
+		#{him_name},
+		#{him_type},
+		#{him_path},
+		#{hi_code},
+		NOW()
+		)
+	</insert>
+
+    <!-- 通过路径查询房屋图片编码 -->
+    <select id="selectHouseIntentionImageId" parameterType="String" resultType="int">
+		SELECT him_id FROM
+		GJP_House_Intention_Image
+		WHERE
+		him_path =
+		#{him_path}
+	</select>
+
+    <!-- 根据意向房源编号查询意向房源图片 -->
+    <select id="selectImageById" resultType="com.gjp.model.HouseIntentionImage">
+		select
+		him_id,
+		him_name,
+		him_path,
+		him_time
+		from GJP_House_Intention_Image
+		where him_id=#{him_id}
+	</select>
+
+    <!-- 根据图片编号查询发布房屋图片 -->
+    <select id="queryHouseImage" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        *
+        FROM
+        GJP_House_HouseImage
+        WHERE
+        1=1
+        <if test="hm_id != null and hm_id !='' ">AND hm_id=#{hm_id}</if>
+        <if test="hm_type != null and hm_type !='' ">AND hm_type=#{hm_type}</if>
+        <if test="hi_code != null and hi_code !='' ">AND hi_code=#{hi_code}</if>
+    </select>
+
+    <!-- 根据图片编号查询发布房屋图片 -->
+    <select id="queryHouseImageList" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        hm.*,
+        hif.hif_name,
+        hif.hif_parentId,
+        hif.hif_subId
+        FROM
+        GJP_House_HouseImage AS hm
+        LEFT JOIN GJP_House_HouseImageFolder AS hif ON hm.hif_id = hif.hif_id
+        ) T
+        <where>
+            <if test="hm_id != null">AND hm_id=#{hm_id}</if>
+            <if test="hi_code != null">AND hi_code=#{hi_code}</if>
+            <if test="hm_type != null">AND hm_type=#{hm_type}</if>
+            <if test="hm_state != null">AND hm_state=#{hm_state}</if>
+            <if test="hif_name != null">AND hif_name=#{hif_name}</if>
+            <if test="hm_chose != null">AND hm_chose &lt;&gt; #{hm_chose}</if>
+        </where>
+    </select>
+
+    <!-- 根据图片编号查询发布房屋图片 -->
+    <select id="queryImgListByHiCodeAndHifName" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        hi.*
+        FROM
+        GJP_House_HouseImage hi
+        WHERE
+        hi.hif_id is NOT NULL
+        AND
+        hi.hif_id IN (
+        SELECT hf.hif_id FROM GJP_House_HouseImageFolder hf
+        WHERE
+        hi.hif_id = hi.hif_id
+        <if test="hif_name != null">AND hf.hif_name=#{hif_name}</if>
+        )
+        <if test="hm_id != null">AND hi.hm_id=#{hm_id}</if>
+        <if test="hi_code != null">AND hi.hi_code=#{hi_code}</if>
+        <if test="hm_type != null">AND hi.hm_type=#{hm_type}</if>
+    </select>
+
+    <!-- 根据图片编号查询发布房屋图片 -->
+    <select id="queryHouseImageListByFolder" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        hm.*,
+        hif.hif_name,
+        hif.hif_parentId,
+        hif.hif_subId,
+        COUNT(*) AS image_count
+        FROM
+        GJP_House_HouseImage AS hm
+        LEFT JOIN GJP_House_HouseImageFolder AS hif ON hm.hif_id = hif.hif_id
+        <where>
+            <if test="hm_id != null">AND hm.hm_id=#{hm_id}</if>
+            <if test="hi_code != null">AND hm.hi_code=#{hi_code}</if>
+            <if test="hm_type != null">AND hm.hm_type=#{hm_type}</if>
+        </where>
+        GROUP BY hm.hif_id
+    </select>
+
+    <!-- 根据编号删除图片 -->
+    <delete id="deleteIntentionImage" parameterType="int">
+		delete from
+		GJP_House_Intention_Image where him_id = #{him_id}
+	</delete>
+
+    <!-- 根据编号删除图片 -->
+    <delete id="deleteImage" parameterType="int">
+		DELETE FROM
+		GJP_House_HouseImage WHERE hm_id = #{hm_id}
+	</delete>
+
+    <!-- 更新房屋图片 -->
+    <update id="updateHouseImage">
+        UPDATE GJP_House_HouseImage
+        <set>
+            <if test="hm_type !=null">hm_type =#{hm_type}</if>
+            <if test="hm_state !=null">hm_state =#{hm_state}</if>
+            <if test="hm_chose !=null">hm_chose =#{hm_chose}</if>
+            <if test="is_alisync !=null">is_alisync =#{is_alisync}</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="hm_id !=null">hm_id = #{hm_id}</when>
+            <when test="hi_code !=null">hi_code = #{hi_code}</when>
+        </choose>
+        <if test="old_type !=null">AND hm_type =#{old_type}</if>
+    </update>
+
+    <!-- 图片封面 -->
+    <select id="selectFoldsImgs" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        hm.*,
+        hif.hif_name,
+        hif.hif_parentId,
+        hif.hif_subId,
+        hift.hift_name AS type_name
+        FROM
+        GJP_House_HouseImage AS hm
+        LEFT JOIN GJP_House_HouseImageFolder AS hif ON hm.hif_id = hif.hif_id
+        LEFT JOIN GJP_House_HouseImageFolderType AS hift ON hift.hift_id=hif.hif_name
+        ) T
+        <where>
+            <if test="hm_id != null">AND hm_id=#{hm_id}</if>
+            <if test="hi_code != null">AND hi_code=#{hi_code}</if>
+            <if test="hm_type != null">AND hm_type=#{hm_type}</if>
+            <if test="hif_name != null">AND hif_name=#{hif_name}</if>
+            <if test="hm_state != null">AND hm_state=#{hm_state}</if>
+            <if test="is_alisync != null">AND is_alisync IS NULL OR is_alisync &lt;&gt; #{is_alisync}</if>
+        </where>
+        ORDER BY hm_chose DESC
+    </select>
+
+    <update id="updateImageAlisync">
+        update GJP_House_HouseImage set is_alisync = null where hi_code = #{hi_code} AND is_alisync = 1;
+    </update>
+
+    <delete id="deleteRentFileByCode">
+        DELETE FROM GJP_Rent_House_File WHERE hi_code = #{hi_code} AND file_type = #{file_type}
+    </delete>
+</mapper>

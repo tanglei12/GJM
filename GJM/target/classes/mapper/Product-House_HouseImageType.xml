@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋图片类型 -->
+<mapper namespace="com.gjp.dao.HouseImageTypeDAO">
+
+	<!-- 添加房屋图片类型 -->
+	<insert id="addHouseImageType" parameterType="com.gjp.model.HouseHouseImageType"
+		keyProperty="hit_id">
+		INSERT INTO GJP_House_HouseImageType(
+		hit_type,
+		hi_id,
+		hm_id,
+		hi_code
+		) VALUES (
+		#{hit_type},
+		#{hi_id},
+		#{hm_id},
+		#{hi_code}
+		)
+	</insert>
+
+	<!-- 添加房屋图片类型 -->
+	<insert id="addHouseIntentionImageType" parameterType="com.gjp.model.HouseIntentionImageType"
+		keyProperty="id">
+		insert into GJP_House_Intention_ImageType(
+		hint_type,
+		phi_id,
+		hi_id,
+		hint_str,
+		him_id)
+		values
+		(
+		#{hint_type},
+		#{phi_id},
+		#{hi_id},
+		#{hint_str},
+		#{him_id})
+	</insert>
+
+	<!-- 根据房屋编号查询图片编号 -->
+	<select id="selectHmIdByHiId" resultType="int">
+		select hm_id from
+		GJP_House_HouseImageType 
+		where hi_id=#{hi_ids}
+	</select>
+
+	<!-- 根据房屋编号查询图片编号 -->
+	<select id="selectImageTypeById" resultType="com.gjp.model.HouseIntentionImageType">
+		select
+		hint_id,
+		hint_type,
+		phi_id,
+		him_id
+		from GJP_House_Intention_ImageType
+		where
+		phi_id=#{phi_id}
+	</select>
+
+	<!-- 根据房屋编号查询图片编号 -->
+	<select id="selectImage" resultType="com.gjp.model.HouseIntentionImageType">
+		select
+		hint_id,
+		hint_type,
+		phi_id,
+		hi_id,
+		him_id
+		from GJP_House_Intention_ImageType
+		where
+		hi_id=#{hi_id} and hint_str='库存'
+	</select>
+
+	<!-- 根据房屋编号查询图片编号 -->
+	<select id="selectHouseImage" resultType="com.gjp.model.HouseHouseImageType">
+		SELECT
+		hit_id,
+		hit_type,
+		hi_id,
+		hm_id
+		from GJP_House_HouseImageType
+		WHERE
+		hi_id=#{hi_id}
+		ORDER BY
+		hit_type ASC
+	</select>
+
+	<select id="queryAllHouseImageType" resultType="com.gjp.model.HouseImageType">
+		select * from GJP_House_Intention_ImageType as
+		type,GJP_House_Intention_Image as image where type.him_id =
+		image.him_id and type.phi_id=#{phi_id}
+		<if test="hint_type != null and hint_type != ''">
+			and hint_type != 'page'
+		</if>
+		<if test="hint_type == null">
+			and hint_type = 'page'
+		</if>
+	</select>
+
+	<!-- 根据编码查询所有图片 -->
+	<select id="queryAllHouseImage" resultType="com.gjp.model.HouseImageType">
+		select * from
+		GJP_House_Intention_ImageType as type,GJP_House_Intention_Image as
+		image where type.him_id = image.him_id and type.phi_id=#{phi_id}
+	</select>
+
+	<!-- 图片效果类型 -->
+	<select id="queryAllHouseImageTypeS" resultType="com.gjp.model.HouseImageType">
+		select hint_type
+		from GJP_House_Intention_ImageType as type,GJP_House_Intention_Image
+		as image where type.him_id = image.him_id and type.phi_id=#{phi_id}
+		and hint_type != 'page' group by hint_type
+	</select>
+
+	<!-- 图片效果类型 -->
+	<select id="queryAllHouseImageTypeX" resultType="com.gjp.model.HouseImageType">
+		select * from
+		GJP_House_Intention_ImageType as type,GJP_House_Intention_Image as
+		image where type.him_id = image.him_id and hint_type != 'page' and
+		hi_id=#{hi_id}
+	</select>
+
+	<!-- 根据编号删除图片类型 -->
+	<delete id="deleteHouseIntentionImageType">
+		delete from GJP_House_Intention_ImageType where
+		him_id = #{him_id}
+	</delete>
+
+	<!-- 根据编号删除图片类型 -->
+	<delete id="deleteImageType">
+		delete from GJP_House_HouseImageType where hm_id =
+		#{hm_id}
+	</delete>
+
+	<!-- 根据编号删除图片类型 -->
+	<delete id="deleteHouseImageType">
+		DELETE FROM
+		GJP_House_HouseImageType
+		WHERE
+		hi_code=#{hi_code}
+	</delete>
+
+	<update id="updatas" parameterType="com.gjp.model.HouseIntentionImageType">
+		update
+		GJP_House_Intention_ImageType set
+		hint_type = #{hint_type},
+		phi_id =
+		#{phi_id},
+		him_id = #{him_id},
+		hint_str = #{hint_str},
+		hi_id = #{hi_id}
+		where hint_id = #{hint_id}
+	</update>
+
+	<!-- 更新房屋图片标签 -->
+	<update id="updateHouseImageType">
+		UPDATE GJP_House_HouseImageType
+		<set>
+			<if test="hit_type !=null and hit_type != null">hit_type =#{hit_type}</if>
+		</set>
+		WHERE
+		hi_id = #{hi_id}
+		<if test="hm_id !=null and hm_id != null">AND hm_id = #{hm_id}</if>
+		<if test="old_type !=null and old_type != null">AND hit_type =#{old_type}</if>
+	</update>
+
+</mapper>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 企业统计 -->
+<mapper namespace="com.gjp.dao.EnterpriseStatisticsDAO">
+
+    <!-- 系统多币总成交量 -->
+    <select id="querySumCoin" resultType="int">
+        SELECT COALESCE(SUM(ca_num),0) FROM GJB_customer_record
+    </select>
+    <!-- 今日多币总成交量 -->
+    <select id="queryToDaySumCoin" resultType="int">
+        SELECT COALESCE(SUM(ca_num),0) FROM GJB_customer_record
+        WHERE
+        DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+    <!-- 昨日多币总成交量 -->
+    <select id="queryYesterdaySumCoin" resultType="int">
+        SELECT COALESCE(SUM(ca_num),0) FROM GJB_customer_record
+        WHERE
+        DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(),interval 1 day) ,'%Y-%m-%d')
+    </select>
+    <!-- 这周多币总成交量 -->
+    <select id="queryTheWeekSumCoin" resultType="int">
+        SELECT COALESCE(SUM(ca_num),0) FROM GJB_customer_record
+        WHERE
+        YEARWEEK(DATE_FORMAT(ca_create,'%Y-%m-%d')) = YEARWEEK(NOW())
+    </select>
+    <!-- 上周多币总成交量 -->
+    <select id="queryLastWeekSumCoin" resultType="int">
+        SELECT COALESCE(SUM(ca_num),0) FROM GJB_customer_record
+        WHERE
+        YEARWEEK(DATE_FORMAT(ca_create,'%Y-%m-%d')) = YEARWEEK(NOW())-1
+    </select>
+
+    <!-- 总求租信息 -->
+    <select id="queryCountRentCustomer" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer
+    </select>
+    <!-- 今日总求租信息 -->
+    <select id="queryToDayCountCustomer" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer
+        WHERE
+        DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+    <!-- 最近15天求租信息 -->
+    <select id="query15RentCustomer" resultType="int">
+        SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 14 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a1
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 13 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a2
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 12 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a3
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 11 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a4
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 10 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a5
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 9 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a6
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 8 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a7
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 7 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a8
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 6 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a9
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 5 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a10
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 4 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a11
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 3 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a12
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 2 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a13
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 1 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a14
+        UNION ALL SELECT COALESCE(SUM(counts),0) FROM (SELECT IFNULL(count(*),0) as counts FROM GJB_customer WHERE  DATE_FORMAT( cc_createTime, '%Y-%m-%d' ) = DATE_FORMAT( date_sub( NOW( ), INTERVAL 0 DAY ), '%Y-%m-%d' ) group by DATE_FORMAT( cc_createTime, '%Y-%m-%d' )) a15
+    </select>
+
+    <!-- 累计总用户 -->
+    <select id="querySumUser" resultType="int">
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        ) countCustomer
+    </select>
+    <!-- 今日新增入驻 -->
+    <select id="queryToDaySumUser" resultType="int">
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        ) countCustomer
+    </select>
+    <!-- 最近15天入驻量 -->
+    <select id="query15SumUser" resultType="int">
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 14 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 14 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 13 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 13 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 12 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 12 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        ) countCustomer
+        UNION ALL
+        SELECT SUM(sums) FROM (
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_account AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.bca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+        UNION ALL
+        SELECT COALESCE(COUNT(1),0) AS sums FROM GJB_enterprise_registration AS er
+        LEFT JOIN GJB_company AS cy ON er.er_id = cy.er_id
+        JOIN GJB_company_agent AS ca ON cy.cy_id = ca.cy_id
+        WHERE DATE_FORMAT(ca.ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+        ) countCustomer
+    </select>
+
+    <!-- 购买数量 -->
+    <select id="queryPurchaseNum" resultType="int">
+        SELECT COUNT(1) FROM GJB_customer_record
+    </select>
+    <!-- 成交数量 -->
+    <select id="queryDealNum" resultType="int">
+        SELECT COUNT(1) FROM GJB_feedback_message WHERE fm_bool = 1
+    </select>
+    <!-- 今日成交量 -->
+    <select id="queryToDayDealNum" resultType="int">
+        SELECT COUNT(1) FROM GJB_feedback_message
+        WHERE fm_bool = 1
+        AND DATE_FORMAT(fm_create,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+    <!-- 昨日成交量 -->
+    <select id="queryYesterDayDealNum" resultType="int">
+        SELECT COUNT(1) FROM GJB_feedback_message
+        WHERE fm_bool = 1
+        AND DATE_FORMAT(fm_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(),interval 1 day),'%Y-%m-%d')
+    </select>
+
+    <!-- 最近12天发布量 -->
+    <select id="query12ReleaseNum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer WHERE DATE_FORMAT(cc_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+    <!-- 最近12天浏览量 -->
+    <select id="query12SeeNum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_browse WHERE DATE_FORMAT(cb_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+    <select id="query12PurchaseNum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+
+    <!-- 经纪人钱包充值 -->
+    <select id="queryAgentWalletMoney" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE w_type = 1 AND w_state = 1 AND w_explain LIKE '%充值%' AND w_explain NOT LIKE '%充值多币%'
+    </select>
+    <!-- 经纪人钱包多币充值 -->
+    <select id="queryAgentWalletCoin" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE w_type = 1 AND w_state = 1 AND w_explain LIKE '%充值多币%'
+    </select>
+    <!-- 企业钱包充值 -->
+    <select id="queryAccountWalletMoney" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE w_type = 2 AND w_state = 1 AND w_explain LIKE '%充值%'
+    </select>
+    <!-- 企业会员续费 -->
+    <select id="queryAccountWalletRenew" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE w_type = 2 AND w_state = 1 AND w_explain LIKE '%续费%'
+    </select>
+    <!-- 余额提现 -->
+    <select id="queryWithdraw" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE  w_explain LIKE '%提现%' AND w_state = 1
+    </select>
+    <!-- 收入流水 -->
+    <select id="queryAccountWalletIncome" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE 1=1 AND w_state = 1 AND (w_explain LIKE '%充值%' OR w_explain LIKE '%充值多币%' OR w_explain LIKE '%续费%')
+    </select>
+    <!-- 支出流水 -->
+    <select id="queryAccountWalletExpenditure" resultType="double">
+        SELECT COALESCE(SUM(w_money),0) FROM GJB_wallet_record WHERE 1=1 AND w_state = 1 AND w_explain LIKE '%提现%'
+    </select>
+
+    <!-- 购买量 -->
+    <select id="queryPurchaseNum6" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_record WHERE DATE_FORMAT(ca_create,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+    <!-- 投诉量 -->
+    <select id="queryComplaintNum6" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_customer_earlywarn WHERE DATE_FORMAT(ce_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+
+    <!-- 登录人数最近12天 -->
+    <select id="queryLoginNum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d')
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d')
+    </select>
+    <!-- 登录人次最近12天 -->
+    <select id="queryLoginCount" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 11 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 10 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 9 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 8 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 7 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 6 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 5 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 4 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 3 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 2 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 1 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+        UNION ALL SELECT COALESCE(COUNT(1),0) FROM ( SELECT COUNT(1) FROM GJB_login_logs WHERE DATE_FORMAT(ll_createTime,'%Y-%m-%d') = DATE_FORMAT(date_sub(NOW(), INTERVAL 0 DAY),'%Y-%m-%d') GROUP BY ll_correlation) login
+    </select>
+</mapper>

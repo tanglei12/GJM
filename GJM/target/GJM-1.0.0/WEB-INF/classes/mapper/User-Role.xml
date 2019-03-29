@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 角色表 GJP_UserCenter_Role -->
+<mapper namespace="com.gjp.dao.RoleDao">
+
+    <!-- 查询角色列表 -->
+    <select id="selectRoleList" resultType="com.gjp.model.Role">
+        SELECT * FROM GJP_UserCenter_Role
+        WHERE 1=1
+        <if test="whereList!=null and whereList !='' ">
+            AND ucr_name LIKE CONCAT('%',#{whereList},'%')
+        </if>
+        ORDER BY ucr_date DESC
+        <if test="start !=null and end !=null">
+            LIMIT #{start},#{end}
+        </if>
+    </select>
+
+    <!-- 查询角色列表总数(分页) -->
+    <select id="selectRoleListCount" resultType="int">
+        SELECT COUNT(*) FROM GJP_UserCenter_Role
+        WHERE 1=1
+        <if test="whereList!=null and whereList !='' ">
+            AND ucr_name LIKE CONCAT('%',#{whereList},'%')
+        </if>
+    </select>
+
+    <!-- 根据id查询角色 -->
+    <select id="getRoleById" resultType="com.gjp.model.Role">
+        select * from GJP_UserCenter_Role where ucr_id = #{id}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="addRole" useGeneratedKeys="true" parameterType="com.gjp.model.Role" keyProperty="ucr_id">
+        insert into GJP_UserCenter_Role(
+        ucr_name,
+        ucr_type,
+        ucr_date,
+        ucr_remarks
+        ) values (
+        #{ucr_name},
+		#{ucr_type},
+		#{ucr_date},
+		#{ucr_remarks}
+        )
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="deleteRole" parameterType="int">
+        delete from GJP_UserCenter_Role where ucr_id = #{id}
+    </delete>
+
+    <!-- 修改 -->
+    <update id="updateRole">
+        update GJP_UserCenter_Role
+        <set>
+            <if test="ucr_name !=null">ucr_name =#{ucr_name},</if>
+            <if test="ucr_date !=null">ucr_date =#{ucr_date},</if>
+            <if test="ucr_remarks !=null">ucr_remarks =#{ucr_remarks}</if>
+        </set>
+        where ucr_id = #{ucr_id}
+    </update>
+
+    <!-- 删除用户角色关联 -->
+    <delete id="deleteFromPersonRole" parameterType="int">
+        delete from GJP_UserCenter_PersonRole where ucr_id = #{id}
+    </delete>
+
+    <!-- 删除角色权限关联 -->
+    <delete id="deleteFromRolePowers" parameterType="int">
+        delete from GJP_UserCenter_RolePowers where ucr_id = #{id}
+    </delete>
+
+    <!-- 查询角色拥有的权限 -->
+    <select id="selectPowersByRoleId" parameterType="int" resultType="com.gjp.model.Powers">
+        SELECT
+			p.*
+		FROM GJP_UserCenter_Powers p
+		LEFT JOIN GJP_UserCenter_RolePowers rp ON rp.ucps_id = p.ucps_id
+		WHERE rp.ucr_id = #{id}
+		ORDER BY
+			p.ucps_asc
+    </select>
+
+    <!-- 批量设置权限 -->
+    <insert id="savePowersForRole" useGeneratedKeys="true" parameterType="map" keyProperty="ucrp_id">
+        insert into GJP_UserCenter_RolePowers(ucr_id, ucps_id) values
+        <foreach collection="powerIds" index="index" item="item" separator=",">
+            ( #{roleId}, #{item} )
+        </foreach>
+    </insert>
+
+    <!-- 查询角色下的人员 -->
+    <select id="selectPersonsByRole" parameterType="int" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+		e.em_id,e.em_name,e.em_phone,e.em_account
+		FROM GJP_UserCenter_Role r
+		LEFT JOIN GJP_UserCenter_PersonRole pr ON pr.ucr_id = r.ucr_id
+		LEFT JOIN GJP_UserCenter_Employee e ON e.em_id = pr.em_id
+		WHERE r.ucr_id = #{id}
+		ORDER BY e.em_createTime DESC
+    </select>
+
+    <!-- 角色添加人员 -->
+    <insert id="savePersonToRole" useGeneratedKeys="true" parameterType="map" keyProperty="ucpr_id">
+     insert into GJP_UserCenter_PersonRole(ucr_id,em_id) values (#{ucr_id},#{em_id})
+    </insert>
+
+    <!-- 角色删除人员 -->
+    <delete id="deletePersonFromRole" parameterType="int">
+        DELETE FROM GJP_UserCenter_PersonRole
+        WHERE em_id = #{id}
+    </delete>
+
+    <!-- 根据角色属性查角色 -->
+    <select id="selectRoleByProperty" resultType="com.gjp.model.Role">
+        SELECT
+        *
+        FROM GJP_UserCenter_Role where 1=1
+        <if test="ucr_name !=null and ucr_name !='' ">
+            and ucr_name = #{ucr_name}
+        </if>
+        <if test="ucr_id !=null ">
+            and ucr_id != #{ucr_id}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.CustomerSeeMessageDAO">
+
+	<sql id="allmenbers">
+		csm_image,
+		hi_code,
+		csm_opinion,
+		csm_state,
+		csm_reason,
+		cs_id,
+		ctm_id
+	</sql>
+
+	<sql id="insert">
+		#{csm_image },
+		#{hi_code },
+		#{csm_opinion },
+		#{csm_state },
+		#{csm_reason },
+		#{cs_id },
+		#{ctm_id }
+	</sql>
+	
+	<sql id="update">
+		csm_image=#{csm_image },
+		hi_code=#{hi_code },
+		csm_opinion=#{csm_opinion },
+		csm_state=#{csm_state },
+		csm_reason=#{csm_reason },
+		cs_id=#{cs_id },
+		ctm_id=#{ctm_id }
+	</sql>
+
+	<!-- 插入客户带看信息 -->
+	<insert id="insertCustomerSeeMessage" parameterType="com.gjp.model.CustomerSeeMessage" keyProperty="csm_id">
+         insert into GJP_Customer_SeeMessage(<include refid="allmenbers"></include>) 
+         values (<include refid="insert"></include>)
+    </insert>
+    
+    <!-- 查询客户追踪查询追踪信息 -->
+	<select id="queryCustomerSeeMessageWhere" resultType="com.gjp.model.CustomerSeeMessage">
+		SELECT * FROM GJP_Customer_SeeMessage where csm_id=#{csm_id}
+	</select>
+	
+	<!-- 根据房屋编号查询正在跟踪房屋 -->
+	<select id="queryCustomerSeeMessageHouse" resultType="com.gjp.model.CustomerSeeMessage">
+		SELECT * FROM GJP_Customer_SeeMessage where hi_code=#{hi_code} and csm_state=0
+	</select>
+	
+	<!-- 修改客户带看信息 -->
+	<update id="updateCustomerSeeMessage" parameterType="com.gjp.model.CustomerSeeMessage">
+		update GJP_Customer_SeeMessage set
+		<include refid="update"></include>
+		where csm_id=#{csm_id}
+	</update>
+    
+</mapper>

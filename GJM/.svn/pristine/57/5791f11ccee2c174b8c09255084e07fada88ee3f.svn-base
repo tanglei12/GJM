@@ -1,0 +1,42 @@
+.divs {
+	width: 48%;
+	
+	height: 500px;
+	margin-left: 5%;
+	margin-right: 2%;
+	float: left;
+}
+
+.divs2 {
+	width: 40%;
+	
+	height: 500px;
+	margin-left: 3%;
+	float: left;
+}
+
+.modelAddTop {
+	margin-top: 10px;
+}
+
+.modelAdd {
+	margin-bottom: 10px;
+}
+
+.modelTitle {
+	display: none;
+}
+.h4Sty{
+	margin: 0 14px 0 25px;
+	padding: 14px 0 14px 12px;
+	font-size: 18px;
+	border-bottom: 1px solid #e7e7e7;
+	font-family: "Hiragino Sans GB","Microsoft YaHei";
+}
+.jianju{
+	margin-left: 10px;
+	margin-top: 10px;
+	margin-right: 16px;
+	min-width: 80px;
+	
+}

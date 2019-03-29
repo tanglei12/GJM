@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- manage统计 -->
+<mapper namespace="com.gjp.dao.ChartDAO">
+
+    <!-- 招租房源(套)统计 -->
+    <!-- 总房源套数 -->
+    <select id="houseCount" resultType="int">
+      SELECT COUNT(*) FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+      WHERE hi_forRentState != 1021
+    </select>
+    <!-- 招租房源 -->
+    <select id="rentHouseCount" resultType="int">
+      SELECT COUNT(*) FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+      WHERE hi_isForRent  = 1
+    </select>
+    <!-- 空置房 -->
+    <select id="vacantHouseCount" resultType="int">
+      SELECT COUNT(*) FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+      WHERE hi_isForRent  = 1 AND hi_forRentState != 1021 AND (hi_forRentState = 1001 OR hi_forRentState = 1004)
+    </select>
+    <!-- 转租房源 -->
+    <select id="subleaseHouseCount" resultType="int">
+      SELECT COUNT(*) FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+      WHERE hi_isForRent  = 1 AND  hi_forRentState != 1021 AND (hi_forRentState = 1002 OR hi_forRentState = 1003 OR hi_forRentState = 1005 OR hi_forRentState = 1006)
+    </select>
+    <!-- 已交定金 -->
+    <select id="depositHouseCount" resultType="int">
+      SELECT COUNT(*) FROM (
+      SELECT hi.* FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+      JOIN (
+        SELECT co1.* FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_Type = '托管合同'
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+	  ) co ON hi.hi_code = co.hi_code WHERE co.ContractObject_State = 1 or co.ContractObject_State = 2
+      ) hi
+      JOIN GJP_Finance_DownPayment AS fd ON hi.hi_code = fd.hi_code
+      WHERE hi.hi_forRentState = 2
+    </select>
+    <!-- END -->
+
+    <!-- 租客逾期 -->
+    <!-- 逾期总数 -->
+    <select id="billBeOverdueCount" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        bco.hi_code,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        bco.contractObject_code,
+        bco.bco_customer,
+        bcb.*
+        FROM
+        GJP_business.GJP_Bill_ContractBill bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code
+        AND bco.bco_type = 202
+        INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+        WHERE
+        bcb.bcb_type = 0
+        AND bcb.bcb_state = 2
+        AND co.contractObject_OptionState = 106
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &lt;= - 1
+        ) AS T
+    </select>
+    <!-- 1~5天逾期 -->
+    <select id="billBeOverdue1_5" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        bco.hi_code,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        bco.contractObject_code,
+        bco.bco_customer,
+        bcb.*
+        FROM
+        GJP_business.GJP_Bill_ContractBill bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code
+        AND bco.bco_type = 202
+        INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+        WHERE
+        bcb.bcb_type = 0
+        AND bcb.bcb_state = 2
+        AND co.contractObject_OptionState = 106
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &gt; - 5
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &lt;= - 1
+        ) AS T
+    </select>
+    <!-- 5～10天逾期 -->
+    <select id="billBeOverdue5_10" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        bco.hi_code,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        bco.contractObject_code,
+        bco.bco_customer,
+        bcb.*
+        FROM
+        GJP_business.GJP_Bill_ContractBill bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code
+        AND bco.bco_type = 202
+        INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+        WHERE
+        bcb.bcb_type = 0
+        AND bcb.bcb_state = 2
+        AND co.contractObject_OptionState = 106
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &gt; - 10
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &lt;= - 5
+        ) AS T
+    </select>
+    <!-- 10天以上逾期 -->
+    <select id="billBeOverdue10_" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        (
+        SELECT
+        bco.hi_code,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        bco.contractObject_code,
+        bco.bco_customer,
+        bcb.*
+        FROM
+        GJP_business.GJP_Bill_ContractBill bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code
+        AND bco.bco_type = 202
+        INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+        WHERE
+        bcb.bcb_type = 0
+        AND bcb.bcb_state = 2
+        AND co.contractObject_OptionState = 106
+        AND TIMESTAMPDIFF(
+        DAY,
+        DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        bcb.bcb_repaymentDate
+        ) &lt;= - 10
+        ) AS T
+    </select>
+
+    <!-- 超期合同 -->
+    <select id="overdueContractCount" resultType="int">
+      SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 2 AND NOW() > co1.ContractObject_DeadlineTime
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <select id="overdueContractTg" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_Type = '托管合同' AND co1.ContractObject_State = 2 AND NOW() > co1.ContractObject_DeadlineTime
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co1.ContractObject_Type = '托管合同' AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <select id="overdueContractZl" resultType="int">
+      SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_Type = '租赁合同' AND co1.ContractObject_State = 2 AND NOW() > co1.ContractObject_DeadlineTime
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co1.ContractObject_Type = '租赁合同' AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    
+    <!-- 待完善合同 -->
+    <select id="perfectContract" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 1 AND (co1.ContractObject_OptionState = 101 OR co1.ContractObject_OptionState = 102 OR co1.ContractObject_OptionState = 104 OR co1.ContractObject_OptionState = 1021)
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 1 AND (co1.ContractObject_OptionState = 101 OR co2.ContractObject_OptionState = 102 OR co2.ContractObject_OptionState = 104 OR co2.ContractObject_OptionState = 1021) AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 待完善编辑中 -->
+    <select id="perfectContractEdit" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 1 AND co1.ContractObject_OptionState = 101
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 1 AND co2.ContractObject_OptionState = 101 AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 待完善审核中 -->
+    <select id="perfectContractAudit" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 1 AND (co1.ContractObject_OptionState = 102 OR co1.ContractObject_OptionState = 1021)
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 1 AND (co2.ContractObject_OptionState = 102 OR co2.ContractObject_OptionState = 1021) AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 待完善复核中 -->
+    <select id="perfectContractToReview" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 1 AND co1.ContractObject_OptionState = 104
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 1 AND co2.ContractObject_OptionState = 104 AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    
+    <!-- 到期合同 -->
+    <select id="expireContract" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_State = 2 AND DATE_FORMAT(NOW(),'%Y-%m-%d') = DATE_FORMAT(co1.ContractObject_DeadlineTime,'%Y-%m-%d')
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 到期托管合同 -->
+    <select id="expireContractTg" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_Type = '托管合同' AND co1.ContractObject_State = 2 AND DATE_FORMAT(NOW(),'%Y-%m-%d') = DATE_FORMAT(co1.ContractObject_DeadlineTime,'%Y-%m-%d')
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co1.ContractObject_Type = '托管合同' AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 到期租赁合同 -->
+    <select id="expireContractZl" resultType="int">
+        SELECT COUNT(*) FROM
+            GJP_Contract_Object co1
+        WHERE
+            co1.ContractObject_Type = '租赁合同' AND co1.ContractObject_State = 2 AND DATE_FORMAT(NOW(),'%Y-%m-%d') = DATE_FORMAT(co1.ContractObject_DeadlineTime,'%Y-%m-%d')
+            AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '租赁合同' AND co2.ContractObject_State = 2 AND NOW() > co2.ContractObject_DeadlineTime AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+
+    <!-- 财务流水 -->
+    <select id="queryBillRecord" resultType="double">
+        SELECT COALESCE(SUM(product_price),0) FROM GJP_Order AS o
+        JOIN GJP_Order_Detail AS od ON o.order_sn = od.order_sn
+        JOIN GJP_Order_Bill AS ob ON o.pay_sn = ob.bill_sn
+        WHERE
+        bill_status = 2
+        <if test="bill_type != null">
+          AND bill_type = #{bill_type}
+        </if>
+        <if test="product_type != null">
+          AND product_type = #{product_type}
+        </if>
+        <if test="date != null">
+          ${date}
+        </if>
+    </select>
+    <select id="queryBillRecordCount" resultType="double">
+        SELECT COUNT(*) FROM GJP_Order AS o
+        JOIN GJP_Order_Detail AS od ON o.order_sn = od.order_sn
+        JOIN GJP_Order_Bill AS ob ON o.pay_sn = ob.bill_sn
+        WHERE
+        bill_status = 2
+        <if test="bill_type != null">
+          AND bill_type = #{bill_type}
+        </if>
+          AND product_type != 3 AND product_type != 5
+        <if test="date != null">
+          ${date}
+        </if>
+    </select>
+    <!-- END -->
+
+    <!-- 服务统计 -->
+    <select id="queryService" resultType="int">
+        <foreach collection="inServiceWhere" index="index" item="item" separator="">
+            <if test="index == 0">
+                SELECT COALESCE(COUNT(1),0) FROM GJP_Service_Order AS so LEFT JOIN GJP_Service_Message AS sm ON so.so_type = sm.sm_id WHERE sm.sm_name = #{sm_name} AND 4100 >= so.so_state AND DATE_FORMAT(so_createTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d')
+            </if>
+            <if test="index > 0">
+                UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJP_Service_Order AS so LEFT JOIN GJP_Service_Message AS sm ON so.so_type = sm.sm_id WHERE sm.sm_name = #{sm_name} AND 4100 >= so.so_state AND DATE_FORMAT(so_createTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d')
+            </if>
+        </foreach>
+    </select>
+
+    <!-- 业务量统计 -->
+    <!-- 存房数 -->
+    <select id="queryInHouse" resultType="int">
+        <foreach collection="inHouseWhere" index="index" item="item" separator="">
+            <if test="index == 0">
+              SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '托管合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+            </if>
+            <if test="index > 0">
+              UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '托管合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+            </if>
+        </foreach>
+    </select>
+    <!-- 当前月总存房数 -->
+    <select id="queryInHouseSum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '托管合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 出房数 -->
+    <select id="queryOutHouse" resultType="int">
+        <foreach collection="outHouseWhere" index="index" item="item" separator="">
+            <if test="index == 0">
+              SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '租赁合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '租赁合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+            </if>
+            <if test="index > 0">
+              UNION ALL SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '租赁合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '租赁合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+            </if>
+        </foreach>
+    </select>
+    <!-- 当前月总出房数 -->
+    <select id="queryOutHouseSum" resultType="int">
+        SELECT COALESCE(COUNT(1),0) FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '租赁合同' AND (co1.ContractObject_State = 1 OR co1.ContractObject_State = 2) AND DATE_FORMAT(co1.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '租赁合同' AND (co2.ContractObject_State = 1 OR co2.ContractObject_State = 2) AND DATE_FORMAT(co2.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )
+    </select>
+    <!-- 解约数 -->
+    <select id="queryDissolution" resultType="int">
+        <foreach collection="dissolutionWhere" index="index" item="item" separator="">
+            <if test="index == 0">
+              SELECT COALESCE(COUNT(1),0) FROM (SELECT co1.* FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '托管合同' AND (co1.ContractObject_OptionState = 401 OR co1.ContractObject_OptionState = 402 OR co1.ContractObject_OptionState = 403) AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND (co2.ContractObject_OptionState = 401 OR co2.ContractObject_OptionState = 402 OR co2.ContractObject_OptionState = 403) AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )) co JOIN GJP_Contract_CancelOrder AS cco ON co.ContractObject_Code = cco.contractObject_Code AND DATE_FORMAT(cco.cco_applicationTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d')
+            </if>
+            <if test="index > 0">
+              UNION ALL SELECT COALESCE(COUNT(1),0) FROM (SELECT co1.* FROM GJP_Contract_Object co1 WHERE co1.ContractObject_Type = '托管合同' AND (co1.ContractObject_OptionState = 401 OR co1.ContractObject_OptionState = 402 OR co1.ContractObject_OptionState = 403) AND NOT EXISTS ( SELECT 1 FROM GJP_Contract_Object co2 WHERE co2.hi_code = co1.hi_code AND co2.ContractObject_Type = '托管合同' AND (co2.ContractObject_OptionState = 401 OR co2.ContractObject_OptionState = 402 OR co2.ContractObject_OptionState = 403) AND co2.ContractObject_CreateTime > co1.ContractObject_CreateTime )) co JOIN GJP_Contract_CancelOrder AS cco ON co.ContractObject_Code = cco.contractObject_Code AND DATE_FORMAT(cco.cco_applicationTime,'%Y-%m-%d') = DATE_FORMAT(#{item},'%Y-%m-%d')
+            </if>
+        </foreach>
+    </select>
+    <!-- END -->
+
+    <!-- 出房排名 -->
+    <select id="queryInHousePeople" resultType="com.gjp.model.HousePeople">
+      SELECT em.em_name,ucc.ucc_name,COUNT(1) as count FROM GJP_Contract_Object AS co
+      LEFT JOIN GJP_Contract_RelaEmp AS cr ON co.ContractObject_Id = cr.contractObject_Id AND cr.cre_role = 1
+      LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON cr.em_id = em.em_id
+      LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS cp ON em.em_id = cp.em_id
+      LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON cp.ucc_id = ucc.ucc_id
+      WHERE co.ContractObject_Type = '托管合同' AND DATE_FORMAT(co.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND (co.ContractObject_State = 1 OR co.ContractObject_State = 2) GROUP BY em.em_id ORDER BY count DESC LIMIT 3
+    </select>
+    <!-- 存房排名 -->
+    <select id="queryOutHousePeople" resultType="com.gjp.model.HousePeople">
+      SELECT em.em_name,ucc.ucc_name,COUNT(1) as count FROM GJP_Contract_Object AS co
+      LEFT JOIN GJP_Contract_RelaEmp AS cr ON co.ContractObject_Id = cr.contractObject_Id AND cr.cre_role = 1
+      LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON cr.em_id = em.em_id
+      LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS cp ON em.em_id = cp.em_id
+      LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON cp.ucc_id = ucc.ucc_id
+      WHERE co.ContractObject_Type = '租赁合同' AND DATE_FORMAT(co.ContractObject_CreateTime,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m') AND (co.ContractObject_State = 1 OR co.ContractObject_State = 2) GROUP BY em.em_id ORDER BY count DESC LIMIT 3
+    </select>
+</mapper>

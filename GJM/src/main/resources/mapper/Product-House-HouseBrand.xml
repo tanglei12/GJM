@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋品牌 GJP_House_HouseBrand -->
+<mapper namespace="com.gjp.dao.HouseHouseBrandDao">
+
+	<sql id="allmenbers">
+		hb_id,
+		hb_name,
+		hb_desc,
+		hb_time
+	</sql>
+
+	<sql id="menberEcpId">
+		hb_name,
+		hb_desc,
+		hb_time
+	</sql>
+
+	<!-- 添加房屋品牌 -->
+	<insert id="addHouseBrand" useGeneratedKeys="true" parameterType="com.gjp.model.HouseHouseBrand" keyProperty="hb_id">
+		insert into GJP_House_HouseBrand(
+		hb_name,
+		hb_desc,
+		hb_time)
+		values
+		(
+		#{hb_name},
+		#{hb_desc},
+		#{hb_time})
+	</insert>
+
+	<!-- 添加公寓类型 -->
+	<insert id="addBrandType" useGeneratedKeys="true" parameterType="com.gjp.model.ApartmentType" keyProperty="ht_id">
+		insert into GJP_House_Type(
+		ht_name,
+		ht_value,
+		ht_parentId)
+		values
+		(
+		#{ht_name},
+		#{ht_value},
+		#{ht_parentId})
+	</insert>
+
+	<!-- 添加房屋品牌条件 -->
+	<insert id="addHouseBrandWhere" useGeneratedKeys="true" parameterType="com.gjp.model.HouseBrandWhere" keyProperty="bw_id">
+		insert into GJP_House_BrandWhere(
+		bw_name,
+		bw_time,
+		hb_id)
+		values
+		(
+		#{bw_name},
+		#{bw_time},
+		#{hb_id})
+	</insert>
+
+	<!-- 添加房屋品牌条件扩展 -->
+	<insert id="addHouseBrandWhereExtended" useGeneratedKeys="true" parameterType="com.gjp.model.HouseBrandWhereExtended" keyProperty="bwe_id">
+		insert into GJP_House_BrandWhereExtended(
+		bwe_name,
+		bw_id,
+		bwe_num)
+		values
+		(
+		#{bwe_name},
+		#{bw_id},
+		#{bwe_num})
+	</insert>
+
+	<!-- ajax查询房屋品牌List -->
+	<select id="selectHouseHouseBrand" resultType="com.gjp.model.HouseHouseBrand">
+		select
+		<include refid="allmenbers" />
+		from GJP_House_HouseBrand
+	</select>
+
+	<!-- ajax查询房屋品牌List -->
+	<select id="selectVersions" resultType="String">
+		SELECT
+		ht_name
+		FROM 
+		GJP_House_Type 
+		WHERE 
+		ht_parentId='207'
+	</select>
+
+	<!-- ajax查询房屋品牌List -->
+	<select id="selectType" resultType="String">
+		select
+		ht_value
+		from GJP_House_Type where ht_name=#{hi_version}
+	</select>
+
+	<!-- 查询房屋品牌编码 -->
+	<select id="selectHb_id" parameterType="com.gjp.model.HouseHouseBrand" resultType="int">
+		select
+		hb_id
+		from GJP_House_HouseBrand
+		where hb_name=#{hb_name} and hb_desc=#{hb_desc} and hb_time=#{hb_time}
+	</select>
+
+	<!-- 分页查询房屋品牌 -->
+	<select id="selectHouseHouseBrands" resultType="com.gjp.model.HouseHouseBrand">
+		select
+		hb_id,
+		hb_name,
+		hb_desc,
+		hb_time
+		from GJP_House_HouseBrand
+		where 1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+	</select>
+
+	<!-- 查询房屋品牌总条数 -->
+	<select id="selectTotalHouseHouseBrand" resultType="int">
+		select count(*) from GJP_House_HouseBrand
+		where 1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+	</select>
+
+	<!-- 根据id查询房屋品牌 -->
+	<select id="selectHouseHouseBrandById" resultType="com.gjp.model.HouseHouseBrand">
+		select
+		hb_id,
+		hb_name,
+		hb_desc,
+		hb_time
+		from GJP_House_HouseBrand
+		where hb_id=#{hb_id}
+	</select>
+
+	<!-- 查询品牌条件 -->
+	<select id="selectBrandWhere" resultType="com.gjp.model.HouseBrandWhere">
+		select
+		bw_id,
+		bw_name,
+		bw_time,
+		hb_id
+		from GJP_House_BrandWhere
+		where hb_id=#{hb_id}
+	</select>
+
+	<!-- 查询品牌条件扩展 -->
+	<select id="selectHouseBrandWhereExtended" resultType="com.gjp.model.HouseBrandWhereExtended">
+		select
+		bwe_id,
+		bwe_name,
+		bw_id,
+		bwe_num
+		from GJP_House_BrandWhereExtended
+		where bw_id=#{bw_id}
+	</select>
+
+	<!-- 修改房屋品牌 -->
+	<update id="upDataHouseHouseBrand" parameterType="com.gjp.model.HouseHouseBrand">
+		update GJP_House_HouseBrand set
+		hb_name=#{hb_name},
+		hb_desc=#{hb_desc}
+		where
+		hb_id=#{hb_id}
+	</update>
+
+	<!-- 根据品牌条件编号删除品牌条件扩展 -->
+	<delete id="deleteHouseBrandWhereExtended" parameterType="int">
+		delete from GJP_House_BrandWhereExtended where bw_id=#{bw_id}
+	</delete>
+	<!-- <update id="updateStudent" parameterType="Student"> update users_name set name = #{name} where id = #{id} </update> <select id="queryStudentById" parameterType="int" resultType="Student"> select * from users_name where id=#{id} </select> <select id="queryAllStudents" resultType="Student"> select * from users_name </select> -->
+
+
+
+</mapper>

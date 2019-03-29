@@ -1,0 +1,83 @@
+.sub-content select{
+	width: 150px;
+	height: 35px;
+	border-radius: 5px;
+	border-color: #bbb;
+}
+
+.sub-content dl{width: 235px;height: 35px;float: left;margin: auto;}
+.sub-content dt{width: 85px;height: 35px;line-height: 35px;float: left;text-align: right;}
+.sub-content dd{width: 120px;height: 35px;float: left;}
+.sub-content em{color: red;margin-right: 5px;}
+.sub-content input{border: 1px #bbb solid;width: 150px;height: 35px;line-height: 35px;border-radius: 5px;text-indent: 5px}
+
+.itemsNameConten{
+	background-color: #fff;
+    width: 300px;
+    min-height: 90px;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 20%;
+	border: 1px #ddd solid;
+	z-index: 99;
+}
+
+.itemsNameConten #invnames{
+	width: 298px;
+    padding-left: 5px;
+    border: none;
+    border-bottom: 1px #06b solid
+}
+
+
+.namesCount .trName{
+	height: 30px;
+	line-height: 30px;
+	border: none;
+	border-bottom: 1px #eee solid;
+	width: 99%;
+}
+
+.purchaseOrder{
+	width: 600px;
+	border: 1px #5aace2 solid;
+	float: left;
+	position: relative;
+	min-height: 40px;
+}
+.purchaseOrder table thead tr{
+	border-bottom: 1px #5aace2 solid;
+    line-height: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+.purchaseOrder table tbody tr{
+	height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+    text-align: center;
+    border-top: 1px #5aace2 solid;
+}
+
+.irStateButton{
+	border: 1px #000 solid;
+	background-color: #3498db;
+	color: #fff;
+}
+
+.sub-title .title-nav .visitedes{
+	margin-left: 10px;
+	font-size: 16px;
+}
+
+.sub-title .title-nav .on{
+	border-bottom: 2px solid #3e97c9;
+}
+
+
+
+
+

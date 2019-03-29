@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.CustomerStatisticsDAO">
+
+	<sql id="allmenbers">
+		pcs_state,
+		pcs_num,
+		psc_date,
+		em_id,
+		em_department,
+		pcs_cycle,
+		pcs_cycleNum,
+		pcs_success
+	</sql>
+
+	<sql id="insert">
+		#{pcs_state },
+		#{pcs_num },
+		#{psc_date },
+		#{em_id },
+		#{em_department},
+		#{pcs_cycle },
+		#{pcs_cycleNum },
+		#{pcs_success }
+	</sql>
+
+	<sql id="update">
+		pcs_state=#{pcs_state },
+		pcs_num=#{pcs_num },
+		psc_date=#{psc_date },
+		em_id=#{em_id },
+		em_department=#{em_department},
+		pcs_cycle=#{pcs_cycle },
+		pcs_cycleNum=#{pcs_cycleNum },
+		pcs_success=#{pcs_success }
+	</sql>
+
+	<!-- 插入内部人员统计 -->
+	<insert id="insertCustomerStatistics" useGeneratedKeys="true" parameterType="com.gjp.model.Statistics" keyProperty="pcs_id">
+		insert into GJP_Customer_Statistics(
+		<include refid="allmenbers"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 查询内部人员统计 -->
+	<select id="queryCustomerStatistics" resultType="com.gjp.model.Statistics">
+		SELECT * FROM
+		GJP_Customer_Statistics
+	</select>
+
+	<select id="queryCustomerTrusteeshipByEmid" resultType="com.gjp.model.ViewTrusteeship">
+		SELECT * FROM
+		View_GJP_Trusteeship
+		Where em_id=#{em_id}
+		LIMIT 1
+	</select>
+
+	<!-- 根据周期数，内部人员编码查询 -->
+	<select id="queryCustomerStatisticsWhere" resultType="com.gjp.model.Statistics">
+		SELECT * FROM
+		GJP_Customer_Statistics where em_id=#{em_id} and pcs_cycleNum=#{pcs_cycleNum} and pcs_state=2
+		<if test="psc_date != null and psc_date != ''">
+			and psc_date = DATE_FORMAT(#{psc_date},'%Y-%m-%d')
+		</if>
+		limit 1
+	</select>
+
+	<!-- 修改内部人员统计 -->
+	<update id="updateCustomerStatistics" parameterType="com.gjp.model.Statistics">
+		update GJP_Customer_Statistics set
+		<include refid="update"></include>
+		where pcs_id=#{pcs_id}
+	</update>
+
+	<!-- 修改内部人员统计 -->
+	<update id="updateCustomerStatisticsForNum" parameterType="com.gjp.model.Statistics">
+		update GJP_Customer_Statistics
+		SET pcs_num=pcs_num+1
+		where pcs_id=#{pcs_id}
+	</update>
+
+	<!-- 根据视图查询内部人员 -->
+	<select id="queryCustomerTrusteeship" resultType="com.gjp.model.ViewTrusteeship">
+		SELECT * FROM View_GJP_Trusteeship where 1=1
+		<if test="em_id != null and em_id != ''">
+			and em_id=#{em_id}
+		</if>
+	</select>
+
+	<!-- 查询统计分析列表 -->
+	<select id="queryCustomerStatisticsList" resultType="com.gjp.model.Statistics">
+		SELECT
+		em_name,
+		em_phone,
+		ucc_name,
+		intent.*
+		FROM
+		GJP_user.view_GJP_UserEmp emp
+		left JOIN (
+		SELECT
+		em_id,
+		ht_type,
+		COUNT(em_id) AS nums
+		FROM
+		GJP_product.GJP_House_Intention_Type
+		WHERE
+		ht_houseType = 1
+		<if test="t.ht_type != null and t.ht_type != ''">
+			and ht_type = #{t.ht_type}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ht_time >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ht_time
+		</if>
+		GROUP BY em_id
+		) intent ON emp.em_id = intent.em_id
+		WHERE
+		(ucc_id = 43 or ucc_id = 44) or intent.em_id is NOT NULL
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		order by ucc_name desc
+	</select>
+
+	<!-- 查询带看统计 -->
+	<select id="queryCustomerStatisticsListSee" resultType="com.gjp.model.Statistics">
+		SELECT
+		em_name,
+		em_phone,
+		ucc_name,
+		intent.*
+		FROM
+		GJP_user.view_GJP_UserEmp emp
+		left JOIN (
+		SELECT
+		em_id,
+		sum(pcs_num) AS nums
+		FROM
+		GJP_user.GJP_Customer_Statistics
+		WHERE
+		pcs_cycle=7
+		<if test="dateStart != null and dateStart != ''">
+			and psc_date >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= psc_date
+		</if>
+		GROUP BY em_id
+		) intent ON emp.em_id = intent.em_id
+		where
+		(ucc_id = 43 or ucc_id = 44)
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		order by ucc_name desc
+	</select>
+
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserCenterUserDAO">
+	<!-- 列表数据 -->
+	<select id="selectUserCenterUser" resultType="com.gjp.model.UserCenterUserVo">
+		SELECT
+			uu.*, gt.type_name, co.contractObject_No, co.contractObject_Code, co.contractObject_Type, ua.ua_total_amount, ua.ua_balance_amount, vh.house_address
+		FROM GJP_UserCenter_User uu
+		LEFT JOIN GJP_UserCenter_Type gt ON gt.type_id = uu.user_cardType
+		LEFT JOIN (SELECT * FROM GJP_UserCenter_RelationContract GROUP BY user_id, contractObject_Id) rc  ON rc.user_id = uu.user_id
+		LEFT JOIN GJP_business.GJP_Contract_Object co ON co.contractObject_id = rc.contractObject_Id
+		LEFT JOIN GJP_User_Assets ua ON ua.user_id = uu.user_id
+		LEFT JOIN GJP_product.view_GJP_HouseAddress vh ON co.hi_code = vh.hi_code
+		WHERE 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		GROUP BY uu.user_id
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="totalSelectUserCenterUser" resultType="com.gjp.model.UserCenterUserVo">
+		SELECT
+			uu.*, gt.type_name, co.contractObject_No, co.contractObject_Code, co.contractObject_Type, ua.ua_total_amount, ua.ua_balance_amount, vh.house_address
+		FROM GJP_UserCenter_User uu
+		LEFT JOIN GJP_UserCenter_Type gt ON gt.type_id = uu.user_cardType
+		LEFT JOIN (SELECT * FROM GJP_UserCenter_RelationContract GROUP BY user_id, contractObject_Id) rc  ON rc.user_id = uu.user_id
+		LEFT JOIN GJP_business.GJP_Contract_Object co ON co.contractObject_id = rc.contractObject_Id
+		LEFT JOIN GJP_User_Assets ua ON ua.user_id = uu.user_id
+		LEFT JOIN GJP_product.view_GJP_HouseAddress vh ON co.hi_code = vh.hi_code
+		WHERE 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		GROUP BY uu.user_id
+		${houseModel.sqlOrderBy}
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋扩展信息 GJP_House_HouseExtended -->
+<mapper namespace="com.gjp.dao.HouseInformationStateDAO">
+
+	<sql id="allmenbers">
+		his_id,
+		his_name,
+		his_pid,
+		his_spid,
+		his_date
+	</sql>
+
+	<sql id="menberEcpId">
+		his_name,
+		his_pid,
+		his_spid,
+		his_date
+	</sql>
+
+	<sql id="insert">
+		#{his_name},
+		#{his_pid },
+		#{his_spid},
+		#{his_date}
+	</sql>
+	
+	<sql id="update">
+		<if test="his_pid != null and his_pid != ''">
+			his_pid={his_pid },
+		</if>
+		<if test="his_spid != null and his_spid != ''">
+			his_spid={his_spid},
+		</if>
+		<if test="his_date != null and his_date != ''">
+			his_date={his_date},
+		</if>
+		his_name={his_name}
+	</sql>
+
+	<!-- 添加房屋状态信息 -->
+	<insert id="addHouseInformationState" useGeneratedKeys="true"
+		parameterType="com.gjp.model.HouseInformationState" keyProperty="his_id">
+		insert into
+		GJP_House_HouseInformationState(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+	
+	<!-- 查询库存房屋 -->
+	<select id="selectHouseInfoKeep" resultType="com.gjp.model.HouseInfoKeep">
+		select * from GJP_House_HouseInformation_keep
+	</select>
+	
+	<!-- 查询线上房屋 -->
+	<select id="selectHouseHouseInformation" resultType="com.gjp.model.HouseHouseInformation">
+		select * from GJP_House_HouseInformation
+	</select>
+
+	<!-- 查询 -->
+	<!-- <select id="selectHouseExtendedById" resultType="com.gjp.model.HouseHouseExtended">
+		select
+		<include refid="allmenbers" />
+		from GJP_House_HouseExtended where he_id = #{id}
+	</select> -->
+
+	<!-- 修改房屋状态 -->
+	<update id="updateHouseInformationState" parameterType="com.gjp.model.HouseInformationState">
+		update
+		GJP_House_HouseInformationState set
+		<include refid="update"></include>
+		where
+		his_id=#{his_id}
+	</update>
+	<!-- 查询一级目录 -->
+	<select id="selectHouseInformationStateSpid" resultType="com.gjp.model.HouseInformationState">
+		SELECT * FROM GJP_House_HouseInformationState WHERE his_pid = 0
+	</select>
+</mapper>

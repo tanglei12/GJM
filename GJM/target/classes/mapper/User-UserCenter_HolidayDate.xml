@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 假期日期 -->
+<mapper namespace="com.gjp.dao.HolidayDateDAO">
+
+	<!-- 插入短信内容  -->
+	<insert id="insertHolidayDate" useGeneratedKeys="true"
+		parameterType="com.gjp.model.UserCenterHolidayDate" keyProperty="d_id">
+		insert into GJP_HolidayDate(
+			d_date,
+			d_holiday
+		) values (
+			#{d_date},
+			#{d_holiday}
+		)
+	</insert>
+	
+	<select id="selectHolidayDate" resultType="com.gjp.model.UserCenterHolidayDate">
+		select * from GJP_HolidayDate where 1=1
+		<if test="d_date != null and d_date != ''">
+		and d_date=#{d_date}
+		</if> 
+	</select>
+	
+</mapper>

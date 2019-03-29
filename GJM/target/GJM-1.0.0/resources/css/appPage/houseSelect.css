@@ -1,0 +1,507 @@
+dl {
+    width: 100%;
+    padding: 4px 0;
+}
+.house_titles {
+    position: relative;
+    margin-bottom: 10px;
+}
+.house_titles .house_money {
+    height: 50px;
+    line-height: 50px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+.house_titles .house_money .house_money_select {
+    font-size: 12px;
+    position: absolute;
+    left: -39px;
+    top: 45px;
+    width: 102px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .14);
+    background: #FFF;
+    z-index: 15;
+}
+.house_titles .house_money .house_money_select li {
+    height: 30px;
+    line-height: 30px;
+    text-indent: 3%;
+}
+.house_titles .house_money .house_money_select li.click {
+    background-color: #FF6666;
+    color: #FFF;
+}
+.house_titles .house_money .house_money_select li i {
+    font-style: normal;
+}
+.house_titles .house_money label {
+    display: block;
+    height: 42px;
+    margin-top: -2px;
+    width: 100%;
+    float: left;
+    position: relative;
+}
+.house_titles .house_money label .moneyType {
+    font-size: 12px;
+    color: #999999;
+    text-align: right;
+}
+.house_titles .house_money .rigth {
+    border-right: none;
+}
+.house_titles .house_money label span {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+.house_titles .house_money label .red {
+    color: #FF6666;
+}
+.house_image {
+    width: 100%;
+    height: 235px;
+    background-color: #FFF;
+    position: relative;
+    overflow: hidden;
+}
+.house_image img {
+    width: 100%;
+    height: 235px;
+}
+.house_image ul {
+    width: 100%;
+    height: 235px;
+    position: relative;
+}
+.house_image .image_content {
+    position: relative;
+    width: 100%;
+    height: 375px;
+}
+div.flicking_con {
+    position: absolute;
+    bottom: 10px;
+    left: 40%;
+    z-index: 999;
+    width: 300px;
+    height: 21px;
+}
+div.flicking_con a {
+    float: left;
+    width: 21px;
+    height: 21px;
+    margin: 0;
+    padding: 0;
+    background: url('/resources/image/btn_main_img.png') 0 0 no-repeat;
+    display: block;
+    text-indent: -1000px
+}
+div.flicking_con a.on {
+    background-position: 0 -21px
+}
+#btn_prev, #btn_next {
+    z-index: 11111;
+    position: absolute;
+    width: 73px !important;
+    height: 74px !important;
+    top: 50%;
+    margin-top: -37px;
+    display: none;
+}
+/* #btn_prev{background:url(../image/hover_left.png) no-repeat left top;left:100px;}
+#btn_next{background:url(../image/hover_right.png) no-repeat right top;right:100px;} */
+.house_title {
+    /*margin-top: 20px;*/
+    background: #FFFFFF;
+    padding: 0 2%;
+    font-size: 16px;
+    height: 50px;
+    line-height: 50px;
+}
+.house_title label {
+    margin-right: 10px;
+}
+.house_message {
+    width: 100%;
+}
+.house_message .house_content {
+    margin-bottom: 10px;
+    background: #FFFFFF;
+    padding: 0 2%;
+}
+.house_setting {
+    width: 100%;
+    overflow: hidden;
+    padding: 5px 0;
+    background-color: #FFF;
+    margin-bottom: 5px;
+}
+.house_setting dl {
+    width: 50%;
+    float: left;
+    font-size: 12px;
+}
+.house_setting dl dt {
+    width: 38px;
+    float: left;
+    color: #999;
+}
+.house_message .supporting {
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+.house_message .supporting .supporting_content {
+    overflow: hidden;
+}
+.house_message .supporting .supporting_content_l {
+    width: 50%;
+    float: left;
+    font-size: 13px;
+    height: 35px;
+    line-height: 35px;
+}
+.house_message .supporting .supporting_content_l img {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-top: 8px;
+}
+.house_message .supporting .supporting_content_l span {
+    display: block;
+    float: left;
+    margin-left: 5px;
+}
+.title_class {
+    position: relative;
+    text-indent: 10px;
+    font-size: 14px;
+    line-height: 34px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.title_class:AFTER {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 12px;
+    position: absolute;
+    background: #FF6666;
+    top: 12px;
+    border-radius: 2px;
+    visibility: visible;
+}
+.traffic dl {
+    width: 100%;
+    font-size: 12px;
+}
+.traffic dl dt {
+    float: left;
+    color: #999;
+}
+.traffic dl dd {
+    float: left;
+    margin-left: 3px;
+}
+.message_div {
+    padding: 0 2%;
+    margin-top: 15px;
+    background-color: #FFF;
+}
+.message_div dl {
+    font-size: 12px;
+    border-bottom: 1px solid #e8e8e8;
+    height: 25px;
+    line-height: 25px;
+}
+.message_div .schedule {
+    overflow: hidden;
+}
+.message_div .bottom {
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+}
+.message_div dt {
+    color: #999;
+    float: left;
+}
+.message_div dd {
+    float: left;
+    margin-left: 2px;
+    display: flex;
+}
+.message_div .message_name {
+    display: block;
+    width: 45px;
+}
+.message_div .message_phone {
+    margin-left: 5px;
+    color: #3498DB;
+}
+.message_div .message_content {
+    margin-left: 10px;
+}
+.message_div .message_date {
+    float: right;
+    margin-right: 3px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #999;
+}
+.button {
+    position: fixed;
+    display: flex;
+    font-size: 14px;
+    line-height: 56px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    z-index: 100;
+}
+.button .houseFollow {
+    display: block;
+    width: 30%;
+    text-align: center;
+}
+.button .houseContract {
+    display: block;
+    flex: 1;
+    text-align: center;
+}
+.option-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: rgba(0, 0, 0, 0.06);
+    z-index: 999;
+}
+.option-mask .option-main {
+    position: absolute;
+    bottom: 45px;
+    width: 94%;
+    margin: 3%;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+.option-mask .option-main > button {
+    position: relative;
+    display: block;
+    border: none;
+    background: none;
+    text-align: center;
+    width: 100%;
+    line-height: 42px;
+    border-top: 1px solid #f0f0f0;
+    color: #2196F3;
+}
+.option-mask .option-main > button[disabled] {
+    color: #ddd;
+}
+.option-mask .option-main > button:FIRST-CHILD {
+    border-top: none;
+    border-radius: 0;
+}
+.house_message_content {
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px solid #e8e8e8;
+    display: table;
+    width: 100%;
+}
+.house_message_content div {
+    float: left;
+    font-size: 13px;
+    width: 33%;
+    color: #999999;
+}
+.house_message_content .house_checked {
+    width: 7%;
+    height: 25px;
+    line-height: 25px;
+    background: #dddddd;
+    margin-top: 10px;
+    text-align: center;
+    display: table-cell;
+}
+.house_message_content .house_message_content1 {
+    display: table-cell;
+    float: left;
+    width: 91%;
+    margin-left: 2%;
+}
+.house_message_content .house_checked .check {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.house_message_content .house_checked.checked {
+    background-color: #FF6666;
+}
+.house_message_content .house_wo {
+    font-size: 13px;
+    color: #575757;
+}
+.house_message_content .house_region {
+    text-align: center;
+}
+.house_message_content .house_money {
+    text-align: right;
+}
+.mui-preview-image.mui-fullscreen {
+    position: fixed;
+    z-index: 200;
+    background-color: #000;
+}
+.mui-preview-header,
+.mui-preview-footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 10;
+}
+.mui-preview-header {
+    height: 44px;
+    top: 0;
+}
+.mui-preview-footer {
+    height: 50px;
+    bottom: 0px;
+}
+.mui-preview-header .mui-preview-indicator {
+    display: block;
+    line-height: 25px;
+    color: #fff;
+    text-align: center;
+    margin: 15px auto 4px;
+    width: 70px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    font-size: 16px;
+}
+.mui-preview-image {
+    display: none;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.mui-preview-image.mui-preview-in {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+.mui-preview-image.mui-preview-out {
+    background: none;
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+}
+.mui-preview-image.mui-preview-out .mui-preview-header,
+.mui-preview-image.mui-preview-out .mui-preview-footer {
+    display: none;
+}
+.mui-zoom-scroller {
+    position: absolute;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    -webkit-backface-visibility: hidden;
+}
+.mui-zoom {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+.mui-slider .mui-slider-group .mui-slider-item img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+    width: 100%;
+}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+    display: inline-table;
+}
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+    display: table-cell;
+    vertical-align: middle;
+}
+.mui-preview-loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.mui-preview-loading.mui-active {
+    display: block;
+}
+.mui-preview-loading .mui-spinner-white {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    height: 50px;
+    width: 50px;
+}
+.mui-preview-image img.mui-transitioning {
+    -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+p img {
+    max-width: 100%;
+    height: auto;
+}

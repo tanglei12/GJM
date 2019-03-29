@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillContractBillDao">
+	<!-- 根据订单号查询账单 -->
+	<select id="queryBillContractBillList" resultType="com.gjp.model.FinanceBillVo">
+		SELECT
+			bcb.*,
+			bco.bco_cooperater
+		FROM GJP_Bill_ContractBill AS bcb
+		LEFT JOIN GJP_Bill_ContractOrder AS bco ON bcb.bco_code = bco.bco_code
+		WHERE 
+			bcb.bco_code = #{bco_code}
+		<if test="bcb_cycle != null">
+		AND bcb.bcb_cycle = #{bcb_cycle}
+		</if>
+		ORDER BY bcb.bcb_cycle ASC
+	</select>
+
+	<!-- 根据id查询账单 -->
+	<select id="queryBillContractBillByProperty" resultType="com.gjp.model.FinanceBillVo">
+		SELECT *
+		FROM GJP_Bill_ContractBill bcb
+		WHERE 1=1
+		<if test="bcb_id != null">
+		AND bcb.bcb_id = #{bcb_id}
+		</if>
+		<if test="bco_code != null and bco_code != ''">
+		AND bcb.bco_code = #{bco_code}
+		</if>
+		<if test="bcb_code != null and bcb_code != ''">
+		AND bcb.bcb_code = #{bcb_code}
+		</if>
+		<if test="bcb_cycle != null">
+		AND bcb.bcb_cycle = #{bcb_cycle}
+		</if>
+		<if test="bcb_type != null">
+		AND bcb.bcb_type = #{bcb_type}
+		</if>
+		<if test="bcb_state != null">
+		AND bcb.bcb_state = #{bcb_state}
+		</if>
+	</select>
+	
+	<!-- 根据属性查询账单 -->
+	<select id="queryBillContractBillById" resultType="com.gjp.model.FinanceBillVo">
+		SELECT *
+		FROM GJP_Bill_ContractBill bcb
+		WHERE bcb.bcb_id = #{bcb_id}
+	</select>
+
+	<!-- 查询账单类型 -->
+	<select id="queryBillTypeList" resultType="com.gjp.model.BillTypeVo">
+		SELECT bt_code,bt_name FROM GJP_Bill_Type where bt_parentCode = 2
+	</select>
+
+	<!-- 修改账单 -->
+	<update id="updateBillContractBill">
+		UPDATE GJP_Bill_ContractBill
+		<set>
+			<if test="bcb_state !=null and bcb_state !='' ">bcb_state=#{bcb_state},</if>
+			<if test="bcb_isRepay !=null and bcb_isRepay !='' ">bcb_isRepay=#{bcb_isRepay},</if>
+		</set>
+		where bcb_id = #{bcb_id}
+	</update>
+
+	<!-- 查询需要代偿的账单 -->
+	<select id="queryNeedToRepays" resultType="com.gjp.model.FinanceBillVo">
+		SELECT bcb.*
+		FROM GJP_Bill_ContractBill AS bcb
+		WHERE bcb.bcb_code = #{bcb_code} AND bcb.bcb_cycle >= #{bcb_cycle} AND bcb.bcb_state = 9
+	</select>
+	
+	<!-- 添加合同账单 -->
+	<insert id="addBillContractBill" useGeneratedKeys="true" keyProperty="bcb_id">
+		INSERT INTO GJP_Bill_ContractBill(
+		bcb_code,
+		bco_code,
+		bcb_cycle,
+		bcb_type,
+		bcb_balPay,
+		bcb_repayment,
+		bcb_realPayment,
+		bcb_balance,
+		bcb_repaymentDate,
+		bcb_realPaymentDate,
+		bcb_agreedDate,
+		bcb_state,
+		bcb_budgetState,
+		bcb_payWay,
+		bcb_overdueDay,
+		bcb_creator,
+		bcb_operater,
+		bcb_remarks,
+		bcb_createTime
+		) VALUES (
+		#{bcb_code},
+		#{bco_code},
+		#{bcb_cycle},
+		#{bcb_type},
+		#{bcb_balPay},
+		#{bcb_repayment},
+		#{bcb_realPayment},
+		#{bcb_balance},
+		#{bcb_repaymentDate},
+		#{bcb_realPaymentDate},
+		#{bcb_agreedDate},
+		#{bcb_state},
+		#{bcb_budgetState},
+		#{bcb_payWay},
+		#{bcb_overdueDay},
+		#{bcb_creator},
+		#{bcb_operater},
+		#{bcb_remarks},
+		#{bcb_createTime}
+		)
+	</insert>
+	<!-- 根据订单号和和状态更改账单 -->
+	<update id="updateContractBill">
+		UPDATE GJP_Bill_ContractBill
+		<set>
+			<if test="bcb_state !=null and bcb_state !='' ">bcb_state=#{bcb_state},</if>
+			<if test="bcb_isRepay !=null and bcb_isRepay !='' ">bcb_isRepay=#{bcb_isRepay},</if>
+		</set>
+		where 1=1
+		<if test="bco_code != '' and bco_code != null">
+			and bco_code = #{bco_code}	
+		</if>
+		   and bcb_state &lt;&gt; 3
+	</update>
+	<!--根据订单code查询账单信息  -->
+	<select id="selectBillContractBillCode" resultType="com.gjp.model.FinanceBillVo">
+		SELECT *
+		FROM GJP_Bill_ContractBill bcb
+		WHERE 1=1
+		<if test="bco_code != null and bco_code != ''">
+			AND bcb.bco_code = #{bco_code}
+		</if>
+	</select>
+</mapper>

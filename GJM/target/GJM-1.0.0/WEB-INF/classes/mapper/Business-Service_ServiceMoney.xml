@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ServiceMoneyDAO">
+
+    <!-- 添加服务清单 -->
+    <insert id="addServiceMoney" useGeneratedKeys="true" keyProperty="ssm_id">
+		INSERT INTO
+		GJP_Service_ServiceMoney(
+			mdg_moneyCode,
+			ssm_source,
+			ssm_money,
+			ssm_univalent,
+			ssm_num,
+			ssm_company,
+			ssm_beizhu,
+			ssm_date,
+			payObject,
+			ucc_id,
+			em_id,
+			user_id,
+			cc_code,
+			md_id,
+			so_id
+		) VALUES (
+			#{mdg_moneyCode},
+			#{ssm_source},
+			#{ssm_money},
+			#{ssm_univalent},
+			#{ssm_num},
+			#{ssm_company},
+			#{ssm_beizhu},
+			NOW(),
+			#{payObject},
+			#{ucc_id},
+			#{em_id},
+			#{user_id},
+			#{cc_code},
+			#{md_id},
+			#{so_id}
+		)
+	</insert>
+
+    <!-- 根据费用清单查询服务清单 -->
+    <select id="selectServiceMoney" resultType="com.gjp.model.ServiceMoney">
+        SELECT
+        sm.*, uc.cc_name,
+        CASE
+        WHEN cu.user_realName IS NOT NULL THEN
+        cu.user_realName
+        WHEN cu.user_realName IS NULL AND cu.user_nickName IS NOT NULL THEN
+        cu.user_nickName
+        WHEN cu.user_realName IS NULL AND cu.user_nickName IS NULL AND md.md_contactpeople IS NOT NULL THEN
+        md.md_contactpeople
+        ELSE
+        cu.user_phone
+        END
+        AS userName,
+        em.em_name,
+        cc.ucc_name
+        FROM
+        GJP_business.GJP_Service_ServiceMoney sm
+        LEFT JOIN GJP_business.GJP_Maintenance_Declaration md ON md.md_id = sm.md_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = sm.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User cu ON cu.user_id = sm.user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = sm.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company cc ON cc.ucc_id = sm.ucc_id
+        WHERE 1=1
+        <if test="mdg_moneyCode != null and mdg_moneyCode != ''">
+            AND sm.mdg_moneyCode=#{mdg_moneyCode}
+        </if>
+        <if test="md_id != null and md_id != ''">
+            AND sm.md_id = #{md_id}
+        </if>
+        <if test="so_id != null and so_id !=''">
+            AND sm.so_id = #{so_id}
+        </if>
+		<if test="ucc_id != null and ucc_id !=''">
+			AND sm.ucc_id = #{ucc_id}
+		</if>
+		<if test="em_id != null and em_id !=''">
+			AND sm.em_id = #{em_id}
+		</if>
+		<if test="user_id != null and user_id !=''">
+			AND sm.user_id = #{user_id}
+		</if>
+		<if test="cc_code != null and cc_code !=''">
+			AND sm.cc_code = #{cc_code}
+		</if>
+		<if test="payObject != null and payObject !=''">
+			AND sm.payObject = #{payObject}
+		</if>
+    </select>
+
+    <delete id="delServiceMoneyByCode">
+		DELETE FROM GJP_Service_ServiceMoney WHERE mdg_moneyCode=#{mdg_moneyCode}
+	</delete>
+
+    <delete id="deleteServiceMoney">
+		DELETE FROM GJP_Service_ServiceMoney WHERE so_id=#{so_id}
+	</delete>
+
+</mapper>

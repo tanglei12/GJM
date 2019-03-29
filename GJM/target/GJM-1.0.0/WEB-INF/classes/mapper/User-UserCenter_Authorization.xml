@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 组织权限 -->
+<mapper namespace="com.gjp.dao.AuthorizationDao">
+
+	<!-- 添加下属职位 -->
+	<insert id="addStation" useGeneratedKeys="true" parameterType="com.gjp.model.Position" keyProperty="ucp_id">
+		insert into GJP_UserCenter_Position(
+		ucp_name,
+		ucc_id,
+		ucp_remarks,
+		ucp_time,
+		ucp_pid
+		)
+		values
+		(
+		#{ucp_name},
+		#{ucc_id},
+		#{ucp_remarks},
+		NOW(),
+		#{ucp_pid})
+	</insert>
+
+	<!-- 添加下属组织 -->
+	<insert id="addOrganization" useGeneratedKeys="true" parameterType="com.gjp.model.Company" keyProperty="ucc_id">
+		insert into GJP_UserCenter_Company(
+		ucc_name,
+		ucc_short,
+		ucc_type,
+		ucc_pid,
+		ucc_person,
+		ucc_phone,
+		em_id,
+		ucc_remarks,
+		ucc_time,
+		ucc_state
+		)
+		values
+		(
+		#{ucc_name},
+		#{ucc_short},
+		#{ucc_type},
+		#{ucc_pid},
+		#{ucc_person},
+		#{ucc_phone},
+		#{em_id},
+		#{ucc_remarks},
+		#{ucc_time},
+		#{ucc_state})
+	</insert>
+	
+	<!-- 添加下属组织 -->
+	<insert id="addPersonPosition" useGeneratedKeys="true" parameterType="com.gjp.model.PersonPosition" keyProperty="ucpp_id">
+		insert into GJP_UserCenter_PersonPosition(
+		em_id,
+		ucp_id
+		)
+		values
+		(
+		#{em_id},
+		#{ucp_id})
+	</insert>
+	
+	<!-- 添加公司人员关系 -->
+	<insert id="addCompanyPserson" useGeneratedKeys="true" parameterType="com.gjp.model.CompanyPserson" keyProperty="cp_id">
+		insert into GJP_UserCenter_CompanyPserson(
+		ucc_id,
+		em_id
+		)
+		values
+		(
+		#{ucc_id},
+		#{em_id})
+	</insert>
+	
+	<!-- 查询公司人员关系是否存在 -->
+	<select id="selectCompanyPserson" resultType="com.gjp.model.CompanyPserson">
+		select * from GJP_UserCenter_CompanyPserson where 
+		em_id=#{em_id}
+		<if test="ucc_id != null">
+		and ucc_id=#{ucc_id}
+		</if>
+	</select>
+	
+	<!-- 根据部门编码查询部门人员 -->
+	<select id="selectDepartmentUser" resultType="com.gjp.model.UserCenterEmployee">
+		select em_jobState,ucc_name,em_id,em_name,em_phone,em_address,em_state,em_account,em_sex,em_documentID,em_cardImage from view_GJP_UserDepartment where
+		ucc_id=#{ucc_id}
+		<if test="em_id != null">
+			 and em_id=#{em_id}
+		</if>
+		<if test="em_id == null">
+			 limit #{start},#{end}
+		</if>
+	</select>
+	
+	<!-- 根据部门编码查询部门人员 -->
+	<select id="selectDepartmentUserCount" resultType="com.gjp.model.UserCenterEmployee">
+		select count(1) as size from view_GJP_UserDepartment where ucc_id=#{ucc_id}
+	</select>
+
+	<!-- 根据条件查询组织结构 -->
+	<select id="selectOrganization" resultType="com.gjp.model.Company">
+		SELECT
+		*
+		FROM GJP_UserCenter_Company where 1=1
+		<if test="ucc_pid != null and ucc_pid !=''">
+			and ucc_pid = #{ucc_pid}
+		</if>
+		<if test="ucc_id != null and ucc_id !=''">
+			and ucc_id = #{ucc_id}
+		</if>
+		order by ucc_pid asc
+	</select>
+
+	<select id="selectOrganizationTree" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company
+		<where>
+			FIND_IN_SET(ucc_id,queryChildrenAreaInfo(#{ucc_id}))
+		</where>
+	</select>
+
+	<!-- 根据条件查询组织结构 -->
+	<select id="selectPositionID" resultType="com.gjp.model.Position">
+		select
+		*
+		from GJP_UserCenter_Position where 1=1
+		<if test="ucc_id != null">
+			and ucc_id = #{ucc_id}
+		</if>
+		<if test="ucp_id != null">
+			and ucp_id = #{ucp_id}
+		</if>
+		order by ucp_pid asc
+	</select>
+
+	<!-- 根据职位名加组织编号查询职位 -->
+	<select id="selectPositionById" resultType="com.gjp.model.Position">
+		select * from GJP_UserCenter_Position as ucp
+		join GJP_UserCenter_PersonPosition as ucpp on ucpp.ucp_id = ucp.ucp_id
+		join GJP_UserCenter_Employee as em on em.em_id = ucpp.em_id
+		where em.em_id=#{em_id}
+	</select>
+	
+	<!-- 根据用户编码和部门编码查询职位 -->
+	<select id="selectDepartmentWhere" resultType="com.gjp.model.UserCenterEmployee">
+		select ucp_name from GJP_UserCenter_Position as ucp
+		join GJP_UserCenter_PersonPosition as ucpp on ucpp.ucp_id = ucp.ucp_id
+		join GJP_UserCenter_Employee as em on em.em_id = ucpp.em_id
+		where em.em_id=#{em_id} and ucc_id=#{ucc_id}
+	</select>
+
+	<!-- 修改组织基本信息 -->
+	<update id="updateOrganizationInfo" parameterType="com.gjp.model.Company">
+		UPDATE GJP_UserCenter_Company SET
+		ucc_name=#{ucc_name},
+		ucc_short=#{ucc_short},
+		ucc_person=#{ucc_person},
+		ucc_phone=#{ucc_phone},
+		em_id=#{em_id},
+		ucc_remarks=#{ucc_remarks},
+		<if test="ucc_pid != null">
+			ucc_pid=#{ucc_pid},
+		</if>
+		ucc_time=#{ucc_time}
+		where ucc_id=#{ucc_id}
+	</update>
+
+	<!-- 修改职位信息 -->
+	<update id="updatePosition" parameterType="com.gjp.model.Position">
+		update GJP_UserCenter_Position set
+		ucp_name=#{ucp_name},
+		ucc_id=#{ucc_id},
+		<if test="ucp_pid != null">
+			ucp_pid=#{ucp_pid},
+		</if>
+		ucp_remarks=#{ucp_remarks}
+		where ucp_id=#{ucp_id}
+	</update>
+
+	<!-- 根据条件查询公司信息 -->
+	<select id="selectCompanyInfo" resultType="com.gjp.model.Company">
+		SELECT
+		*
+		FROM GJP_UserCenter_Company where 1=1
+		<if test="ucc_id != null and ucc_id !=''">
+			and ucc_id = #{ucc_id}
+		</if>
+	</select>
+	
+	<!-- 根据人员编码查询部门ID -->
+	<select id="selectCompanyEmid" resultType="com.gjp.model.Company">
+		SELECT * 
+		FROM GJP_UserCenter_Employee as em
+		LEFT JOIN GJP_UserCenter_CompanyPserson as cp on em.em_id = cp.em_id
+		LEFT JOIN GJP_UserCenter_Company as ucc on ucc.ucc_id = cp.ucc_id
+		<where>
+			<if test="em_id != null">em.em_id = #{em_id}</if>
+			<if test="ucc_name != null">AND ucc.ucc_name = #{ucc_name}</if>
+		</where>
+	</select>
+	
+	<!-- 根据部门编码查询离职申请人员 -->
+	<select id="selectCompanyQuitUser" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT * FROM GJP_UserCenter_Employee as em
+		LEFT JOIN GJP_UserCenter_CompanyPserson as cp on em.em_id = cp.em_id
+		LEFT JOIN GJP_UserCenter_Company as ucc on ucc.ucc_id = cp.ucc_id
+		WHERE ucc.ucc_id in
+		<foreach item="item" index="index" collection="t.uccArray" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and em.em_state = 2
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and em_createTime >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= em_createTime
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	
+	<!-- 根据部门编码查询离职申请人员 -->
+	<select id="selectCompanyQuitUserCount" resultType="int">
+		select count(*) from GJP_UserCenter_Employee as em
+		left join GJP_UserCenter_CompanyPserson as cp on em.em_id = cp.em_id
+		left join GJP_UserCenter_Company as ucc on ucc.ucc_id = cp.ucc_id
+		where ucc.ucc_id in
+		<foreach item="item" index="index" collection="t.uccArray" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and em.em_state = 2
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and em_createTime >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= em_createTime
+		</if>
+	</select>
+
+	<!-- 修改部门状态 -->
+	<update id="updateDeparmentState" parameterType="com.gjp.model.Company">
+		update GJP_UserCenter_Company set
+		ucc_state=#{ucc_state}
+		where ucc_id=#{ucc_id}
+	</update>
+	
+	<!-- 根据人员查询人员 权限 -->
+	<select id="selectPersonPowers" resultType="com.gjp.model.Powers">
+		select
+		ucps.ucps_id,
+		ucps.ucps_name,
+		ucps.ucps_url,
+		ucps.ucps_icon,
+		ucps.ucps_pid,
+		ucps.ucps_asc,
+		ucps.ucps_date,
+		ucps.ucps_state,
+		ucps.ucps_type
+		from GJP_UserCenter_Employee as em
+		join GJP_UserCenter_PersonPowers as ucpps on ucpps.em_id = em.em_id
+		join GJP_UserCenter_Powers as ucps on ucps.ucps_id = ucpps.ucps_id
+		where em.em_id=#{em_id}
+		<if test="ucps_pid != null and ucps_pid != ''">
+		and ucps_pid=#{ucps_pid}
+		</if>
+		<if test="ucps_type != null and ucps_type != ''">
+		and ucps.ucps_type = #{ucps_type}
+		</if>
+		<if test="ucps_id != null and ucps_id != ''">
+		and ucps.ucps_id=#{ucps_id}
+		</if>
+		<if test="ucps_pid == null or ucps_pid == ''">
+		and ucps.ucps_type = 1
+		</if>
+		and ucps.ucps_state = 1
+		order by ucps.ucps_asc asc
+	</select>
+
+	<!-- 根据人员查询职位 权限 -->
+	<select id="selectPositionPowers" resultType="com.gjp.model.Powers">
+		select 
+		ucps.ucps_id,
+		ucps.ucps_name,
+		ucps.ucps_url,
+		ucps.ucps_icon,
+		ucps.ucps_pid,
+		ucps.ucps_asc,
+		ucps.ucps_date,
+		ucps.ucps_state,
+		ucps.ucps_type
+		from GJP_UserCenter_Employee as em
+		join GJP_UserCenter_PersonPosition as ucpp on em.em_id = ucpp.em_id
+		join GJP_UserCenter_Position as ucp on ucp.ucp_id = ucpp.ucp_id
+		join GJP_UserCenter_PositionPowers as ucpps on ucpps.ucp_id = ucp.ucp_id
+		join GJP_UserCenter_Powers as ucps on ucps.ucps_id = ucpps.ucps_id
+		where em.em_id=#{em_id}
+		<if test="ucps_pid != null and ucps_pid != ''">
+		and ucps_pid=#{ucps_pid}
+		</if>
+		<if test="ucps_type != null and ucps_type != ''">
+		and ucps.ucps_type = #{ucps_type}
+		</if>
+		<if test="ucps_id != null and ucps_id != ''">
+		and ucps.ucps_id=#{ucps_id}
+		</if>
+		<if test="ucps_pid == null or ucps_pid == ''">
+		and ucps.ucps_type = 1
+		</if>
+		and ucps.ucps_state = 1
+		order by ucps.ucps_asc asc
+	</select>
+
+	<!-- 根据人员查询部门 权限 -->
+	<select id="selectPersonCompanyPowers" resultType="com.gjp.model.Powers">
+		select 
+		ucp.ucps_id,
+		ucp.ucps_name,
+		ucp.ucps_url,
+		ucp.ucps_icon,
+		ucp.ucps_pid,
+		ucp.ucps_asc,
+		ucp.ucps_date,
+		ucp.ucps_state,
+		ucp.ucps_type 
+		from GJP_UserCenter_Company as ucc
+		join GJP_UserCenter_CompanyPowers as uccp on ucc.ucc_id = uccp.ucc_id
+		join GJP_UserCenter_CompanyPserson as uccps on uccps.ucc_id = ucc.ucc_id
+		join GJP_UserCenter_Employee as em on em.em_id = uccps.em_id
+		join GJP_UserCenter_Powers as ucp on uccp.ucps_id = ucp.ucps_id
+		where em.em_id=#{em_id}
+		<if test="ucps_pid != null and ucps_pid != ''">
+		and ucps_pid=#{ucps_pid}
+		</if>
+		<if test="ucps_type != null and ucps_type != ''">
+		and ucp.ucps_type = #{ucps_type}
+		</if>
+		<if test="ucps_id != null and ucps_id != ''">
+		and ucp.ucps_id=#{ucps_id}
+		</if>
+		<if test="ucps_pid == null or ucps_pid == ''">
+		and ucp.ucps_type = 1
+		</if>
+		and ucp.ucps_state = 1
+		order by ucp.ucps_asc asc
+	</select>
+	
+	<!-- 查询为分配内部人员 -->
+	<select id="selectEmployeeNullPosition" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT * FROM GJP_UserCenter_Employee as em
+		LEFT JOIN GJP_UserCenter_PersonPosition as ucp ON em.em_id = ucp.em_id
+		WHERE em_state = 1
+		<if test="whereList != null and whereList != ''">
+		and( em_name LIKE CONCAT('%', #{whereList}, '%') or em_phone LIKE CONCAT('%', #{whereList}, '%'))
+		</if>
+		<if test="whereList == null or whereList == ''">
+		LIMIT #{start},#{end}
+		</if>
+	</select>
+	
+	<!-- 删除职位人员关系表 -->     
+     <delete id="deletePersonPosition" parameterType="int">
+         delete from GJP_UserCenter_PersonPosition where ucp_id = #{ucp_id} and em_id = #{em_id}
+     </delete>
+     
+     <!-- 删除部门人员关系 -->
+     <delete id="deleteCompanyPserson" parameterType="int">
+         delete from GJP_UserCenter_CompanyPserson where ucc_id = #{ucc_id} and em_id = #{em_id}
+     </delete>
+	
+	<!-- 根据职位编码查询职位下的人员 -->
+	<select id="selectEmployeePosition" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT * FROM GJP_UserCenter_Employee as em
+		LEFT JOIN GJP_UserCenter_PersonPosition as ucp ON em.em_id = ucp.em_id
+		WHERE em_state = 1 and ucp_id = #{ucp_id}
+	</select>
+
+	<!-- 查询所有部门 -->
+	<select id="queryCompanyList" resultType="com.gjp.model.Company">
+		SELECT *
+		FROM GJP_UserCenter_Company
+		WHERE
+		ucc_pid = #{ucc_pid}
+	</select>
+	
+	<!-- 根据url地址查询权限 -->
+	<select id="selectPowersUrl" resultType="com.gjp.model.Powers">
+		SELECT * FROM
+		GJP_UserCenter_Powers
+		where ucps_url=#{ucps_url}
+	</select>
+
+	<!-- 设置部门权限 -->
+	<insert id="savePowersForCompany" useGeneratedKeys="true" parameterType="map" keyProperty="uccp_id">
+		insert into GJP_UserCenter_CompanyPowers(ucc_id, ucps_id) values
+		<foreach collection="powerIds" index="index" item="item" separator=",">
+			( #{companyId}, #{item} )
+		</foreach>
+	</insert>
+
+	<!-- 删除部门权限关联 -->
+	<delete id="delFromCompanyPowers" parameterType="int">
+		delete from GJP_UserCenter_CompanyPowers where ucc_id = #{id}
+	</delete>
+
+	<!-- 查询部门拥有的权限 -->
+	<select id="selectPowersByCompanyId" parameterType="int" resultType="com.gjp.model.Powers">
+		SELECT
+			p.*
+		FROM
+			GJP_UserCenter_Powers p
+		LEFT JOIN GJP_UserCenter_CompanyPowers cp ON cp.ucps_id = p.ucps_id
+		WHERE
+			cp.ucc_id = #{id}
+		ORDER BY
+			p.ucps_asc
+	</select>
+
+	<!-- 设置职位权限 -->
+	<insert id="savePowersForPosition" useGeneratedKeys="true" parameterType="map" keyProperty="ucpp_id">
+		insert into GJP_UserCenter_PositionPowers(ucp_id, ucps_id) values
+		<foreach collection="powerIds" index="index" item="item" separator=",">
+			( #{positionId}, #{item} )
+		</foreach>
+	</insert>
+
+	<!-- 删除职位权限关联 -->
+	<delete id="delFromPositionPowers" parameterType="int">
+		delete from GJP_UserCenter_PositionPowers where ucp_id = #{id}
+	</delete>
+
+	<!-- 查询职位拥有的权限 -->
+	<select id="selectPowersByPositionId" parameterType="int" resultType="com.gjp.model.Powers">
+		SELECT
+			p.*
+		FROM
+			GJP_UserCenter_Powers p
+		LEFT JOIN GJP_UserCenter_PositionPowers pp ON pp.ucps_id = p.ucps_id
+		WHERE
+			pp.ucp_id = #{id}
+		ORDER BY
+			p.ucps_asc
+	</select>
+
+	<!-- 根据id查询部门 -->
+	<select id="getCompanyById" parameterType="int" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company WHERE ucc_id = #{id}
+	</select>
+
+	<!-- 根据id查询职位 -->
+	<select id="getPositionById" parameterType="int" resultType="com.gjp.model.Position">
+		SELECT * FROM GJP_UserCenter_Position WHERE ucp_id = #{id}
+	</select>
+	
+</mapper>
+

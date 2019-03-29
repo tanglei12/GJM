@@ -1,0 +1,131 @@
+.purchase{
+	width: 1110px;
+	border: 1px #ececec solid;
+	border-radius:5px;
+	margin-left: 20px;
+	margin-top: 20px;
+}
+
+.purTitle{
+	margin: auto;
+	font-size: 20px;
+	color: #3E97C9;
+	font-family: 微软雅黑;
+	cursor: default;
+	border: none;
+	margin-bottom: 40px;
+	width: 100%;
+}
+
+.purTitle td{text-align: center;}
+.addPurchaseDiv{
+	border: 1px rgba(33, 150, 243, 0.62) dashed;
+	width: 1080px;
+	border-radius:5px;
+	margin-top: 20px;
+	overflow: auto;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.addPurchaseDiv dl{
+	width: 25%;
+	height: 40px;
+	float: left;
+	
+}
+.addPurchaseDiv dt{
+	text-align: right;
+	font-size: 14px;
+	float: left;
+	line-height: 30px;
+	width: 100px;
+}
+.addPurchaseDiv dd{
+	float: left;
+	font-size: 14px;
+	line-height: 30px;
+	text-align: left;
+}
+
+.countentText{
+	border: 1px #bbb solid;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 5px;
+	width: 140px;
+	padding-left: 5px;
+}
+
+.addPurchaseDiv select{
+	height: 30px;
+	line-height: 30px;
+	border-radius: 5px;
+	width: 140px;
+	border-color: #bbb;
+}
+
+.submitPur{
+	border: none;
+	background-color: #3E97C9;
+	font-size: 14px;
+	color: #fff;
+	height: 30px;
+	line-height: 30px;
+	width: 100px;
+	border-radius: 5px;
+}
+
+.tableDiv{
+	border: 1px #000 solid;min-height: 40px;width: 1100px;margin: auto;border-radius: 4px;
+}
+
+.titleDiv{
+    border-bottom: 1px solid #3E97C9;
+    height: 30px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    width: 125px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.titleNoDiv{
+	width: 277px;
+    font-size: 18px;
+    margin-top: -8px;
+    margin-left: 105px;
+    color: red;
+}
+.titleDateDiv{
+	float: right;
+    font-size: 12px;
+    margin-top: -20px;
+    margin-right: 20px;
+    color: #666;
+}
+.titleDateDiv dt{float: left;}
+.titleDateDiv dd{float: left;}
+em{
+	color: red;padding-right: 10px;
+}
+
+.tableDiv tr{
+	height: 35px;line-height: 35px;border-bottom: 1px #ddd solid;font-size: 14px;
+}
+
+
+.buttonDisabled{
+	background: #ddd !important;
+    color: #fff !important;
+    cursor: no-drop !important;
+}
+
+
+
+
+
+
+
+

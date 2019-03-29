@@ -1,0 +1,417 @@
+@charset "utf-8";
+*{padding: 0;margin: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+:after,:before {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+body {font: 12px/150% '微软雅黑',Arial, Verdana, "\5b8b\4f53";min-width: 980px;overflow: hidden;color: #666;background-color: #f2f4f8;}
+ul, li {list-style: none;}
+fieldset{border:0}
+/***蓝色背景按钮***/
+.button-a {
+	padding: 0 20px;
+	color: #FFF;
+	background-color: #3498DB;
+	height: 30px;
+	line-height: 30px;
+	border: 0;
+	border-radius: 4px;
+	outline: none;
+	cursor: pointer;
+	margin-left: 15px;
+}
+/*自定义checkbox-a*/
+.checkbox-c {
+	position: relative;
+}
+.checkbox-c .input_check {
+	display: none;
+}
+.checkbox-c .input_check+span {
+	display: inline-block;
+	border: 1px solid #a9a9a9;
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	top: 2px;
+	left: 0;
+	border-radius:2px;
+}
+.checkbox-c .input_check:checked+span {
+	border: 1px solid #3498db;
+    background-color: #3498db;
+}
+.checkbox-c .input_check:checked+span:after {
+	content: "";
+	position: absolute;
+	left: 0px;
+	bottom: 4px;
+	width: 12px;
+	height: 8px;
+	border: 3px solid #FFF;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	-ms-transform: rotate(-60deg);
+	-moz-transform: rotate(-60deg);
+	-webkit-transform: rotate(-60deg);
+	transform: rotate(-45deg);
+}
+.checkbox-c i {
+	font-style: normal;
+	margin-left: 20px;
+}
+/*****内容区域*****/
+.center {
+	margin: 1%;
+	width: 98%;
+}
+.center .title {
+	width: 100%;
+	height: 45px;
+	background-color: #FFF;
+}
+.center .title .fa-group {
+	color: #3498db;
+	font-size: 25px;
+	margin-top: 10px;
+	margin-left: 15px;
+}
+.center .title .title-font {
+	font-size: 18px;
+	color: #000;
+	margin-left: 10px;
+}
+.center .menu {
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+	background-color: #FFF;
+	border-top: 1px solid #3498db;
+}
+.center .menu li {
+	height: 35px;
+	line-height: 35px;
+	width: 120px;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	float: left;
+}
+.center .menu li .bottom-triangle {
+	display: none;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-top: 8px solid #3498db;
+	margin-left: 42px;
+	position: absolute;
+	left: 10px;
+	bottom: -7px;
+}
+.center .menu li .tab-x{
+	display: none;
+    position: absolute;
+    top: 9px;
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
+    right: 10px;
+}
+.center .menu li.clicks {
+	background-color: #3498db;
+	color: #FFF;
+}
+.center .menu li.clicks .bottom-triangle{
+	display: block !important;
+}
+.center .menu li.clicks .tab-x{
+	display: block !important;
+}
+.content {
+	width: 100%;
+	background-color: #FFF;
+	margin-top: 13px;
+	padding-top: 15px;
+	padding-bottom: 40px;
+}
+.content .content-operation {
+	margin-right: 1%;
+    width: 98%;
+	height: 26px;
+}
+.content .content-operation i{
+	margin-right: 5px;
+}
+.content .content-operation button {
+	height: 25px;
+	line-height: 25px;
+	border: 1px solid #AECEF1;
+	color: #269BFF;
+	background-color: #FFF;
+	text-align: center;
+	margin-right: 10px;
+	float: right;
+	padding: 0px 20px;
+	border-radius: 4px;
+	outline: none;
+	cursor: pointer;
+}
+.content .content-center {
+	position: relative;
+	width: 100%;
+	height: 740px;
+}
+/*右侧操作栏*/
+.addRole {
+	position: absolute;
+	right: -436px;
+	top: 0;
+	width: 400px;
+	height: 100%;
+	background-color: #FFF;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .14);
+}
+.addRole .addRole-close {
+	display: block;
+	width: 35px;
+	height: 35px;
+	background-color: #E74C3C;
+	position: absolute;
+	left: -35px;
+	top: 0;
+	cursor: pointer;
+}
+.addRole .addRole-close .fa-close {
+	color: #FFF;
+	position: absolute;
+	left: 12px;
+	top: 10px;
+}
+.addRole dl {
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	margin: 15px 0px;
+}
+.addRole dt {
+	width: 80px;
+	float: left;
+	font-size: 13px;
+	height: 30px;
+	line-height: 30px;
+	text-align: right;
+}
+.addRole dd {
+	float: left;
+	margin-left: 10px;
+	font-size: 14px;
+}
+.addRole .addRole-title {
+	border-bottom: 1px solid #3498db;
+	height: 34px;
+	line-height: 34px;
+	font-size: 14px;
+	text-indent: 5px;
+}
+.addRole input {
+	width: 180px;
+	height: 27px;
+	line-height: 27px;
+	border: 0;
+	border: 1px solid #CCC;
+	text-indent: 7px;
+	color: #666;
+	font-size: 15px;
+	background-color: #fdf7f7;
+	border-radius: 3px;
+}
+.addRole input+label.error{
+	color:red;
+	margin-left: 5px;
+}
+/*角色列表*/
+.roleList {
+	width: 98%;
+	margin: 0 1%;
+	border-collapse: collapse;
+	font-size: 13px;
+	margin-top: 10px;
+}
+.roleList thead {
+	background-color: #34495E;
+	color: #FFF;
+	height: 32px;
+	line-height: 32px;
+}
+.roleList thead td {
+	text-indent: 8px;
+}
+.roleList tbody tr {
+	height: 30px;
+	line-height: 30px;
+}
+.roleList tbody tr td {
+	text-indent: 8px;
+}
+.roleList tbody tr:nth-child(odd) {
+	background: #fff;
+}
+.roleList tbody tr:nth-child(even) {
+	background: #f5f8fa;
+}
+.roleList tbody tr:hover {
+	background: #e5ebee;
+}
+/*******人员导入******/
+.importPerson{    
+	width: 700px;
+    display: none;
+    height: 500px;
+    border: 1px solid #F2F2F2;
+    background-color: #fff;
+    position: absolute;
+    left: 26%;
+    top: 22%;
+    box-shadow: 0 1px 39px 0 rgba(0,0,0,0.14);
+}
+.importPerson .title{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #DCDCDC;
+}
+.importPerson .title .title-left{
+	font-size: 18px;
+	color: #18bc9c;
+	margin-left: 15px;
+}
+.importPerson .title .title-right{
+	display: block;
+	float: right;
+	margin-right: 30px;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	color: #737373;
+}
+.importPerson .title .title-right:hover{
+	color: #1abc9c;
+}
+.importPerson .import{
+   	padding: 0 51px;
+}
+.importPerson .import .import-left{
+	width: 270px;
+	height: 395px;
+	border: 1px solid #CCC;
+	float: left;
+	font-size: 14px;
+	margin-top: 26px;
+}
+.importPerson .import .import-left .import-left-top{
+	height: 35px;
+	line-height: 35px;
+	text-indent: 15px;
+	background-color: #1ABC9C;
+	color:#FFF;
+}
+.importPerson .import .import-left ul{
+	width: 100%;
+	height: 360px;
+	line-height: 30px;
+	text-indent: 15px;
+	font-size: 13px;
+	overflow: Hidden;
+	overflow-y: scroll;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.importPerson .import .import-left ul::-webkit-scrollbar  
+{  
+    width: 5px;  
+    height: 16px;  
+}
+/*定义滑块 内阴影+圆角*/ 
+.importPerson .import .import-left ul::-webkit-scrollbar-thumb  
+{  
+    border-radius: 5px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #ededed;  
+} 
+.importPerson .import .import-left ul li{
+	position:relative;
+	cursor: default;
+	-moz-user-select:none;/*火狐*/
+	-webkit-user-select:none;/*webkit浏览器*/
+	-ms-user-select:none;/*IE10*/
+	-khtml-user-select:none;/*早期浏览器*/
+	user-select:none;
+	list-style: none;
+}
+.importPerson .import .import-left ul li:hover{
+	background-color: #f5f8fa;
+}
+.importPerson .import .import-left ul li .fa-times-circle{
+	display: none;
+	position:absolute;
+	top:10px;
+	right:10px;
+	color: red;
+	cursor: pointer;
+}
+.importPerson .import .import-left ul li:hover .fa-times-circle{
+	display:block;
+}
+.importPerson .import .import-left ul li .fa-check{
+	color:#1ABC9C;
+}
+.importPerson .import .fa-arrow-circle-left{
+	font-size: 26px;
+	float: left;
+	color: #1ABC9C;
+	margin: 0 15px;
+	margin-top: 190px;
+}
+.importPerson .import .import-right{
+	width: 270px;
+	height: 395px;
+	border: 1px solid #CCC;
+	float: left;
+	position: relative;
+	margin-top: 26px;
+}
+
+.importPerson .import .import-right .personSearch{
+	width: 100%;
+	height: 34px;
+	line-height: 34px;
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+	border-bottom: 1px solid #ededed;
+	font-size: 14px;
+	text-indent: 28px;
+	outline: none;
+}
+
+.importPerson .import .import-right .fa-search{
+	position: absolute;
+	left: 6px;
+    top: 10px;
+}
+.importPerson .import .import-right ul{
+	width: 100%;
+    height: 360px;
+    line-height: 30px;
+    text-indent: 15px;
+    font-size: 13px;
+    overflow: hidden;
+}
+.importPerson .import .import-right ul li{
+	cursor: default;
+	-moz-user-select:none;/*火狐*/
+	-webkit-user-select:none;/*webkit浏览器*/
+	-ms-user-select:none;/*IE10*/
+	-khtml-user-select:none;/*早期浏览器*/
+	user-select:none;
+	list-style: none;
+}
+.importPerson .import .import-right ul li:hover{
+	background-color: #f5f8fa;
+}

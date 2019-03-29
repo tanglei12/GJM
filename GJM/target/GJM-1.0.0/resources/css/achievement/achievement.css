@@ -1,0 +1,566 @@
+@charset "utf-8";
+
+/*==Common========*/
+.header-main:AFTER, .header-main-content:AFTER, .box-content>.sub-title:AFTER,
+.header-main-more:AFTER,
+.main-content-item:AFTER{
+	content: "";
+	display: block;
+	clear: both;
+	visibility: hidden;
+}
+
+.money {
+	font-family: "Georgia";
+	color: #E74C3C !important;
+}
+/*==Common========*/
+
+#scroll-top{
+    position: fixed;
+    left: 0;
+    bottom: 50px;
+    border: 1px solid #ddd;
+    width: 48px;
+    height: 48px;
+    line-height: 52px;
+    text-align: center;
+    border-radius: 2px;
+    cursor: pointer;
+    background: #fff;
+    display: none;
+    z-index: 9999;
+}
+#scroll-top>i{font-size: 30px;}
+#scroll-top:HOVER{
+	background: #3498DB;
+	color: #fff;
+    border: 1px solid #3498DB;
+}
+
+.header-content {
+	position: relative;
+	background: #ffffff;
+	width: 100%;
+	box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.26)
+}
+
+.header-content .header-box {
+	position: relative;
+	width: 1100px;
+	padding: 0 12px;
+	background: #ffffff;
+}
+
+.header-top {
+	position: relative;
+	height: 50px;
+	border-bottom: 2px solid #1ABC9C;
+}
+
+.header-top .header-top-title {
+	position: absolute;
+	display: block;
+	left: 16px;
+	top: 16px;
+	font-size: 20px;
+}
+
+.header-top .header-top-option {
+	position: absolute;
+	display: block;
+	right: 0;
+	top: 10px;
+}
+
+.header-top-option i.icon-calendar{
+    position: absolute;
+    top: 9px;
+    left: 8px;
+    z-index: 11;
+    color: #3498db;
+    font-size: 14px;
+}
+
+button.form-control {
+	display: inline-block;
+	height: 30px;
+	margin-left: 12px;
+}
+
+.date-box {
+	position: relative;
+	top: 1px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	padding: 0 12px;
+	padding-left: 27px;
+	display: inline-block;
+	cursor: pointer;
+	background: #ffffff;
+	outline: none;
+	z-index: 10;
+}
+
+.date-box-select {
+	position: absolute;
+	top: 36px;
+	left: 0;
+	display: none;
+	background: #fff;
+	color: #fff;
+	width: 100%;
+	border-radius: 4px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.26);
+	padding: 6px 0;
+	z-index: 99;
+}
+
+.date-box-select>a {
+	position: relative;
+	display: block;
+	padding: 0 10px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.date-box:HOVER {
+	box-shadow: 0px 0px 2px #3498DB;
+}
+
+.date-box>input {
+	position: relative;
+	top: -2px;
+	width: 80px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	z-index: -1;
+}
+
+.date-box>label {
+	position: relative;
+	top: -3px;
+	color: #ddd;
+	z-index: -1;
+}
+
+.header-main {
+	position: relative;
+	padding: 20px 0;
+}
+
+.header-main .header-main-content {
+	position: relative;
+	float: left;
+	height: 100%;
+}
+
+.header-main .header-main-content>fieldset {
+	position: relative;
+	float: left;
+	border: 1px dashed #d5d5d5;
+	margin-right: 16px;
+	border-radius: 4px;
+    padding: 8px 0;
+    display: table;
+}
+
+.header-main .header-main-content>fieldset>legend.legend-top {
+	position: absolute;
+	top: 26%;
+	left: 50%;
+	width: 30px;
+	text-align: center;
+	margin-left: -15px;
+	font-size: 20px;
+}
+
+.header-main .header-main-content>fieldset>legend.legend-footer {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 66px;
+	line-height: 24px;
+	text-align: center;
+	margin-bottom: -12px;
+	margin-left: -30px;
+	background: #fff;
+/* 	border: 1px dashed #3498DB; */
+	border-radius: 12px;
+    background: #1ABC9C;
+    color: #fff;
+}
+
+.header-main .header-main-content dl.main-content-item {
+	position: relative;
+	display: table-cell;
+	text-align: center;
+	padding: 0 16px;
+}
+.header-main .header-main-content div.main-content-item {
+	position: relative;
+	padding: 0px 12px;
+}
+.main-content-subitem1{
+	position: relative;
+	width: 84%;
+	float: left;
+	height: 34px;
+}
+.subitem-icon-box{
+    position: relative;
+    width: 100%;
+    display: block;
+    height: 12px;
+    border-radius: 6px;
+    background: #e2e2e2;
+    margin: 11px 0;
+}
+.subitem-icon-box>i{
+	position: absolute;
+    left: 0;
+    top: 0;
+    height: 12px;
+    width: 0;
+    display: block;
+    background: #E74C3C;
+    border-radius: 6px;
+}
+
+.main-content-subitem2{
+	position: relative;
+	float: right;
+	height: 34px;
+}
+.main-content-subitem2>span{
+    position: relative;
+    width: 34px;
+    line-height: 34px;
+    background: #E74C3C;
+    display: block;
+    border-radius: 18px;
+    text-align: center;
+    color: #fff;
+}
+
+dl.more-box-dl{line-height: 36px;}
+dl.more-box-dl>dt{
+    float: left;
+    font-size: 14px;
+}
+dl.more-box-dl>dd{
+    float: left;
+    padding: 0 10px;
+    font-size: 20px;
+}
+dl.more-box-dl>dd.suffix{
+    float: left;
+    font-size: 14px;
+    padding: 0;
+}
+
+dl.main-content-item dt {
+	display: block;
+	width: 100%;
+	line-height: 24px;
+	font-size: 14px;
+}
+
+dl.main-content-item dd {
+	display: block;
+	width: 100%;
+	line-height: 42px;
+	font-size: 20px;
+	padding: 0 12px;
+}
+
+.header-main .header-main-more {
+	position: relative;
+	float: right;
+}
+
+#main-box {
+	position: relative;
+	width: 1100px;
+	margin: 14px auto 14px 0;
+	padding: 0 12px;
+}
+
+.box-msg {
+	background: url("/resources/image/notdata.jpg") no-repeat center;
+	height: 200px;
+}
+
+.box-content .sub-title .title-nav .visited {
+	font-size: 16px !important;
+}
+
+.box-content .sub-title .title-option {
+	position: absolute;
+	display: block;
+	right: 12px;
+	top: 0;
+	height: 100%;
+}
+
+.option-setting {
+	position: relative;
+	top: 6px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	color: #fff;
+	background: #3e97c9;
+}
+
+.option-setting>i {
+	font-size: 14px;
+	margin-right: 4px;
+}
+/** ===房屋业绩==============*/
+.sub-title-content {
+	position: relative;
+	height: 38px;
+	line-height: 38px;
+	float: left;
+}
+
+.sub-title-content .title-content-num {
+	position: relative;
+	display: inline-block;
+	min-width: 22px;
+	text-align: center;
+	line-height: 22px;
+	height: 22px;
+	border-radius: 12px;
+	background: #3498DB;
+	color: #fff;
+	margin: 0 12px;
+	padding: 0 6px;
+}
+
+.sub-title-content .title-content-title {
+	position: relative;
+	line-height: 24px;
+	height: 24px;
+	display: inline-block;
+	top: 1px;
+	font-size: 15px;
+}
+
+.sub-title-content .title-content-subtitle {
+	position: relative;
+	line-height: 24px;
+	height: 24px;
+	display: inline-block;
+	padding: 0 10px;
+	top: 1px;
+	font-size: 15px;
+	background: #3498DB;
+	border-radius: 12px;
+	color: #fff;
+}
+
+.sub-content-right {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.content-item-title {
+	position: relative;
+	display: table-row;
+	height: 30px;
+	border-bottom: 1px solid #ddd;
+	line-height: 30px;
+}
+
+.content-item-title .subitem-name {
+	line-height: 30px;
+	height: 30px;
+}
+
+.content-item-title .content-item-subitem {
+	position: relative;
+	display: inline-block;
+	line-height: 30px;
+	height: 30px;
+	padding: 0 8px;
+	text-align: center;
+	font-size: 14px;
+	color: #000;
+}
+
+.content-item {
+	position: relative;
+	display: table-row;
+	/* 	padding: 0 12px; */
+}
+
+.content-item-headitem {
+	position: relative;
+	display: inline-block;
+	float: left;
+	line-height: 38px;
+	height: 38px;
+	padding: 0 12px 0 0;
+	font-size: 14px;
+}
+
+.content-item-headitem .option-more {
+	display: block;
+	width: 100%;
+	height: 100%;
+	font-size: 20px;
+	text-align: center;
+	line-height: 38px;
+}
+
+.headitem-icon {
+	position: relative;
+	top: -1px;
+	display: inline-block;
+	min-width: 20px;
+	text-align: center;
+	line-height: 19px;
+	height: 20px;
+	border-radius: 12px;
+	background: #3498DB;
+	color: #fff;
+	font-size: 12px;
+}
+
+.headitem-label {
+	position: relative;
+	display: inline-block;
+	min-width: 20px;
+	text-align: center;
+	line-height: 20px;
+	height: 22px;
+	border-radius: 12px;
+	padding: 0 10px;
+	border: 1px solid #e1e1e1;
+}
+
+.content-item-subitem {
+	position: relative;
+	display: inline-block;
+	line-height: 36px;
+	height: 36px;
+	padding: 0 8px;
+	text-align: center;
+}
+
+.subitem-name {
+	position: relative;
+	display: inline-block;
+	line-height: 36px;
+	height: 36px;
+	min-width: 72px;
+	text-align: right;
+	font-size: 14px;
+	color: #000;
+}
+
+.subitem-icon {
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	text-align: center;
+	line-height: 19px;
+	height: 20px;
+	border-radius: 12px;
+	background: #3498DB;
+	color: #fff;
+	font-size: 12px;
+}
+
+.subitem-value {
+	position: relative;
+	display: inline-block;
+	padding: 0 6px;
+	line-height: 19px;
+	height: 20px;
+}
+
+.subitem-suffix {
+	position: relative;
+	display: inline-block;
+	line-height: 19px;
+	height: 20px;
+}
+
+.subitem-right {
+	padding: 0 0 0 12px;
+}
+
+.page-next {
+	position: relative;
+	line-height: 36px;
+	text-align: center;
+	font-size: 14px;
+	background: #fff;
+	margin-bottom: 14px;
+	border-radius: 2px;
+	cursor: pointer;
+	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
+.page-next:HOVER {
+	color: #ffffff !important;
+	background: #1abc9c !important;
+	box-shadow: 0px 0px 1px #1abc9c !important;
+}
+/** ===房屋业绩==============*/
+.box-content .sub-content {
+	padding: 10px 0;
+	display: table;
+	width: 100%;
+}
+
+.item-main-ul li {
+	display: block;
+	width: 100px;
+	height: 46px;
+	line-height: 46px;
+	font-size: 18px;
+	margin: 0 20px;
+	float: left;
+	text-align: center;
+}
+
+.item-main-ul .span-perc {
+	line-height: 24px;
+	text-align: center;
+	padding: 0 8px;
+	background: #fff;
+	border: 1px dashed #d5d5d5;
+	border-radius: 12px;
+}
+
+/** ----------------*/
+table.item-main-table {
+	
+}
+
+table.item-main-table thead {
+	border-bottom: 1px solid #dddddd;
+}
+
+table.item-main-table thead td {
+	line-height: 30px;
+	text-align: center;
+	font-size: 14px;
+}
+
+table.item-main-table tbody {
+	
+}
+
+table.item-main-table tbody td {
+	line-height: 32px;
+	text-align: center;
+	padding-top: 6px;
+}

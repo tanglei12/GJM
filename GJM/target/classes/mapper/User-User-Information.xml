@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserCenterInformationDao">
+
+    <insert id="addUserCenterInformation" useGeneratedKeys="true" keyProperty="ui_id">
+		INSERT INTO GJP_UserCenter_Information(
+			interface_code,
+			msg_code,
+			msg_type,
+			send_result,
+			hi_code,
+			contractObject_code,
+			em_id,
+			send_time,
+			receive_type,
+			receive_cc_code,
+			receive_em_id,
+			msg_content
+		) VALUES (
+			#{interface_code},
+			#{msg_code},
+			#{msg_type},
+			#{send_result},
+			#{hi_code},
+			#{contractObject_code},
+			#{em_id},
+			#{send_time},
+			#{receive_type},
+			#{receive_cc_code},
+			#{receive_em_id},
+			#{msg_content}
+		)
+	</insert>
+
+    <select id="queryUserInformationByCode" resultType="com.gjp.model.UserCenterInformation">
+		SELECT
+			ui.*, ha.house_address,
+			co.ContractObject_No,
+			ce.em_name,
+			uc.cc_name
+		FROM GJP_UserCenter_Information ui
+		LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON ha.hi_code = ui.hi_code
+		LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = ui.contractObject_code
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee ce ON ce.em_id = ui.em_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = ui.receive_cc_code
+		WHERE
+			1 = 1
+		AND ui.receive_type = 1
+		AND ui.receive_cc_code = #{t.receive_cc_code}
+		ORDER BY send_time DESC
+		LIMIT ${pageNo},${pageSize}
+	</select>
+
+    <select id="queryUserInformationByCodeCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM GJP_UserCenter_Information ui
+		LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON ha.hi_code = ui.hi_code
+		LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = ui.contractObject_code
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee ce ON ce.em_id = ui.em_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = ui.receive_cc_code
+		WHERE
+			1 = 1
+		AND ui.receive_type = 1
+		AND ui.receive_cc_code = #{t.receive_cc_code}
+		ORDER BY send_time DESC
+	</select>
+
+    <select id="queryPressPayentBillList" resultType="com.gjp.model.ContractBillVo">
+		SELECT
+        ucc.cc_code,
+        ucc.cc_name AS bco_customerName,
+        ucp.ccp_phone AS bco_customerPhone,
+        em.em_id AS bco_empId,
+        em.em_name AS bco_empName,
+        em.em_phone AS bco_empPhone,
+        T.*
+        FROM
+        (
+            SELECT
+                bco.hi_code,
+                co.ContractObject_Id,
+                house.house_address,
+                bco.contractObject_code,
+                bco.bco_customer,
+		        hpr.ucc_id,
+                bcb.*
+            FROM GJP_business.GJP_Bill_ContractBill bcb
+            INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code AND bco.bco_type = 202
+            INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+            INNER JOIN GJP_business.GJP_Contract_Body cb ON cb.ContractObject_Code = bco.ContractObject_Code
+            INNER JOIN GJP_product.view_GJP_HouseAddress house ON house.hi_code = bco.hi_code
+	        LEFT JOIN GJP_product.GJP_House_PositionRecord hpr ON hpr.hi_code = bco.hi_code
+            WHERE
+            bcb.bcb_type = 0
+            AND bcb.bcb_state = 2
+            AND co.contractObject_OptionState = 106
+            AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y-%m-%d'), bcb.bcb_repaymentDate) = #{days}
+        ) AS T
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON T.bco_customer= ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ucp ON ucp.cc_id = ucc.cc_id AND ucp.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON T.ContractObject_Id= cre.contractObject_Id AND cre.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON cre.em_id = em.em_id
+        GROUP BY ucc.cc_code
+	</select>
+
+	<!--查询催收短信-->
+	<select id="queryUserInformation" resultType="com.gjp.model.UserCenterInformation">
+		SELECT
+		*
+		FROM
+		(
+			SELECT
+			ce.em_name,
+
+			uc.cc_name,
+			em.em_name as receive_em_name,
+			em.em_phone,
+			ui.*
+			FROM
+			GJP_UserCenter_Information ui
+			LEFT JOIN GJP_user.GJP_UserCenter_Employee ce ON ce.em_id = ui.em_id
+			LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = ui.receive_cc_code
+			LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON em.em_id = ui.receive_em_id
+		) T
+		WHERE
+		1 = 1
+			<if test="contractObject_code != null">
+				AND contractObject_code =#{contractObject_code}
+			</if>
+		ORDER BY send_time DESC
+	</select>
+</mapper>

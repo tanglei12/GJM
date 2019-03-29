@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.RecordDao">
+
+    <select id="queryContractOrderRecordList" resultType="com.gjp.model.RecordContractOrderAuditingVo">
+        SELECT
+        auditingRecord_id,
+        cco_code,
+        auditingRecord_state,
+        auditingRecord_content,
+        auditingRecord_author,
+        auditingRecord_createTime
+        FROM GJP_Record_ContractOrderAudting
+        WHERE
+        cco_code = #{cco_code}
+        <if test="like_auditingRecord_state !=null">AND auditingRecord_state LIKE
+            CONCAT('%',#{like_auditingRecord_state},'%')
+        </if>
+        ORDER BY auditingRecord_createTime DESC
+    </select>
+
+    <select id="queryHousePriceRecord" resultType="com.gjp.model.HousePriceRecordVo">
+		SELECT
+		hpp.*,
+		em.em_name,
+		em.em_phone
+		FROM
+		GJP_journal.GJP_House_PriceRecord AS hpp
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON hpp.hpp_operator = em.em_id
+		WHERE
+		hpp.hi_code = #{hi_code}
+		ORDER BY hpp.hpp_createTime DESC
+		limit 1, 5
+	</select>
+
+    <!-- 添加合约订单记录 -->
+    <insert id="addPayFlowStatementValidRecord" useGeneratedKeys="true" keyProperty="pvf_id">
+		INSERT INTO GJP_Finance_PayFlowStatementValidRecord (
+		bs_serialNumber,
+		pvf_content,
+		pvf_em_id,
+		pvf_validTime,
+		pvf_createTime
+		) VALUES (
+		#{bs_serialNumber},
+		#{pvf_content},
+		#{pvf_em_id},
+		#{pvf_validTime},
+		#{pvf_createTime}
+		)
+	</insert>
+
+    <!-- 添加合约订单记录 -->
+    <select id="queryPayFlowStatementValidRecord" resultType="com.gjp.model.PayFlowStatementValidRecord">
+		SELECT
+		pvf.*,
+		em.em_name AS pvf_em_name
+		FROM GJP_journal.GJP_Finance_PayFlowStatementValidRecord AS pvf
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON pvf.pvf_em_id = em.em_id
+		WHERE
+		bs_serialNumber = #{bs_serialNumber}
+		ORDER BY pvf_validTime DESC
+	</select>
+
+    <!-- 添加合约订单记录 -->
+    <insert id="addContractOrderAudtingRecord" useGeneratedKeys="true" keyProperty="auditingRecord_id">
+		INSERT INTO GJP_Record_ContractOrderAudting (
+		cco_code,
+		auditingRecord_state,
+		auditingRecord_content,
+		auditingRecord_author,
+		auditingRecord_createTime
+		) VALUES (
+		#{cco_code},
+		#{auditingRecord_state},
+		#{auditingRecord_content},
+		#{auditingRecord_author},
+		#{auditingRecord_createTime}
+		)
+	</insert>
+
+    <!-- 添加房源定价记录 -->
+    <insert id="addHousePriceRecord" useGeneratedKeys="true" keyProperty="hpp_id">
+		INSERT INTO GJP_House_PriceRecord (
+		hi_code,
+		hpp_content,
+		hpp_operator,
+		hpp_createTime
+		) VALUES (
+		#{hi_code},
+		#{hpp_content},
+		#{hpp_operator},
+		#{hpp_createTime}
+		)
+	</insert>
+
+</mapper>

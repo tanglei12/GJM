@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋带看GJP_House_HouseSeeing -->
+<mapper namespace="com.gjp.dao.HouseSeeingDao">
+	<!-- 添加带看信息 -->
+	<insert id="addHouseSeeing" useGeneratedKeys="true"
+		parameterType="com.gjp.model.HouseSeeing" keyProperty="hs_id">
+		INSERT INTO
+		GJP_House_HouseSeeing(
+		hs_content,
+		hs_createTime,
+		cc_code,
+		em_id,
+		hi_code,
+		hs_payType,
+		hs_day,
+		hs_contractDay,
+		hs_state,
+		hs_contractStartDate
+		)
+		VALUES
+		(
+		#{hs_content},
+		#{hs_createTime},
+		#{cc_code},
+		#{em_id},
+		#{hi_code},
+		#{hs_payType},
+		#{hs_day},
+		#{hs_contractDay},
+		#{hs_state},
+		#{hs_contractStartDate}
+		)
+	</insert>
+	<!-- 查询带看信息 -->
+	<select id="queryHouseSeeingList" resultType="com.gjp.model.HouseSeeing">
+		SELECT
+		hs.hs_id,
+		hs.hs_content,
+		hs.hs_createTime,
+		hs.cc_code,
+		hs.em_id,
+		hs.hi_code,
+		em.em_name,
+		em.em_phone,
+		ucc.cc_name,
+		uccp.ccp_phone,
+		hs.hs_payType,
+		hs.hs_day,
+		hs.hs_contractDay,
+		hs.hs_state
+		FROM
+		GJP_product.GJP_House_HouseSeeing AS hs
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON hs.em_id = em.em_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON ucc.cc_code = hs.cc_code
+		LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON uccp.cc_id = ucc.cc_id
+		WHERE uccp.ccp_state = 1
+		<if test="hi_code !=null and hi_code !='' ">
+		AND hs.hi_code = #{hi_code}
+		</if>
+		<if test="em_id !=null ">
+		AND hs.em_id = #{em_id}
+		</if>
+		<if test="cc_code !=null and cc_code !=''">
+		AND hs.cc_code = #{cc_code}
+		</if>
+		order by hs.hs_createTime desc
+	</select>
+	
+	<!-- 删除带看信息 -->
+	<delete id="deleteHouseSeeingById" parameterType="int">
+		delete from GJP_House_HouseSeeing where hs_id = #{hs_id}
+	</delete>
+
+	<!-- 更新带看信息 -->
+	<update id="updateHouseSeeing">
+		UPDATE GJP_House_HouseSeeing
+		<set>
+			<if test="hs_content !=null and hs_content != null">hs_content =#{hs_content},</if>
+			<if test="hs_createTime !=null">hs_createTime =#{hs_createTime},</if>
+			<if test="cc_code !=null and cc_code !=''">cc_code =#{cc_code},</if>
+			<if test="em_id !=null">em_id =#{em_id},</if>
+			<if test="hi_code !=null and hi_code !=''">hi_code =#{hi_code},</if>
+		</set>
+		WHERE
+		hi_code = #{hi_code} and cc_code =#{cc_code}
+	</update>
+
+	<insert id="addLookHouse" useGeneratedKeys="true" keyProperty="ah_id">
+		INSERT INTO GJP_Rent_Look_House
+		(
+			ali_user_id,
+			zhima_open_id,
+			room_code,
+			flats_tag,
+			look_time,
+			book_name,
+			book_phone,
+			book_sex,
+			remark,
+			create_time,
+			book_result,
+			take_emId
+		) VALUES (
+			#{aliUserId},
+			#{zhimaOpenId},
+			#{roomCode},
+			#{flatsTag},
+			#{lookTime},
+			#{bookName},
+			#{bookPhone},
+			#{bookSex},
+			#{remark},
+			NOW(),
+			#{bookResult},
+			#{takeEmId}
+		)
+	</insert>
+
+	<select id="queryHouseInfoByCode" resultType="com.gjp.model.RentHouseVo">
+		SELECT
+			rh.room_code,
+			va.hi_code,
+			va.house_address,
+			em.em_name,
+			em.em_phone,
+			pr.hpr_newEmp
+		FROM
+			GJP_product.GJP_Rent_House rh
+		LEFT JOIN GJP_product.view_GJP_HouseAddress va ON va.hi_code = rh.hi_code
+		LEFT JOIN GJP_product.GJP_House_PositionRecord pr ON pr.hi_code = rh.hi_code
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON pr.hpr_newEmp = em.em_id
+		WHERE rh.room_code = #{room_code}
+		LIMIT 1
+	</select>
+</mapper>

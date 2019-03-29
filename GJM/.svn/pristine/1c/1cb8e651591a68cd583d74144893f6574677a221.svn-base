@@ -1,0 +1,112 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+	color: #666;
+	background: #fff;
+}
+.intention_house{
+	width: 100%;
+	background-color: #FFF;
+	height: auto;
+	overflow: hidden;
+    padding: 3%;
+    margin-bottom: 10px;
+    position: relative;
+}
+.intention_house .house_content {
+	width: 61%;
+	float: left;
+	margin-left: 15px;
+	font-size: 14px;
+}
+.intention_house .images{
+	width: 34%;
+    height: 108px;
+    float: left;
+}
+.intention_house .images img{
+	height: 100%;
+	width: 100%;
+}
+
+.intention_house .house_configure {
+	font-size: 13px;
+	margin-top: 7px;
+	color: #999;
+}
+
+.intention_house .house_state {
+	font-size: 13px;
+	margin-top: 6px;
+}
+
+.intention_house .state {
+	color: #FFF;
+	padding: 4px;
+	border-radius: 3px;
+}
+
+.intention_house .house_money {
+	color: #FF6666;
+	float: right;
+	font-size: 15px;
+}
+
+.intention_house .house_day {
+	color: #FFF;
+	position: absolute;
+	top: 82px;
+	right: 4%;
+	font-size: 13px;
+	padding: 4px;
+	background-color: #FF6666;
+	border-radius: 3px;
+}
+.intention_house .house_date{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	font-size: 13px;
+}
+.intention_house .house_date dl{
+	margin: 0;
+	margin-top: 3px;
+	overflow: hidden;
+    height: 16px;
+}
+.intention_house .house_date dt{
+	color: #999;
+	float: left;
+}
+.intention_house .house_date dd{
+	color: #666;
+	float: left;
+	margin-left: 5px;
+}
+
+.intention_house button{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: none;
+}
+
+.success {
+	background-color: #1ABC9C;
+}
+
+.errors {
+	background-color: #E74C3C;
+}
+
+.pause {
+	background-color: #E67E22;
+}
+
+button {
+	outline: none;
+}

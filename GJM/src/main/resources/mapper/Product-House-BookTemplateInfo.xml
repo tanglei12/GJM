@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预约 GJP_House_Book_TemplateInfo -->
+<mapper namespace="com.gjp.dao.HouseBookTemplateDao">
+	
+	<!-- 增加预约模板信息 -->
+	<insert id="addHouseBookTemplate"  useGeneratedKeys="true" keyProperty="bt_id" parameterType="com.gjp.model.HouseBookTemplateInfo">
+		insert into GJP_business.GJP_House_Book_TemplateInfo
+		(
+		template_name,
+		template_use,
+		template_status,
+		template_img,
+		template_area,
+		template_desc,
+		template_time,
+		bc_ids 
+		) values (
+		#{templateName},
+		#{templateUse},
+		#{templateStatus},
+		#{templateImg},
+		#{templateArea},
+		#{templateDesc},
+		#{templateTime},
+		#{bc_ids}
+		)
+	</insert>
+	
+	<update id="saveBcIds">
+		update GJP_business.GJP_House_Book_TemplateInfo set bc_ids = #{bc_ids}, template_status = #{templateStatus} where bt_id = #{bt_id}
+	</update>
+	
+	<!-- 更新预约模板数据 -->
+	<update id="updateHouseBookTemplate" parameterType="com.gjp.model.HouseBookTemplateInfo">
+		update GJP_business.GJP_House_Book_TemplateInfo 
+			set
+				bt_id = #{bt_id} 
+				<if test="templateName !=null and templateName != ''">
+			 		,template_name = #{templateName}
+			 	</if>
+			 	<if test="templateUse !=null and templateUse != ''">
+			 		,template_use = #{templateUse}
+			 	</if>
+				<if test="templateStatus !=null and templateStatus != ''">
+					,template_status = #{templateStatus}
+				</if>
+				<if test="templateImg !=null and templateImg != ''">
+					,template_img = #{templateImg}
+				</if>
+				<if test="templateArea !=null and templateArea != ''">
+					,template_area = #{templateArea}
+				</if>
+				<if test="templateDesc !=null and templateDesc != ''">
+					,template_desc = #{templateDesc}
+				</if>
+				<if test="templateTime !=null and templateTime != ''">
+					,template_time = #{templateTime}
+				</if>
+			where bt_id = #{bt_id} 
+	</update>
+	
+	<!-- 分页查询 -->
+	<select id="queryHouseBookTemplateForList" resultType="com.gjp.model.HouseBookTemplateInfo">
+		select 
+			bt_id as bt_id,
+			template_name as templateName,
+			template_use as templateUse,
+			template_status as templateStatus,
+			template_img as templateImg,
+			template_area as templateArea,
+			template_desc as templateDesc,
+			template_time as templateTime,
+			bc_ids as bc_ids
+		from 
+		 	GJP_business.GJP_House_Book_TemplateInfo
+		limit #{pageNo}, #{pageSize}
+	</select>
+	
+	<!-- 查询总条数 -->
+	<select id="queryHouseBookTemplateForCount" resultType = "int">
+		select
+			count(bt_id)
+		from 
+			GJP_business.GJP_House_Book_TemplateInfo
+	</select>
+	
+	<select id="queryHouseBookTemplateBySourceId" resultType = "com.gjp.model.HouseBookTemplateInfo">
+		select 
+			bt_id as bt_id,
+			template_name as templateName,
+			template_use as templateUse,
+			template_status as templateStatus,
+			template_img as templateImg,
+			template_area as templateArea,
+			template_desc as templateDesc,
+			template_time as templateTime,
+			bc_ids as bc_ids
+		from 
+		 	GJP_business.GJP_House_Book_TemplateInfo
+		 where template_area like #{sourceId}
+	</select>
+	
+	<!-- 查询单条预约配置信息 -->
+	<select id="queryHouseBookTemplateById" resultType = "com.gjp.model.HouseBookTemplateInfo">
+		select 
+			bt_id as bt_id,
+			template_name as templateName,
+			template_use as templateUse,
+			template_status as templateStatus,
+			template_img as templateImg,
+			template_area as templateArea,
+			template_desc as templateDesc,
+			template_time as templateTime,
+			bc_ids as bc_ids
+		from 
+		 	GJP_business.GJP_House_Book_TemplateInfo
+		 where bt_id = #{bt_id}
+	</select>
+	
+	<!-- 删除数据 -->
+	<delete id="delHouseBookTemplate" parameterType="java.lang.Integer">
+		delete from GJP_business.GJP_House_Book_TemplateInfo where bt_id = #{bt_id}
+	</delete>
+
+</mapper>

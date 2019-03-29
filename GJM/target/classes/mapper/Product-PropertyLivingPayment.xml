@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 物业水电气 -->
+<mapper namespace="com.gjp.dao.PropertyLivingPaymentDAO">
+
+	<!-- 物业基础信息 -->
+	<sql id="livingPayment">
+		lp_type,
+		lp_cycle,
+		lp_money,
+		lp_duan,
+		lp_company,
+		lp_name,
+		lp_phone,
+		lp_bool,
+		lp_date,
+		em_id,
+		lp_beizhu,
+		lp_bools,
+		propertyInfo_Id
+	</sql>
+	<sql id="livingPaymentInsert">
+		#{lp_type },
+		#{lp_cycle },
+		#{lp_money },
+		#{lp_duan },
+		#{lp_company },
+		#{lp_name },
+		#{lp_phone },
+		#{lp_bool},
+		NOW(),
+		#{em_id },
+		#{lp_beizhu },
+		#{lp_bools },
+		#{propertyInfo_Id }
+	</sql>
+	<sql id="livingPaymentUpdate">
+		lp_type=#{lp_type },
+		lp_cycle=#{lp_cycle },
+		lp_money=#{lp_money },
+		lp_duan=#{lp_duan },
+		lp_company=#{lp_company },
+		lp_name=#{lp_name },
+		lp_phone=#{lp_phone },
+		lp_bool=#{lp_bool},
+		lp_date=NOW(),
+		lp_beizhu=#{lp_beizhu },
+		lp_bools=#{lp_bools }
+	</sql>
+	<!-- end -->
+
+	<!-- 添加物业基础信息 -->
+	<insert id="insertPropertyLivingPayment" useGeneratedKeys="true" parameterType="com.gjp.model.PropertyLivingPayment" keyProperty="lp_id">
+		insert into GJP_PropertyInfo_LivingPayment(
+		<include refid="livingPayment"></include>
+		)
+		values
+		(
+		<include refid="livingPaymentInsert"></include>
+		)
+	</insert>
+
+	<!-- 修改物业水电气 -->
+	<update id="updatePropertyLivingPayment" parameterType="com.gjp.model.PropertyLivingPayment">
+		update GJP_PropertyInfo_LivingPayment set
+		<include refid="livingPaymentUpdate"></include>
+		where lp_id=#{lp_id}
+	</update>
+
+	<!-- 查询是否存在物业水电气 -->
+	<select id="queryPropertyLivingPaymentCount" resultType="com.gjp.model.PropertyLivingPayment">
+		select count(*) as size from GJP_PropertyInfo_LivingPayment where propertyInfo_Id=#{propertyInfo_Id}
+		<if test="lp_type != '' and lp_type != null">
+			and lp_type=#{lp_type}
+		</if>
+	</select>
+
+	<!-- 根据条件查询物业水电气 -->
+	<select id="queryPropertyLivingPayment" resultType="com.gjp.model.PropertyLivingPayment">
+		select * from GJP_PropertyInfo_LivingPayment where propertyInfo_Id=#{propertyInfo_Id}
+		<if test="lp_type != '' and lp_type != null">
+			and lp_type=#{lp_type}
+		</if>
+	</select>
+
+	<!-- 根据物业水电气编号查询物业水电气 -->
+	<select id="queryPropertyLivingPaymentWhere" resultType="com.gjp.model.PropertyLivingPayment">
+		select * from GJP_PropertyInfo_LivingPayment where propertyInfo_Id=#{propertyInfo_Id}
+		<if test="lp_type != '' and lp_type != null">
+			and lp_type=#{lp_type}
+		</if>
+		LIMIT 1
+	</select>
+
+
+	<!-- 根据物业水电气编号删除物业水电气 -->
+	<delete id="deletePropertyLivingPayment">
+		DELETE FROM
+		GJP_PropertyInfo_LivingPayment
+		WHERE
+		propertyInfo_Id = #{propertyInfo_Id}
+	</delete>
+
+	<!-- <update id="updateStudent" parameterType="Student"> update users_name set name = #{name} where id = #{id} </update> <select id="queryStudentById" parameterType="int" resultType="Student"> select * from users_name where id=#{id} </select> <select id="queryAllStudents" resultType="Student"> select * from users_name </select> -->
+
+
+
+</mapper>

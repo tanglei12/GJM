@@ -1,0 +1,80 @@
+/*body {
+    margin: 0;
+    padding: 0;
+    font-family: "微软雅黑";
+    color: #666;
+    background: #F6F6F6;
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}*/
+body {
+    color: #666;
+    background: #F8F8F8;
+}
+
+.content {
+    padding-bottom: 12px;
+}
+
+.content button {
+    border: none;
+    border-radius: 0;
+}
+
+.center {
+    margin-top: 12px;
+    background-color: #FFF;
+}
+
+dl {
+    width: 98%;
+    overflow: hidden;
+    font-size: 14px;
+    border-bottom: 1px solid #f5f5f5;
+    margin: 0 0 0 0%;
+    line-height: 48px;
+    display: flex;
+}
+
+dl dt {
+    width: 31%;
+    color: #666;
+    position: relative;
+    height: 48px;
+    line-height: 48px;
+}
+
+dl dd {
+    width: 65%;
+    /*margin-left: 2%;*/
+    height: 48px;
+    line-height: 48px;
+    color: #000000;
+}
+
+dl dt label {
+    margin-left: 20px;
+}
+dl dd div{
+    background-color: #ff6666;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    float: right;
+    margin-top: 10px;
+}
+
+
+
+dl dd div img{
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    margin-top: 6px;
+}
+
+

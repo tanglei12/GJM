@@ -1,0 +1,98 @@
+
+body {
+	background: #f9f9f9;
+}
+html,body{height: auto;}
+
+.content {
+	position: relative;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.content .content-item {
+	position: relative;
+	width: 100%;
+	padding: 4px 10px;
+	background: #ffffff;
+}
+
+.content .content-item .item-title {
+	position: relative;
+	display: flex;
+	font-size: 14px;
+	line-height: 36px;
+    color: #000;
+}
+
+.content .content-item .item-title em {
+	position: relative;
+	top: 2px;
+	display: inline-block;
+	height: 20px;
+	width: 14px;
+	text-align: center;
+	color: #E74C3C;
+}
+
+.content .content-item .item-title-content{
+	
+}
+.content .content-item .item-title-option{
+	flex: 1;
+	padding-left: 10px;
+}
+
+.content .content-item .item-content {
+	position: relative;
+	display: flex;
+	flex: 1;
+	font-size: 14px;
+    line-height: 42px;
+}
+
+.content .content-item .item-content>input {
+	flex: 1;
+	font-size: 14px;
+	line-height: 40px;
+}
+
+.content .content-item .item-content>select {
+	flex: 1;
+	font-size: 14px;
+	padding: 0 6px;
+    line-height: 40px;
+}
+
+.content .content-item .item-content>textarea {
+	flex: 1;
+	line-height: 24px;
+	font-size: 14px;
+	padding: 0 10px;
+	padding-top: 8px;
+	height: 100px;
+	resize: none;
+}
+
+.content .content-item .item-content .item-option {
+	position: relative;
+	width: 40px;
+	background: none;
+	text-align: center;
+}
+
+.content .content-submmit {
+	background: #ddd;
+	line-height: 48px;
+	font-size: 14px;
+	text-align: center;
+	margin: 0 10px;
+	border-radius: 3px;
+	position: relative;
+	display: block;
+	flex: 1;
+}
+
+button{
+	outline: none;
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ServiceOrderDao">
+
+	<!-- 新增预约 -->
+	<insert id="addServiceOrder" useGeneratedKeys="true" keyProperty="so_id">
+		INSERT INTO GJP_Service_Order_Old(
+		so_name,
+		so_phone,
+		so_remarks,
+		so_houseAddress,
+		so_propertyName,
+		so_createTime
+		) VALUES (
+		#{so_name},
+		#{so_phone},
+		#{so_remarks},
+		#{so_houseAddress},
+		#{so_propertyName},
+		#{so_createTime}
+		)
+	</insert>
+	
+	<select id="queryServiceOrderList" resultType="com.gjp.model.ServiceOrder">
+		SELECT
+			*
+		FROM GJP_Service_Order_Old
+		WHERE
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+		order by so_createTime desc
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	
+	<select id="queryServiceOrderListCount" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM GJP_Service_Order_Old
+		WHERE
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+	</select>
+</mapper>

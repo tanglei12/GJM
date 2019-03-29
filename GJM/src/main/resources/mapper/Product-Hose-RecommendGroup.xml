@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 适合推荐群体 GJP_House_RecommendGroup -->
+<mapper namespace="com.gjp.dao.HoseRecommendGroupDAO">
+         
+         <sql id="allmenbers">
+            RecommendGroup_Id,
+			RecommendGroup_Name
+         </sql>
+         
+         <sql id="menberEcpId">
+           	RecommendGroup_Name
+         </sql>
+         
+         <!-- 添加适合推荐群体-->
+          <insert id="addHoseRecommendGroup" useGeneratedKeys="true" parameterType="com.gjp.model.HoseRecommendGroup" keyProperty="RecommendGroup_Id">
+	         insert into GJP_House_RecommendGroup(  
+	            RecommendGroup_Name) 
+	         values 
+	         (        
+	            #{RecommendGroup_Name}
+	         )
+         </insert> 
+         
+         <!-- ajax适合推荐群体List-->
+         <select id="selectHoseRecommendGroup" resultType="com.gjp.model.HoseRecommendGroup">
+             select 
+             <include refid="allmenbers" />
+              from GJP_House_RecommendGroup 
+         </select>
+         
+         <!-- 查询适合推荐群体编号-->
+         <select id="selectRecommendGroup_Id" parameterType="com.gjp.model.HoseRecommendGroup" resultType="int">
+             select 
+             RecommendGroup_Id
+              from GJP_House_RecommendGroup 
+              where RecommendGroup_Name=#{RecommendGroup_Name}
+         </select>
+         
+         <!-- 分页查询推荐群体 -->
+         <select id="selectRecommendGroup" resultType="com.gjp.model.HoseRecommendGroup">
+             select 
+               RecommendGroup_Id,
+			   RecommendGroup_Name
+			 from GJP_House_RecommendGroup
+			 LIMIT #{pageNo},#{pageSize}
+         </select>
+         
+         <!-- 查询推荐群体总条数 -->
+         <select id="selectTotleRecommendGroup" resultType="int">
+             select count(*) from GJP_House_RecommendGroup
+         </select>
+         
+         <!-- 根据id查询推荐群体-->
+         <select id="selectHoseRecommendGroupById" resultType="com.gjp.model.HoseRecommendGroup">
+             select 
+               RecommendGroup_Id,
+			   RecommendGroup_Name
+             from GJP_House_RecommendGroup
+             where RecommendGroup_Id=#{RecommendGroup_Id}
+         </select>
+         
+         <!-- 修改推荐群体 -->
+         <update id="upDataHoseRecommendGroup" parameterType="com.gjp.model.HoseRecommendGroup">
+             update GJP_House_RecommendGroup set 
+               RecommendGroup_Name=#{RecommendGroup_Name}
+             where 
+               RecommendGroup_Id=#{RecommendGroup_Id}
+         </update>
+<!--          <delete id="deleteStudent" parameterType="int">
+             delete from users_name where id = #{id}
+         </delete>
+         
+         <update id="updateStudent" parameterType="Student">
+             update users_name set name = #{name} where id = #{id}
+         </update>
+         
+         <select id="queryStudentById" parameterType="int" resultType="Student">
+           select * from users_name where id=#{id}
+         </select> 
+         
+         <select id="queryAllStudents" resultType="Student">
+             select * from users_name
+         </select> -->
+         
+         
+
+</mapper>

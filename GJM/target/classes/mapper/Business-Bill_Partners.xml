@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 合作伙伴 GJP_Bill_Partners -->
+<mapper namespace="com.gjp.dao.BillPartnersDao">
+
+	<sql id="allmenbers">
+		bp_id,
+		bp_name,
+		bp_type,
+		bp_address,
+		bp_where,
+		bp_businessPerson,
+		bp_moneyPerson,
+		bp_technologyPerson,
+		bp_businessPhone,
+		bp_moneyPhone,
+		bp_technologyPhone,
+		bp_cooperationDate,
+		dp_date,
+		dp_state
+	</sql>
+
+	<sql id="menberEcpId">
+		bp_name,
+		bp_type,
+		bp_address,
+		bp_where,
+		bp_businessPerson,
+		bp_moneyPerson,
+		bp_technologyPerson,
+		bp_businessPhone,
+		bp_moneyPhone,
+		bp_technologyPhone,
+		bp_cooperationDate,
+		dp_date,
+		dp_state
+	</sql>
+
+	<sql id="insert">
+		#{bp_name},
+		#{bp_type},
+		#{bp_address},
+		#{bp_where},
+		#{bp_businessPerson},
+		#{bp_moneyPerson},
+		#{bp_technologyPerson},
+		#{bp_businessPhone},
+		#{bp_moneyPhone},
+		#{bp_technologyPhone},
+		#{bp_cooperationDate},
+		#{dp_date},
+		#{dp_state}
+	</sql>
+
+	<!-- 添加合作单位 -->
+	<insert id="addBillPartners" useGeneratedKeys="true" keyProperty="bp_id">
+		insert into GJP_Bill_Partners(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 分页查询合作单位 -->
+	<select id="selectBillPartners" resultType="com.gjp.model.BillPartners">
+		select
+		<include refid="allmenbers" />
+		from GJP_Bill_Partners
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and dp_date >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= dp_date
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询合作单位总条数 -->
+	<select id="selectBillPartnersTotal" resultType="int">
+		select count(*) from GJP_Bill_Partners
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and dp_date >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= dp_date
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询合作单位总记录 -->
+	<select id="selectTo_people" resultType="com.gjp.model.BillPartners">
+		select * from GJP_Bill_Partners
+	</select>
+
+	<!-- 分页查询合作单位 -->
+	<select id="selectBillPartnersById" resultType="com.gjp.model.BillPartners">
+		select
+		<include refid="allmenbers" />
+		from GJP_Bill_Partners
+		where bp_id = #{bp_id}
+	</select>
+	
+	<!-- 根据属性查询合作伙伴 -->
+	<select id="queryBillPartnersByProperty" resultType="com.gjp.model.BillPartners">
+		SELECT
+			bp.*, bpe.bpe_isRepay,bpe.bpe_dedit
+		FROM
+			GJP_Bill_Partners AS bp
+		LEFT JOIN GJP_Bill_PartnerExtend AS bpe ON bp.bp_id = bpe.bp_id
+		WHERE 1 = 1
+		<if test="bp_id != null ">
+		AND	bp.bp_id = #{bp_id}
+		</if>
+		<if test="bp_name != null and bp_name != '' ">
+		AND	bp.bp_name = #{bp_name}
+		</if>
+			
+	</select>
+
+	<!-- 修改房屋基本信息 -->
+	<update id="updataBillPartners">
+		update GJP_Bill_Partners set
+		bp_name=#{bp_name},
+		bp_type=#{bp_type},
+		bp_address=#{bp_address},
+		bp_where=#{bp_where},
+		bp_businessPerson=#{bp_businessPerson},
+		bp_moneyPerson=#{bp_moneyPerson},
+		bp_technologyPerson=#{bp_technologyPerson},
+		bp_businessPhone=#{bp_businessPhone},
+		bp_moneyPhone=#{bp_moneyPhone},
+		bp_technologyPhone=#{bp_technologyPhone},
+		bp_cooperationDate=#{bp_cooperationDate},
+		dp_state=#{dp_state}
+		where
+		bp_id=#{bp_id}
+	</update>
+	
+	<!-- 查询服务费率 -->
+	<select id="queryServiceRateByPartnerName" parameterType="Map" resultType="double">
+		SELECT
+			bpsr.bpsr_rate
+		FROM
+			GJP_Bill_PartnersServiceRate AS bpsr
+		LEFT JOIN GJP_Bill_Partners AS bp ON bpsr.bp_id = bp.bp_id
+		WHERE
+			bp.bp_name = #{bp_name}
+		AND bpsr.bpsr_month = #{bpsr_month}
+	</select>
+</mapper>

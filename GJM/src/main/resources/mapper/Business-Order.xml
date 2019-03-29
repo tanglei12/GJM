@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.OrderDao">
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="order_id">
+        INSERT INTO GJP_Order (
+        order_sn,
+        order_type,
+        order_channel,
+        order_balpay,
+        order_title,
+        order_status,
+        order_ucc_id,
+        order_con_code,
+        order_hi_code,
+        trade_object,
+        trade_ucc_id,
+        trade_cc_code,
+        trade_user_id,
+        trade_em_id,
+        detail_count,
+        detail_amount_total,
+        detail_amount_coupon,
+        order_amount_total,
+        order_balance_deduction,
+        order_amount_pay,
+        recharge_amount_give,
+        order_agreed_pay_date,
+        pay_sn,
+        pay_channel,
+        pay_time,
+        order_operator,
+        order_remarks,
+        order_create_time
+        ) VALUES (
+        #{order_sn},
+        #{order_type},
+        #{order_channel},
+        #{order_balpay},
+        #{order_title},
+        #{order_status},
+        #{order_ucc_id},
+        #{order_con_code},
+        #{order_hi_code},
+        #{trade_object},
+        #{trade_ucc_id},
+        #{trade_cc_code},
+        #{trade_user_id},
+        #{trade_em_id},
+        #{detail_count},
+        #{detail_amount_total},
+        #{detail_amount_coupon},
+        #{order_amount_total},
+        #{order_balance_deduction},
+        #{order_amount_pay},
+        #{recharge_amount_give},
+        #{order_agreed_pay_date},
+        #{pay_sn},
+        #{pay_channel},
+        #{pay_time},
+        #{order_operator},
+        #{order_remarks},
+        #{order_create_time}
+        )
+    </insert>
+
+    <insert id="addOrderBill" useGeneratedKeys="true" keyProperty="bill_id">
+        INSERT INTO GJP_Order_Bill (
+        bill_sn,
+        bill_trade_code,
+        bill_trans_sn,
+        bill_channel,
+        cc_code,
+        user_id,
+        bill_type,
+        bill_title,
+        bill_pay_user_id,
+        bill_pay_cc_code,
+        bill_pay_channel,
+        bill_pay_total,
+        bill_pay_deduction,
+        bill_pay_amount,
+        bill_status,
+        bill_pay_time,
+        bill_check_status,
+        bill_check_time,
+        bill_ip,
+        bill_remarks,
+        bill_invalid_time,
+        bill_create_time
+        ) VALUES (
+        #{bill_sn},
+        #{bill_trade_code},
+        #{bill_trans_sn},
+        #{bill_channel},
+        #{cc_code},
+        #{user_id},
+        #{bill_type},
+        #{bill_title},
+        #{bill_pay_user_id},
+        #{bill_pay_cc_code},
+        #{bill_pay_channel},
+        #{bill_pay_total},
+        #{bill_pay_deduction},
+        #{bill_pay_amount},
+        #{bill_status},
+        #{bill_pay_time},
+        #{bill_check_status},
+        #{bill_check_time},
+        #{bill_ip},
+        #{bill_remarks},
+        #{bill_invalid_time},
+        #{bill_create_time}
+        )
+    </insert>
+
+    <insert id="addOrderDetail" useGeneratedKeys="true" keyProperty="detail_id">
+        INSERT INTO GJP_Order_Detail (
+        order_sn,
+        detail_type,
+        detail_balpay,
+        detail_status,
+        product_sn,
+        product_type,
+        product_name,
+        product_detail,
+        product_price,
+        product_number,
+        detail_subtotal,
+        detail_remarks,
+        detail_operator,
+        detail_create_time
+        ) VALUES (
+        #{order_sn},
+        #{detail_type},
+        #{detail_balpay},
+        #{detail_status},
+        #{product_sn},
+        #{product_type},
+        #{product_name},
+        #{product_detail},
+        #{product_price},
+        #{product_number},
+        #{detail_subtotal},
+        #{detail_remarks},
+        #{detail_operator},
+        #{detail_create_time}
+        )
+    </insert>
+
+    <update id="updateOrderBill">
+        UPDATE GJP_Order_Bill
+        <set>
+            <if test="bill_sn !=null">bill_sn= #{bill_sn},</if>
+            <if test="bill_trade_code !=null">bill_trade_code= #{bill_trade_code},</if>
+            <if test="bill_trans_sn !=null">bill_trans_sn= #{bill_trans_sn},</if>
+            <if test="bill_channel !=null">bill_channel= #{bill_channel},</if>
+            <if test="bill_type !=null">bill_type= #{bill_type},</if>
+            <if test="bill_title !=null">bill_title= #{bill_title},</if>
+            <if test="bill_pay_user_id !=null">bill_pay_user_id=#{bill_pay_user_id},</if>
+            <if test="bill_pay_cc_code !=null">bill_pay_cc_code=#{bill_pay_cc_code},</if>
+            <if test="bill_pay_channel !=null">bill_pay_channel=#{bill_pay_channel},</if>
+            <if test="bill_pay_total !=null">bill_pay_total=#{bill_pay_total},</if>
+            <if test="bill_pay_deduction !=null">bill_pay_deduction=#{bill_pay_deduction},</if>
+            <if test="bill_pay_amount !=null">bill_pay_amount= #{bill_pay_amount},</if>
+            <if test="bill_status !=null">bill_status= #{bill_status},</if>
+            <if test="bill_pay_time !=null">bill_pay_time= #{bill_pay_time},</if>
+            <if test="bill_check_status !=null">bill_check_status= #{bill_check_status},</if>
+            <if test="bill_check_em_id !=null">bill_check_em_id= #{bill_check_em_id},</if>
+            <if test="bill_check_time !=null">bill_check_time= #{bill_check_time},</if>
+            <if test="bill_ip !=null">bill_ip= #{bill_ip},</if>
+            <if test="bill_operator !=null">bill_operator= #{bill_operator},</if>
+            <if test="bill_remarks !=null">bill_remarks= #{bill_remarks},</if>
+            <if test="bill_invalid_time !=null">bill_invalid_time= #{bill_invalid_time},</if>
+        </set>
+        WHERE
+        bill_id = #{bill_id}
+    </update>
+
+    <update id="updateOrder">
+        UPDATE GJP_Order
+        <set>
+            <if test="order_type !=null">order_type= #{order_type},</if>
+            <if test="order_channel !=null">order_channel= #{order_channel},</if>
+            <if test="order_balpay !=null">order_balpay= #{order_balpay},</if>
+            <if test="order_title !=null">order_title= #{order_title},</if>
+            <if test="order_status !=null">order_status= #{order_status},</if>
+            <if test="order_ucc_id !=null">order_ucc_id= #{order_ucc_id},</if>
+            <if test="order_con_code !=null">order_con_code= #{order_con_code},</if>
+            <if test="order_hi_code !=null">order_hi_code= #{order_hi_code},</if>
+            <if test="trade_object !=null">trade_object= #{trade_object},</if>
+            <if test="trade_ucc_id !=null">trade_ucc_id= #{trade_ucc_id},</if>
+            <if test="trade_cc_code !=null">trade_cc_code= #{trade_cc_code},</if>
+            <if test="trade_user_id !=null">trade_user_id= #{trade_user_id},</if>
+            <if test="trade_em_id !=null">trade_em_id= #{trade_em_id},</if>
+            <if test="detail_count !=null">detail_count= #{detail_count},</if>
+            <if test="detail_amount_total !=null">detail_amount_total= #{detail_amount_total},</if>
+            <if test="detail_amount_coupon !=null">detail_amount_coupon= #{detail_amount_coupon},</if>
+            <if test="order_amount_total !=null">order_amount_total= #{order_amount_total},</if>
+            <if test="order_balance_deduction !=null">order_balance_deduction= #{order_balance_deduction},</if>
+            <if test="order_amount_pay !=null">order_amount_pay= #{order_amount_pay},</if>
+            <if test="recharge_amount_give !=null">recharge_amount_give= #{recharge_amount_give},</if>
+            <if test="order_agreed_pay_date !=null">order_agreed_pay_date= #{order_agreed_pay_date},</if>
+            <if test="pay_sn !=null">pay_sn= #{pay_sn},</if>
+            <if test="pay_channel !=null">pay_channel= #{pay_channel},</if>
+            <if test="pay_time !=null">pay_time= #{pay_time},</if>
+            <if test="order_operator !=null">order_operator= #{order_operator},</if>
+            <if test="order_remarks !=null">order_remarks= #{order_remarks},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="order_id !=null">order_id = #{order_id}</when>
+            <when test="order_sn !=null">order_sn = #{order_sn}</when>
+        </choose>
+    </update>
+
+    <update id="updateOrderForAmount">
+        UPDATE GJP_Order
+        <set>
+            detail_count= #{detail_count},
+            detail_amount_total= #{detail_amount_total},
+            detail_amount_coupon= #{detail_amount_coupon},
+            order_amount_total= #{order_amount_total},
+            order_amount_pay= #{order_amount_pay},
+            recharge_amount_give= #{recharge_amount_give}
+        </set>
+        WHERE
+        <choose>
+            <when test="order_id !=null">order_id = #{order_id}</when>
+            <when test="order_sn !=null">order_sn = #{order_sn}</when>
+        </choose>
+    </update>
+
+    <update id="updateOrderDetail">
+        UPDATE GJP_Order_Detail
+        <set>
+            <if test="detail_balpay != null">detail_balpay=#{detail_balpay},</if>
+            <if test="detail_type != null">detail_type=#{detail_type},</if>
+            <if test="detail_status != null">detail_status=#{detail_status},</if>
+            <if test="product_type != null">product_type=#{product_type},</if>
+            <if test="product_sn != null">product_sn=#{product_sn},</if>
+            <if test="product_name != null">product_name=#{product_name},</if>
+            <if test="product_detail != null">product_detail=#{product_detail},</if>
+            <if test="product_price != null">product_price=#{product_price},</if>
+            <if test="product_number != null">product_number=#{product_number},</if>
+            <if test="detail_subtotal != null">detail_subtotal=#{detail_subtotal},</if>
+            <if test="detail_operator != null">detail_operator=#{detail_operator},</if>
+            <if test="detail_remarks != null">detail_remarks=#{detail_remarks},</if>
+        </set>
+        WHERE
+        detail_id = #{detail_id}
+    </update>
+
+    <select id="queryOrderList" resultType="com.gjp.model.OrderVo">
+        SELECT
+        o.*,
+        IFNULL(em.em_name,'系统') AS order_operator_name
+        FROM GJP_business.GJP_Order AS o
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON o.order_operator = em.em_id
+        <where>
+            <if test="order_type != null">AND o.order_type =#{order_type}</if>
+            <if test="order_balpay != null">AND o.order_balpay =#{order_balpay}</if>
+            <if test="order_channel != null">AND o.order_channel =#{order_channel}</if>
+            <if test="order_status != null">AND o.order_status =#{order_status}</if>
+            <if test="order_status_in != null">AND o.order_status IN(${order_status_in})</if>
+            <if test="order_agreed_pay_date_lt != null">AND o.order_agreed_pay_date &lt; DATE_FORMAT(#{order_agreed_pay_date_lt},'%Y-%m-%d')</if>
+            <if test="order_con_code != null">AND o.order_con_code =#{order_con_code}</if>
+            <if test="order_hi_code != null">AND o.order_hi_code =#{order_hi_code}</if>
+            <if test="trade_cc_code != null">AND o.trade_cc_code =#{trade_cc_code}</if>
+            <if test="trade_user_id != null">AND o.trade_user_id =#{trade_user_id}</if>
+            <if test="pay_sn != null">AND o.pay_sn =#{pay_sn}</if>
+        </where>
+        ORDER BY o.order_agreed_pay_date ASC, order_create_time ASC
+    </select>
+
+    <select id="queryOrderDetailList" resultType="com.gjp.model.OrderDetailVo">
+        SELECT
+        od.*,
+        IFNULL(em.em_name,'系统') AS detail_operator_name
+        FROM
+        GJP_business.GJP_Order_Detail AS od
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON od.detail_operator = em.em_id
+        <where>
+            <if test="order_sn != null">AND order_sn =#{order_sn}</if>
+            <if test="product_sn != null">AND product_sn IN(${product_sn})</if>
+            <if test="product_sn_in != null">AND product_sn IN(${product_sn_in})</if>
+        </where>
+        ORDER BY detail_type ASC
+    </select>
+
+    <select id="queryOrder" resultType="com.gjp.model.OrderVo">
+        SELECT
+        o.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM GJP_business.GJP_Order AS o
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = o.trade_user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON o.trade_cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        <where>
+            <if test="order_sn != null">order_sn =#{order_sn}</if>
+            <if test="order_channel != null">AND order_channel =#{order_channel}</if>
+            <if test="order_status != null">AND order_status =#{order_status}</if>
+            <if test="trade_user_id != null">AND trade_user_id =#{trade_user_id}</if>
+            <if test="pay_sn != null">AND pay_sn =#{pay_sn}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <select id="queryOrderDetail" resultType="com.gjp.model.OrderDetailVo">
+        SELECT
+        *
+        FROM GJP_Order_Detail
+        <where>
+            <if test="detail_id != null">AND detail_id =#{detail_id}</if>
+            <if test="product_sn != null">AND product_sn =#{product_sn}</if>
+        </where>
+    </select>
+
+    <select id="queryOrderBill" resultType="com.gjp.model.OrderBillVo">
+        SELECT
+        bill.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM GJP_business.GJP_Order_Bill AS bill
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bill.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = bill.user_id
+        <where>
+            <if test="bill_id != null">AND bill_id = #{bill_id}</if>
+            <if test="bill_sn != null">AND bill_sn = #{bill_sn}</if>
+            <if test="bill_trans_sn != null">AND bill_trans_sn = #{bill_trans_sn}</if>
+            <if test="bill_trade_code != null">AND bill_trade_code = #{bill_trade_code}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <select id="queryFinanceDownPaymentList" resultType="com.gjp.model.FinanceDownPaymentVo">
+        SELECT * FROM GJP_Finance_DownPayment
+        <where>
+            <if test="hi_code != null">AND hi_code = #{hi_code}</if>
+            <if test="order_sn !=null">AND order_sn=#{order_sn}</if>
+            <if test="fdp_status != null">AND fdp_status = #{fdp_status}</if>
+            <if test="fdp_status_in != null">AND fdp_status IN (${fdp_status_in})</if>
+            <if test="fdp_invaild_time_lt != null">AND fdp_invaild_time &lt; #{fdp_invaild_time_lt}</if>
+        </where>
+    </select>
+
+    <select id="queryFinanceDownPayment" resultType="com.gjp.model.FinanceDownPaymentVo">
+        SELECT
+        d.*,
+        house.house_address,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM GJP_business.GJP_Finance_DownPayment AS d
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON house.hi_code = d.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = d.user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON d.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        <where>
+            <if test="hi_code != null">AND d.hi_code = #{hi_code}</if>
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <if test="cc_code !=null">OR d.cc_code=#{cc_code}</if>
+                <if test="user_id !=null">OR d.user_id=#{user_id}</if>
+            </trim>
+            <if test="fdp_id != null">AND d.fdp_id = #{fdp_id}</if>
+            <if test="fdp_status != null">AND d.fdp_status = #{fdp_status}</if>
+            <if test="fdp_status_in != null">AND d.fdp_status IN (${fdp_status_in})</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <insert id="addFinanceDownPayment" useGeneratedKeys="true" keyProperty="fdp_id">
+		INSERT INTO GJP_Finance_DownPayment(
+		fdp_sn,
+		fdp_status,
+        hi_code,
+		cc_code,
+		user_id,
+		fdp_amount,
+		order_sn,
+		fdp_remarks,
+		fdp_invaild_day,
+		fdp_invaild_time,
+		fdp_create_time
+		) VALUES (
+		#{fdp_sn},
+		#{fdp_status},
+		#{hi_code},
+		#{cc_code},
+		#{user_id},
+		#{fdp_amount},
+		#{order_sn},
+		#{fdp_remarks},
+		#{fdp_invaild_day},
+		#{fdp_invaild_time},
+		#{fdp_create_time}
+		)
+	</insert>
+
+    <delete id="deleteOrderDetail">
+        DELETE FROM GJP_Order_Detail WHERE detail_id = #{detail_id}
+    </delete>
+
+    <delete id="deleteOrder">
+        DELETE FROM GJP_Order WHERE order_id = #{order_id}
+    </delete>
+
+    <delete id="deleteOrderBill">
+        DELETE FROM GJP_Order_Bill WHERE bill_id = #{bill_id}
+    </delete>
+
+</mapper>

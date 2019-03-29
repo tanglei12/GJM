@@ -1,0 +1,2620 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋基本信息 GJP_House_HouseInformation -->
+<mapper namespace="com.gjp.dao.HouseLibraryDao">
+
+    <sql id="allmenbers">
+		hi_id,
+		hi_name,
+		hi_money,
+		hi_keepMoney,
+		hi_type,
+		hi_area,
+		hi_district,
+		hi_track,
+		hi_measure,
+		hi_floor,
+		hi_houseS,
+		hi_houseT,
+		hi_houseW,
+		hi_function,
+		hi_orientation,
+		hi_peopleName,
+		hi_latitude,
+		he_id,
+		GJP_House_HouseInformation.hb_id,
+		hi_code,
+		pu_id,
+		hi_num,
+		hi_content,
+		RecommendGroup_Id,
+		PropertyInfo_Id,
+		hi_number,
+		hi_text,
+		hi_userManaged,
+		hi_address,
+		hi_state,
+		hi_totalFloor,
+		hi_project,
+		hi_version,
+		contract_intoStatus,
+		contract_outStatus
+	</sql>
+
+    <sql id="menberEcpId">
+		hi_name,
+		hi_money,
+		hi_keepMoney,
+		hi_type,
+		hi_area,
+		hi_district,
+		hi_track,
+		hi_measure,
+		hi_floor,
+		hi_houseS,
+		hi_houseT,
+		hi_houseW,
+		hi_function,
+		hi_orientation,
+		hi_peopleName,
+		hi_latitude,
+		he_id,
+		hb_id,
+		hi_code,
+		pu_id,
+		hi_num,
+		hi_content,
+		RecommendGroup_Id,
+		PropertyInfo_Id,
+		hi_number,
+		hi_text,
+		hi_userManaged,
+		hi_address,
+		hi_state,
+		hi_totalFloor,
+		hi_project,
+		hi_version,
+		contract_intoStatus,
+		contract_outStatus
+	</sql>
+
+    <!-- 发布房源基础信息 -->
+    <insert id="addHouseHouseInformationKeep" useGeneratedKeys="true" parameterType="com.gjp.model.HouseInfoKeep" keyProperty="hi_id">
+		insert into
+		GJP_House_HouseInformation_keep(
+		hi_name,
+		hi_money,
+		hi_type,
+		hi_area,
+		hi_district,
+		hi_track,
+		hi_measure,
+		hi_floor,
+		hi_totalFloor,
+		hi_houseS,
+		hi_houseT,
+		hi_houseW,
+		hi_function,
+		hi_orientation,
+		hi_peopleName,
+		hi_latitude,
+		he_id,
+		hb_id,
+		hi_code,
+		pu_id,
+		hi_num,
+		hi_content,
+		recommendGroup_Id,
+		propertyInfo_Id,
+		hi_number,
+		hi_text,
+		hi_userManaged,
+		hi_address,
+		hi_state,
+		contract_intoStatus,
+		contract_outStatus,
+		phi_id,
+		hi_date,
+		hi_keepMoney,
+		hi_project,
+		hi_version,
+		hi_forRentState,
+		hi_isForRent,
+		cc_code,
+		hi_rentDay,
+		hi_style,
+		hi_price,
+		conim_id
+		)
+		values
+		(
+		#{hi_name},
+		#{hi_money},
+		#{hi_type},
+		#{hi_area},
+		#{hi_district},
+		#{hi_track},
+		#{hi_measure},
+		#{hi_floor},
+		#{hi_totalFloor},
+		#{hi_houseS},
+		#{hi_houseT},
+		#{hi_houseW},
+		#{hi_function},
+		#{hi_orientation},
+		#{hi_peopleName},
+		#{hi_latitude},
+		#{he_id},
+		#{hb_id},
+		#{hi_code},
+		#{pu_id},
+		#{hi_num},
+		#{hi_content},
+		#{recommendGroup_Id},
+		#{propertyInfo_Id},
+		#{hi_number},
+		#{hi_text},
+		#{hi_userManaged},
+		#{hi_address},
+		#{hi_state},
+		#{contract_intoStatus},
+		#{contract_outStatus},
+		#{phi_id},
+		#{hi_date},
+		#{hi_keepMoney},
+		#{hi_project},
+		#{hi_version},
+		#{hi_forRentState},
+		#{hi_isForRent},
+		#{cc_code},
+		#{hi_rentDay},
+		#{hi_style},
+		#{hi_price},
+		#{conim_id}
+		)
+	</insert>
+
+    <!-- 分页查询房屋基本信息 -->
+    <select id="selectHouseHouseInformation" resultType="com.gjp.model.HouseInfoKeep">
+    SELECT * FROM (SELECT
+    IF (
+    hik.upn_code IS NULL
+    OR hik.upn_code = '',
+    CONCAT(
+    hik.upn_sname,
+    hik.hi_address
+    ),
+    CONCAT(
+    hik.upn_sname,
+    hik.upn_code,
+    '-',
+    hik.hi_address
+    )
+    ) AS house_address,
+    hik.hi_id,
+    hik.hi_name,
+    hik.hi_money,
+    hik.hi_keepMoney,
+    hik.hi_type,
+    hik.hi_area,
+    hik.hi_district,
+    hik.hi_track,
+    hik.hi_measure,
+    hik.hi_floor,
+    hik.hi_totalFloor,
+    CONCAT(
+    hik.hi_houseS,
+    '室',
+    hik.hi_houseT,
+    '厅',
+    hik.hi_houseW,
+    '卫'
+    ) AS houseTSW,
+    hik.hi_function,
+    hik.hi_orientation,
+    hik.hi_peopleName,
+    hik.hi_latitude,
+    hik.he_id,
+    hik.hb_id,
+    hik.hi_code,
+    hik.hi_state,
+    hik.contract_intoStatus,
+    hik.contract_outStatus,
+    hik.phi_id,
+    hik.hi_date,
+    hik.hi_project,
+    hik.hi_version,
+    hik.contract_beginDate,
+    hik.contract_expiryDate,
+    hik.hi_forRentState,
+    hik.propertyInfo_Name,
+    hik.propertyInfo_address,
+    hik.his_id,
+    hik.his_name as hb_name,
+    hik.he_peopleName,
+    hik.he_phone,
+    hik.he_state,
+    hik.em_name,
+    hik.em_phone,
+    hik.upn_id,
+    hik.upn_code,
+    hik.upn_sname,
+    hik.hi_isForRent,
+    hik.hi_boolActive,
+    hik.hi_houseActive,
+    IF(hik.hi_isForRent = 2,0,hik.hi_leaseDay) AS hi_leaseDay,
+    hik.ucc_id,
+    hik.ucc_name,
+    hik.he_isPublish,
+    hik.hi_price,
+    hp.hp_status
+    FROM
+    view_GJP_HouseHouseInformationKeep AS hik
+    LEFT JOIN (
+        SELECT hi_code,hp_status FROM GJP_product.GJP_House_Publish
+        GROUP BY hi_code
+    ) hp ON hik.hi_code = hp.hi_code
+    ) house_info
+    WHERE
+    his_id &lt; 3
+    <if test="houseModel.mode == 'forRent'">
+        AND hi_isForRent = 1
+    </if>
+    <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+        ${houseModel.sqlWhere}
+    </if>
+    <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+        AND ${houseModel.dateTitle} >= DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+    </if>
+    <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+        AND DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= ${houseModel.dateTitle}
+    </if>
+    LIMIT #{pageNo},#{pageSize}
+</select>
+
+    <!-- 查询房屋总条数 -->
+    <select id="selectTotalHouseHouseInformation" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT count(*) as size FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR
+        hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        CONCAT(
+        hik.hi_houseS,
+        '室',
+        hik.hi_houseT,
+        '厅',
+        hik.hi_houseW,
+        '卫'
+        ) AS houseTSW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.recommendGroup_Id,
+        hik.propertyInfo_Id,
+        hik.hi_number,
+        hik.hi_text,
+        hik.hi_userManaged,
+        hik.hi_address,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.contract_beginDate,
+        hik.contract_expiryDate,
+        hik.hi_forRentState,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.his_id,
+        hik.his_name as hb_name,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.upn_code,
+        hik.upn_sname,
+        hik.hi_isForRent,
+        hik.hi_boolActive,
+        IF(hik.hi_isForRent = 2,0,hik.hi_leaseDay) AS hi_leaseDay,
+        hik.hi_houseActive,
+        hik.ucc_id,
+        hik.ucc_name,
+        hik.he_isPublish,
+        hik.hi_price,
+        hp.hp_status
+        FROM
+        view_GJP_HouseHouseInformationKeep AS hik
+        LEFT JOIN (
+            SELECT hi_code,hp_status FROM GJP_product.GJP_House_Publish
+            GROUP BY hi_code
+        ) hp ON hik.hi_code = hp.hi_code
+        ) house_info
+        WHERE
+        his_id &lt; 3
+        <if test="houseModel.mode == 'forRent'">
+            AND hi_isForRent = 1
+        </if>
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+    </select>
+
+    <!-- 分页查询部门房屋基本信息 -->
+    <select id="selectHouseHouseInformationSale" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        CONCAT(
+        hik.hi_houseS,
+        '室',
+        hik.hi_houseT,
+        '厅',
+        hik.hi_houseW,
+        '卫'
+        ) AS houseTSW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.recommendGroup_Id,
+        hik.propertyInfo_Id,
+        hik.hi_number,
+        hik.hi_text,
+        hik.hi_userManaged,
+        hik.hi_address,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.contract_expiryDate,
+        hik.hi_forRentState,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.his_id,
+        hik.his_name as hb_name,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.ucc_id,
+        hik.upn_code,
+        hik.upn_sname,
+        hik.hi_isForRent,
+        hik.hi_boolActive,
+        hik.hi_leaseDay,
+        hik.hi_houseActive
+        FROM
+        view_GJP_HouseHouseInformationKeep_sale AS hik
+        ) house_info
+        JOIN (select
+        * from GJP_user.GJP_UserCenter_Company where FIND_IN_SET(ucc_id,
+        company(#{houseModel.ucc_id}))) com ON house_info.ucc_id=com.ucc_id
+        WHERE
+        1=1 and 3>his_id
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        ${houseModel.sqlOrderBy}
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询部门房屋总条数 -->
+    <select id="selectTotalHouseHouseInformationSale" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT count(*) as size FROM (SELECT
+        IF (
+        pin.upn_code IS NULL
+        OR
+        pin.upn_code = '',
+        CONCAT(
+        pin.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        pin.upn_sname,
+        pin.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.ucc_id,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        CONCAT(
+        hik.hi_houseS,
+        "室",
+        hik.hi_houseT,
+        "厅",
+        hik.hi_houseW,
+        "卫"
+        ) AS houseTSW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.recommendGroup_Id,
+        hik.propertyInfo_Id,
+        hik.hi_number,
+        hik.hi_text,
+        hik.hi_userManaged,
+        hik.hi_address,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.contract_expiryDate,
+        hik.hi_forRentState,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.his_id,
+        hik.his_name as hb_name,
+        pin.upn_code,
+        pin.upn_sname
+        FROM
+        view_GJP_HouseHouseInformationKeep_sale AS hik,
+        GJP_PropertyInfo_PropertyInfoName AS
+        pin
+        WHERE
+        hik.upn_id = pin.upn_id)
+        house_info
+        JOIN (select * from GJP_user.GJP_UserCenter_Company where
+        FIND_IN_SET(ucc_id, company(#{houseModel.ucc_id}))) com ON
+        house_info.ucc_id=com.ucc_id
+        WHERE
+        1=1 and 3>his_id
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        ${houseModel.sqlOrderBy}
+    </select>
+
+    <!-- 招租房源 -->
+    <select id="selectForRentHouseInformationKeep" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT * FROM view_GJP_HouseHouseInformationKeep
+		WHERE
+		1=1 and 3>his_id
+		and (hi_isForRent=0 or hi_isForRent is null or hi_isForRent='')
+	</select>
+
+    <!-- 分页查询房屋列表信息 -->
+    <select id="queryHouseLibraryInfoPageList" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT
+		*
+		FROM
+		view_GJP_HouseAddress
+		WHERE
+		house_address like
+		CONCAT('%',#{t.house_address},'%')
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+    <!-- 分页查询房屋列表信息数据条数 -->
+    <select id="queryHouseLibraryInfoPageRecords" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		view_GJP_HouseAddress
+		WHERE
+		house_address like
+		CONCAT('%',#{t.house_address},'%')
+	</select>
+
+    <!-- 招租房源 -->
+    <select id="selectHouseForRent" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT * FROM (SELECT
+		IF (
+		hik.upn_code IS NULL
+		OR hik.upn_code = '',
+		CONCAT(
+		hik.upn_sname,
+		hik.hi_address
+		),
+		CONCAT(
+		hik.upn_sname,
+		hik.upn_code,
+		'-',
+		hik.hi_address
+		)
+		) AS house_address,
+		hik.hi_id,
+		hik.hi_name,
+		hik.hi_money,
+		hik.hi_keepMoney,
+		hik.hi_type,
+		hik.hi_area,
+		hik.hi_district,
+		hik.hi_track,
+		hik.hi_measure,
+		hik.hi_floor,
+		hik.hi_totalFloor,
+		hik.hi_houseS,
+		hik.hi_houseT,
+		hik.hi_houseW,
+		hik.hi_function,
+		hik.hi_orientation,
+		hik.hi_peopleName,
+		hik.hi_latitude,
+		hik.he_id,
+		hik.hb_id,
+		hik.hi_code,
+		hik.pu_id,
+		hik.hi_num,
+		hik.hi_content,
+		hik.recommendGroup_Id,
+		hik.propertyInfo_Id,
+		hik.hi_number,
+		hik.hi_text,
+		hik.hi_userManaged,
+		hik.hi_address,
+		hik.hi_state,
+		hik.contract_intoStatus,
+		hik.contract_outStatus,
+		hik.phi_id,
+		hik.hi_date,
+		hik.hi_project,
+		hik.hi_version,
+		hik.propertyInfo_Name,
+		hik.propertyInfo_address,
+		hik.his_id,
+		hik.his_name as hb_name,
+		hik.he_peopleName,
+		hik.he_phone,
+		hik.he_state,
+		hik.em_name,
+		hik.em_phone,
+		hik.upn_id,
+		hik.upn_code,
+		hik.upn_sname,
+		hik.his_pid,
+		hik.hi_forRentState,
+		hik.hi_isForRent
+		FROM
+		view_GJP_HouseHouseInformationKeep AS hik
+		) house_info
+		WHERE
+		hi_isForRent=1 and his_pid=0 order by hi_forRentState asc LIMIT
+		#{pageSize},7
+	</select>
+
+    <!-- 招租房源 -->
+    <select id="selectHouseForRentList" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        hik.hi_houseS,
+        hik.hi_houseT,
+        hik.hi_houseW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.recommendGroup_Id,
+        hik.propertyInfo_Id,
+        hik.hi_number,
+        hik.hi_text,
+        hik.hi_userManaged,
+        hik.hi_address,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.his_id,
+        hik.his_name as hb_name,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.upn_code,
+        hik.upn_sname,
+        hik.his_pid,
+        hik.hi_forRentState,
+        hik.hi_isForRent,
+        hi_boolActive,
+        hi_houseActive,
+        hik.hpr_newEmp
+        FROM
+        view_GJP_HouseHouseInformationKeep AS hik
+        ) house_info
+        WHERE
+        hi_isForRent=1 and his_pid=0
+        <if test="hi_code != null and hi_code != ''">
+            and hi_code=#{hi_code}
+        </if>
+        order by hi_forRentState asc
+    </select>
+
+    <!-- 分页查询房源成交所有列表数据 -->
+    <select id="queryHouseDealAllPageList" resultType="com.gjp.model.ViewHouseDealListVo">
+        SELECT * FROM (
+        SELECT
+        co.ContractObject_No,
+        co.ContractObject_Type,
+        co.ContractObject_FillTime,
+        cre.em_id,
+        uce.em_name,
+        cre.cre_role,
+        co.hi_code,
+        house.house_address,
+        house.he_state,
+        house.contract_intoStatus,
+        house.contract_outStatus,
+        ucc.ucc_name,
+        ucc.ucc_short,
+        hi.hi_money,
+        hi.hi_keepMoney,
+        hi.hi_area,
+        CONCAT(hi.hi_houseS,'室',hi.hi_houseT,'厅',hi.hi_houseW,'卫') AS houseSTW
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON co.ContractObject_Id = cre.contractObject_Id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpc ON house.hi_code = hpc.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON hpc.ucc_id = ucc.ucc_id
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep AS hi ON co.hi_code = hi.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS uce ON cre.em_id = uce.em_id
+        ) tmp
+        WHERE
+        1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义时间'">
+                AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},'
+                00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+        ORDER BY ${t.dateType} DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 分页查询房源成交列表数据 -->
+    <select id="queryHouseDealPageRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        co.ContractObject_No,
+        co.ContractObject_Type,
+        co.ContractObject_FillTime,
+        cre.em_id,
+        uce.em_name,
+        cre.cre_role,
+        co.hi_code,
+        house.house_address,
+        house.he_state,
+        house.contract_intoStatus,
+        house.contract_outStatus,
+        ucc.ucc_name,
+        ucc.ucc_short,
+        hi.hi_money,
+        hi.hi_keepMoney,
+        hi.hi_area,
+        CONCAT(hi.hi_houseS,'室',hi.hi_houseT,'厅',hi.hi_houseW,'卫') AS houseSTW
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON co.ContractObject_Id = cre.contractObject_Id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpc ON house.hi_code = hpc.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON hpc.ucc_id = ucc.ucc_id
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep AS hi ON co.hi_code = hi.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS uce ON cre.em_id = uce.em_id
+        ) tmp
+        WHERE
+        1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义时间'">
+                AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},'
+                00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+    </select>
+
+    <!-- 查询钥匙库 -->
+    <select id="queryHouseKeyInfo" resultType="com.gjp.model.houseKeyVo">
+		SELECT *
+		FROM
+		GJP_House_Key
+		WHERE
+		hi_code =#{hi_code}
+		LIMIT 1
+	</select>
+
+    <!-- 分页查询房源成交列表数据 -->
+    <select id="queryHouseDealPageList" resultType="com.gjp.model.ViewHouseDealListVo">
+        SELECT SQL_CALC_FOUND_ROWS
+        co.contractObject_Id,
+        co.contractObject_No,
+        co.contractObject_Type,
+        co.hi_code,
+        co.contractObject_Date,
+        co.contractObject_DeadlineTime,
+        co.contractObject_State,
+        co.contractObject_OptionState,
+        co.contractObject_ExtState,
+        cb.contractBody_Rent,
+        rel.em_id,
+        rel.contract_perforSplit,
+        hi.hi_address,
+        pi.propertyInfo_Name,
+        emp.em_name,
+        comp.ucc_id,
+        comp.ucc_name,
+        comp.ucc_short
+        FROM
+        (SELECT ContractObject_Id
+        FROM GJP_business.GJP_Contract_Object ORDER BY ContractObject_Date DESC)
+        cid
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON
+        cid.ContractObject_Id = co.ContractObject_Id
+        LEFT JOIN
+        GJP_business.GJP_Contract_Body cb ON co.ContractObject_Code =
+        cb.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp
+        rel
+        ON
+        co.ContractObject_Id = rel.contractObject_Id
+        LEFT JOIN
+        GJP_product.GJP_House_HouseInformation_keep hi ON co.hi_code =
+        hi.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON
+        hi.propertyInfo_Id = pi.propertyInfo_Id
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee emp ON rel.em_id = emp.em_id
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_EmployeePosition epos ON rel.em_id =
+        epos.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Position pos ON
+        epos.ucr_id = pos.ucr_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company comp
+        ON pos.ucc_id = comp.ucc_id
+        WHERE
+        1=1
+        <if test="t.contractObject_OptionState != null and t.contractObject_OptionState !='' ">AND co.contractObject_OptionState =
+            #{t.contractObject_OptionState}
+        </if>
+        <if test="t.contractObject_Type != null and t.contractObject_Type !='' ">AND co.contractObject_Type = #{t.contractObject_Type}</if>
+        <if test="t.em_id != null and t.em_id !='' ">AND rel.em_id = #{t.em_id}</if>
+        <if test="t.ucc_id != null and t.ucc_id !='' ">AND comp.ucc_id = #{t.ucc_id}</if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询房屋成交和业绩排名 -->
+    <select id="queryHouseRankingList" resultType="com.gjp.model.ViewHouseRankingVo">
+        SELECT
+        table_tmp.*,@rank :=@rank + 1 AS ranking
+        FROM (
+        <choose>
+            <when test="ranking_type == 'houseIn' or ranking_type == 'houseOut'">
+                SELECT
+                re.em_id,
+                emp.em_account,
+                COUNT(*) AS count
+                FROM GJP_business.GJP_Contract_RelaEmp AS re
+                INNER JOIN GJP_business.GJP_Contract_Object AS co ON co.ContractObject_Id =
+                re.contractObject_Id
+                LEFT JOIN GJP_user.GJP_UserCenter_Employee emp
+                ON emp.em_id = re.em_id
+                WHERE
+                1 = 1
+                AND contractObject_Type =
+                #{contractObject_Type}
+                AND DATE_SUB(curdate(), INTERVAL 30 DAY) &lt;=
+                date(ContractObject_FillTime)
+                GROUP BY re.em_id
+            </when>
+            <when test="ranking_type == 'houseAchi'">
+                SELECT
+                emp.em_id,
+                emp.em_account,
+                SUM(ab_oldMoney
+                +ab_newMoney) sumMoney
+                FROM
+                GJP_business.GJP_Achievement_achievementBill achi
+                LEFT JOIN
+                GJP_user.GJP_UserCenter_Employee emp ON emp.em_id = achi.em_id
+                GROUP
+                BY achi.em_id
+            </when>
+        </choose>
+        ) table_tmp,(SELECT @rank := 0) rank
+        <choose>
+            <when test="ranking_type == 'houseIn' or ranking_type == 'houseOut'">
+                ORDER BY table_tmp.count DESC
+            </when>
+            <when test="ranking_type == 'houseAchi' ">
+                ORDER BY table_tmp.sumMoney DESC
+            </when>
+        </choose>
+    </select>
+
+    <!-- 查询房屋图片 -->
+    <select id="queryHouseImageList" resultType="com.gjp.model.HouseImageVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        hm.*,
+        hif.hif_name,
+        hif.hif_parentId,
+        hif.hif_subId
+        FROM
+        GJP_House_HouseImage AS hm
+        LEFT JOIN GJP_House_HouseImageFolder AS hif ON hm.hif_id = hif.hif_id
+        ) T
+        <where>
+            <if test="hi_code !=null">hi_code = #{hi_code}</if>
+            <if test="hm_state !=null">AND hm_state = #{hm_state}</if>
+            AND hif_name IS NOT NULL
+        </where>
+    </select>
+
+    <!-- 查询我的房屋总条数 -->
+    <select id="selectMyTotalHouseHouseInformation" resultType="int">
+		select count(*)
+		from GJP_House_HouseInformation_keep gh
+		,GJP_House_HouseExtended ge
+		where gh.he_id = ge.he_id
+	</select>
+
+    <!-- id查询房屋基本信息 -->
+    <select id="selectHouseById" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT * FROM (
+		SELECT
+		hk.*,
+		he.he_phone,
+		hb.hb_name,
+		pi.propertyInfo_Name,
+		pm.pm_outMoney
+		FROM
+		GJP_House_HouseInformation_keep AS hk
+		LEFT JOIN GJP_PropertyInfo AS pi
+		ON hk.propertyInfo_Id =
+		pi.propertyInfo_Id
+		LEFT JOIN
+		GJP_House_HouseBrand AS hb ON hk.hb_id = hb.hb_id
+		LEFT JOIN
+		GJP_House_HouseExtended AS he ON hk.he_id = he.he_id
+		LEFT JOIN
+		GJP_Price_Money AS pm ON hk.hi_code = pm.hi_code
+		) tmp
+		WHERE
+		hi_id=#{hi_id}
+	</select>
+
+    <!-- id查询房屋基本信息 -->
+    <select id="selectHouseHouseInformationKeepByPhiId" resultType="com.gjp.model.HouseInfoKeep">
+        select
+        hi_id,
+        phi_id,
+        <include refid="menberEcpId"/>
+        from GJP_House_HouseInformation_keep where phi_id=#{phi_id}
+    </select>
+
+    <!-- id查询房屋基本信息 -->
+    <select id="selectHiIdByName" resultType="int">
+		select
+		hi_id
+		from
+		GJP_House_HouseInformation_keep where hi_name like CONCAT('%',
+		#{hi_name}, '%')
+	</select>
+
+    <!-- 编码查询房屋基本信息 -->
+    <select id="selectHouseByCode" resultType="String">
+		select
+		hi_name
+		from
+		GJP_House_HouseInformation_keep where hi_code=#{hi_code}
+	</select>
+
+    <!-- 编码查询房屋基本信息 -->
+    <select id="selectApartmentByPro" resultType="com.gjp.model.HouseInfoKeep">
+		select
+		*
+		from
+		GJP_House_HouseInformation_keep where
+		propertyInfo_Id=#{propertyInfo_Id} limit 1
+	</select>
+
+    <!-- 编码查询房屋基本信息 -->
+    <select id="selectHouseName" resultType="String">
+		select
+		hi_name
+		from
+		GJP_House_HouseInformation_keep where
+		contract_status=#{contract_status}
+	</select>
+
+    <!-- 编码查询房屋基本信息 -->
+    <select id="selectHouseByName" resultType="com.gjp.model.HouseHouseInformation">
+		select
+		hi_id,
+		hi_name,
+		hi_money,
+		hi_type,
+		hi_area,
+		hi_district,
+		hi_track,
+		hi_measure,
+		hi_floor,
+		hi_totalFloor,
+		hi_houseS,
+		hi_houseT,
+		hi_houseW,
+		hi_function,
+		hi_orientation,
+		hi_peopleName,
+		hi_latitude,
+		he_id,
+		hb_id,
+		hi_code,
+		pu_id,
+		hi_num,
+		hi_content,
+		recommendGroup_Id,
+		propertyInfo_Id,
+		hi_number,
+		hi_text,
+		hi_userManaged,
+		hi_address,
+		hi_state,
+		contract_intoStatus,
+		contract_outStatus,
+		phi_id,
+		hi_date,
+		hi_keepMoney
+		from
+		GJP_House_HouseInformation_keep where
+		hi_code=#{hi_code}
+	</select>
+
+    <!-- 编码查询房屋基本信息 -->
+    <select id="selectHouseInfoByCode" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT
+          hk.*,
+          pr.*,
+          pm.*,
+          he.he_address,
+          he.he_isPublish,
+          gp.propertyInfo_address,
+          gp.propertyInfo_coordinate,
+          gp.propertyInfo_quyu,
+          gp.propertyInfo_transit,
+          gp.propertyInfo_gui,
+          t1.upn_sname
+        FROM GJP_House_HouseInformation_keep as hk
+        LEFT JOIN GJP_House_PositionRecord as pr on hk.hi_code = pr.hi_code
+        LEFT JOIN GJP_Price_Money as pm on hk.hi_code = pm.hi_code
+        LEFT JOIN GJP_PropertyInfo gp ON gp.propertyInfo_Id = hk.propertyInfo_Id
+        LEFT JOIN GJP_PropertyInfo_PropertyInfoName t1 on t1.upn_id=gp.upn_id
+        LEFT JOIN GJP_House_HouseExtended he ON he.he_id = hk.he_id
+		WHERE
+		hk.hi_code=#{hi_code}
+		LIMIT 1
+	</select>
+
+    <!-- 查询所有房屋 -->
+    <select id="selectHouseInfoAll" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT
+		*
+		FROM GJP_House_HouseInformation_keep as hk
+		LEFT JOIN GJP_House_PositionRecord as pr on hk.hi_code = pr.hi_code
+		LEFT JOIN GJP_Price_Money as pm on hk.hi_code = pm.hi_code
+	</select>
+
+    <!-- 根据时间查询存房包修费 -->
+    <select id="selectHouseGuaranteeCost" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        upn_code IS NULL
+        OR upn_code = '',
+        CONCAT(
+        upn_sname,
+        hi_address
+        ),
+        CONCAT(
+        upn_sname,
+        upn_code,
+        '-',
+        hi_address
+        )
+        ) AS
+        house_address,
+        ContractBody_GuaranteeCost,
+        ContractObject_Date
+        FROM
+        view_GJP_houseSaveGuaranteeCost) house where 1=1
+        <if test="start != null and start != ''">
+            and ContractObject_Date >= #{start}
+        </if>
+        <if test="end != null and end != ''">
+            and #{end} >= ContractObject_Date
+        </if>
+        order by ContractObject_Date asc
+    </select>
+
+
+    <!-- 查询所有房屋归属 -->
+    <select id="selectHouseAscription" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT * FROM
+		(SELECT
+		IF (
+		upn_code IS NULL
+		OR upn_code = '',
+		CONCAT(
+		upn_sname,
+		hi_address
+		),
+		CONCAT(
+		upn_sname,
+		upn_code,
+		'-',
+		hi_address
+		)
+		) AS
+		house_address,
+		hi_code,
+		ucc_name,
+		em_name,
+		em_state
+		FROM
+		view_GJP_HouseAscription) house where 1=1 ORDER BY house_address DESC
+	</select>
+
+    <!-- 根据房屋code查询房屋归属人以及部门主管 -->
+    <select id="selectHouseAscriptions" resultType="com.gjp.model.HouseInfoKeep">
+		SELECT * FROM
+		view_GJP_houseAscription where hi_code=#{hi_code} limit 1
+	</select>
+
+    <!-- 查询合同到期时间 -->
+    <select id="selectHouseAscriptionContract" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT
+        ContractObject_DeadlineTime,
+        ContractObject_Type,
+        hi_code
+        FROM GJP_business.GJP_Contract_Object
+        WHERE 1=1
+        <if test="contractObject_Type != null and contractObject_Type != ''">
+            AND ContractObject_Type = #{contractObject_Type}
+        </if>
+        <if test="hi_code != null and hi_code != ''">
+            AND hi_code = #{hi_code}
+        </if>
+        AND ContractObject_State = 2
+        ORDER BY
+        ContractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 查询房屋配置物品类型 -->
+    <select id="selectHouseTypeHtParentID2" resultType="com.gjp.model.HouseTypeVo">
+		SELECT
+		ht_id,
+		ht_name,
+		ht_parentId
+		FROM
+		GJP_House_Type
+		WHERE
+		ht_parentId=2
+	</select>
+
+    <!-- 查询房屋配置类型列表 -->
+    <select id="queryHouseConfigTypeList" resultType="com.gjp.model.HouseTypeVo">
+        SELECT
+        *
+        FROM
+        GJP_House_Type
+        WHERE
+        <choose>
+            <when test="ht_parentId !=null and ht_parentId !='' ">ht_parentId=#{ht_parentId}</when>
+            <when test="ht_superId !=null and ht_superId !='' ">ht_superId=#{ht_superId}</when>
+        </choose>
+        ORDER BY -ht_order DESC
+    </select>
+
+    <!-- 通过房屋编码查询房屋物业信息 -->
+    <select id="queryViewProductHousePropertyByHiCode" resultType="com.gjp.model.ViewProductHousePropertyListVo">
+        SELECT
+        hi_code,
+        he_peopleName,
+        he_phone,
+        hi_address,
+        propertyInfo_address,
+        contract_intoStatus,
+        contract_outStatus,
+        hi_money,
+        hi_keepMoney,
+        hi_version,
+        hb_name
+        FROM
+        view_GJP_HousePropertyList
+        WHERE
+        1=1
+        <if test="hi_code !=null and hi_code !='' ">AND hi_code=#{hi_code}</if>
+        <if test="hb_name !=null and hb_name !='' ">AND hb_name=#{hb_name}</if>
+        <if test="propertyInfo_address !=null and propertyInfo_address !='' ">AND propertyInfo_address=#{propertyInfo_address}</if>
+        LIMIT 1
+    </select>
+
+    <select id="queryViewProductHousePropertyByHbNameList" resultType="com.gjp.model.ViewProductHousePropertyListVo">
+        SELECT
+        hi_code,
+        he_peopleName,
+        he_phone,
+        hi_address,
+        propertyInfo_address,
+        contract_intoStatus,
+        contract_outStatus,
+        hi_money,
+        hi_keepMoney,
+        hi_version,
+        hb_name
+        FROM
+        view_GJP_HousePropertyList
+        WHERE
+        1=1
+        <if test="hi_code !=null and hi_code !='' ">AND hb_name=#{hb_name}</if>
+        <if test="propertyInfo_address !=null and propertyInfo_address !='' ">AND propertyInfo_address=#{propertyInfo_address}</if>
+    </select>
+
+    <!-- 分页查询房屋物业列表信息 -->
+    <select id="queryViewProductHousePropertyList" resultType="com.gjp.model.ViewProductHousePropertyListVo">
+        SELECT
+        hi_code,
+        he_peopleName,
+        he_phone,
+        hi_address,
+        propertyInfo_Name,
+        propertyInfo_address,
+        contract_intoStatus,
+        contract_outStatus,
+        hi_money,
+        hi_keepMoney,
+        hi_version,
+        hb_name
+        FROM
+        view_GJP_HousePropertyList
+        WHERE
+        (
+        hi_code LIKE
+        CONCAT('%', #{t.hi_code}, '%') OR
+        he_peopleName LIKE
+        CONCAT('%',
+        #{t.he_peopleName},'%') OR
+        propertyInfo_address LIKE
+        CONCAT('%',
+        #{t.propertyInfo_address},'%') OR
+        hi_address LIKE
+        CONCAT('%',
+        #{t.hi_address}, '%')
+        )
+        <if test="t.contract_intoStatus !='未签合同'">AND contract_intoStatus=#{t.contract_intoStatus}</if>
+        <if test="t.contract_intoStatus =='未签合同'">AND (contract_intoStatus=#{t.contract_intoStatus} OR
+            contract_intoStatus IS NULL OR contract_intoStatus='')
+        </if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询房屋信息列表总条数 -->
+    <select id="queryViewProductHousePropertyListTotalRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        view_GJP_HousePropertyList
+        WHERE
+        (
+        hi_code LIKE
+        CONCAT('%', #{t.hi_code}, '%') OR
+        he_peopleName LIKE CONCAT('%',
+        #{t.he_peopleName},'%') OR
+        propertyInfo_address LIKE CONCAT('%',
+        #{t.propertyInfo_address},'%') OR
+        hi_address LIKE CONCAT('%',
+        #{t.hi_address}, '%')
+        )
+        <if test="t.contract_intoStatus !='未签合同'">AND contract_intoStatus=#{t.contract_intoStatus}</if>
+        <if test="t.contract_intoStatus =='未签合同'">AND (contract_intoStatus=#{t.contract_intoStatus} OR
+            contract_intoStatus IS NULL OR contract_intoStatus='')
+        </if>
+    </select>
+
+    <!-- 根据发布房屋编码查询库存房屋id -->
+    <select id="slelctIdByCode" resultType="int">
+		select
+		hi_id
+		from
+		GJP_House_HouseInformation_keep where hi_code=#{hi_code}
+	</select>
+
+    <!-- 添加公寓前查询重复 -->
+    <select id="selectHouseNum" resultType="com.gjp.model.HouseInfoKeep">
+		select
+		*
+		from
+		GJP_House_HouseInformation_keep where hi_address=#{hi_address} and
+		propertyInfo_Id=#{propertyInfo_Id}
+	</select>
+
+    <!-- 添加公寓前查询重复 -->
+    <select id="queryContractPositionRecord" resultType="com.gjp.model.PositionRecordVo">
+		SELECT
+		hpr.hpr_id,
+		hpr.hi_code,
+		hpr.ucc_id,
+		hpr.hpr_emp,
+		hpr.hpr_newEmp,
+		hpr.hpr_createTime,
+		ucc.ucc_name,
+		emp1.em_name AS em_name_old,
+		emp1.em_phone AS em_phone_old,
+		emp2.em_name AS em_name_new,
+		emp2.em_phone AS em_phone_new
+		FROM GJP_product.GJP_House_PositionRecord AS hpr
+		LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON hpr.ucc_id = ucc.ucc_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp1 ON hpr.hpr_emp = emp1.em_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp2 ON hpr.hpr_newEmp = emp2.em_id
+		WHERE
+		hpr.hi_code = #{hi_code}
+		LIMIT
+		1
+	</select>
+
+    <!-- 查询离职人员 -->
+    <select id="selectEMstate" resultType="com.gjp.model.PositionRecordVo">
+        select * from (SELECT
+        IF (
+        pn.upn_code IS NULL
+        OR pn.upn_code = '',
+        CONCAT(
+        pn.upn_sname,
+        house.hi_address
+        ),
+        CONCAT(
+        pn.upn_sname,
+        pn.upn_code,
+        '-',
+        house.hi_address
+        )
+        ) AS house_address,
+        hpr.hpr_id,
+        house.hi_code,
+        hpr.ucc_id,
+        hpr.hpr_emp,
+        hpr.hpr_newEmp,
+        hpr.hpr_createTime,
+        ucc.ucc_name,
+        emp1.em_name AS em_name_old,
+        emp1.em_phone AS em_phone_old,
+        emp2.em_name AS em_name_new,
+        emp2.em_phone AS em_phone_new
+        FROM GJP_product.GJP_House_HouseInformation_keep AS house
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr on hpr.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON hpr.ucc_id = ucc.ucc_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp1 ON hpr.hpr_emp = emp1.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp2 ON hpr.hpr_newEmp = emp2.em_id
+        LEFT JOIN GJP_product.GJP_PropertyInfo AS pi ON pi.propertyInfo_Id = house.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName AS pn ON pn.upn_id = pi.upn_id
+        ) house WHERE
+        1=1
+        <if test="house_address != null and house_address != ''">
+            and (house_address LIKE CONCAT('%',#{house_address},'%')
+            or em_name_new
+            LIKE CONCAT('%',#{house_address},'%'))
+        </if>
+        <!-- emp2.em_state = 0 -->
+        order by ucc_name desc
+    </select>
+
+    <select id="queryHouseFollowContent" resultType="com.gjp.model.HoueFollowContent">
+		SELECT
+		ghfc_id,
+		ghfc_con,
+		ghfc_price,
+		ghfc_con_sta,
+		ghfc_money,
+		ghf_id,
+		em_id,
+		ghfc_date,
+		ghfc_reason
+		FROM
+		GJP_Houe_Follow_Content
+		WHERE
+		ghf_id=#{ghf_id}
+	</select>
+
+    <!-- 查询存房房源信息 -->
+    <select id="queryHouseLibraryInfo" resultType="com.gjp.model.ViewHouseLibraryInfoVo">
+        SELECT
+        vi.*, vk.his_name, rh.room_code, em.em_name AS new_em_name, em.em_phone AS new_em_phone,
+        vk.hi_totalFloor, pi.upn_name
+        FROM
+        view_GJP_HouseLibraryInfoList vi
+        LEFT JOIN view_GJP_HouseHouseInformationKeep vk ON vi.hi_code = vk.hi_code
+        LEFT JOIN GJP_PropertyInfo_PropertyInfoName pi ON pi.upn_id = vk.upn_id
+        LEFT JOIN GJP_Rent_House rh ON rh.hi_code = vi.hi_code
+        LEFT JOIN GJP_House_PositionRecord hp ON vi.hi_code = hp.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON hp.hpr_newEmp = em.em_id
+        WHERE
+        <choose>
+            <when test="hi_code !=null and hi_code !='' ">vi.hi_code =#{hi_code}</when>
+            <when test="hi_id !=null and hi_id !='' ">vi.hi_id =#{hi_id}</when>
+        </choose>
+        LIMIT 1
+    </select>
+
+    <!-- 查询房屋分配分页数据 -->
+    <select id="queryHouseAllotPageList" resultType="com.gjp.model.ViewHouseAllotVo">
+        SELECT
+        *
+        FROM
+        view_GJP_HouseAllotList
+        WHERE
+        1=1
+        <!-- <choose> -->
+        <!-- <when test="t.mode == 'allot_no' "> -->
+        <!-- AND ucc_id IS NULL -->
+        <!-- </when> -->
+        <!-- <when test="t.mode == 'allot_yes' "> -->
+        <!-- AND ucc_id IS NOT NULL -->
+        <!-- </when> -->
+        <!-- <when test="t.sqlWhere != null and t.sqlWhere != '' "> -->
+        <!-- ${t.sqlWhere} -->
+        <!-- </when> -->
+        <!-- </choose> -->
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询所有分页总页数 -->
+    <select id="queryTolalRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        view_GJP_HouseAllotList
+        WHERE
+        1=1
+        <!-- <choose> -->
+        <!-- <when test="t.mode == 'allot_no' "> -->
+        <!-- AND ucc_id IS NULL -->
+        <!-- </when> -->
+        <!-- <when test="t.mode == 'allot_yes' "> -->
+        <!-- AND ucc_id IS NOT NULL -->
+        <!-- </when> -->
+        <!-- <when test="t.sqlWhere != null and t.sqlWhere != '' "> -->
+        <!-- ${t.sqlWhere} -->
+        <!-- </when> -->
+        <!-- </choose> -->
+    </select>
+
+    <!-- 查询简易房屋信息分页数据 -->
+    <select id="querySimpleHouseInfoPageList" resultType="com.gjp.model.ViewHouseLibraryInfoVo">
+        SELECT
+        *
+        FROM
+        view_GJP_HouseAddress
+        <where>
+            <if test="t.house_address != null">house_address LIKE CONCAT('%',#{t.house_address},'%')
+            </if>
+        </where>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询简易房屋信息分页数据 -->
+    <select id="querySimpleHouseInfoPageRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        view_GJP_HouseAddress
+        <where>
+            <if test="t.house_address != null">house_address LIKE CONCAT('%',#{t.house_address},'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 该房源是否有已存在 -->
+    <select id="isHavingHouseInfo" resultType="com.gjp.model.PropertyInfoName">
+		SELECT
+		*
+		FROM
+		GJP_House_HouseInformation_keep
+		WHERE
+		propertyInfo_Id =
+		#{propertyInfo_Id}
+		AND hi_address = #{hi_address}
+		AND hi_id &lt;&gt;
+		#{hi_id}
+	</select>
+
+    <update id="updateHousePositionRecord">
+        UPDATE GJP_House_PositionRecord
+        <set>
+            <if test="hi_code != null">hi_code=#{hi_code},</if>
+            <if test="ucc_id != null">ucc_id=#{ucc_id},</if>
+            <if test="hpr_emp != null">hpr_emp=#{hpr_emp},</if>
+            <if test="hpr_newEmp != null">hpr_newEmp=#{hpr_newEmp},</if>
+        </set>
+        WHERE
+        hpr_id=#{hpr_id}
+    </update>
+
+    <insert id="addHousePositionRecord" useGeneratedKeys="true" keyProperty="hpr_id">
+		INSERT INTO GJP_House_PositionRecord (
+		hi_code,
+		ucc_id,
+		hpr_emp,
+		hpr_newEmp,
+		hpr_createTime
+		) VALUES (
+		#{hi_code},
+		#{ucc_id},
+		#{hpr_emp},
+		#{hpr_newEmp},
+		#{hpr_createTime}
+		)
+	</insert>
+
+    <!-- 根据房屋编码修改最新管家 -->
+    <update id="updateHousePositionRecords">
+		UPDATE GJP_House_PositionRecord set
+		hpr_newEmp=#{hpr_newEmp}
+		WHERE
+		hi_code = #{hi_code}
+	</update>
+
+    <!-- 修改房屋基本信息 -->
+    <update id="upDataHouse" parameterType="com.gjp.model.HouseInfoKeep">
+		UPDATE
+		GJP_House_HouseInformation_keep set
+		hi_name=#{hi_name},
+		hi_money=#{hi_money},
+		hi_keepMoney=#{hi_keepMoney},
+		hi_type=#{hi_type},
+		hi_area=#{hi_area},
+		hi_district=#{hi_district},
+		hi_track=#{hi_track},
+		hi_measure=#{hi_measure},
+		hi_floor=#{hi_floor},
+		hi_houseS=#{hi_houseS},
+		hi_houseT=#{hi_houseT},
+		hi_houseW=#{hi_houseW},
+		hi_function=#{hi_function},
+		hi_orientation=#{hi_orientation},
+		hi_peopleName=#{hi_peopleName},
+		hi_latitude=#{hi_latitude},
+		hb_id=#{hb_id},
+		he_id=#{he_id},
+		hi_content=#{hi_content},
+		RecommendGroup_Id=#{RecommendGroup_Id},
+		PropertyInfo_Id=#{PropertyInfo_Id},
+		hi_text=#{hi_text},
+		hi_userManaged=#{hi_userManaged},
+		hi_address=#{hi_address},
+		hi_state=#{hi_state},
+		hi_totalFloor=#{hi_totalFloor},
+		hi_version=#{hi_version},
+		hi_project=#{hi_project}
+		WHERE
+		hi_id=#{hi_id}
+	</update>
+
+    <!-- 更新房屋信息 -->
+    <update id="updateHouseInfo">
+        UPDATE
+        GJP_House_HouseInformation_keep
+        <set>
+            <if test="hi_name !=null">hi_name=#{hi_name},</if>
+            <if test="hi_money !=null">hi_money=#{hi_money},</if>
+            <if test="hi_type !=null">hi_type=#{hi_type},</if>
+            <if test="hi_area !=null">hi_area=#{hi_area},</if>
+            <if test="hi_district !=null">hi_district=#{hi_district},</if>
+            <if test="hi_track !=null">hi_track=#{hi_track},</if>
+            <if test="hi_measure !=null">hi_measure=#{hi_measure},</if>
+            <if test="hi_floor !=null">hi_floor=#{hi_floor},</if>
+            <if test="hi_totalFloor !=null">hi_totalFloor=#{hi_totalFloor},</if>
+            <if test="hi_houseS !=null">hi_houseS=#{hi_houseS},</if>
+            <if test="hi_houseT !=null">hi_houseT=#{hi_houseT},</if>
+            <if test="hi_houseW !=null">hi_houseW=#{hi_houseW},</if>
+            <if test="hi_function !=null">hi_function=#{hi_function},</if>
+            <if test="hi_orientation !=null">hi_orientation=#{hi_orientation},</if>
+            <if test="hi_peopleName !=null">hi_peopleName=#{hi_peopleName},</if>
+            <if test="hi_latitude !=null">hi_latitude=#{hi_latitude},</if>
+            <if test="he_id !=null">he_id=#{he_id},</if>
+            <if test="hb_id !=null">hb_id=#{hb_id},</if>
+            <if test="pu_id !=null">pu_id=#{pu_id},</if>
+            <if test="hi_num !=null">hi_num=#{hi_num},</if>
+            <if test="hi_content !=null">hi_content=#{hi_content},</if>
+            <if test="recommendGroup_Id !=null">recommendGroup_Id=#{recommendGroup_Id},</if>
+            <if test="propertyInfo_Id !=null">propertyInfo_Id=#{propertyInfo_Id},</if>
+            <if test="hi_number !=null">hi_number=#{hi_number},</if>
+            <if test="hi_text !=null">hi_text=#{hi_text},</if>
+            <if test="hi_userManaged !=null">hi_userManaged=#{hi_userManaged},</if>
+            <if test="hi_address !=null">hi_address=#{hi_address},</if>
+            <if test="hi_state !=null">hi_state=#{hi_state},</if>
+            <if test="contract_outStatus !=null">contract_outStatus=#{contract_outStatus},</if>
+            <if test="phi_id !=null">phi_id=#{phi_id},</if>
+            <if test="hi_date !=null">hi_date=#{hi_date},</if>
+            <if test="hi_keepMoney !=null">hi_keepMoney=#{hi_keepMoney},</if>
+            <if test="hi_project !=null">hi_project=#{hi_project},</if>
+            <if test="hi_version !=null">hi_version=#{hi_version},</if>
+            <if test="cc_code !=null">cc_code=#{cc_code},</if>
+            <if test="hi_isForRent !=null">hi_isForRent=#{hi_isForRent},</if>
+            <if test="hi_forRentState !=null">hi_forRentState=#{hi_forRentState},</if>
+            <if test="hi_price !=null">hi_price=#{hi_price},</if>
+            <if test="hi_priceCount !=null">
+                <choose>
+                    <when test="hi_priceCount == 1">hi_priceCount=hi_priceCount+1,</when>
+                    <otherwise>hi_priceCount=#{hi_priceCount},</otherwise>
+                </choose>
+            </if>
+        </set>
+        WHERE
+        hi_code=#{hi_code}
+    </update>
+
+    <!-- 更新房屋扩展信息 -->
+    <update id="updateExtendInfo">
+        UPDATE
+        GJP_House_HouseExtended
+        <set>
+            <if test="he_id !=null">he_id=#{he_id},</if>
+            <if test="he_peopleName !=null">he_peopleName=#{he_peopleName},</if>
+            <if test="he_phone !=null">he_phone=#{he_phone},</if>
+            <if test="he_state !=null">he_state=#{he_state},</if>
+            <if test="he_number !=null">he_number=#{he_number},</if>
+            <if test="he_cardNumber !=null">he_cardNumber=#{he_cardNumber},</if>
+            <if test="he_nature !=null">he_nature=#{he_nature},</if>
+            <if test="he_money !=null">he_money=#{he_money},</if>
+            <if test="he_buyTime !=null">he_buyTime=#{he_buyTime},</if>
+            <if test="he_address !=null">he_address=#{he_address},</if>
+            <if test="he_time !=null">he_time=#{he_time}</if>
+        </set>
+        WHERE
+        he_id=#{he_id}
+    </update>
+
+    <!-- 更新房屋信息 -->
+    <update id="updateHouseInfoByOnlineHouse">
+        UPDATE
+        GJP_House_HouseInformation_keep
+        <set>
+            <if test="hi_name !=null">hi_name=#{hi_name},</if>
+            <if test="hi_money !=null">hi_money=#{hi_money},</if>
+            <if test="hi_type !=null">hi_type=#{hi_type},</if>
+            <if test="hi_area !=null">hi_area=#{hi_area},</if>
+            <if test="hi_district !=null">hi_district=#{hi_district},</if>
+            <if test="hi_track !=null">hi_track=#{hi_track},</if>
+            <if test="hi_measure !=null">hi_measure=#{hi_measure},</if>
+            <if test="hi_floor !=null">hi_floor=#{hi_floor},</if>
+            <if test="hi_totalFloor !=null">hi_totalFloor=#{hi_totalFloor},</if>
+            <if test="hi_houseS !=null">hi_houseS=#{hi_houseS},</if>
+            <if test="hi_houseT !=null">hi_houseT=#{hi_houseT},</if>
+            <if test="hi_houseW !=null">hi_houseW=#{hi_houseW},</if>
+            <if test="hi_function !=null">hi_function=#{hi_function},</if>
+            <if test="hi_orientation !=null">hi_orientation=#{hi_orientation},</if>
+            <if test="hi_peopleName !=null">hi_peopleName=#{hi_peopleName},</if>
+            <if test="hi_latitude !=null">hi_latitude=#{hi_latitude},</if>
+            <if test="he_id !=null">he_id=#{he_id},</if>
+            <if test="hb_id !=null">hb_id=#{hb_id},</if>
+            <if test="pu_id !=null">pu_id=#{pu_id},</if>
+            <if test="hi_num !=null">hi_num=#{hi_num},</if>
+            <if test="hi_content !=null">hi_content=#{hi_content},</if>
+            <if test="recommendGroup_Id !=null">recommendGroup_Id=#{recommendGroup_Id},</if>
+            <if test="propertyInfo_Id !=null">propertyInfo_Id=#{propertyInfo_Id},</if>
+            <if test="hi_number !=null">hi_number=#{hi_number},</if>
+            <if test="hi_text !=null">hi_text=#{hi_text},</if>
+            <if test="hi_userManaged !=null">hi_userManaged=#{hi_userManaged},</if>
+            <if test="hi_address !=null">hi_address=#{hi_address},</if>
+            <if test="hi_state !=null">hi_state=#{hi_state},</if>
+            <if test="contract_outStatus !=null">contract_outStatus=#{contract_outStatus},</if>
+            <if test="phi_id !=null">phi_id=#{phi_id},</if>
+            <if test="hi_date !=null">hi_date=#{hi_date},</if>
+            <if test="hi_keepMoney !=null">hi_keepMoney=#{hi_keepMoney},</if>
+            <if test="hi_project !=null">hi_project=#{hi_project},</if>
+            <if test="hi_version !=null">hi_version=#{hi_version},</if>
+            <if test="hi_busStation !=null">hi_busStation=#{hi_busStation},</if>
+            <if test="hi_busLine !=null">hi_busLine=#{hi_busLine},</if>
+            <if test="hi_metro !=null">hi_metro=#{hi_metro},</if>
+            <if test="conim_id !=null">conim_id=#{conim_id},</if>
+        </set>
+        WHERE
+        hi_code=#{hi_code}
+    </update>
+
+    <!-- 修改房屋基本信息 -->
+    <update id="upDataKeepHouse" parameterType="com.gjp.model.HouseInfoKeep">
+		update
+		GJP_House_HouseInformation_keep set
+		hi_name=#{hi_name},
+		hi_money=#{hi_money},
+		hi_keepMoney=#{hi_keepMoney},
+		hi_type=#{hi_type},
+		hi_area=#{hi_area},
+		hi_district=#{hi_district},
+		hi_track=#{hi_track},
+		hi_measure=#{hi_measure},
+		hi_floor=#{hi_floor},
+		hi_houseS=#{hi_houseS},
+		hi_houseT=#{hi_houseT},
+		hi_houseW=#{hi_houseW},
+		hi_function=#{hi_function},
+		hi_orientation=#{hi_orientation},
+		hi_peopleName=#{hi_peopleName},
+		hi_latitude=#{hi_latitude},
+		hb_id=#{hb_id},
+		he_id=#{he_id},
+		hi_content=#{hi_content},
+		RecommendGroup_Id=#{RecommendGroup_Id},
+		PropertyInfo_Id=#{PropertyInfo_Id},
+		hi_text=#{hi_text},
+		hi_userManaged=#{hi_userManaged},
+		hi_address=#{hi_address},
+		hi_state=#{hi_state},
+		hi_version=#{hi_version},
+		hi_totalFloor=#{hi_totalFloor}
+		where
+		hi_code=#{hi_code}
+	</update>
+
+    <!-- 修改房屋基本信息 -->
+    <update id="updataHeState" parameterType="int">
+		UPDATE
+		GJP_House_HouseExtended SET
+		he_state='free'
+		WHERE
+		he_id=#{he_id}
+	</update>
+
+    <update id="updateHouseContractState">
+        UPDATE GJP_House_HouseInformation_keep
+        <set>
+            <if test="propertyInfo_Id !=null">propertyInfo_Id=#{propertyInfo_Id},</if>
+            <if test="hi_money !=null">hi_money=#{hi_money},</if>
+            <if test="hi_keepMoney !=null">hi_keepMoney=#{hi_keepMoney},</if>
+            <if test="hi_address !=null">hi_address=#{hi_address},</if>
+            <if test="contract_intoStatus !=null">contract_intoStatus=#{contract_intoStatus},</if>
+            <if test="contract_outStatus !=null">contract_outStatus=#{contract_outStatus},</if>
+            <if test="contract_beginDate !=null">contract_beginDate=#{contract_beginDate},</if>
+            <if test="contract_expiryDate !=null">contract_expiryDate=#{contract_expiryDate},</if>
+            <if test="hi_forRentState !=null">hi_forRentState=#{hi_forRentState},</if>
+            <if test="hi_isForRent !=null">hi_isForRent=#{hi_isForRent},</if>
+            <if test="hi_boolActive !=null">hi_boolActive=#{hi_boolActive},</if>
+            <if test="hi_leaseDay !=null">hi_leaseDay=#{hi_leaseDay},</if>
+            <if test="hi_houseActive !=null">hi_houseActive=#{hi_houseActive},</if>
+            <if test="blance_date !=null">blance_date=#{blance_date},</if>
+            <if test="contract_outDate !=null">contract_outDate=#{contract_outDate},</if>
+        </set>
+        WHERE
+        hi_code =#{hi_code}
+    </update>
+
+    <insert id="addHouseStateRelation">
+		INSERT INTO GJP_House_HouseInformationState_Relation(
+		hi_code,
+		his_id
+		) VALUES (
+		#{hi_code},
+		#{his_id}
+		)
+	</insert>
+
+    <!-- 添加房屋图片类型 -->
+    <insert id="addHouseImageType">
+		INSERT INTO GJP_House_HouseImageType(
+		hit_type,
+		hi_id,
+		hm_id,
+		hi_code
+		)VALUES (
+		#{hit_type},
+		#{hi_id},
+		#{hm_id},
+		#{hi_code}
+		)
+	</insert>
+
+    <!-- 添加钥匙 -->
+    <insert id="addHouseKey" useGeneratedKeys="true" keyProperty="hk_id">
+		INSERT INTO GJP_House_Key(
+		hk_code,
+		hi_code,
+		hk_type,
+		hk_number,
+		hk_newNumber,
+		hk_remark,
+		hk_createTime
+		) VALUES(
+		#{hk_code},
+		#{hi_code},
+		#{hk_type},
+		#{hk_number},
+		#{hk_newNumber},
+		#{hk_remark},
+		#{hk_createTime}
+		)
+	</insert>
+
+    <!-- 更新钥匙 -->
+    <update id="updateHouseKey">
+        UPDATE GJP_House_Key
+        <set>
+            <if test="hk_code !=null">hk_code=#{hk_code},</if>
+            <if test="hi_code !=null">hi_code=#{hi_code},</if>
+            <if test="hk_type !=null">hk_type=#{hk_type},</if>
+            <if test="hk_number !=null">hk_number=#{hk_number},</if>
+            <if test="hk_newNumber !=null">hk_newNumber=#{hk_newNumber},</if>
+            <if test="hk_remark !=null">hk_remark=#{hk_remark},</if>
+            <if test="hk_createTime !=null">hk_createTime=#{hk_createTime},</if>
+        </set>
+        WHERE
+        hk_id =#{hk_id}
+    </update>
+
+    <delete id="deleteHouseStateRelation">
+		DELETE FROM GJP_House_HouseInformationState_Relation
+		WHERE hi_code=#{hi_code}
+	</delete>
+
+    <!--新建文件夹 -->
+    <insert id="addHouseImageFolder" useGeneratedKeys="true" keyProperty="hif_id">
+		INSERT INTO GJP_House_HouseImageFolder(
+		hi_code,
+		hif_name,
+		hif_desc,
+		hif_order,
+		hif_parentId,
+		hif_subId,
+		hif_createTime
+		)VALUES(
+		#{hi_code},
+		#{hif_name},
+		#{hif_desc},
+		#{hif_order},
+		#{hif_parentId},
+		#{hif_subId},
+		#{hif_createTime}
+		)
+	</insert>
+
+    <select id="selectHouseImageFolder" resultType="com.gjp.model.HouseImageFolder">
+        SELECT * FROM
+        GJP_House_HouseImageFolder
+        WHERE 1=1
+        <if test="hi_code !='' and hi_code != null">
+            AND hi_code= #{hi_code}
+        </if>
+        <if test="hif_name !='' and hif_name != null">
+            AND hif_name= #{hif_name}
+        </if>
+    </select>
+
+    <select id="selectHouseImage" resultType="com.gjp.model.HouseImageVo">
+		SELECT * FROM
+		GJP_House_HouseImage
+		WHERE
+		1=1 and hi_code=#{hi_code} GROUP BY hif_id
+	</select>
+
+    <select id="selectListHouseImageFolder" resultType="com.gjp.model.HouseImageFolder">
+        SELECT * FROM GJP_House_HouseImageFolder
+        WHERE
+        hi_code=#{hi_code}
+        <if test="hif_name != null">AND hif_name=#{hif_name}</if>
+    </select>
+
+    <!-- app版本控制 -->
+    <select id="appcode" resultType="com.gjp.model.AppCode">
+		SELECT * FROM GJP_manage_app
+		where ap_type=#{ap_type} order by ap_code desc limit 1
+	</select>
+
+    <select id="queryAllHouseInfoList" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_function,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.contract_beginDate,
+        hik.contract_expiryDate,
+        hik.his_id,
+        hik.hi_price,
+        hik.hi_forRentState
+        FROM
+        GJP_product.view_GJP_HouseHouseInformationKeep AS hik
+        ) house_info
+        WHERE
+        his_id
+        &lt; 3
+        <if test="t.hi_address != null and t.hi_address != ''">
+            and house_address like CONCAT('%', #{t.hi_address}, '%')
+        </if>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryAllHouseInfoListCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_function,
+        hik.hi_code,
+        hik.pu_id,
+        hik.hi_num,
+        hik.hi_content,
+        hik.contract_beginDate,
+        hik.contract_expiryDate,
+        hik.his_id,
+        hik.hi_price
+        FROM
+        GJP_product.view_GJP_HouseHouseInformationKeep AS hik
+        ) house_info
+        WHERE
+        his_id
+        &lt; 3
+        <if test="t.hi_address != null and t.hi_address != ''">
+            and house_address like CONCAT('%', #{t.hi_address}, '%')
+        </if>
+    </select>
+
+    <!--更新商品房源-->
+    <update id="updateCommodityHouse">
+        UPDATE GJP_House_HouseInformation
+        <set>
+            <if test="hi_isForRent != null">hi_isForRent = #{hi_isForRent},</if>
+            <if test="hi_forRentState != null">hi_forRentState = #{hi_forRentState},</if>
+            <if test="contract_outStatus != null">contract_outStatus = #{contract_outStatus},</if>
+            <if test="contract_intoStatus != null">contract_intoStatus = #{contract_intoStatus}</if>
+        </set>
+        WHERE
+        hi_code = #{hi_code}
+    </update>
+
+    <!--更新库存房源-->
+    <update id="updateInventoryHouse">
+        UPDATE GJP_House_HouseInformation_keep
+        <set>
+            <if test="hi_isForRent != null">hi_isForRent = #{hi_isForRent},</if>
+            <if test="hi_forRentState != null">hi_forRentState = #{hi_forRentState},</if>
+            <if test="contract_outStatus != null">contract_outStatus = #{contract_outStatus},</if>
+            <if test="contract_intoStatus != null">contract_intoStatus = #{contract_intoStatus}</if>
+            <if test="hi_leaseDay != null">hi_leaseDay = #{hi_leaseDay}</if>
+        </set>
+        WHERE
+        hi_code = #{hi_code}
+    </update>
+
+    <!-- 查询所有房屋和图片 -->
+    <select id="selectHouseImages" resultType="com.gjp.model.HouseImage">
+        SELECT * FROM GJP_House_HouseInformation_keep hik
+        LEFT JOIN GJP_House_HouseImage hit ON hik.hi_code = hit.hi_code
+    </select>
+
+    <!-- 更新房屋图片 -->
+    <update id="updateHouseImage" parameterType='com.gjp.model.HouseImage'>
+        UPDATE
+        GJP_House_HouseImage
+        <set>
+            <if test="hif_id !=null">hif_id=#{hif_id},</if>
+        </set>
+        WHERE
+        hi_code=#{hi_code}
+    </update>
+
+    <!-- 查询商品房源-->
+    <select id="queryHouseCompanyInfo" resultType="com.gjp.model.HousePositionCompanyVo">
+        SELECT
+        hpr.hpr_id,
+        hpr.hi_code,
+        hpr.ucc_id,
+        hpr.hpr_emp,
+        hpr.hpr_newEmp,
+        hpr.hpr_createTime,
+        ucc.ucc_name,
+        em.em_name,
+        em.em_phone
+        FROM GJP_product.GJP_House_PositionRecord AS hpr
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON hpr.ucc_id = ucc.ucc_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON hpr.hpr_newEmp = em.em_id
+        WHERE
+        hpr.hi_code = #{hi_code}
+        LIMIT 1
+    </select>
+
+    <!-- app版本控制 -->
+    <select id="queryAppVersionList" resultType="com.gjp.model.AppVersionVo">
+        SELECT
+        *
+        FROM GJP_App_Version
+        <where>
+            <if test="av_type != null">AND av_type = #{av_type}</if>
+            <if test="av_num_min != null">AND av_num &gt;= #{av_num_min}</if>
+            <if test="av_num_max != null">AND av_num &lt;= #{av_num_max}</if>
+            <if test="av_state != null">AND av_state = #{av_state}</if>
+            <if test="av_swith != null">AND av_swith = #{av_swith}</if>
+        </where>
+    </select>
+
+    <!-- app版本控制 -->
+    <select id="queryAppVersionLast" resultType="com.gjp.model.AppVersionVo">
+        SELECT
+        *
+        FROM GJP_App_Version
+        WHERE
+        av_type = #{av_type}
+        ORDER BY av_num DESC
+        LIMIT 1
+    </select>
+
+    <!--分页房屋审核-->
+    <select id="queryHouseExamineList" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        CONCAT(
+        hik.hi_houseS,
+        '室',
+        hik.hi_houseT,
+        '厅',
+        hik.hi_houseW,
+        '卫'
+        ) AS houseTSW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.contract_beginDate,
+        hik.contract_expiryDate,
+        hik.hi_forRentState,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.his_id,
+        hik.his_name as hb_name,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.upn_code,
+        hik.upn_sname,
+        hik.hi_isForRent,
+        hik.hi_boolActive,
+        hik.hi_houseActive,
+        IF(hik.hi_isForRent = 2,0,hik.hi_leaseDay) AS hi_leaseDay,
+        hik.ucc_id,
+        hik.ucc_name,
+        hik.he_isPublish,
+        hik.hi_price,
+        hp.hp_status
+        FROM
+        view_GJP_HouseHouseInformationKeep AS hik
+        LEFT JOIN (
+        SELECT hi_code,hp_status FROM GJP_product.GJP_House_Publish
+        GROUP BY hi_code
+        ) hp ON hik.hi_code = hp.hi_code
+        ) house_info
+        <where>
+            his_id &lt; 3 AND he_isPublish = 1 AND hi_forRentState &lt;&gt; 1021
+            <choose>
+                <when test="where !=null and where != '' "> AND ${where}</when>
+            </choose>
+        </where>
+        ORDER BY hi_leaseDay desc
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryHouseExamineListPageRecord" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hik.hi_id,
+        hik.hi_name,
+        hik.hi_money,
+        hik.hi_keepMoney,
+        hik.hi_type,
+        hik.hi_area,
+        hik.hi_district,
+        hik.hi_track,
+        hik.hi_measure,
+        hik.hi_floor,
+        hik.hi_totalFloor,
+        CONCAT(
+        hik.hi_houseS,
+        '室',
+        hik.hi_houseT,
+        '厅',
+        hik.hi_houseW,
+        '卫'
+        ) AS houseTSW,
+        hik.hi_function,
+        hik.hi_orientation,
+        hik.hi_peopleName,
+        hik.hi_latitude,
+        hik.he_id,
+        hik.hb_id,
+        hik.hi_code,
+        hik.hi_state,
+        hik.contract_intoStatus,
+        hik.contract_outStatus,
+        hik.phi_id,
+        hik.hi_date,
+        hik.hi_project,
+        hik.hi_version,
+        hik.contract_beginDate,
+        hik.contract_expiryDate,
+        hik.hi_forRentState,
+        hik.propertyInfo_Name,
+        hik.propertyInfo_address,
+        hik.his_id,
+        hik.his_name as hb_name,
+        hik.he_peopleName,
+        hik.he_phone,
+        hik.he_state,
+        hik.em_name,
+        hik.em_phone,
+        hik.upn_id,
+        hik.upn_code,
+        hik.upn_sname,
+        hik.hi_isForRent,
+        hik.hi_boolActive,
+        hik.hi_houseActive,
+        IF(hik.hi_isForRent = 2,0,hik.hi_leaseDay) AS hi_leaseDay,
+        hik.ucc_id,
+        hik.ucc_name,
+        hik.he_isPublish,
+        hik.hi_price,
+        hp.hp_status
+        FROM
+        view_GJP_HouseHouseInformationKeep AS hik
+        LEFT JOIN (
+        SELECT hi_code,hp_status FROM GJP_product.GJP_House_Publish
+        GROUP BY hi_code
+        ) hp ON hik.hi_code = hp.hi_code
+        ) house_info
+        <where>
+            his_id &lt; 3 AND he_isPublish = 1 AND hi_forRentState &lt;&gt; 1021
+            <choose>
+                <when test="where !=null and where != '' ">AND ${where}</when>
+            </choose>
+        </where>
+        ORDER BY hi_leaseDay desc
+    </select>
+
+    <!--添加房源发布-->
+    <insert id="addhousePublish" useGeneratedKeys="true" keyProperty="hp_id">
+        INSERT INTO GJP_House_Publish(
+          hi_code,
+          hpc_code,
+          hp_status,
+          hp_check_time,
+          hp_arrival_time,
+          hp_create_time
+        )VALUES(
+          #{hi_code},
+          #{hpc_code},
+          #{hp_status},
+          #{hp_check_time},
+          #{hp_arrival_time},
+          #{hp_create_time}
+        )
+    </insert>
+    <!--更改房源发布-->
+    <update id="updateHousePublish" parameterType='com.gjp.model.HousePublish'>
+        UPDATE GJP_House_Publish
+        <set>
+            <if test="hpc_code != null">hpc_code =#{hpc_code},</if>
+            <if test="hp_status != null">hp_status =#{hp_status},</if>
+            <if test="hp_content != null">hp_content =#{hp_content},</if>
+            <if test="hp_content != null">hp_content =#{hp_content},</if>
+            <if test="em_id != null">em_id =#{em_id},</if>
+            <if test="hp_arrival_time != null">hp_arrival_time =#{hp_arrival_time},</if>
+            <if test="hp_create_time != null">hp_create_time =#{hp_create_time},</if>
+        </set>
+        WHERE hi_code= #{hi_code}
+    </update>
+
+    <!--房源发布渠道-->
+    <select id="queryHousePublishChannel" resultType='com.gjp.model.HousePublishChannel'>
+        SELECT * FROM GJP_House_PublishChannel
+        WHERE 1=1
+        <if test="hpc_status != null">
+           AND hpc_status = #{hpc_status}
+        </if>
+    </select>
+
+    <!--根据房屋code查询此房屋发布渠道-->
+    <select id="housePublisheList" resultType="com.gjp.model.HousePublish">
+        SELECT * FROM GJP_House_Publish
+        WHERE  1=1
+        <if test="hi_code != null">
+            AND  hi_code= #{hi_code}
+        </if>
+    </select>
+
+    <!--根据房屋code和渠道code查询是否发布此渠道-->
+    <select id="housePublish" resultType="com.gjp.model.HousePublish">
+        SELECT * FROM GJP_House_Publish
+        WHERE  1=1
+        <if test="hi_code != null">
+            AND  hi_code= #{hi_code}
+        </if>
+        <if test="hpc_code != null">
+            AND  hpc_code= #{hpc_code}
+        </if>
+    </select>
+
+    <select id="queryRentHouseFile" resultType="com.gjp.model.RentHouseFileVo">
+        SELECT * FROM GJP_Rent_House_File WHERE file_type = #{file_type} AND hi_code = #{hi_code}
+    </select>
+
+    <select id="queryInitRentHouseList" resultType="com.gjp.model.ViewHouseLibraryInfoVo">
+        SELECT hi.*, rh.room_code FROM view_GJP_HouseLibraryInfoList hi
+        LEFT JOIN GJP_Rent_House rh ON rh.hi_code = hi.hi_code
+        WHERE hi.hi_isForRent = 1 AND hi.hi_forRentState in (1001, 1002, 1003, 1004, 1005, 1006)
+    </select>
+
+    <select id="queryRentHouseCount" resultType="java.lang.Integer">
+        SELECT count(rh_id) FROM GJP_Rent_House
+    </select>
+
+    <!--根据客户code查询房屋-->
+    <select id="selecthouseList" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT  * FROM  GJP_House_HouseInformation_keep
+        WHERE 1=1
+        <if test="cc_code != null">
+            AND cc_code =#{cc_code}
+        </if>
+    </select>
+
+    <delete id="deleteHousePublishState">
+      DELETE  FROM GJP_House_Publish WHERE hi_code= #{hi_code}
+    </delete>
+
+    <delete id="delRentHouseFile">
+        DELETE FROM GJP_Rent_House_File WHERE hi_code = #{hi_code}
+    </delete>
+
+    <!-- 添加利润亏损记录 -->
+    <insert id="addGrossProfit" useGeneratedKeys="true" keyProperty="gp_id">
+        INSERT INTO GJP_House_GrossProfit (
+            hi_code,
+            contractObject_code,
+            profitType,
+            profitExplain,
+            profit_description,
+            start_date,
+            end_date,
+            profit_money,
+            isDirect,
+            em_id,
+            create_time,
+            update_time,
+            data_state,
+            isDone
+        ) VALUES (
+            #{hi_code},
+            #{contractObject_code},
+            #{profitType},
+            #{profitExplain},
+            #{profit_description},
+            #{start_date},
+            #{end_date},
+            #{profit_money},
+            #{isDirect},
+            #{em_id},
+            NOW(),
+            NOW(),
+            #{data_state},
+            #{isDone}
+        )
+    </insert>
+
+    <!-- 更新利润亏损 -->
+    <update id="updateGrossProfit">
+        UPDATE GJP_House_GrossProfit
+        <set>
+            <if test="hi_code != null">hi_code = #{hi_code},</if>
+            <if test="contractObject_code != null">contractObject_code = #{contractObject_code},</if>
+            <if test="profitType != null">profitType = #{profitType},</if>
+            <if test="profitExplain != null">profitExplain = #{profitExplain},</if>
+            <if test="profit_description != null">profit_description = #{profit_description},</if>
+            <if test="profit_money != null">profit_money = #{profit_money},</if>
+            <if test="em_id != null">em_id = #{em_id},</if>
+            <if test="data_state != null">data_state = #{data_state},</if>
+            <if test="isDone != null">isDone = #{isDone},</if>
+            <if test="end_date != null">end_date = #{end_date},</if>
+            update_time = NOW()
+        </set>
+        WHERE gp_id = #{gp_id}
+    </update>
+
+    <!--查询房源利润亏损记录-->
+    <select id="queryGrossProfitByCode" resultType="com.gjp.model.HouseGrossProfitVo">
+        SELECT
+          gp.*, co.ContractObject_No, em.em_name, ct1.ContractType_Name AS profitTypeStr, ct2.ContractType_Name AS profitExplainStr
+        FROM GJP_House_GrossProfit gp
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = gp.contractObject_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee em ON gp.em_id = em.em_id
+        LEFT JOIN GJP_business.GJP_Contract_Type ct1 ON gp.profitType = ct1.ContractType_Code
+        LEFT JOIN GJP_business.GJP_Contract_Type ct2 ON gp.profitExplain = ct2.ContractType_Code
+        WHERE gp.hi_code = #{t.hi_code}
+        <if test="t.data_state != null">AND gp.data_state = #{t.data_state}</if>
+        <if test="t.profitType != null">AND gp.profitType = #{t.profitType}</if>
+        ORDER BY gp.profitExplain ASC, gp.start_date ASC, gp.create_time DESC
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryGrossProfitCountByCode" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM GJP_House_GrossProfit
+        WHERE hi_code = #{t.hi_code}
+        <if test="t.data_state != null">AND data_state = #{t.data_state}</if>
+        <if test="t.profitType != null">AND profitType = #{t.profitType}</if>
+    </select>
+
+    <!--查询房源利润亏损小计-->
+    <select id="queryGPSubtotalByCode" resultType="com.gjp.model.HouseGrossProfitVo">
+        SELECT t.*, ct.ContractType_Name AS profitTypeStr FROM (
+          SELECT profitType, SUM(profit_money) AS subtotal FROM GJP_House_GrossProfit WHERE hi_code = #{hi_code} AND data_state = 1 GROUP BY profitType
+        ) t
+        LEFT JOIN GJP_business.GJP_Contract_Type ct ON ct.ContractType_Code = t.profitType
+    </select>
+
+    <!-- 查询空置房 -->
+    <select id="queryVacantHouseList" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+          WHERE contract_intoStatus = '已签合同' AND hi_isForRent  = 1 AND hi_forRentState != 1021 AND (hi_forRentState = 1001 OR hi_forRentState = 1003 OR hi_forRentState = 1004 OR hi_forRentState = 1005)
+    </select>
+
+    <!-- 查询房源是否有正在记录中的空置期亏损记录 -->
+    <select id="queryGrossDoing" resultType="com.gjp.model.HouseGrossProfitVo">
+        SELECT * FROM GJP_House_GrossProfit
+        WHERE 1=1
+        <if test="hi_code != null">AND hi_code = #{hi_code}</if>
+        <if test="profitExplain != null">AND profitExplain = #{profitExplain}</if>
+        <if test="isDone != null">AND isDone = #{isDone}</if>
+        limit 1
+    </select>
+
+    <!-- 查询房源指定类型记录 -->
+    <select id="queryGrossListByCode" resultType="com.gjp.model.HouseGrossProfitVo">
+        SELECT * FROM GJP_House_GrossProfit
+        <where>
+            <if test="hi_code != null">AND hi_code = #{hi_code}</if>
+            <if test="contractObject_code != null">AND contractObject_code = #{contractObject_code}</if>
+            <if test="profitType != null">AND profitType = #{profitType}</if>
+            <if test="profitExplain != null">AND profitExplain = #{profitExplain}</if>
+            <if test="data_state != null">AND data_state = #{data_state}</if>
+            <if test="isDone != null">AND isDone = #{isDone}</if>
+        </where>
+    </select>
+
+    <!-- 增加毛利润记录人员、门店关系 -->
+    <insert id="addGrossProfitRela" useGeneratedKeys="true" keyProperty="gr_id">
+        INSERT INTO GJP_House_GrossProfitRela (
+            gp_id,
+            main_em_id,
+            main_ratio,
+            vice_em_id,
+            vice_ratio,
+            ucc_id,
+            start_date,
+            end_date,
+            start_date_c,
+            end_date_c,
+            create_time,
+            update_time,
+            data_state,
+            ex_id
+        ) VALUES (
+            #{gp_id},
+            #{main_em_id},
+            #{main_ratio},
+            #{vice_em_id},
+            #{vice_ratio},
+            #{ucc_id},
+            #{start_date},
+            #{end_date},
+            #{start_date_c},
+            #{end_date_c},
+            NOW(),
+            NOW(),
+            #{data_state},
+            #{ex_id}
+        )
+    </insert>
+
+    <update id="updateGrossProfitRela">
+        UPDATE GJP_House_GrossProfitRela
+        <set>
+            <if test="main_em_id != null">main_em_id = #{main_em_id},</if>
+            <if test="main_ratio != null">main_ratio = #{main_ratio},</if>
+            <if test="vice_em_id != null">vice_em_id = #{vice_em_id},</if>
+            <if test="vice_ratio != null">vice_ratio = #{vice_ratio},</if>
+            <if test="ucc_id != null">ucc_id = #{ucc_id},</if>
+            <if test="start_date != null">start_date = #{start_date},</if>
+            <if test="end_date != null">end_date = #{end_date},</if>
+            <if test="start_date_c != null">start_date_c = #{start_date_c},</if>
+            <if test="end_date_c != null">end_date_c = #{end_date_c},</if>
+            <if test="update_time != null">update_time = NOW(),</if>
+            <if test="data_state != null">data_state = #{data_state},</if>
+        </set>
+        <where>
+            <if test="gr_id != null">and gr_id = #{gr_id}</if>
+            <if test="gp_id != null">and gp_id = #{gp_id}</if>
+        </where>
+    </update>
+
+    <select id="queryGPRById" resultType="com.gjp.model.HouseGrossProfitRelaVo">
+        SELECT * FROM GJP_House_GrossProfitRela
+        <where>
+            <if test="gr_id != null">and gr_id = #{gr_id}</if>
+            <if test="gp_id != null">and gp_id = #{gp_id}</if>
+        </where>
+        order by create_time desc
+        limit 1
+    </select>
+
+    <select id="queryGPRByCode" resultType="com.gjp.model.HouseGrossProfitRelaVo">
+        SELECT gr.* FROM GJP_House_GrossProfitRela gr
+        JOIN GJP_House_GrossProfit gp ON gp.gp_id = gr.gp_id
+        WHERE gr.data_state = 1
+        <if test="hi_code != null">
+            AND gp.hi_code = #{hi_code}
+        </if>
+        <if test="contractObject_code != null">
+            AND gp.contractObject_code = #{contractObject_code}
+        </if>
+    </select>
+</mapper>

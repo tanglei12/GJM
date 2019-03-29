@@ -1,0 +1,110 @@
+@charset "utf-8";
+/* CSS Document */
+@import url("body.css");
+
+#center{
+	width:1210px;
+	height:500px;
+	margin-left:auto;
+	margin-right:auto;
+	background-color:#FFFFFF;
+	position:relative;
+	}
+#center .title{
+	height:45px;
+	font-size:14px;
+	font-family:"微软雅黑";
+	background-color:#F5F5F5;
+	padding:0 0 0 220px;
+	}
+#center .title ul li{
+	width:70px;
+	text-align:center;
+	height:44px;
+	line-height:44px;
+	padding:0 20px;
+	font-size:14px;
+	font-family:"微软雅黑";
+	background-color:#FFF;
+	position:absolute;
+	border-left:1px solid #dddddd;
+	border-right:1px solid #dddddd;
+	border-top:1px solid #dddddd;
+	border-bottom:1px solid #FFFFFF;
+	}
+
+#center .title ul .login_s{
+	width:130px;
+	text-align:center;
+	height:44px;
+	line-height:52px;
+	padding:0 10px;
+	font-size:14px;
+	font-family:"微软雅黑";
+	background-color:#F5F5F5;
+	border-left:1px solid #F5F5F5;
+	border-right:1px solid #F5F5F5;
+	border-top:1px solid #F5F5F5;
+	border-bottom:1px solid #dddddd;
+	right:0;
+	position:absolute;
+	}
+#center .title ul .login_s a{
+	color:#E74C3C;
+	}
+	
+#center .content{
+	border:1px solid #dddddd;
+	height:405px;
+	padding: 30px 0 20px;
+	}
+#center .content input{
+	width: 238px;
+	height: 16px;
+	padding: 10px 25px 10px 5px;
+	border: 1px solid #cccccc;
+	float: none;
+	font-size: 14px;
+	font-family: arial,"宋体";
+	overflow: hidden;
+	outline: none;
+	}
+#center .content ul{
+	width:100%;
+	padding-top: 9px;
+	height: 60px;
+	line-height: 34px;
+	}
+#center .content ul li{
+	width:78%;
+	font-size: 14px;
+	height:34px;
+	line-height:34px;
+	float:left;
+	}
+#center .content ul .content_font{
+	width:20%;
+	height:34px;
+	line-height:34px;
+	float:left;
+	text-align:right;
+	margin-right:10px;
+	}
+
+#center .content ul .verification{
+	width: 120px;
+	}
+	
+#center .content ul .registsubmit{
+	width: 270px;
+	height: 40px;
+	color: #FFF;
+	font-family: "microsoft yahei";
+	font-size: 16px;
+	font-weight: 800;
+	overflow: hidden;
+	background-color:#E74C3C;
+	border:0;
+	margin-left:249px;
+	}
+	

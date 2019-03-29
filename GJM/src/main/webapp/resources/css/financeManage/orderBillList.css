@@ -1,0 +1,71 @@
+@CHARSET "UTF-8";
+.order-list { margin-top: 16px;width: 400px;}
+.order-list:first-child { margin-top: 0;}
+.order-list .order-list-head {
+    position: relative;
+    display: flex;
+    padding-bottom: 4px;
+    font-weight: bold;
+}
+.order-list .order-list-head > div {
+    /*display: flex;*/
+}
+.order-list .order-list-item {
+    position: relative;
+    display: flex;
+    /*padding-top: 4px;*/
+    line-height: 36px;
+    border-top: 1px solid #ddd;
+}
+.order-list .order-list-item:first-child {
+    border-top: none;
+}
+.order-list .order-list-item > div {
+    font-size: 13px;
+}
+.bill-money-more {
+    position: relative;
+    padding: 0 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.bill-money-more > .content {
+    position: absolute;
+    left: 102%;
+    top: 0;
+    color: #666;
+    background: #fff;
+    box-shadow: 0 0 4px 1px #0000003d;
+    border-radius: 3px;
+    padding: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    cursor: default;
+    z-index: 2;
+}
+.bill-money-more > .content dl {
+    display: flex;
+    line-height: 24px;
+}
+.bill-money-more > .content dl > dt {
+    padding-right: 10px;
+}
+.bill-money-more > .content dl > dd {
+    flex: 1;
+    text-align: right;
+    min-width: 60px;
+}
+.bill-money-more > .content:empty {
+    display: none;
+}
+#info-money-more {font-size: 12px;}
+#info-money-more > dl {
+    display: flex;
+    line-height: 20px;
+}
+#info-money-more > dl > dt {flex: 1}
+#info-money-more > dl > dd {
+    min-width: 80px;
+    text-align: right;
+    font-weight: bold;
+}

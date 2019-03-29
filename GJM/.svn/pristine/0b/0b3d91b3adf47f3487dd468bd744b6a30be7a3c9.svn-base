@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋基本信息 GJP_House_HouseInformation -->
+<mapper namespace="com.gjp.dao.HouseInformationDAO">
+
+	<!-- 地图搜房列表数据 -->
+	<select id="selectMapHouseList" resultType="com.gjp.model.HouseInformation">
+		select
+		t1.upn_sname,
+		hi.hi_id,
+		hi.hi_code,
+		hi.hi_name,
+		hi.hi_houseS,
+		CONCAT(
+		hi.hi_houseS,
+		'室',
+		hi.hi_houseT,
+		'厅'
+		) AS houseTSW,
+		hi.hi_measure,
+		pi.propertyInfo_quyu,
+		hi.hi_district,
+		hi.hi_function,
+		hi.hi_money,
+		hi.hi_date,
+		image.hm_path,
+		hi.hi_isForRent,
+		uu.user_id
+		from GJP_House_HouseInformation_keep as hi
+		left join GJP_PropertyInfo as pi on hi.propertyInfo_Id = pi.propertyInfo_Id
+		LEFT JOIN GJP_PropertyInfo_PropertyInfoName t1 ON t1.upn_id=pi.upn_id
+		left join (
+		select himage.hm_path,houseFolder.hi_code,himage.hm_chose, count(distinct himage.hi_code) from
+		GJP_House_HouseImage AS himage
+		JOIN (
+		SELECT * FROM GJP_House_HouseImageFolder where hif_name = 1
+		) houseFolder ON houseFolder.hi_code = himage.hi_code where himage.hm_chose = 3
+		group by himage.hi_code
+		) image ON image.hi_code = hi.hi_code
+		LEFT JOIN
+		(select *,count(distinct hi_code) FROM GJP_user.GJP_UserCenter_CustomerRelationship GROUP BY hi_code) cr ON
+		cr.hi_code = hi.hi_code AND cr.crc_role = 0
+		LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = cr.cc_code
+		LEFT JOIN GJP_user.GJP_UserCenter_User uu ON uu.user_cardNumber = uc.cc_cardNum
+		where 1=1
+		and hi.hi_isForRent = 1
+		<if test="upn_sname != '' and upn_sname != null">
+			and upn_sname =#{upn_sname}
+		</if>
+	</select>
+
+	<!-- 地图列表返回区域 -->
+	<select id="selectHousequyu" resultType="com.gjp.model.HouseInformation">
+		SELECT
+		*
+		FROM
+		(
+		SELECT
+		t3.upn_id,
+		t3.upn_sid,
+		t1.propertyInfo_coordinate,
+		t1.propertyInfo_quyu,
+		t1.propertyInfo_street,
+		t2.hi_isForRent,
+		t3.upn_sname,
+		t4.sum
+		FROM
+		GJP_PropertyInfo t1
+		LEFT JOIN (
+		SELECT
+		t1.*,t3.his_name
+		FROM
+		GJP_House_HouseInformation t1
+		LEFT JOIN GJP_House_HouseInformationState_Relation t2 ON t2.hi_code=t1.hi_code
+		LEFT JOIN GJP_House_HouseInformationState t3 ON t3.his_id=t2.his_id
+		WHERE
+		1 = 1
+
+		) t2 ON t2.propertyInfo_Id = t1.propertyInfo_Id
+		LEFT JOIN GJP_PropertyInfo_PropertyInfoName t3 ON t3.upn_id = t1.upn_id
+		LEFT JOIN (
+		SELECT
+		COUNT(*) as sum,
+		t3.upn_sname
+		FROM
+		GJP_PropertyInfo t1
+		INNER JOIN GJP_House_HouseInformation t2 ON t2.propertyInfo_Id = t1.propertyInfo_Id
+		LEFT JOIN GJP_PropertyInfo_PropertyInfoName t3 ON t3.upn_id=t1.upn_id
+		WHERE t2.hi_isForRent=1
+		GROUP BY
+		t3.upn_sname
+		) t4 ON t4.upn_sname=t3.upn_sname
+		) T
+		WHERE 1=1
+		and hi_isForRent=1
+		<if test="upn_sname != '' and upn_sname != null">
+			and upn_sname =#{upn_sname}
+		</if>
+		GROUP BY upn_sname
+	</select>
+
+	<!-- 地图搜房 -->
+	<select id="queryHouseMapList" resultType="com.gjp.model.HouseMapList">
+		SELECT
+		pin.upn_id,
+		pin.upn_sid,
+		pin.upn_sname,
+		count(pin.upn_sname) as houseSum,
+		pi.propertyInfo_coordinate,
+		pi.propertyInfo_quyu,
+		pi.propertyInfo_street
+		FROM GJP_House_HouseInformation_keep AS hi
+		LEFT JOIN GJP_PropertyInfo AS pi ON hi.propertyInfo_Id = pi.propertyInfo_Id
+		LEFT JOIN GJP_PropertyInfo_PropertyInfoName AS pin ON pin.upn_id = pi.upn_id
+		LEFT JOIN GJP_House_HouseInformationState_Relation AS hir ON hir.hi_code = hi.hi_code
+		LEFT JOIN GJP_House_HouseInformationState AS his ON his.his_id = hir.his_id
+		LEFT JOIN
+		(select *,count(distinct hi_code) FROM GJP_user.GJP_UserCenter_CustomerRelationship GROUP BY hi_code) cr ON
+		cr.hi_code = hi.hi_code AND cr.crc_role = 0
+		WHERE 1=1
+		and (pi.propertyInfo_coordinate IS NOT NULL OR pi.propertyInfo_coordinate != '')
+		<if test="user_id != null and user_id != ''">
+			and (uu.user_id &lt;&gt; #{user_id} or uu.user_id IS NULL)
+		</if>
+		<if test="his_name != null and his_name != ''">
+			and his.his_name = #{his_name}
+		</if>
+		<if test="his_name == null or his_name == ''">
+			and 3 > hir.his_id
+		</if>
+		<if test="hi_houseType == '一房'">
+			and hi.hi_houseS = 1
+		</if>
+		<if test="hi_houseType == '两房'">
+			and hi.hi_houseS = 2
+		</if>
+		<if test="hi_houseType == '三房'">
+			and hi.hi_houseS = 3
+		</if>
+		<if test="hi_houseType == '四房'">
+			and hi.hi_houseS = 4
+		</if>
+		<if test="hi_houseType == '其他'">
+			and hi.hi_houseS > 5
+		</if>
+		<if test="moneyStart != null and moneyStart != ''">
+			and hi.hi_money >= #{moneyStart}
+		</if>
+		<if test="moneyEnd != null and moneyEnd != ''">
+			and #{moneyEnd} >= hi.hi_money
+		</if>
+		<if test="hi_function != null and hi_function != ''">
+			and hi.hi_function LIKE CONCAT('%',#{hi_function},'%')
+		</if>
+		and hi.hi_isForRent = 1
+		GROUP BY pin.upn_sname
+		<if test="hi_moneyAscDesc != null and hi_moneyAscDesc != ''">
+			ORDER BY hi_money ${hi_moneyAscDesc}
+		</if>
+	</select>
+
+	<!-- 地图搜房房源列表 -->
+	<select id="queryHouseInformationMap" resultType="com.gjp.model.HouseInformation">
+		select
+		hi.hi_id,
+		hi.hi_code,
+		IF (
+		pin.upn_code IS NULL
+		OR pin.upn_code = '',
+		CONCAT(
+		pin.upn_sname,
+		hi.hi_address
+		),
+		CONCAT(
+		pin.upn_sname,
+		pin.upn_code,
+		'-',
+		hi.hi_address
+		)
+		) AS hi_name,
+		hi.hi_houseS,
+		CONCAT(
+		hi.hi_houseS,
+		'室',
+		hi.hi_houseT,
+		'厅'
+		) AS houseTSW,
+		hi.hi_measure,
+		pi.propertyInfo_quyu,
+		hi.hi_district,
+		hi.hi_function,
+		hi.hi_price as hi_money,
+		hi.hi_date,
+		image.hm_path,
+		hi.hi_isForRent,
+		pin.upn_sname
+		from GJP_House_HouseInformation_keep as hi
+		left join GJP_PropertyInfo as pi on hi.propertyInfo_Id = pi.propertyInfo_Id
+		LEFT JOIN GJP_PropertyInfo_PropertyInfoName AS pin ON pin.upn_id = pi.upn_id
+		left join (
+		select himage.hm_path,houseFolder.hi_code,himage.hm_chose, count(distinct himage.hi_code) from
+		GJP_House_HouseImage AS himage
+		LEFT JOIN (
+		SELECT hi_code FROM GJP_House_HouseImageFolder) houseFolder ON houseFolder.hi_code = himage.hi_code where himage.hm_chose = 3
+		group by himage.hi_code
+		) image ON image.hi_code = hi.hi_code
+		LEFT JOIN
+		(select hi_code,crc_role FROM GJP_user.GJP_UserCenter_CustomerRelationship GROUP BY hi_code) cr ON
+		cr.hi_code = hi.hi_code AND cr.crc_role = 0
+		LEFT JOIN GJP_House_HouseInformationState_Relation AS hir ON hir.hi_code = hi.hi_code
+		LEFT JOIN GJP_House_HouseInformationState AS his ON his.his_id = hir.his_id
+		where 1=1
+		and (pin.upn_sid = #{upn_id} OR pin.upn_id = #{upn_id})
+		<if test="user_id != null and user_id != ''">
+			and (uu.user_id &lt;&gt; #{user_id} or uu.user_id IS NULL)
+		</if>
+		<if test="his_name != null and his_name != ''">
+			and his.his_name = #{his_name}
+		</if>
+		<if test="his_name == null or his_name == ''">
+			and 3 > hir.his_id
+		</if>
+		<if test="hi_houseType == '一房'">
+			and hi.hi_houseS = 1
+		</if>
+		<if test="hi_houseType == '两房'">
+			and hi.hi_houseS = 2
+		</if>
+		<if test="hi_houseType == '三房'">
+			and hi.hi_houseS = 3
+		</if>
+		<if test="hi_houseType == '四房'">
+			and hi.hi_houseS = 4
+		</if>
+		<if test="hi_houseType == '其他'">
+			and hi.hi_houseS > 5
+		</if>
+		<if test="moneyStart != null and moneyStart != ''">
+			and hi.hi_money >= #{moneyStart}
+		</if>
+		<if test="moneyEnd != null and moneyEnd != ''">
+			and #{moneyEnd} >= hi.hi_money
+		</if>
+		<if test="hi_function != null and hi_function != ''">
+			and hi.hi_function LIKE CONCAT('%',#{hi_function},'%')
+		</if>
+		and hi.hi_isForRent = 1
+		<if test="hi_moneyAscDesc != null and hi_moneyAscDesc != ''">
+			ORDER BY hi_money ${hi_moneyAscDesc}
+		</if>
+		GROUP BY
+		hi_code
+	</select>
+</mapper>

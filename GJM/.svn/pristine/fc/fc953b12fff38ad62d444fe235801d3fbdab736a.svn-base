@@ -1,0 +1,16 @@
+.popup-desc-box {
+    display: flex;
+    padding: 10px;
+}
+.popup-desc-label {
+    line-height: 30px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.popup-desc-label:hover {
+    border-color: #3498db;
+    color: #3498db;
+}

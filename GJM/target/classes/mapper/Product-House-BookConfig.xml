@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预约 GJP_business.GJP_House_BookConfig -->
+<mapper namespace="com.gjp.dao.HouseBookConfigDao">
+	
+	<!-- 增加预约界面配置信息 -->
+	<insert id="addHouseBookConfig"  useGeneratedKeys="true" keyProperty="bc_id" parameterType="com.gjp.model.HouseBookConfig">
+		insert into GJP_business.GJP_House_BookConfig
+		(
+		bc_pid,
+		is_father,
+		field_name_en,
+		field_name_cn,
+		element_type,
+		default_value,
+		field_value,
+		placeholder,
+		is_null,
+		is_utf8,
+		reg_rule
+		) values (
+		#{bc_pid},
+		#{isFather},
+		#{fieldNameEn},
+		#{fieldNameCn},
+		#{elementType},
+		#{defaultValue},
+		#{fieldValue},
+		#{placeholder},
+		#{isNull},
+		#{isUtf8},
+		#{regRule}
+		)
+	</insert>
+	
+	<!-- 更新预约界面配置数据 -->
+	<update id="updateHouseBookConfig" parameterType="com.gjp.model.HouseBookConfig">
+		update GJP_business.GJP_House_BookConfig 
+			set
+				bc_id = #{bc_id} 
+				<if test="bc_pid !=null and bc_pid != ''">
+			 		,bc_pid = #{bc_pid}
+			 	</if>
+			 	<if test="isFather !=null and isFather != ''">
+			 		,is_father = #{isFather}
+			 	</if>
+				<if test="fieldNameEn !=null and fieldNameEn != ''">
+					,field_name_en = #{fieldNameEn}
+				</if>
+				<if test="fieldNameCn !=null and fieldNameCn != ''">
+					,field_name_cn = #{fieldNameCn}
+				</if>
+				<if test="fieldValue !=null and fieldValue != ''">
+					,field_value = #{fieldValue}
+				</if>
+				<if test="elementType !=null and elementType != ''">
+					,element_type = #{elementType}
+				</if>
+				<if test="defaultValue !=null and defaultValue != ''">
+					,default_value = #{defaultValue}
+				</if>
+				<if test="placeholder !=null and placeholder != ''">
+					,placeholder = #{placeholder}
+				</if>
+				<if test="isNull !=null and isNull != ''">
+					,is_null = #{isNull}
+				</if>
+				<if test="isUtf8 !=null and isUtf8 != ''">
+					,is_utf8 = #{isUtf8}
+				</if>
+				<if test="regRule !=null and regRule != ''">
+					,reg_rule = #{regRule}
+				</if>
+			where bc_id = #{bc_id} 
+	</update>
+	
+	<select id="queryHouseBookConfigFatherAndSon" resultType="com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		 where bc_id in 
+		<foreach item="item" index="index" collection="bc_idsList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		or bc_pid in
+		<foreach item="item" index="index" collection="bc_idsList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="queryHouseBookConfigFromIds" resultType="com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		 where bc_id in 
+		<foreach item="item" index="index" collection="bc_idsList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="queryHouseBookConfigsById" resultType="com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		 where bc_id = #{bc_id}
+		 union 
+		 select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		 where bc_pid = #{bc_id}
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="queryHouseBookConfigForList" resultType="com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		limit #{pageNo}, #{pageSize}
+	</select>
+	
+	<!-- 查询总条数 -->
+	<select id="queryHouseBookConfigForCount" resultType = "int">
+		select
+			count(bc_id)
+		from 
+			GJP_business.GJP_House_BookConfig
+	</select>
+	
+	<!-- 查询单条预约配置信息 -->
+	<select id="queryHouseBookConfigById" resultType = "com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		 where bc_id = #{bc_id}
+	</select>
+	
+	<!-- 查询单条预约配置信息 -->
+	<select id="queryHouseBookConfigs" resultType = "com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+	</select>
+	
+	<!-- 查询请求来源下所有配置的预约字段 -->
+	<select id="queryHouseBookConfigByBcPId" resultType="com.gjp.model.HouseBookConfig">
+		select 
+			bc_id as bc_id,
+			bc_pid as bc_pid,
+			is_father as isFather,
+			field_name_en as fieldNameEn,
+			field_name_cn as fieldNameCn,
+			field_value as fieldValue,
+			element_type as elementType,
+			default_value as defaultValue,
+			placeholder as placeholder,
+			is_null as isNull,
+			is_utf8 as isUtf8,
+			reg_rule as regRule
+		from 
+		 	GJP_business.GJP_House_BookConfig
+		where bc_pid = #{bc_pid}
+		order by sort 
+	</select>
+
+</mapper>

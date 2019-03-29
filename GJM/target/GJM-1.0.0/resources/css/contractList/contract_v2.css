@@ -1,0 +1,174 @@
+* {
+	padding: 0;
+	margin: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+:after, :before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font: 15px/150% '黑体', Arial, Verdana, "\5b8b\4f53";
+	color: #000;
+}
+
+input, textarea, select, button {
+	font-family: '黑体';
+}
+
+td{
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:normal;
+	text-align:left;
+}
+
+input, button, fieldset, textarea, select {
+	display: block;
+	border: none;
+	outline: none;
+	background: none;
+}
+
+hr {
+	clear: both;
+	padding: 0;
+	margin: 0
+}
+
+ul, li {
+	list-style: none;
+}
+
+hr {
+	border: none;
+}
+
+a {
+	text-decoration: none;
+	color: #666;
+}
+
+.logoImg {
+	width:25px;
+	height:25px;
+	float: left;
+/*     margin-left: 15vw; */
+}
+
+.font18 {
+	font-family:"黑体"; 
+	font-weight:bold; 
+	letter-spacing:1px;
+	text-indent:15px;
+	font-size:18px;
+	text-align: left;
+    float: left;
+}
+
+.fontTx {
+	border: 1px solid #555555;
+	width: 92%; 
+	text-align: left;
+	font-size:15px; 
+	font-family:"黑体"; 
+	padding-left: 15px
+}
+
+.rightFont {
+	margin-right:0vw; 
+	text-align:right;
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	float: right;
+/*     margin-right: 15vw; */
+}
+
+.tdLine {
+	text-align: left; 
+	vertical-align: bottom;
+	border-bottom: 1px solid black;
+}
+
+.conTitle {
+	text-align:center;
+	vertical-align:middle;
+	font-size:20px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.conTitle_sub {
+	text-align:center;
+	vertical-align:middle;
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.conNo {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:normal; 
+	color:#F00; 
+/* 	margin-right:15vw; */
+	float : right;	
+}
+
+.conDigest {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	line-height: 15px;
+}
+
+.conDigest_left {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	text-align:left;
+	line-height: 15px;
+}
+
+.conInfo {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:normal;
+	text-align: left;
+	line-height: 20px;
+}
+
+.conInfo:after {
+	content:"";
+	display:block;
+	clear:both;
+}
+
+.textUnderLine {
+	font-size:15px; 
+	text-align:left; 
+	font-family:"黑体"; 
+	text-decoration:underline;
+}
+
+.font12 {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.fontLabel {
+	font-size:15px; 
+	font-family:"黑体"; 
+	font-weight:normal;
+}

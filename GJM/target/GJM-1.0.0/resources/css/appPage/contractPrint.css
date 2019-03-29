@@ -1,0 +1,164 @@
+* {
+	padding: 0;
+	margin: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+:after, :before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	font: 3vw/150% '\5FAE\8F6F\96C5\9ED1', Arial, Verdana, "\5b8b\4f53";
+	color: #000;
+}
+
+input, textarea, select, button {
+	font-family: '\5FAE\8F6F\96C5\9ED1';
+}
+
+td{
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:normal;
+}
+
+input, button, fieldset, textarea, select {
+	display: block;
+	border: none;
+	outline: none;
+	background: none;
+}
+
+hr {
+	clear: both;
+	padding: 0;
+	margin: 0
+}
+
+ul, li {
+	list-style: none;
+}
+
+hr {
+	border: none;
+}
+
+a {
+	text-decoration: none;
+	color: #666;
+}
+
+.logoImg {
+	width:5vw;
+	height:5vw;
+	float: left;
+/*     margin-left: 15vw; */
+}
+
+.font18 {
+	font-family:"黑体"; 
+	font-weight:bold; 
+	letter-spacing:1vw; 
+	text-indent:3vw;
+	font-size:3vw;
+	text-align: left;
+    float: left;
+}
+
+.rightFont {
+	margin-right:0vw; 
+	text-align:right;
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	float: right;
+/*     margin-right: 15vw; */
+}
+
+.tdLine {
+	text-align: left; 
+	vertical-align: bottom;
+	border-bottom: 1px solid black;
+}
+
+.conTitle {
+	text-align:center;
+	vertical-align:middle;
+	font-size:3vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.conTitle_sub {
+	text-align:center;
+	vertical-align:middle;
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.conNo {
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:normal; 
+	color:#F00; 
+/* 	margin-right:15vw; */
+	float : right;	
+}
+
+.conDigest {
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	line-height: 2vw;
+}
+
+.conDigest_left {
+	font-size:1vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+	text-align:left;
+	line-height: 2vw;
+}
+
+.conInfo {
+	font-size:1vw; 
+	font-family:"黑体"; 
+	font-weight:normal;
+	text-align: left;
+	line-height: 2vw;
+}
+
+.conInfo:after {
+	content:"";
+	display:block;
+	clear:both;
+}
+
+.textUnderLine {
+	font-size:1vw; 
+	text-align:left; 
+	font-family:"黑体"; 
+	text-decoration:underline;
+}
+
+.font12 {
+	font-size:1vw; 
+	font-family:"黑体"; 
+	font-weight:bold;
+}
+
+.fontLabel {
+	font-size:2vw; 
+	font-family:"黑体"; 
+	font-weight:normal;
+}

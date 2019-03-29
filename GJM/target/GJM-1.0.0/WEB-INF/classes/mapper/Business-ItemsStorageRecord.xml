@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 业绩设置 -->
+<mapper namespace="com.gjp.dao.ItemsStorageRecordDAO">
+
+	<sql id="menberEcpId">
+		inv_code,
+		isr_content,
+		em_id,
+		isr_createTime,
+		isr_isHandle,
+		isr_positionBefore,
+		isr_positionAfter
+	</sql>
+
+	<sql id="insert">
+		#{inv_code },
+		#{isr_content },
+		#{em_id },
+		#{isr_createTime },
+		#{isr_isHandle },
+		#{isr_positionBefore },
+		#{isr_positionAfter }
+	</sql>
+
+	<sql id="update">
+		<if test="isr_content!=null and isr_content!=''">
+			isr_content=#{isr_content },
+		</if>
+		<if test="em_id!=null and ib_em_id!=''">
+			em_id=#{em_id },
+		</if>
+		<if test="isr_createTime!=null and isr_createTime!=''">
+			isr_createTime=#{isr_createTime },
+		</if>
+		<if test="isr_isHandle!=null and isr_isHandle!=''">
+			isr_isHandle=#{isr_isHandle },
+		</if>
+		<if test="isr_positionBefore!=null and isr_positionBefore!=''">
+			isr_positionBefore=#{isr_positionBefore },
+		</if>
+		<if test="isr_positionAfter!=null and isr_positionAfter!=''">
+			isr_positionAfter=#{isr_positionAfter },
+		</if>
+		inv_code=#{inv_code}
+	</sql>
+
+	<!-- 物品存放记录添加 -->
+	<insert id="addItemsStorageRecordOne" useGeneratedKeys="true" keyProperty="isr_id">
+		insert into GJP_Items_StorageRecord(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 查询库存列表 -->
+	<select id="selectItemsStorageRecordList" resultType="com.gjp.model.ItemsStorageRecord">
+		select * from GJP_Items_StorageRecord where 1=1
+		<if test="inv_code != null and inv_code !=''">
+			and inv_code=#{inv_code}
+		</if>
+	</select>
+
+
+
+
+</mapper>

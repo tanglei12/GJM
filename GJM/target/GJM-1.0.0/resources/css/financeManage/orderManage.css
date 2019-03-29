@@ -1,0 +1,569 @@
+.taglib {
+    padding: 2px 4px;
+    background: #f16d60;
+    color: #fff;
+    border-radius: 4px;
+    text-indent: 0;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.repay-tag {
+    display: block;
+    position: absolute;
+    width: 34px;
+    height: 32px;
+    top: 0;
+    left: 0;
+    background-size: 100% 100%;
+    background: url("/resources/image/repay-icon.png") no-repeat;
+}
+.paybutton {
+    width: 100%;
+    padding: 5px 0;
+    min-height: 43px;
+    position: relative;
+}
+.paybutton button {
+    position: relative;
+    float: left;
+    border: none;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    padding: 0 15px;
+    background: #1ABC9C;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.paybutton .insert {
+    margin-left: 12px;
+    position: relative;
+    float: left;
+    border: none;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    padding: 0 6px 0 10px;
+    background: #1ABC9C;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.paybutton .insert:AFTER {
+    content: "\f105";
+    font: normal normal normal 14px/1 FontAwesome;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    width: 24px;
+    margin-left: 2px;
+    margin-right: -4px;
+    font-size: 18px;
+    text-align: center;
+}
+.paybutton select {
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+}
+.chosen-container {
+    margin-left: 2px;
+}
+.fa-minus-circle {
+    color: #E74C3C;
+    font-size: 16px;
+    cursor: pointer;
+}
+table tbody td input {
+    display: block;
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    background-color: #fdf7f7;
+    border: none;
+    text-align: center;
+    color: #666;
+}
+table tbody td .button1 {
+    width: 54px;
+    margin-left: 11px;
+    position: relative;
+    border: none;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    background: #1ABC9C;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+table tbody td .button2 {
+    width: 54px;
+    margin-left: 11px;
+    position: relative;
+    border: none;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    background: #E74C3C;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    float: left;
+}
+.payType {
+    position: relative;
+    float: left;
+    display: inline-block;
+    height: 30px;
+    line-height: 28px;
+    padding: 0 8px;
+    margin-top: 7px;
+    font-size: 12px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-right: none;
+    color: #34495e;
+    background: #fbfbfb;
+}
+.payTypeItem {
+    border: 1px solid #ddd;
+    border-left: none;
+    margin-top: 7px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 8px 0 5px;
+    float: left;
+    display: none;
+}
+.paybank {
+    border: 1px solid #ddd;
+    margin-top: 7px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5px 0 3px;
+    float: left;
+}
+.fa-pencil {
+    font-size: 16px;
+    color: #1ABC9C;
+    cursor: pointer;
+}
+.paybankCode {
+    border: 1px solid #ddd;
+    border-left: none;
+    margin-top: 7px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    float: left;
+    display: none;
+}
+.payMoney {
+    width: 120px;
+    border: 1px solid #ddd;
+    border-left: none;
+    margin-top: 7px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    float: left;
+    display: none;
+}
+.paySubmit {
+    margin-top: 7px;
+    height: 30px;
+    border: none;
+    color: #FFF;
+    background: #1ABC9C;
+    line-height: 30px;
+    padding: 0 15px;
+    float: left;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    display: none;
+}
+.payTable {
+    width: 480px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.payTable td {
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.uncollectedTable {
+    width: 400px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 5px;
+    display: none;
+}
+.uncollectedTable td {
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.insertMoney {
+    border: 1px solid #ddd;
+    margin-left: 5px;
+    float: left;
+    width: 70px;
+}
+.insertButton {
+    padding: 0 15px !important;
+    height: 32px;
+    background-color: #21B0E2;
+    color: #FFF;
+    margin-left: 5px;
+}
+/***************账单样式********************/
+.table-btn {
+    margin-left: 11px;
+    padding: 0 10px;
+    border: none;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    background: #1ABC9C;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    float: left;
+}
+.billList {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.billList .title {
+    width: 100%;
+    line-height: 43px;
+    position: relative;
+    overflow: hidden;
+}
+.billList .title .title-info {
+    float: left;
+    font-size: 14px;
+    padding-left: 12px;
+}
+.billList .title .bill-info {
+    float: left;
+    font-size: 14px;
+    margin-left: 10px;
+}
+.billList .title .bill-info i {
+    color: red;
+}
+.billList .title .bill-info .subLine {
+    padding: 0 12px;
+    color: #ccc;
+}
+.billList .title .bill-actions {
+    float: right;
+    margin-right: 8px;
+}
+.billList .title .title-close {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+}
+.billList .title .title-close .fa-times-circle {
+    color: #266da3;
+    font-size: 20px;
+    cursor: pointer;
+}
+.billList .content {
+    overflow: hidden;
+    padding: 0 10px 5px;
+    display: flex;
+}
+/**************账单表格样式*********************/
+.billTableList {
+    width: 100%;
+    overflow: visible !important;
+    border: 1px solid #ddd;
+}
+.billTableList thead tr {
+    height: 31px;
+    line-height: 31px;
+    background-color: #61acde !important;
+    color: #FFF;
+}
+.billTableList thead tr td {
+    text-align: center;
+    border: 1px solid #ccc;
+}
+.billTableList tbody tr {
+    height: 31px;
+    line-height: 31px;
+}
+.billTableList tbody tr.childBill {
+    display: none;
+    background: #f5f8fa;
+}
+.billTableList tbody tr:HOVER {
+    background-color: #e5ebee !important;
+}
+.billTableList tbody tr td {
+    text-align: center;
+    border: 1px solid #ddd;
+    text-indent: 0;
+}
+.billTableList tbody tr td .item-index {
+    display: inline-block;
+    line-height: 22px;
+    width: 22px;
+    border-radius: 11px;
+    background: #1abc9c;
+    color: #fff;
+    text-indent: 0;
+}
+.billTableList tbody tr td .fa-reorder {
+    padding: 0 12px;
+    font-size: 14px;
+    color: #3498db;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+/**************金融账单表格样式*********************/
+.partnerBillTableList {
+    width: 60%;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+}
+.partnerBillTableList .item-cycle {
+    padding: 0 1px;
+    color: #18bc9c;
+}
+.partnerBillTableList thead tr {
+    height: 31px;
+    line-height: 31px;
+    background-color: #6699CC !important;
+    color: #FFF;
+}
+.partnerBillTableList thead tr td {
+    text-align: center;
+    border: 1px solid #ccc;
+}
+.partnerBillTableList tbody tr {
+    height: 31px;
+    line-height: 31px;
+}
+.partnerBillTableList tbody tr.childBill {
+    display: none;
+    background: #f5f8fa;
+}
+.partnerBillTableList tbody tr:HOVER {
+    background-color: #FFF !important;
+}
+.partnerBillTableList tbody tr td {
+    text-align: center;
+    border: 1px solid #ddd;
+    text-indent: 0;
+}
+.partnerBillTableList tbody tr td .item-index {
+    display: inline-block;
+    line-height: 22px;
+    width: 22px;
+    border-radius: 11px;
+    background: #1abc9c;
+    color: #fff;
+    text-indent: 0;
+}
+.partnerBillTableList tbody tr td .fa-reorder {
+    padding: 0 12px;
+    font-size: 14px;
+    color: #3498db;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+/*自定义checkbox*/
+.checkbox-bill {
+    position: relative;
+    display: block;
+    width: 34px;
+    margin: 0 auto;
+}
+.checkbox-bill .input_check {
+    display: none;
+}
+.checkbox-bill .input_check + span {
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 2px;
+    background-color: #FFF;
+}
+.checkbox-bill .input_check:checked + span {
+    border: 1px solid #18bc9c
+}
+.checkbox-bill .input_check:checked + span:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 15px;
+    height: 9px;
+    border: 2px solid #18bc9c;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    -webkit-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -ms-transform: rotate(-60deg);
+    transform: rotate(-45deg);
+}
+/*自定义checkbox*/
+.checkbox-a {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.checkbox-a .input_check {
+    display: none;
+}
+.checkbox-a .input_check + span {
+    display: block;
+    border: 1px solid #a9a9a9;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    background-color: #FFF;
+    border-radius: 1px;
+}
+.checkbox-a .input_check:checked + span {
+    border: 1px solid #21B0E2;
+    background-color: #21B0E2;
+}
+.checkbox-a .input_check:checked + span:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 5px;
+    width: 12px;
+    height: 6px;
+    border: 2px solid #FFF;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    -ms-transform: rotate(-60deg);
+    -moz-transform: rotate(-60deg);
+    -webkit-transform: rotate(-60deg);
+    transform: rotate(-45deg);
+}
+.checkbox-a i {
+    font-style: normal;
+    margin-left: 20px;
+}
+/***************界面显示切换标签***********************/
+#viewTag {
+    position: absolute;
+    float: left;
+    width: 87px;
+    height: 40px;
+    line-height: 40px;
+    margin-right: 10px;
+    z-index: 1000;
+}
+#viewTag li {
+    background: #1abc9c;
+    color: #FFF;
+    font-size: 14px;
+    font-family: -webkit-body, serif;
+    cursor: pointer;
+}
+#viewTag .showTag {
+    position: relative;
+    padding: 0 14px;
+}
+#viewTag .showTag .fa-angle-down {
+    position: absolute;
+    top: 13px;
+    right: 5px;
+}
+#viewTag .hideTag {
+    display: none;
+}
+#viewTag .hideTag li {
+    padding: 0 14px;
+}
+/************清退样式**************/
+.quitBill {
+    padding: 10px 20px;
+}
+.quitBill .main {
+    padding-left: 12px;
+}
+.quitBill .main .check-option {
+    display: inline-block;
+    width: 100%;
+}
+.quitBill .main .check-option input {
+    display: inline;
+    width: auto;
+    height: auto;
+}
+.quitBill .main .check-option .text {
+    margin-left: 10px;
+}
+.quitBill .remarks {
+    color: #F39C12;
+}
+.quitBill .other {
+    margin-top: 10px;
+    height: 30px;
+    overflow: hidden;
+    display: none;
+}
+.quitBill .other input.text-input {
+    display: inline;
+    width: 154px;
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid #ddd;
+    text-align: left;
+    padding-left: 5px;
+}
+.wxm {
+    float: left;
+}
+.wxMessage {
+    float: left;
+    width: 400px;
+    font-size: 14px;
+    margin-top: 30px;
+}
+.wxMessage dl {
+    width: 100%;
+    margin: 15px 0;
+}
+.wxMessage dl dt {
+    float: left;
+    width: 65px;
+    text-align: right;
+}
+.wxMessage dl dd {
+    float: left;
+    text-indent: 15px;
+}
+.aliIcon {
+    background: url("/resources/image/ali.png") no-repeat scroll -1px -1px transparent;
+}
+.wxIcon {
+    background: url("/resources/image/wx.png") no-repeat scroll -1px -1px transparent;
+}

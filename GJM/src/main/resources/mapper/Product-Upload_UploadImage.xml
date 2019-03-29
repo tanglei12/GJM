@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 图片管理 GJP_Upload_UploadImage -->
+<mapper namespace="com.gjp.dao.UploadImageDao">
+	<!-- 新增图片 -->
+	<insert id="addUploadImage" useGeneratedKeys="true" keyProperty="img_id">
+		insert into GJP_Upload_UploadImage(
+		img_path,
+		img_state,
+		img_createTime
+		)
+		values (
+		#{img_path},
+		#{img_state},
+		#{img_createTime}
+		)
+	</insert>
+	<!-- 更新图片 -->
+	<update id="updateUploadUmage">
+		update GJP_Upload_UploadImage
+		<set>
+			<if test="img_id !=null"> img_id = #{img_id},</if>
+			<if test="img_path !=null and img_path !='' "> img_path = #{img_path},</if>
+			<if test="img_state !=null"> img_state = #{img_state},</if>
+			<if test="img_createTime !=null"> img_createTime = #{img_createTime}</if>
+		</set>
+		where img_id = #{img_id}
+	</update>
+	<!-- 删除图片 -->
+	<delete id="deleteUploadImage">
+		delete from GJP_Upload_UploadImage where
+		img_id=#{img_id}
+	</delete>
+	<!-- 根据路径查询图片 -->
+	<select id="queryUploadImageByPath" resultType="com.gjp.model.UploadImage">
+		select * from
+		GJP_Upload_UploadImage where img_path=#{img_path}
+	</select>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 适合推荐群体 GJP_House_RecommendGroup -->
+<mapper namespace="com.gjp.dao.LSFBillDAO">
+         
+         <sql id="allmenbers">
+            lsfb_id,
+			lsfb_orderCode,
+			lsfb_realName,
+			lsfb_phone,
+			lsfb_billStatus,
+			lsfb_cycleNum,
+			lsfb_money,
+			lsfb_payAmoun,
+			lsfb_repayment,
+			lsfb_payDate,
+			lsfb_payType
+         </sql>
+         
+         <sql id="menberEcpId">
+           	lsfb_orderCode,
+			lsfb_realName,
+			lsfb_phone,
+			lsfb_billStatus,
+			lsfb_cycleNum,
+			lsfb_money,
+			lsfb_payAmoun,
+			lsfb_repayment,
+			lsfb_payDate,
+			lsfb_payType
+         </sql>
+         
+         <sql id="insert">
+           	#{lsfb_orderCode},
+			#{lsfb_realName},
+			#{lsfb_phone},
+			#{lsfb_billStatus},
+			#{lsfb_cycleNum},
+			#{lsfb_money},
+			#{lsfb_payAmoun},
+			#{lsfb_repayment},
+			#{lsfb_payDate},
+			#{lsfb_payType}
+         </sql>
+         
+         <!-- 添加乐首付账单 -->
+          <insert id="addLSFBill" useGeneratedKeys="true" parameterType="com.gjp.model.LSFBill" keyProperty="lsfb_id">
+	         insert into GJP_LSF_Bill(<include refid="menberEcpId"></include>)  
+	         values (<include refid="insert"></include>)
+         </insert> 
+         
+         <!-- 查询账单最新一条数据的时间 -->
+		<select id="selectLSFBillNow" resultType="com.gjp.model.LSFBill">
+			select lsfb_PayDate from GJP_LSF_Bill order by lsfb_PayDate desc
+		</select>
+		
+        <!-- 查询账单是否存在 -->
+		<select id="selectLSFBillBool" resultType="com.gjp.model.LSFBill">
+			select count(*) as size from GJP_LSF_Bill where lsfb_orderCode=#{lsfb_orderCode} and lsfb_cycleNum=#{lsfb_cycleNum}
+		</select>
+		
+        <!-- 查询账单支付方式和支付时间和支付期数 -->
+		<select id="selectLSFBillType" resultType="com.gjp.model.LSFBill">
+			select lsfb_PayDate,lsfb_PayType,lsfb_cycleNum from GJP_LSF_Bill where lsfb_orderCode=#{lsfb_orderCode}
+		</select>
+		
+
+</mapper>

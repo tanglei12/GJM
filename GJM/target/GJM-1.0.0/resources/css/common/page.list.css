@@ -1,0 +1,175 @@
+html, body { height: 100%; }
+/* [分页盒子] */
+.page-box { position: relative; display: flex; height: 100%; }
+/* [分页菜单] */
+.list-menu { position: relative; width: 250px; min-width: 250px; padding: 10px; border-right: 1px solid #ddd; }
+/* 筛选 */
+.screen-where { position: relative; /*padding: 6px; margin-bottom: 10px; border-radius: 2px; border: 1px dashed #ACCBE0;*/ }
+.screen-where .screen-where-head { position: relative; margin-bottom: 10px; display: flex; }
+/*.screen-where .screen-where-head:AFTER { content: ""; display: block; clear: both; }*/
+.screen-where .screen-where-head > .where-head-btn { position: relative; display: block; float: left; line-height: 28px; font-size: 12px; padding: 0 10px; border-radius: 3px; cursor: pointer; }
+.screen-where .screen-where-head > .where-head-btn > i { margin-right: 4px; width: 12px; }
+.screen-where .screen-where-main { position: relative; height: auto; overflow-y: auto; }
+.screen-where .screen-where-main:AFTER { content: ""; display: block; clear: both; }
+.screen-where .screen-where-main > .screen-where-item { position: relative; display: flex; text-align: left; line-height: 30px; height: 30px; }
+.screen-where .screen-where-main > .screen-where-item > .where-subitem { margin-right: 6px; margin-left: 0; }
+.screen-where .screen-where-main > .screen-where-item > .where-subitem > input { position: relative; top: 0; width: 160px; line-height: 24px; border: 1px solid #ddd; border-radius: 3px; padding: 0 8px; font-size: 12px; }
+.screen-where .screen-where-main > .screen-where-item > .where-subitem > select { position: relative; top: 0; width: 160px; height: 26px; border: 1px solid #ddd; border-radius: 3px; padding: 0 8px; font-size: 12px; }
+.screen-where .screen-where-main > .screen-where-item > .where-subitem .fa-times-circle { position: relative; top: 3px; line-height: 24px; width: 20px; background: none; font-size: 18px; color: #e74c3c; cursor: pointer; }
+/**/
+.screen-where .screen-where-main > .screen-where-item-fieldset {
+    position: relative;
+    display: flex;
+    padding: 10px 0;
+    height: auto;
+    overflow-y: auto;
+}
+.screen-where .screen-where-main > .screen-where-item-fieldset > fieldset.where-subitem {
+    position: relative;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 3px 0 0 3px;
+    flex: 1;
+    width: 100%;
+    line-height: 36px;
+    margin: 0;
+}
+.screen-where .screen-where-main > .screen-where-item-fieldset > fieldset.where-subitem .filter-add-where { display: flex; }
+.screen-where .screen-where-main > .screen-where-item-fieldset > fieldset.where-subitem > legend {
+    position: absolute;
+    top: -7px;
+    left: 10px;
+    z-index: 10;
+    font-size: 12px;
+    background: #fff;
+    color: #7d7d7d;
+    line-height: 1em;
+    cursor: pointer;
+}
+.screen-where .screen-where-main > .screen-where-item-fieldset > fieldset.where-subitem input {
+    position: relative;
+    padding: 0 10px;
+    width: 100%;
+    height: 36px;
+    border: none;
+    outline: none;
+}
+.screen-where .screen-where-main > .screen-where-item-fieldset > fieldset.where-subitem select {
+    position: relative;
+    padding: 0 10px;
+    width: 100%;
+    height: 36px;
+    border: none;
+    outline: none;
+}
+.screen-where .screen-where-main > .screen-where-item-fieldset > button.where-subitem {
+    position: relative;
+    width: 36px;
+    line-height: 36px;
+    margin: 0;
+    border-radius: 0 3px 3px 0;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+/**/
+.screen-where-absolute { position: absolute; padding: 10px; border: 1px solid #ddd; min-width: 336px; z-index: 99; background: #fff; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); border-radius: 0 4px 4px 4px; }
+.screen-where-absolute .screen-where-head { position: relative; margin-bottom: 10px; }
+.screen-where-absolute .screen-where-head:AFTER { content: ""; display: block; clear: both; }
+.screen-where-absolute .screen-where-head > .where-head-btn { position: relative; display: block; float: left; line-height: 28px; font-size: 12px; padding: 0 10px; border-radius: 3px; margin-right: 6px; cursor: pointer; }
+.screen-where-absolute .screen-where-head > .where-head-btn > i { margin-right: 4px; width: 12px; }
+.screen-where-absolute .screen-where-main { position: relative; min-height: 160px; height: auto; overflow-y: auto }
+.screen-where-absolute .screen-where-main:AFTER { content: ""; display: block; clear: both; }
+.screen-where-absolute .screen-where-main > .screen-where-item { position: relative; display: flex; text-align: left; margin-bottom: 6px; }
+.screen-where-absolute .screen-where-main > .screen-where-item > .where-subitem { margin-right: 6px; margin-left: 0; }
+.screen-where-absolute .screen-where-main > .screen-where-item > .where-subitem > input { position: relative; top: 0; width: 160px; line-height: 28px; border: 1px solid #ddd; border-radius: 3px; padding: 0 8px; font-size: 12px; }
+.screen-where-absolute .screen-where-main > .screen-where-item > .where-subitem > select { position: relative; top: 0; width: 160px; height: 30px; border: 1px solid #ddd; border-radius: 3px; padding: 0 8px; font-size: 12px; }
+.screen-where-absolute .screen-where-main > .screen-where-item > .where-subitem .fa-times-circle { position: relative; top: 3px; line-height: 24px; width: 20px; background: none; font-size: 18px; color: #e74c3c; cursor: pointer; }
+/* [分页列表] */
+.list-table { position: relative; padding: 10px; display: flex; flex: 1; flex-direction: column; height: 100%; }
+/* head*/
+.table-data-empty { height: 400px; background: url("/resources/image/page/data_empty.png") center 20% no-repeat; }
+.list-table .list-table-head { position: relative; }
+.list-table .list-table-head:AFTER { content: ""; display: block; clear: both; }
+.list-table .list-table-head > ul { position: relative; margin-bottom: 12px; display: flex; }
+.list-table .list-table-head > ul > li { position: relative; margin-right: 10px; display: flex; }
+.list-table .list-table-head button.toolbar { position: relative; font-size: 14px; padding: 0 12px; background: #3498db; color: #fff; border-radius: 2px; cursor: pointer; margin: 0px; }
+.list-table .list-table-head button.toolbar > i { margin-right: 4px; font-size: 16px; }
+.list-table .list-table-head button.toolbar > .toolbar-subscript {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    font-size: 12px;
+    border: 1px solid #1abc9c;
+    color: #1abc9c;
+    background: #fff;
+    width: 18px;
+    line-height: 16px;
+    text-align: center;
+    font-style: inherit;
+    border-radius: 50%;
+}
+.list-table .list-table-head button.toolbar > .toolbar-subscript:empty { display: none; }
+.list-table .list-table-head .searchBar { position: relative; display: flex; padding: 0 12px; font-size: 14px; color: #555; background: #fff; border: 1px solid #BDC6CF; border-radius: 2px; margin: 0px; outline: none }
+.list-table .list-table-head > ul > li.screen { position: relative; display: flex; margin-right: 10px; /*border: 1px solid #BDC6CF;*/ border-radius: 2px; height: 40px; }
+.list-table .list-table-head > ul > li.screen .searchBar { border: 1px solid #ddd; border-radius: 3px; }
+.list-table .list-table-head > ul > li.screen .searchBar[readonly] { cursor: pointer; }
+.list-table .list-table-head > ul > li.screen input.searchBar { width: 104px; text-align: center; border: none; }
+.list-table .list-table-head > ul > li.screen span.searchBar { padding: 0; color: #ccc; border: none; line-height: 36px; }
+.list-table .list-table-head input.searchBar { width: 104px; }
+.list-table .list-table-head .icon-down:BEFORE { content: ""; position: absolute; bottom: -8px; left: 50%; margin-left: -6px; width: 0; height: 0; border-top: 8px solid #1abc9c; border-left: 8px solid transparent; border-right: 8px solid transparent; z-index: 100; }
+.where-mask { position: absolute; top: 0; left: 0; padding: 4px 0; /*height: 300px;*/ background: #ffffff; border: 1px solid #ddd; line-height: 28px; border-radius: 3px; z-index: 100 }
+.where-mask > li { padding: 0 30px 0 15px; line-height: 30px; cursor: pointer; }
+.where-mask > li:hover { background: rgba(52, 152, 219, 0.29) }
+/* content*/
+/*.list-table .list-table-content{position: relative;display: flex;flex: 1;flex-direction: column;overflow-x: auto;}*/
+.list-table .list-table-content { position: relative; display: flex; flex: 1; flex-direction: column; overflow: hidden; }
+.list-table .list-table-content .custom-table-head { position: absolute; top: 0; left: 0; right: 0; display: flex; z-index: 10 }
+.list-table .list-table-content .custom-table-head > div { position: relative; white-space: nowrap; line-height: 36px; padding: 0 10px; background-color: #34495E; color: #FFF; text-align: left; }
+.list-table .list-table-content .custom-table-body { position: relative; display: flex; flex: 1; overflow-y: auto; overflow-x: hidden; border-bottom: 1px solid #f5f5f5; }
+.list-table .list-table-content table { font-size: 12px; }
+.list-table .list-table-content table tr > th { position: relative; white-space: nowrap; line-height: 36px; padding: 0 10px; text-align: left; }
+.list-table .list-table-content table > thead > tr { }
+.list-table .list-table-content table > thead > tr > td { position: relative; white-space: nowrap; line-height: 36px; padding: 0 10px; background-color: #34495E; color: #FFF; text-align: left; }
+.list-table .list-table-content table > thead > tr > td.item-sort { }
+.list-table .list-table-content table > thead > tr > td.item-sort .item-sort-icon { position: absolute; display: block; font-size: 16px; top: 36%; right: 10px; width: 12px; line-height: 14px; text-align: center; }
+.list-table .list-table-content table > tbody > tr.odd { background: #f5f8fa; }
+.list-table .list-table-content table > tbody > tr.even { background: #fff; }
+.list-table .list-table-content table > tbody > tr:hover { background: rgba(187, 206, 234, 0.57); }
+.list-table .list-table-content table > tbody > tr.table-tbody-item:HOVER { background: #e5ebee !important; }
+.list-table .list-table-content table > tbody > tr > td { position: relative; white-space: nowrap; line-height: 36px; padding: 0 10px; text-align: left; }
+.list-table .list-table-content table > tbody > tr > td.td-textarea { white-space: nowrap; max-width: 320px; overflow: hidden; text-overflow: ellipsis; }
+.list-table .list-table-content table > tbody > tr > td .option-btn { position: relative; line-height: 28px; padding: 0 8px; border-radius: 3px; font-size: 12px; color: #000; background: none; cursor: pointer; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-hint { color: #E67E22; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-next { color: #3498db; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-ok { color: #1ABC9C; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-error { color: #E74C3C; }
+.list-table .list-table-content table > tbody > tr > td .option-btn:HOVER { background: #ddd; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-hint:HOVER { color: #fff; background: #E67E22; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-next:HOVER { color: #fff; background: #3498db; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-ok:HOVER { color: #fff; background: #1ABC9C; }
+.list-table .list-table-content table > tbody > tr > td .option-btn-error:HOVER { color: #fff; background: #E74C3C; }
+.list-table .list-table-content table > tbody > tr > td .option-btn[disabled] { color: #666; background: none; cursor: no-drop; }
+.list-table .list-table-content table > tbody > tr > td .option-btn[disabled]:HOVER { color: #666; background: #ddd; }
+.list-table .list-table-content table > tbody > tr > td .option-btn > i { margin-right: 4px; }
+.list-table .list-table-content table > tbody > tr[data-style="yes"]:HOVER { background: #eef2f4 !important; }
+.list-table .list-table-content table > tbody button.list-item-option { position: relative; line-height: 28px; padding: 0 8px; border-radius: 3px; font-size: 12px; color: #000; background: none; cursor: pointer; }
+.list-table .list-table-content table > tbody button.list-item-option:HOVER { background: #3498db; color: #fff !important; }
+.list-table .list-table-content table > tbody button.list-item-option:disabled:HOVER { background: #ccc; color: #fff !important; }
+.list-table .list-table-content table > tbody button.list-item-option > i { margin-right: 4px; }
+/* foot*/
+.list-table .list-table-foot { position: relative; margin-top: 10px; }
+.list-table .list-table-foot:AFTER { content: ""; display: block; clear: both; }
+.list-table .list-table-foot .foot-page-info { position: relative; line-height: 30px; float: left; }
+.list-table .list-table-foot .foot-page-option { position: relative; line-height: 30px; float: right; }
+.list-table .list-table-foot .foot-page-option > .page-option { position: relative; display: block; width: 32px; line-height: 28px; float: left; cursor: pointer; border: 1px solid #ddd; border-left: none; color: #3399d5; background: #fff; -moz-user-select: none; -webkit-user-select: none; }
+.list-table .list-table-foot .foot-page-option > .page-option[disabled] { color: #ccc; cursor: default; }
+.list-table .list-table-foot .foot-page-option > button.page-prev { border-top-left-radius: 2px; border-bottom-left-radius: 2px; font-size: 18px; border-left: 1px solid #ddd; }
+.list-table .list-table-foot .foot-page-option > button.page-next { border-top-right-radius: 2px; border-bottom-right-radius: 2px; font-size: 18px; }
+.list-table .list-table-foot .foot-page-option > button.page-set { border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-left: none; padding: 0 6px; width: auto; font-size: 12px; }
+.list-table .list-table-foot .foot-page-option > button.page-option:HOVER { background: #f5f5f5; }
+.list-table .list-table-foot .foot-page-option > button.page-prev[disabled]:HOVER { background: none; }
+.list-table .list-table-foot .foot-page-option > button.page-next[disabled]:HOVER { background: none; }
+.list-table .list-table-foot .foot-page-option > button.page-num { text-align: center; border-left: none; color: #3399d5; font-size: 12px; }
+.list-table .list-table-foot .foot-page-option > button.page-num[disabled] { background: #f5f5f5; color: #737373; }
+.list-table .list-table-foot .foot-page-option > button.page-num-checked { background: #f5f5f5; color: #737373; }
+.list-table .list-table-foot .foot-page-option > input.page-input { position: relative; float: left; line-height: 28px; padding: 0 6px; border: 1px solid #ddd; width: 120px; margin-left: 10px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }

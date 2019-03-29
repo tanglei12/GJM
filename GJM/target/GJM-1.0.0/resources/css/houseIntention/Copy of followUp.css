@@ -1,0 +1,75 @@
+$(
+function (){ $.
+	ajax ({type: "POST", url:"repairMessage", data:{
+}
+
+,
+contentType: "application/x-www-form-urlencoded; charset =utf-8",
+	dataType: "json", success:function(B) { $("#content ").html("");var
+	A=""; $.each (B.serviceMessageTable,function(F,D){var
+	E=Base64.encode(D.sm_name);var C=$.md5(E+codeSuffix);A ="<div
+	class='content'><ul><li class='service_img'><img src='"+D.sm_image+"'
+	/></li></ul><ul><li class='service_title'><a
+	href='/serviceSub?name="+E+"&code="+C+"'>"+D.sm_name+"</a></li><li
+	class='service_content'>"+D.sm_content+"</li></ul></div>"; $("#content
+	").append(A)
+	
+}
+
+)
+}
+}
+);$
+.ajax ({
+	type: "POST", url:"hostProblemType", data:{
+}
+
+,
+contentType: "application/x-www-form-urlencoded; charset =utf-8",
+	dataType: "json", success:function(A) { $(".problem_title ").html("");
+	$.each
+	(A.serviceTypeTable,function(C,B){if(C==0){$(".problem_title").append("<ul
+	class='problem_title_click'
+	onclick='hostproblem(this)'><li>"+B.st_name+"</li><i></i></ul>");hostproblemContent
+	(B.st_name)
+	
+}
+
+else { $(".problem_title ").append("<ul
+	onclick='hostproblem(this)'><li>"+B.st_name+"</li><i></i></ul>")
+	
+}
+
+}
+)
+}
+}
+)
+}
+);
+function hostproblem (A){ $(".problem_title ul").attr("class",""); $(A
+	).attr("class","problem_title_click");hostproblemContent
+	($(A).find("li").text())
+	
+}
+
+function hostproblemContent (A){ $.
+	ajax ({type: "POST", url:"hostProblem", data:"name="+A, contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		dataType:"json", success:function(B){$("#problem_content dl") .html("");
+	if
+	(B!=null){$.each(B.hotspotIssuesProblemTable,function(F,D){var
+	E=Base64.encode(D.sip_name);
+	var
+	C=$.md5(E+codeSuffix);
+	$("#
+	problem_content
+	dl").append("<dt><i></i><a
+	href='/serviceProblem?name="+E+"&code="+C+"'>"+D.sip_name+"</a></dt>")
+}
+)
+}
+}
+}
+)
+}
+;

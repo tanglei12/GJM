@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 组织权限 -->
+<mapper namespace="com.gjp.dao.CustomerPhoneDAO">
+
+	<!-- 查询所有客户 -->
+	<select id="selectAllCustomerPhone" resultType="com.gjp.model.UserCustomerPhone">
+		select * from GJP_UserCenter_CustomerPhone
+	</select>
+
+	<!-- 根据编号和手机查询客户手机 -->
+	<select id="selectCustomerPhoneAndccId" resultType="com.gjp.model.UserCustomerPhone">
+		select * from GJP_UserCenter_CustomerPhone where cc_id=#{cc_id} and ccp_phone=#{ccp_phone}
+	</select>
+
+	<!-- 查询紧急联系人 -->
+	<select id="selectCustomerPhoneUrgent" resultType="com.gjp.model.UserCustomerPhone">
+		select * from GJP_UserCenter_CustomerPhone where ccp_state=3 and cc_id=#{cc_id}
+	</select>
+
+	<!-- 查询备用联系人 -->
+	<select id="selectCustomerPhoneB" resultType="com.gjp.model.UserCustomerPhone">
+		select * from GJP_UserCenter_CustomerPhone where ccp_state=2 and cc_id=#{cc_id}
+	</select>
+
+	<!-- 添加新的客户信息 -->
+	<insert id="insertCustomerPhone" useGeneratedKeys="true" parameterType="com.gjp.model.UserCustomerPhone" keyProperty="ccp_id">
+		INSERT INTO GJP_UserCenter_CustomerPhone(
+		cc_id,
+		ccp_phone,
+		ccp_state,
+		ccp_time
+		) VALUES (
+		#{cc_id},
+		#{ccp_phone},
+		#{ccp_state},
+		#{ccp_time}
+		)
+	</insert>
+
+	<!-- 修改客户信息 -->
+	<update id="updateCustomerPhone" parameterType="com.gjp.model.UserCustomerPhone">
+		UPDATE GJP_UserCenter_CustomerPhone
+		<set>
+			<if test="ccp_phone != null and ccp_phone != ''">
+				ccp_phone=#{ccp_phone },
+			</if>
+			<if test="ccp_state != null and ccp_state != ''">
+				ccp_state=#{ccp_state },
+			</if>
+			<if test="ccp_time != null and ccp_time != ''">
+				ccp_time=#{ccp_time },
+			</if>
+			cc_code=#{cc_code}
+		</set>
+		WHERE 
+		<choose>
+			<when test="cc_code != null and cc_code != '' ">cc_code = #{cc_code}</when>
+			<when test="ccp_id != null and ccp_id != '' ">ccp_id = #{ccp_id}</when>
+		</choose>
+	</update>
+
+	<!-- 删除客户信息手机 -->
+	<delete id="deleteCustomerPhone" parameterType="com.gjp.model.UserCustomerPhone">
+		DELETE FROM
+		GJP_UserCenter_CustomerPhone
+		WHERE
+		cc_id=#{cc_id}
+	</delete>
+
+</mapper>

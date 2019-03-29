@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 短信模板 -->
+<mapper namespace="com.gjp.dao.MessageModelDAO">
+
+	<sql id="menberEcpId">
+		mm_name,
+		mm_text,
+		mm_type,
+		mm_date,
+		em_id
+	</sql>
+
+	<sql id="insert">
+		#{mm_name},
+		#{mm_text},
+		#{mm_type },
+		#{mm_date },
+		#{em_id }
+	</sql>
+
+	<sql id="update">
+		<if test="mm_type != null and mm_type != ''">
+			mm_type=#{mm_type },
+		</if>
+		<if test="mm_name != null and mm_name != ''">
+			mm_name=#{mm_name },
+		</if>
+		<if test="mm_date != null and mm_date != ''">
+			mm_date=#{mm_date },
+		</if>
+		mm_text=#{mm_text }
+	</sql>
+
+	<!-- 插入短信模板  -->
+	<insert id="insertMessageModel" useGeneratedKeys="true"
+		parameterType="com.gjp.model.UserCenterMessageModel" keyProperty="umc_id">
+		insert into GJP_UserCenter_MessageModel(
+		<include refid="menberEcpId"></include>
+		) values (
+		<include refid="insert"></include>
+		)
+	</insert>
+	
+	<!-- 修改短信模板 -->
+	<update id="updateMessageModel" parameterType="com.gjp.model.UserCenterMessageModel">
+		update GJP_UserCenter_MessageModel set
+		<include refid="update"></include>
+		where mm_id = #{mm_id}
+	</update>
+
+	<!-- 根据短信模板编码短信模板 -->
+	<select id="selectMessageModel" resultType="com.gjp.model.UserCenterMessageModel">
+		select * from GJP_UserCenter_MessageModel mm
+		LEFT JOIN GJP_UserCenter_Employee em ON mm.em_id=em.em_id
+		where 1=1
+		<if test="mm_id != null and mm_id != ''">
+			and mm.mm_id=#{mm_id}
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.CustomerSettingsDAO">
+
+	<sql id="allmenbers">
+		css_type,
+		css_num,
+		css_time
+	</sql>
+
+	<sql id="insert">
+		#{css_type},
+		#{css_num},
+		#{css_time}
+	</sql>
+
+	<sql id="update">
+		css_num=#{css_num},
+		css_time=#{css_time}
+	</sql>
+
+	<!-- 插入统计设置 -->
+	<insert id="insertCustomerSettings" useGeneratedKeys="true"
+		parameterType="com.gjp.model.Settings" keyProperty="css_id">
+		insert into GJP_Customer_Settings(
+		<include refid="allmenbers"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 根据统计设置类型查询统计设置 -->
+	<select id="queryCustomerSettingsWhere" resultType="com.gjp.model.Settings">
+		SELECT * FROM
+		GJP_Customer_Settings where css_type=#{css_type}
+	</select>
+
+	<!-- 查询统计设置 -->
+	<select id="queryCustomerSettings" resultType="com.gjp.model.Settings">
+		SELECT * FROM
+		GJP_Customer_Settings
+	</select>
+
+	<!-- 修改统计设置 -->
+	<update id="updateCustomerSettings" parameterType="com.gjp.model.Settings">
+		update GJP_Customer_Settings set
+		<include refid="update"></include>
+		where css_type=#{css_type}
+	</update>
+
+</mapper>

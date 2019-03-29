@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 业绩设置 -->
+<mapper namespace="com.gjp.dao.ItemsInventoryDAO">
+	<sql id="menberEcpId">
+		inv_code,
+		inv_type,
+		inv_name,
+		inv_brand,
+		inv_price,
+		inv_count,
+		inv_priceSum,
+		em_id,
+		inv_payer,
+		inv_createTime,
+		inv_state,
+		inv_on,
+		inv_gb,
+		inv_remark,
+		inv_position,
+		inv_supplier,
+		art_code
+
+	</sql>
+
+	<sql id="insert">
+		#{inv_code },
+		#{inv_type },
+		#{inv_name },
+		#{inv_brand },
+		#{inv_price },
+		#{inv_count},
+		#{inv_priceSum},
+		#{em_id },
+		#{inv_payer },
+		#{inv_createTime },
+		#{inv_state },
+		#{inv_on },
+		#{inv_gb },
+		#{inv_remark },
+		#{inv_position },
+		#{inv_supplier },
+		#{art_code}
+	</sql>
+
+	<sql id="update">
+		<if test="inv_type!=null and inv_type!=''">
+			inv_type=#{inv_type },
+		</if>
+		<if test="inv_name!=null and inv_name!=''">
+			inv_name=#{inv_name },
+		</if>
+		<if test="inv_brand!=null and inv_brand!=''">
+			inv_brand=#{inv_brand },
+		</if>
+		<if test="inv_price!=null and inv_price!=''">
+			inv_price=#{inv_price },
+		</if>
+		<if test="inv_priceSum !=null and inv_priceSum !=''">
+			inv_priceSum = #{inv_priceSum},
+		</if>
+		<if test="em_id!=null and ib_e5m_id!=''">
+			em_id=#{em_id },
+		</if>
+		<if test="inv_payer!=null and inv_payer!=''">
+			inv_payer=#{inv_payer },
+		</if>
+		<if test="inv_state != null and inv_state !=''">
+			inv_state=#{inv_state },
+		</if>
+		<if test="inv_on!=null and inv_on!=''">
+			inv_on=#{inv_on },
+		</if>
+		<if test="inv_gb!=null and inv_gb!=''">
+			inv_gb=#{inv_gb },
+		</if>
+		<if test="inv_remark!=null and inv_remark!=''">
+			inv_remark=#{inv_remark },
+		</if>
+		<if test="inv_position!=null and inv_position!=''">
+			inv_position=#{inv_position },
+		</if>
+		<if test="inv_supplier!=null and inv_supplier!=''">
+			inv_supplier=#{inv_supplier },
+		</if>
+		<if test="art_code !=null and art_code!=''">
+			art_code=#{art_code },
+		</if>
+		inv_count=#{inv_count}
+	</sql>
+
+	<!-- 查询库存列表 -->
+	<select id="selectItemsInventoryList" resultType="com.gjp.model.ItemsInventory">
+		select * from GJP_Items_Inventory where 1=1 LIMIT #{start},#{end}
+	</select>
+
+	<!-- 根据物品code查询单个物品 -->
+	<select id="selectItemsInventoryOne" resultType="com.gjp.model.ItemsInventory">
+		select * from GJP_Items_Inventory where inv_code = #{inv_code}
+	</select>
+
+
+	<!-- 查询库存列表数量 -->
+	<select id="selectItemsInventoryCount" resultType="int">
+		select count(*) from GJP_Items_Inventory where 1=1
+	</select>
+
+	<!-- 查询库存该类型下空闲的物品名称 -->
+	<select id="selectItemsInvtoryStateInvType" resultType="com.gjp.model.ItemsInventory">
+		select * from GJP_Items_Inventory where inv_type = #{inv_type} and inv_state = 0 LIMIT #{start},#{end}
+	</select>
+
+	<!-- 查询库存该类型下空闲的物品名称数量 -->
+	<select id="selectItemsInvtoryStateInvTypeCount" resultType="int">
+		select count(*) from GJP_Items_Inventory where inv_type = #{inv_type} and inv_state = 0
+	</select>
+
+	<!-- 库存物品添加 -->
+	<insert id="addItemsInventoryOne" useGeneratedKeys="true" keyProperty="inv_id">
+		insert into GJP_Items_Inventory(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 修改物品库物品状态 -->
+	<update id="updateItemsInventory">
+		update GJP_Items_Inventory set inv_state=#{inv_state }
+		<!-- <include refid="update"></include> -->
+		where inv_code=#{inv_code}
+	</update>
+
+</mapper>

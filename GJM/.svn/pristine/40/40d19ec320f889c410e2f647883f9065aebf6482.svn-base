@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 充值产品管理 GJP_Product_Recharge -->
+<mapper namespace="com.gjp.dao.ProductDao">
+
+	<!--添加修改充值管理-->
+    <insert id="addProductRecharge" useGeneratedKeys="true" keyProperty="pr_id">
+		INSERT INTO GJP_Product_Recharge(
+			pr_sn,
+			pr_channel,
+			pr_name,
+			pr_description,
+			pr_price,
+			pr_status,
+			pr_benefit,
+			pr_benefit_name,
+			pr_benefit_way,
+			pr_benefit_min_price,
+			pr_benefit_max_price,
+		  	pr_remarks,
+			pr_create_time,
+			pr_benefit_user_limit,
+			pr_order
+			)
+		VALUES (
+			#{pr_sn},
+			#{pr_channel},
+			#{pr_name},
+			#{pr_description},
+			#{pr_price},
+			#{pr_status},
+			#{pr_benefit},
+			#{pr_benefit_name},
+			#{pr_benefit_way},
+			#{pr_benefit_min_price},
+			#{pr_benefit_max_price},
+			#{pr_remarks},
+			#{pr_create_time},
+			#{pr_benefit_user_limit},
+			#{pr_order}
+			)
+	</insert>
+
+	<!--修改充值管理-->
+	<update id="updateProductRecharge">
+		UPDATE GJP_Product_Recharge
+		<set>
+			<if test="pr_channel != null">pr_channel=#{pr_channel},</if>
+			<if test="pr_name != null">pr_name=#{pr_name},</if>
+			<if test="pr_description != null">pr_description=#{pr_description},</if>
+			<if test="pr_price != null">pr_price=#{pr_price},</if>
+			<if test="pr_status != null">pr_status=#{pr_status},</if>
+			<if test="pr_benefit != null">pr_benefit=#{pr_benefit},</if>
+			<if test="pr_benefit_name != null">pr_benefit_name=#{pr_benefit_name},</if>
+			<if test="pr_benefit_user_limit != null">pr_benefit_user_limit=#{pr_benefit_user_limit},</if>
+			<if test="pr_benefit_way != null">pr_benefit_way=#{pr_benefit_way},</if>
+			<if test="pr_benefit_min_price != null">pr_benefit_min_price=#{pr_benefit_min_price},</if>
+			<if test="pr_benefit_max_price != null">pr_benefit_max_price=#{pr_benefit_max_price},</if>
+			<if test="pr_order != null">pr_order=#{pr_order},</if>
+			<if test="pr_remarks != null">pr_remarks=#{pr_remarks},</if>
+			<if test="pr_modifier != null">pr_modifier=#{pr_modifier},</if>
+			<if test="pr_modify_time != null">pr_modify_time=#{pr_modify_time},</if>
+		</set>
+		<where>
+			<if test="pr_sn != null">pr_sn=#{pr_sn}</if>
+		</where>
+	</update>
+
+
+	<!--查询充值管理列表-->
+    <select id="queryProductRechargePageList" resultType="com.gjp.model.ProductRechargeVo">
+        SELECT * FROM GJP_Product_Recharge pr
+		<where>
+			<choose>
+				<when test="where !=null">${where}</when>
+				<when test="t !=null">
+					<if test="t.pr_sn !=null">AND pr_sn = #{t.pr_sn}</if>
+				</when>
+			</choose>
+		</where>
+		<choose>
+			<when test="orderBy != null">${orderBy}</when>
+			<otherwise>ORDER BY pr_create_time DESC</otherwise>
+		</choose>
+		<if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+	<select id="queryProductRechargeList" resultType="com.gjp.model.ProductRechargeVo">
+		SELECT * FROM GJP_Product_Recharge pr
+		WHERE 1=1
+		<if test="t.where !=null">
+			AND pr.pr_name LIKE CONCAT("%", #{t.where}, "%")
+		</if>
+		ORDER BY pr_create_time DESC
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<select id="queryProductRechargeCount" resultType="int">
+		SELECT COUNT(*) FROM GJP_Product_Recharge pr
+		WHERE 1=1
+		<if test="t.where !=null">
+			AND pr.pr_name LIKE CONCAT("%", #{t.where}, "%")
+		</if>
+		ORDER BY pr_create_time DESC
+	</select>
+
+
+	<!--查询充值管理详情-->
+	<select id="queryProductRecharge" resultType="com.gjp.model.ProductRechargeVo">
+		SELECT * FROM GJP_Product_Recharge pr
+		<where>
+			<if test="pr_id != null">pr_id=#{pr_id}</if>
+		</where>
+	</select>
+
+	<!--查询充值管理列表分页数据统计-->
+	<select id="queryProductRechargePageRecords" resultType="int">
+		SELECT COUNT(*) FROM GJP_Product_Recharge pr
+		<where>
+			<choose>
+				<when test="where !=null">${where}</when>
+				<when test="t !=null">
+					<if test="t.pr_sn !=null">AND pr_sn = #{t.pr_sn}</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+
+
+</mapper>

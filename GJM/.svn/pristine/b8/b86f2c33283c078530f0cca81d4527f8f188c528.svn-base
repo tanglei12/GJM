@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预定账单 GJP_Bill_ReserveBill -->
+<mapper namespace="com.gjp.dao.ReserveBillDao">
+
+	<sql id="allmenbers">
+		rb_id,
+		rb_name,
+		rb_number,
+		rb_phone,
+		rb_money,
+		rb_date,
+		hi_version,
+		hb_name,
+		propertyInfo_address,
+		rb_personNum,
+		rb_cycle,
+		rb_type,
+		rb_reserveDate,
+		rb_remarks,
+		rb_state,
+		rb_operationState,
+		rb_Ejz,
+		rb_moneyType
+	</sql>
+
+	<sql id="menberEcpId">
+		rb_name,
+		rb_number,
+		rb_phone,
+		rb_money,
+		rb_houseNum,
+		hi_version,
+		hb_name,
+		propertyInfo_address,
+		rb_date,
+		rb_personNum,
+		rb_cycle,
+		rb_type,
+		rb_reserveDate,
+		rb_remarks,
+		rb_state,
+		rb_operationState,
+		rb_account,
+		rb_fxCode,
+		rb_Ejz,
+		ep_wayMon,
+		ep_leave,
+		rb_moneyType
+	</sql>
+
+	<sql id="insert">
+		#{rb_name},
+		#{rb_number},
+		#{rb_phone},
+		#{rb_money},
+		#{rb_houseNum},
+		#{hi_version},
+		#{hb_name},
+		#{propertyInfo_address},
+		#{rb_date},
+		#{rb_personNum},
+		#{rb_cycle},
+		#{rb_type},
+		#{rb_reserveDate},
+		#{rb_remarks},
+		#{rb_state},
+		#{rb_operationState},
+		#{rb_account},
+		#{rb_fxCode},
+		#{rb_Ejz},
+		#{ep_wayMon},
+		#{ep_leave},
+		#{rb_moneyType}
+	</sql>
+
+	<!-- 添加预定账单 -->
+	<insert id="addReserveBill" useGeneratedKeys="true" keyProperty="rb_id">
+		insert into GJP_Bill_ReserveBill(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 插入存房预定订单 -->
+	<insert id="addReserveBills" useGeneratedKeys="true" keyProperty="rb_id">
+		insert into GJP_Bill_ReserveBill(
+		rb_name,
+		rb_number,
+		rb_phone,
+		rb_money,
+		rb_houseNum,
+		hi_version,
+		propertyInfo_address,
+		rb_date,
+		rb_personNum,
+		rb_cycle,
+		rb_type,
+		rb_reserveDate,
+		rb_remarks,
+		rb_state,
+		rb_operationState,
+		rb_account,
+		rb_fxCode,
+		rb_Ejz,
+		ep_wayMon,
+		rb_stateType,
+		rb_playType,
+		ep_leave,
+		rb_moneyType
+		)
+		values
+		(
+		#{rb_name },
+		#{rb_number },
+		#{rb_phone },
+		#{rb_money },
+		#{rb_houseNum },
+		#{hi_version },
+		#{propertyInfo_address },
+		NOW(),
+		#{rb_personNum },
+		#{rb_cycle },
+		#{rb_type },
+		#{rb_reserveDate },
+		#{rb_remarks },
+		#{rb_state },
+		#{rb_operationState },
+		#{rb_account },
+		#{rb_fxCode },
+		#{rb_Ejz },
+		#{ep_wayMon },
+		#{rb_stateType },
+		#{rb_playType },
+		#{ep_leave },
+		#{rb_moneyType}
+		)
+	</insert>
+
+	<!-- 分页查询预定账单 -->
+	<select id="selectReserveBill" resultType="com.gjp.model.ReserveBill">
+		select
+		IF (
+		upn_code IS NULL
+		OR upn_code = '',
+		CONCAT(
+		upn_sname,
+		hi_address
+		),
+		CONCAT(
+		upn_sname,
+		upn_code,
+		'-',
+		hi_address
+		)
+		) AS house_address,
+		rb_id,
+		rb_number,
+		rb_state,
+		rb_reserveDate,
+		rb_name,
+		rb_phone,
+		rb_money,
+		rb_personNum,
+		rb_cycle,
+		rb_type,
+		rb_remarks,
+		rb_operationState,
+		rb_date
+		from view_GJP_HousePropertyInfo
+		where
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 分页查询预定账单总条数 -->
+	<select id="selectReserveBillTotal" resultType="int">
+		select count(*) from view_GJP_HousePropertyInfo
+		where
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+	</select>
+
+	<!-- 根据id查询预定账单 -->
+	<select id="selectReserveBillById" resultType="com.gjp.model.ReserveBill">
+		select * from GJP_Bill_ReserveBill where rb_id=#{rb_id}
+	</select>
+
+	<!-- 根据订单号查询预定账单 -->
+	<select id="selectReserveBillByCode" resultType="com.gjp.model.ReserveBill">
+		select * from GJP_Bill_ReserveBill where rb_number=#{rb_number}
+	</select>
+
+	<!-- 根据房屋编码查询是否存在预定订单 -->
+	<select id="selectReserveBillCode" resultType="com.gjp.model.ReserveBill">
+		select *,(select rb_playType from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum}) as rb_playType,(select rb_houseNum from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum}) as rb_houseNum,(select rb_name from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum}) as rb_name,(select rb_phone from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum}) as rb_phone,(select rb_money from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum}) as rb_money from GJP_Bill_StatementFiliation sf,GJP_Bill_Statement bs where sf.sf_statement=bs.bs_statementNum and sf.sf_num in ( select rb_number from GJP_Bill_ReserveBill where rb_houseNum=#{rb_houseNum} )
+	</select>
+
+
+	<!-- 查询所有已付款的预定订单 -->
+	<select id="selectReserveBillList" resultType="com.gjp.model.ReserveBill">
+		select * from GJP_Bill_ReserveBill where rb_state=#{rb_state}
+	</select>
+
+	<!-- 线下添加预定账单前查询房屋 -->
+	<select id="reserveBillSelectHouse" resultType="com.gjp.model.ReserveBillHouse">
+		SELECT 
+		* 
+		FROM 
+		view_GJP_ReserveBillSelectHouse 
+		WHERE 1=1
+		<if test="param != null and param !=''">
+			and (hi_code like CONCAT('%',#{param},'%')
+			or hi_address like CONCAT('%',#{param},'%')
+			or propertyInfo_address like CONCAT('%',#{param},'%'))
+		</if>
+		LIMIT 0,10
+	</select>
+
+	<!-- 根据预订单号查询已签合同的租房预定账单 -->
+	<select id="ejzSelectMon" resultType="com.gjp.model.ReserveBill">
+		select * from GJP_Bill_ReserveBill where rb_number=#{rb_number}
+	</select>
+
+	<!-- 分页查询已签合同预定账单 -->
+	<select id="selectEjzReserveBill" resultType="com.gjp.model.ReserveBill">
+		select
+		<include refid="allmenbers" />
+		from GJP_Bill_ReserveBill where rb_state='已签合同'
+		<if test="txt != null and txt !=''">
+			and (rb_name like CONCAT('%',#{txt},'%')
+			or rb_number like CONCAT('%',#{txt},'%')
+			or rb_phone like CONCAT('%',#{txt},'%'))
+		</if>
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 分页查询已签合同预定账单总条数 -->
+	<select id="selectEjzReserveBillTotal" resultType="int">
+		select count(*) from GJP_Bill_ReserveBill where rb_state='已签合同'
+	</select>
+
+
+	<!-- 修改房屋基本信息 -->
+	<update id="updateState">
+		update GJP_Bill_ReserveBill set
+		rb_Ejz=#{rb_Ejz},
+		ep_wayMon=#{ep_wayMon},
+		ep_leave=#{ep_leave}
+		where
+		rb_number=#{rb_number}
+	</update>
+
+	<!-- 取消预定账单 -->
+	<update id="abandonReserveBill">
+		update GJP_Bill_ReserveBill set
+		rb_state=#{rb_state}
+		where
+		rb_id=#{rb_id}
+	</update>
+
+	<!-- 修改预定账单 -->
+	<update id="updateReserveBill">
+		update GJP_Bill_ReserveBill set
+		rb_state=#{rb_state}
+		where
+		rb_id=#{rb_id}
+	</update>
+
+	<!-- 根据订单号修改预定账单状态 -->
+	<update id="receivables">
+		update GJP_Bill_ReserveBill set
+		rb_state=#{rb_state},
+		rb_reserveDate=#{rb_reserveDate}
+		where
+		rb_number=#{rb_number}
+	</update>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 测评人GJP_UserCenter_EvaluationPerson -->
+<mapper namespace="com.gjp.dao.UserCenterSeparateDao">
+
+	<sql id="allmenbers">
+		ew_id,
+		ew_money,
+		ew_date,
+		ew_state,
+		uda_id,
+		ep_id,
+		ew_percent,
+		ew_grade,
+		ew_way
+	</sql>
+
+	<sql id="menberEcpId">
+		ew_money,
+		ew_date,
+		ew_state,
+		uda_id,
+		ep_id,
+		ew_percent,
+		ew_grade,
+		ew_way
+	</sql>
+	
+     <!-- 添加房屋品牌 -->
+   <insert id="addSeparate" useGeneratedKeys="true" parameterType="com.gjp.model.UserCenterSeparate" keyProperty="ew_id">
+     insert into GJP_UserCenter_Separate(  
+      	ew_money,
+		ew_date,
+		ew_state,
+		uda_id,
+		ep_id,
+		ew_percent,
+		ew_grade,
+		ew_way) 
+     values 
+     (        
+     	#{ew_money},
+     	#{ew_date},
+     	#{ew_state},
+     	#{uda_id},
+     	#{ep_id},
+     	#{ew_percent},
+     	#{ew_grade},
+     	#{ew_way})
+    </insert> 
+	
+	<!-- 查询分成人员list -->
+	<select id="selectSeparate" resultType="com.gjp.model.UserCenterSeparate">
+		select 
+		    ew_id,
+			ew_money,
+			ew_date,
+			ew_state,
+			user.uda_id,
+			ep_id,
+			ew_percent,
+			udas.uda_account,
+			ew_grade
+		from GJP_UserCenter_Separate user,GJP_UserCenter_DistributionAccount udas 
+		where user.uda_id = udas.uda_id and ep_id=#{ep_id}
+	</select>
+	
+	<!-- 修改打款状态 -->
+     <update id="updateState" parameterType="com.gjp.model.UserCenterSeparate">
+         update GJP_UserCenter_Separate set 
+           ew_state=#{ew_state}
+         where 
+           ew_id=#{ew_id}
+     </update>
+</mapper>

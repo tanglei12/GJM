@@ -1,0 +1,248 @@
+* {
+	padding: 0;
+	margin: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+:after, :before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.mui-scroll-wrapper {
+	top: 90px;
+}
+/******公共标签*****/
+.label {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: block;
+	background: #3498db;
+	border-radius: 3px;
+	color: #fff;
+	padding: 0px 4px;
+	line-height: 26px;
+	cursor: pointer;
+}
+.btn{
+	
+}
+.btn-ok{
+	background-color: #3498db;
+    color: #fff;
+    border: none;
+}
+/*****头部搜索*****/
+.top {
+	z-index: 999;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 90px;
+	background-color: #FFF;
+	overflow: hidden;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);
+}
+/*****input搜索框*****/
+.search{
+	width: 100%;
+	height: 42px;
+	background-color: #FFF;
+}
+.search .font-icon{
+    position: absolute;
+    top: 0px;
+    left: 8px;
+    display: inline;
+    width: 8px;
+    margin: 18px 2px 0 10px;
+    background: none!important;
+    height: 8px;
+    border: solid #000;
+    border-width:0 0 1px 1px;
+    -webkit-transform: rotate(45deg);
+    margin-right: 15px;
+    float: left;
+}
+.search .search-text{
+	margin-left: 10px;
+	float: left;
+	width: 76%;
+	height: 42px;
+}
+.search .search-text .search-input{
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+    outline: none;
+    border: none;
+    margin: 0;
+    padding: 3px 3px 3px 30px;
+}
+.search .button-label{
+	float: left;
+	width: 20%;
+	height: 42px;
+	line-height: 42px;
+	text-align: center;
+	border: none;
+	outline: none;
+	background-color: #FFF;
+	font-size: 14px;
+	color: #666;
+    padding: 0;
+}
+/*******自定义下拉选项******/
+.item-filter{
+	position: relative;
+    display: flex;
+    flex: 1;
+    font-size: 14px;
+    line-height: 24px;
+    width: 100%;
+}
+.item-filter .filter-angle{
+	display: flex;
+    flex: 1;
+    height: 48px;
+    line-height: 48px;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+}
+.item-filter .filter-angle .text{
+	display: inline-block;
+    margin: 0 auto;
+}
+.item-filter .filter-angle .angle-down:AFTER{
+	content: "\f107";
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    position: relative;
+    top: 1px;
+    font-size: 17px;
+    margin-left: 4px;
+}
+.item-filter .filter-angle .angle-up:AFTER{
+	content: "\f106";
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    position: relative;
+    top: 1px;
+    font-size: 17px;
+    margin-left: 4px;
+}
+.item-mask{
+	position: fixed;
+    top: 90px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: none;
+    background: rgba(0, 0, 0, 0.18);
+    z-index: 999;
+}
+.item-mask .item-mask-main{
+	background: #fff;
+    line-height: 41px;
+    max-height: 336px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.item-mask .item-mask-main .mask-main-item{
+	border-bottom: 1px solid #e8e8e8;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #222;
+}
+.ok{
+	color: #18bc9c !important;
+}
+.disabled{
+	color: #d4d4d4 !important;
+}
+/*****数据列表******/
+.content {
+	background: #fff;
+	margin-bottom: 10px;
+	padding: 10px;
+	font-size: 14px;
+	position: relative;
+	color: #666;
+}
+
+.content .cont-title {
+	position: relative;
+	font-size: 14px;
+	min-height: 40px;
+}
+
+.content .cont-title .house_address {
+	font-size: 16px;
+}
+.content .cont-text{
+	overflow: hidden;
+}
+.content .userInfo {
+	position: relative;
+	padding-left: 45px;
+	min-height: 21px;
+	float: left;
+}
+.content .createTime{
+	float: right;
+	color: #666;
+}
+/********用户标签**********/
+.user-label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50px;
+	height: 20px;
+	line-height: 20px;
+	overflow: hidden;
+}
+
+.user-label.red {
+	color: #E77477;
+}
+
+.user-label.blue {
+	color: #3498db;
+}
+
+.user-label .fa-user {
+	font-size: 14px;
+	margin-right: 5px;
+}
+
+.content button{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: transparent;
+}
+
+.data-list{
+	position: relative;
+}
+.data-list .null{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.null:enabled:active{
+	background-color: transparent;
+	opacity: 1;
+}

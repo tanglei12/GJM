@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillBookkeepBook">
+	<select id="selectBookkeepBook" resultType="com.gjp.model.ViewBillBookkeepBookVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_BookkeepBook t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.bk_em_id = t2.em_id
+		where 1=1
+		<if test="inte != null and inte != ''">
+			and bk_state  &lt;&gt; #{inte}
+		</if>
+		<if test="txt != null and txt != ''">
+			and bk_state = #{txt}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="queryTotalBookkeepBook" resultType="com.gjp.model.ViewBillBookkeepBookVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_BookkeepBook t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.bk_em_id = t2.em_id
+		where 1=1
+		<if test="inte != null and inte != ''">
+			and bk_state  &lt;&gt; #{inte}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+	</select>
+	<!-- 新增 -->
+	<insert id="addBookkeepBook" useGeneratedKeys="true" keyProperty="bk_id">
+		INSERT INTO GJP_Bill_BookkeepBook(
+			bk_id,
+			bk_type,
+			bk_category,
+			bk_custom,
+			bk_em_id,
+			bk_money,
+			bk_pay,
+			bk_enclasure,
+			bk_category_details,
+			bk_state,
+			bk_typee,
+			bk_time,
+			bk_hi_code,
+			bk_contractObject_1st
+		) VALUES (
+			#{bk_id},
+			#{bk_type},
+			#{bk_category},
+			#{bk_custom},
+			#{bk_em_id},
+			#{bk_money},
+			#{bk_pay},
+			#{bk_enclasure},
+			#{bk_category_details},
+			#{bk_state},
+			#{bk_typee},
+			#{bk_time},
+			#{bk_hi_code},
+			#{bk_contractObject_1st}
+		)
+	</insert>
+	
+	<select id="selectBookkeep" resultType="com.gjp.model.ViewBillBookkeepBookVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_BookkeepBook t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.bk_em_id = t2.em_id
+		WHERE 
+		bk_id = #{id}
+	</select>
+	
+	<update id="updateBookkeepBook" parameterType="com.gjp.model.ViewBillBookkeepBookVo">
+		 update GJP_Bill_BookkeepBook 
+		 <set>
+		 	<if test="bk_type !=null and bk_type !=''">bk_type = #{bk_type},</if>
+		 	<if test="bk_category !=null and bk_category !=''">bk_category = #{bk_category},</if>
+		 	<if test="bk_custom !=null and bk_custom !=''">bk_custom= #{bk_custom},</if>
+		 	<if test="bk_em_id !=null and bk_em_id !=''">bk_em_id = #{bk_em_id},</if>
+		 	<if test="bk_money !=null and bk_money !=''">bk_money = #{bk_money},</if>
+		 	<if test="bk_pay !=null and bk_pay !=''">bk_pay = #{bk_pay},</if>
+		 	<if test="bk_enclasure !=null and bk_enclasure !=''">bk_enclasure = #{bk_enclasure},</if>
+		 	<if test="bk_category_details !=null and bk_category_details !=''">bk_category_details = #{bk_category_details},</if>
+		 	<if test="bk_state !=null and bk_state !=''">bk_state = #{bk_state},</if>
+		 	<if test="bk_typee !=null and bk_typee !=''">bk_typee = #{bk_typee},</if>
+			<if test="bk_time !=null and bk_time !=''">bk_time = #{bk_time},</if>
+			<if test="bk_hi_code !=null and bk_hi_code !=''">bk_hi_code = #{bk_hi_code},</if>
+			<if test="bk_contractObject_1st !=null and bk_contractObject_1st !=''">bk_contractObject_1st = #{bk_contractObject_1st}</if>
+		 </set>
+			where bk_id = #{bk_id}
+	</update>
+	
+	<!-- 获取报销数据 -->
+	<select id="bookExpenseList" resultType="com.gjp.model.ViewBillBookkeepBookVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_BookkeepBook t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.bk_em_id = t2.em_id
+		where 1=1
+		<if test="inte != null and inte != '' ">
+			and bk_state  = #{inte}
+		</if>
+		${houseModel.sqlOrderBy}
+	</select>
+
+	<!--查询所有的记账本数据-->
+	<select id="queryBookKeepImageDown" resultType="com.gjp.model.ViewBillBookkeepBookVo">
+		SELECT  * FROM GJP_Bill_BookkeepBook
+	</select>
+</mapper>

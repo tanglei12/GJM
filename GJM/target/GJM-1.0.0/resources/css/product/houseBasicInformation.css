@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+table{ 
+width:30em; 
+table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */ 
+} 
+td{ 
+width:100%; 
+word-break:keep-all;/* 不换行 */ 
+white-space:nowrap;/* 不换行 */ 
+overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */ 
+text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/ 
+}
+#housingExpansion li{ 
+	line-height:16px;
+	padding: 6px;
+}
+#housingExpansion li span{ 
+	font-size: 14px;
+	color: #3399cc;
+	float: left;
+	padding-right: 20px;
+}
+.modelFont{
+	background-color: #EDF6FA;
+}
+.modelAddTop{
+	margin-top: 10px;
+}
+.modelAdd{
+	margin-bottom: 10px;
+}
+
+.modelTitle{
+	display: none;
+}
+
+.free{
+	color:green;
+}
+
+.rental{
+	color:#EE2C2C;
+}
+
+.expire{
+	color:#DC143C;
+}
+
+.clean{
+	color:#00B2EE;
+}
+
+.numColor{
+	color:#FF7F00;
+}

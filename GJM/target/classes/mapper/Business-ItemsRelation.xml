@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 业绩设置 -->
+<mapper namespace="com.gjp.dao.ItemsRelationDAO">
+
+    <sql id="menberEcpId">
+		inv_code,
+		hi_code,
+		contractObject_code,
+		ir_state,
+		ir_createTime,
+		ir_isCalAchi,
+		ir_addDate
+	</sql>
+
+    <sql id="insert">
+		#{inv_code },
+		#{hi_code },
+		#{contractObject_code },
+		#{ir_state },
+		#{ir_createTime },
+		#{ir_isCalAchi },
+		#{ir_addDate }
+	</sql>
+
+    <sql id="update">
+        <if test="inv_code !=null and inv_code!=''">
+            inv_type=#{inv_type },
+        </if>
+        <if test="hi_code !=null and hi_code !=''">
+            hi_code=#{hi_code },
+        </if>
+        <if test="ir_state !=null and ir_state !=''">
+            ir_state=#{ir_state },
+        </if>
+        <if test="ir_isCalAchi !=null and ir_isCalAchi !=''">
+            ir_isCalAchi=#{ir_isCalAchi },
+        </if>
+        contractObject_code=#{contractObject_code}
+    </sql>
+
+
+    <!-- 物品账单添加 -->
+    <insert id="addItemsRelationOne" useGeneratedKeys="true" keyProperty="ir_id">
+        insert into GJP_Items_Relation(
+        <include refid="menberEcpId"></include>
+        )
+        values
+        (
+        <include refid="insert"></include>
+        )
+    </insert>
+
+
+    <!-- 查询库存列表 -->
+    <select id="selectItemsRelationList" resultType="com.gjp.model.ItemsRelation">
+        select iv.inv_type as inv_type,iv.inv_name as inv_name,iv.inv_price as inv_price,ir.*
+        from GJP_Items_Relation as ir LEFT JOIN GJP_Items_Inventory as iv
+        ON ir.inv_code = iv.inv_code where 1=1 and iv.inv_state = 1 and ir.ir_state = 1
+        <if test="inv_code != null and inv_code !=''">
+            and ir.inv_code=#{inv_code}
+        </if>
+        <if test="contractObject_code != null || contractObject_code != '' ">
+            and ir.contractObject_code = #{contractObject_code}
+        </if>
+        order by ir.ir_addDate desc
+    </select>
+
+
+    <!-- 物品解绑 -->
+    <update id="updateItemsInventoryState">
+		update GJP_Items_Relation set ir_state=#{ir_state} where inv_code=#{inv_code}
+	</update>
+
+    <!--宽带添加-->
+    <insert id="insertBroadbandConfig" useGeneratedKeys="true" keyProperty="bc_id">
+		INSERT INTO
+		  GJP_Broadband_Config(
+            bc_brand,
+            bc_type,
+            bc_bandwidth,
+            bc_cost,
+            bc_cname,
+            bc_IDNumber,
+            bc_account,
+            bc_password,
+            bc_installationTime,
+            bc_equipmentInfo,
+            bc_router,
+            bc_telephone,
+            bc_customerManager,
+            bc_isUsed,
+            bc_agent,
+            bc_remarks,
+            contractObject_code,
+            hi_code,
+            bc_createTime,
+            bc_term,
+            bc_installType,
+            bc_broadbandState
+		)VALUES (
+            #{bc_brand},
+            #{bc_type},
+            #{bc_bandwidth},
+            #{bc_cost},
+            #{bc_cname},
+            #{bc_IDNumber},
+            #{bc_account},
+            #{bc_password},
+            #{bc_installationTime},
+            #{bc_equipmentInfo},
+            #{bc_router},
+            #{bc_telephone},
+            #{bc_customerManager},
+            #{bc_isUsed},
+            #{bc_agent},
+            #{bc_remarks},
+            #{contractObject_code},
+            #{hi_code},
+            now(),
+            #{bc_term},
+            #{bc_installType},
+            #{bc_broadbandState}
+		)
+	</insert>
+    
+    <!--修改宽带-->
+    <update id="updateBroadbandConfig">
+        update GJP_Broadband_Config
+        <set>
+           <if test="bc_brand != null">bc_brand=#{bc_brand},</if>
+           <if test="bc_type != null">bc_type=#{bc_type},</if>
+           <if test="bc_bandwidth != null">bc_bandwidth=#{bc_bandwidth},</if>
+           <if test="bc_cost != null">bc_cost=#{bc_cost},</if>
+           <if test="bc_cname != null">bc_cname=#{bc_cname},</if>
+           <if test="bc_IDNumber != null">bc_IDNumber=#{bc_IDNumber},</if>
+           <if test="bc_account != null">bc_account=#{bc_account},</if>
+           <if test="bc_password != null">bc_password=#{bc_password},</if>
+           <if test="bc_installationTime != null">bc_installationTime=#{bc_installationTime},</if>
+           <if test="bc_equipmentInfo != null">bc_equipmentInfo=#{bc_equipmentInfo},</if>
+           <if test="bc_router != null">bc_router=#{bc_router},</if>
+           <if test="bc_telephone != null">bc_telephone=#{bc_telephone},</if>
+           <if test="bc_customerManager != null">bc_customerManager=#{bc_customerManager},</if>
+           <if test="bc_isUsed != null">bc_isUsed=#{bc_isUsed},</if>
+           <if test="bc_agent != null">bc_agent=#{bc_agent},</if>
+           <if test="bc_remarks != null">bc_remarks=#{bc_remarks},</if>
+           <if test="bc_term != null">bc_term=#{bc_term},</if>
+           <if test="bc_installType != null">bc_installType=#{bc_installType},</if>
+           <if test="bc_broadbandState != null">bc_broadbandState=#{bc_broadbandState},</if>
+        </set>
+        <where>
+            bc_id = #{bc_id}
+        </where>
+    </update>
+
+    <!--查询宽带配置-->
+    <select id="selectInitBroadbandConfig" resultType="com.gjp.model.BroadbandConfigVo">
+        select
+        bc_id,
+        bc_brand,
+        bc_type,
+        bc_bandwidth,
+        bc_cost,
+        bc_cname,
+        bc_IDNumber,
+        bc_account,
+        bc_password,
+        bc_installationTime,
+        bc_equipmentInfo,
+        bc_router,
+        bc_telephone,
+        bc_customerManager,
+        bc_isUsed,
+        bc_agent,
+        bc_remarks,
+        contractObject_code,
+        hi_code,
+        bc_createTime,
+        bc_term,
+        bc_installType,
+        bc_broadbandState
+        from
+        GJP_Broadband_Config
+        <where>
+            <if test="contractObject_code != null">and contractObject_code = #{contractObject_code}</if>
+            <if test="hi_code != null">and hi_code = #{hi_code}</if>
+        </where>
+    </select>
+
+
+    <!--获取房屋和合同下的有效保险-->
+    <select id="selectInsurance" resultType="com.gjp.model.InsuranceVo">
+        select
+        i_id,
+        i_insuranceNumber,
+        i_insuranceNumberHead,
+        i_insuranceNumberTarget,
+        i_company,
+        i_insureDate,
+        i_insurant,
+        i_IDNumber,
+        i_insurant_strat,
+        i_insurant_end,
+        i_ClaimSituation,
+        i_agent,
+        i_isCorrections,
+        i_remarks,
+        contractObject_code,
+        hi_code,
+        i_creatTime,
+        i_cost,
+        i_correlation
+        from
+        GJP_Insurance
+        <where>
+            now() &gt;= i_insurant_strat and now() &lt;= i_insurant_end and i_isCorrections=0
+            <if test="contractObject_code != null">and contractObject_code = #{contractObject_code}</if>
+            <if test="hi_code != null">and hi_code = #{hi_code}</if>
+            <if test="i_id != null">and hi_code = #{i_id}</if>
+        </where>
+    </select>
+
+    <!-- 查询保险根据id-->
+    <select id="selectInsuranceById" resultType="com.gjp.model.InsuranceVo">
+        select i_id
+        from
+        GJP_Insurance
+        <where>
+            <if test="i_insuranceNumber != null">and i_insuranceNumber = #{i_insuranceNumber}</if>
+            <if test="contractObject_code != null">and contractObject_code = #{contractObject_code}</if>
+            <if test="hi_code != null">and hi_code = #{hi_code}</if>
+            <if test="i_id != null">and hi_code = #{i_id}</if>
+        </where>
+    </select>
+
+    <!-- 查询保险根据条件-->
+    <select id="selectInsuranceByWhere" resultType="com.gjp.model.InsuranceVo">
+        select
+        i_id,
+        i_insuranceNumber,
+        i_insuranceNumberHead,
+        i_insuranceNumberTarget,
+        i_company,
+        i_insureDate,
+        i_insurant,
+        i_IDNumber,
+        i_insurant_strat,
+        i_insurant_end,
+        i_ClaimSituation,
+        i_agent,
+        i_isCorrections,
+        i_remarks,
+        contractObject_code,
+        hi_code,
+        i_creatTime,
+        i_cost,
+        i_correlation
+        from
+          GJP_Insurance
+        <where>
+            <if test="i_insuranceNumber != null">and i_insuranceNumber = #{i_insuranceNumber}</if>
+            <if test="contractObject_code != null">and contractObject_code = #{contractObject_code}</if>
+            <if test="hi_code != null">and hi_code = #{hi_code}</if>
+            <if test="i_id != null">and i_id = #{i_id}</if>
+        </where>
+    </select>
+
+    <select id="selectInsuranceAndAddres" resultType="com.gjp.model.InsuranceVo">
+        SELECT
+        gi.i_id,
+	    gi.i_insuranceNumber,
+	    gi.i_insuranceNumberHead,
+	    gi.i_insuranceNumberTarget,
+	    gi.i_creatTime,
+	    IF
+	    (
+	    pn.upn_code IS NULL
+	    OR pn.upn_code = '',
+	    CONCAT( pn.upn_sname, ghk.hi_address ),
+	    CONCAT( pn.upn_sname, pn.upn_code, '-', ghk.hi_address )
+	    ) AS house_address,
+	    ghk.*
+        FROM
+	    GJP_Insurance gi
+	    LEFT JOIN GJP_product.GJP_House_HouseInformation_keep ghk ON gi.hi_code = ghk.hi_code
+	    LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = ghk.propertyInfo_Id
+	    LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        WHERE
+	    gi.i_correlation = #{i_correlation}
+	    ORDER BY  gi.i_creatTime  asc;
+    </select>
+
+    <!--录入保单（新建录入）-->
+    <insert id="insertInsurance" useGeneratedKeys="true" keyProperty="i_id">
+          INSERT INTO
+		  GJP_Insurance(
+          i_insuranceNumber,
+          i_insuranceNumberHead,
+          i_insuranceNumberTarget,
+          i_company,
+          i_insureDate,
+          i_insurant,
+          i_IDNumber,
+          i_insurant_strat,
+          i_insurant_end,
+          i_ClaimSituation,
+          i_agent,
+          i_isCorrections,
+          i_remarks,
+          contractObject_code,
+          hi_code,
+          i_creatTime,
+          i_cost,
+          i_correlation
+		)VALUES (
+            #{i_insuranceNumber},
+            #{i_insuranceNumberHead},
+            #{i_insuranceNumberTarget},
+            #{i_company},
+            #{i_insureDate},
+            #{i_insurant},
+            #{i_IDNumber},
+            #{i_insurant_strat},
+            #{i_insurant_end},
+            #{i_ClaimSituation},
+            #{i_agent},
+            #{i_isCorrections},
+            #{i_remarks},
+            #{contractObject_code},
+            #{hi_code},
+            now(),
+            #{i_cost},
+            #{i_correlation}
+		)
+    </insert>
+
+    <!--修改保单-->
+    <update id="updateInsurance">
+      update
+      GJP_Insurance
+      <set>
+          <if test="i_insuranceNumber != null "> i_insuranceNumber = #{i_insuranceNumber},</if>
+          <if test="i_insuranceNumberTarget != null "> i_insuranceNumberTarget = #{i_insuranceNumberTarget},</if>
+          <if test="i_company != null "> i_company = #{i_company},</if>
+          <if test="i_insureDate != null "> i_insureDate = #{i_insureDate},</if>
+          <if test="i_insurant != null "> i_insurant = #{i_insurant},</if>
+          <if test="i_IDNumber != null "> i_IDNumber = #{i_IDNumber},</if>
+          <if test="i_insurant_strat != null "> i_insurant_strat = #{i_insurant_strat},</if>
+          <if test="i_ClaimSituation != null "> i_ClaimSituation = #{i_ClaimSituation},</if>
+          <if test="i_agent != null "> i_agent = #{i_agent},</if>
+          <if test="i_isCorrections != null "> i_isCorrections = #{i_isCorrections},</if>
+          <if test="i_remarks != null "> i_remarks = #{i_remarks},</if>
+          <if test="contractObject_code != null "> contractObject_code = #{contractObject_code},</if>
+          <if test="hi_code != null "> hi_code = #{hi_code},</if>
+          <if test="i_cost != null "> i_cost = #{i_cost},</if>
+      </set>
+      <where>
+          i_id = #{i_id}
+      </where>
+    </update>
+</mapper>

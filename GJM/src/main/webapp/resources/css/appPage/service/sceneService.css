@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "微软雅黑";
+    font-size: 14px;
+    background: #f7f7f7;
+}
+dl, dt, dd, ul, li {
+    list-style: none;
+}
+dl:AFTER, dd:AFTER, ul:AFTER, li:AFTER {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+.center dl {
+    height: 50px;
+    line-height: 50px;
+    background-color: #FFF;
+    display: flex;
+    padding: 0 10px;
+    position: relative;
+    border-bottom: 1px solid #F2F2F2;
+}
+.center dl dt {
+    float: left;
+    color: #999;
+}
+.center dl dd {
+    float: left;
+    flex: 1;
+}
+.center dl dd input {
+    border: none;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    font-size: 14px;
+    outline: none;
+}
+.fa-minus-square-o {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+    color: #E74C3C;
+}
+.fa-plus-square-o {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+    color: #E74C3C;
+}
+.button {
+    width: 100%;
+    line-height: 48px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #FF6666;
+    border: none;
+    color: #FFF;
+    font-size: 14px;
+    outline: none;
+}

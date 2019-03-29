@@ -1,0 +1,104 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+	color: #666;
+	background: #F8F8F8;
+}
+
+.mui-scroll-wrapper{
+	top: 50px;
+}
+.search{
+	width: 100%;
+	height: 43px;
+	background-color: #FFF;
+}
+.search .font-icon{
+    position: absolute;
+    top: 0px;
+    left: 8px;
+    display: inline;
+    width: 8px;
+    margin: 18px 2px 0 10px;
+    background: none!important;
+    height: 8px;
+    border: solid #000;
+    border-width:0 0 1px 1px;
+    -webkit-transform: rotate(45deg);
+    margin-right: 15px;
+    float: left;
+}
+.search .search-text{
+	margin-left: 10px;
+	float: left;
+	width: 76%;
+}
+.search .search-text .search-input{
+	border: none;
+	height: 30px;
+    line-height: 30px;
+    width: 98%;
+    margin-top: 6px;
+    text-indent: 3px;
+    outline: none;
+    font-size: 14px;
+}
+.search .button-label{
+	float: left;
+	width: 20%;
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+	border: none;
+	outline: none;
+	background-color: #FFF;
+	font-size: 14px;
+	color: #666;
+	padding: 0;
+}
+.content{
+	background-color: #FFF;
+	padding-left: 2%;
+	font-size: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+.content .address_house{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	font-size: 16px;
+}
+.content .center{
+	height: auto;
+	overflow: hidden;
+}
+.content .address_name{
+	float: left;
+}
+.content .address_time{
+	color: #CCC;
+	float: right;
+	margin-right: 2%;
+}
+.state{
+	padding: 4px;
+	border-radius: 3px;
+	font-size: 13px;
+	position: absolute;
+	top: 15px;
+	right: 2%;
+}
+.money {
+    padding: 4px;
+    border-radius: 3px;
+    font-size: 13px;
+    position: absolute;
+    top: 15px;
+    right: 22%;
+    font-size: 16px;
+    color: #FF6666;
+}

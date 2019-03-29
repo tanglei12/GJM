@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 服务费用 GJP_Server_Charge -->
+<mapper namespace="com.gjp.dao.ServiceChargeDAO">
+    <select id="queryServiceChargeLists" resultType="com.gjp.model.ServiceCharge">
+        SELECT sc.*, ha.house_address, co.ContractObject_No, cc.cc_name FROM GJP_Server_Charge sc
+        LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON sc.hi_code = ha.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = sc.con_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = sc.cc_code
+        WHERE 1=1
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        ${houseModel.sqlOrderBy}
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryServiceChargeListsRows" resultType="int">
+        SELECT COUNT(*) FROM GJP_Server_Charge sc
+        LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON sc.hi_code = ha.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = sc.con_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer cc ON cc.cc_code = sc.cc_code
+        WHERE 1=1
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        ${houseModel.sqlOrderBy}
+    </select>
+
+    <insert id="appAddServiceCharge" useGeneratedKeys="true" parameterType="com.gjp.model.ServiceCharge">
+		INSERT INTO GJP_Server_Charge(
+		  init_serveMoney,
+		  used_serveMoney,
+		  surplus_serveMoney,
+		  available_serveMoney,
+		  hi_code,
+		  con_code,
+		  cc_code,
+		  serveType,
+          effective_date,
+          expiry_date
+		) VALUES (
+		  #{init_serveMoney},
+		  #{used_serveMoney},
+		  #{surplus_serveMoney},
+		  #{available_serveMoney},
+		  #{hi_code},
+		  #{con_code},
+		  #{cc_code},
+		  #{serveType},
+		  #{effective_date},
+		  #{expiry_date}
+		)
+
+	</insert>
+
+    <delete id="delServiceCharge">
+        DELETE FROM GJP_Server_Charge WHERE con_code = #{con_code}
+    </delete>
+
+    <select id="queryServiceChargeConByTime" resultType="com.gjp.model.ServiceCharge">
+        SELECT * FROM GJP_Server_Charge WHERE con_code = #{con_code} AND cc_code = #{cc_code} AND (DATE_FORMAT(#{apprise_date},'%y-%m-%d') &gt;= DATE_FORMAT(effective_date,'%y-%m-%d') AND DATE_FORMAT(#{apprise_date},'%y-%m-%d') &lt; DATE_FORMAT(expiry_date,'%y-%m-%d')) limit 1
+    </select>
+
+    <update id="modifyServiceMoney">
+        UPDATE GJP_Server_Charge
+        <set>
+            <if test="used_serveMoney != null"> used_serveMoney = #{used_serveMoney}, </if>
+            <if test="surplus_serveMoney != null"> surplus_serveMoney = #{surplus_serveMoney}, </if>
+        </set>
+        WHERE s_id = #{s_id}
+    </update>
+</mapper>

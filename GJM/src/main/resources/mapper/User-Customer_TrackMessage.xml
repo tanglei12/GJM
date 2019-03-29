@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.CustomerTrackMessageDAO">
+
+	<sql id="allmenbers">
+		ctm_name,
+		ctm_phone,
+		ctm_sex,
+		ctm_demand,
+		ctm_state,
+		em_id,
+		ctm_date,
+		ctm_userState
+	</sql>
+
+	<sql id="insert">
+		#{ctm_name },
+		#{ctm_phone },
+		#{ctm_sex },
+		#{ctm_demand },
+		#{ctm_state },
+		#{em_id },
+		#{ctm_date },
+		#{ctm_userState }
+	</sql>
+	
+	<sql id="update">
+		ctm_name=#{ctm_name },
+		ctm_phone=#{ctm_phone },
+		ctm_sex=#{ctm_sex },
+		ctm_demand=#{ctm_demand },
+		ctm_state=#{ctm_state },
+		em_id=#{em_id },
+		ctm_date=#{ctm_date },
+		ctm_userState=#{ctm_userState }
+	</sql>
+
+	<!-- 插入客户客户跟踪信息 -->
+	<insert id="insertCustomerTrackMessage" useGeneratedKeys="true" parameterType="com.gjp.model.CustomerTrackMessage" keyProperty="ctm_id">
+         insert into GJP_Customer_TrackMessage(<include refid="allmenbers"></include>) 
+         values 
+         (<include refid="insert"></include>)
+    </insert>
+
+	<!-- 查询客户跟踪信息 -->
+	<select id="queryCustomerTrackMessage" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT * FROM GJP_Customer_TrackMessage
+	</select>
+	
+	<!-- 查询未公开的客户跟踪信息 -->
+	<select id="queryCustomerTrackMessageState" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT * FROM GJP_Customer_TrackMessage where ctm_state=0 and ctm_userState=0
+	</select>
+	
+	<!-- 根据用户跟踪信息编码查询客户跟踪信息 -->
+	<select id="queryCustomerTrackMessageID" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT * FROM GJP_Customer_TrackMessage where ctm_id=#{ctm_id}
+	</select>
+	
+	<!-- 查询手机号是否重复 -->
+	<select id="queryCustomerTrackMessagePhoneCount" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT *,count(*) as size FROM GJP_Customer_TrackMessage where ctm_phone=#{ctm_phone}  GROUP BY ctm_id limit 1
+	</select>
+	
+	<!-- 公开用户 -->
+	<select id="queryCustomerTrackMessagePublic" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT count(*) FROM GJP_Customer_TrackMessage where ctm_state=1 order by ctm_date desc
+	</select>
+	
+	<!-- 个人用户 -->
+	<select id="queryCustomerTrackMessagePrivate" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT * FROM GJP_Customer_TrackMessage where em_id=#{em_id} order by ctm_date desc
+	</select>
+	
+	<!-- 查询用户列表 -->
+	<select id="queryCustomerTrackMessageList" resultType="com.gjp.model.CustomerTrackMessage">
+		SELECT *,(SELECT COUNT(*) FROM GJP_Customer_TrackMessage where (ctm_name like CONCAT('%',#{ctm_name},'%') or ctm_phone like CONCAT('%',#{ctm_phone},'%'))
+		 <if test="ctm_state == 0">
+		 	and (em_id=#{em_id} or ctm_state = 1)
+		 </if>
+		 <if test="ctm_state == 1">
+		 	and ctm_state = 1
+		 </if>
+		 and ctm_userState = 0
+		 ) as size FROM GJP_Customer_TrackMessage where 
+		 (ctm_name like CONCAT('%',#{ctm_name},'%') or ctm_phone like CONCAT('%',#{ctm_phone},'%')) 
+		 <if test="ctm_state == 0">
+		 	and (em_id=#{em_id} or ctm_state = 1)
+		 </if>
+		 <if test="ctm_state == 1">
+		 	and ctm_state = 1
+		 </if>
+		 and ctm_userState = 0
+		 order by ctm_date desc LIMIT ${pageNo},${pageSize}
+	</select>
+	
+	<!-- 查询内部人员 -->
+	<select id="queryEmName" resultType="com.gjp.model.UserCenterEmployee">
+		select
+		*,
+		(select count(*) from View_GJP_Trusteeship where 1=1
+		<if test="whereList != null and whereList !=''">
+			and (em_name like CONCAT('%',#{whereList},'%') or em_phone like CONCAT('%',#{whereList},'%'))
+		</if>
+		) as size
+		 from View_GJP_Trusteeship where 1=1
+		<if test="whereList != null and whereList !=''">
+			and (em_name like CONCAT('%',#{whereList},'%') or em_phone like CONCAT('%',#{whereList},'%'))
+		</if>
+		<if test="start !=null and end !=null">
+			limit #{start},#{end}
+		</if>
+	</select>
+	
+	<!-- 修改客户跟踪信息 -->
+	<update id="updateCustomerTrackMessage" parameterType="com.gjp.model.CustomerTrackMessage">
+		update GJP_Customer_TrackMessage set
+		<include refid="update"></include>
+		where ctm_id=#{ctm_id}
+	</update>
+	
+</mapper>

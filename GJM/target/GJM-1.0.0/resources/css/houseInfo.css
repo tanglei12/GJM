@@ -1,0 +1,115 @@
+@import url(http://fonts.useso.com/css?family=Raleway:200,500,700,800);
+@font-face {
+	font-family: 'icomoon';
+	src:url('../fonts/icomoon.eot?rretjt');
+	src:url('../fonts/icomoon.eot?#iefixrretjt') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?rretjt') format('woff'),
+		url('../fonts/icomoon.ttf?rretjt') format('truetype'),
+		url('../fonts/icomoon.svg?rretjt#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body, html { font-size: 100%; 	padding: 0; margin: 0;}
+
+/* Reset */
+*,
+*:after,
+*:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+body{
+	background: #f9f7f6;
+	color: #404d5b;
+	font-weight: 500;
+	font-size: 1.05em;
+	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", "FontAwesome", sans-serif;
+}
+a{color: #2fa0ec;text-decoration: none;outline: none;}
+a:hover,a:focus{color:#74777b;}
+
+a{
+	text-decoration:none;color: #666;
+}
+a:LINK{text-decoration:none;}
+a:hover{color:#00a4ac;text-decoration:none;}
+a:visited {text-decoration:none;}
+.clear {
+  clear: both;
+}
+.box-title {
+    position: relative;
+    height: 36px;
+    line-height: 37px;
+    font-size: 15px;
+    border-bottom: 1px solid #3E97C9;
+    padding: 0 20px;
+    /* margin-bottom: 30px; */
+    color: #100F0F;
+}
+.box-title:BEFORE {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 4px;
+    top: 8px;
+    left: 8px;
+    background: #3E97C9;
+    border-radius: 3px;
+}
+.nav-contype {
+    background: #fff;
+    margin-bottom: 14px;
+    width:1250px;
+    height: 40px;
+}
+.nav-contype .contype-tab-focus {
+    color: #fff;
+    background: #3E97C9;
+}
+.nav-contype .contype-tab {
+    position: relative;
+    display: inline-block;
+    line-height: 16px;
+    padding: 12px 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.nav-contype .contype-tab .down {
+    position: absolute;
+    bottom: -6px;
+    left: 45px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid #3E97C9;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}

@@ -1,0 +1,235 @@
+@CHARSET "UTF-8";
+
+.btn-info {
+	color: #fff;
+	background-color: #5bc0de;
+	border-color: #46b8da;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.delete {
+	position: absolute;
+	left: -6px;
+	top: -6px;
+	bottom: 1px;
+	font-size: 16px;
+	width: 12px;
+	height: 12px;
+	color: #666;
+}
+/** 索引房屋编码*/
+#queryList {
+	position: absolute;
+	top: 40px;
+	left: 0;
+	height: auto;
+	clear: both;
+	display: none;
+	min-width: 424px;
+	border: 1px solid #dddddd; /* #CAE2F0; */
+	background-color: #fff;
+	z-index: 99;
+	-moz-box-shadow: 0px 0px 13px #BFBFBF;
+	-webkit-box-shadow: 0px 0px 13px #BFBFBF;
+	box-shadow: 0px 0px 13px #BFBFBF;
+}
+
+/**============================**/
+textarea.form-control {
+	max-width: 400px;
+	width: 400px !important;
+	height: auto !important;
+}
+
+input.form-control {
+	float: left;
+	display: block;
+	width: 180px;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+input.form-control-address {
+	float: left;
+	display: block;
+	width: 360px;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fdf7f7;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.suffix-ft {
+	padding: 0 10px;
+	color: #fff;
+	margin: 0;
+}
+
+.suffix-ed {
+	position: relative;
+	padding: 0 10px;
+	color: #fff;
+	margin: 0;
+	cursor: pointer;
+	border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
+
+.suffix-ed:BEFORE {
+	content: "";
+	position: absolute;
+	top: 4px;
+	left: 0px;
+	display: block;
+	height: 28px;
+	width: 1px;
+	background: #fff;
+}
+
+#extend_btn {
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	margin-top: -14px;
+	width: 28px;
+	font-size: 16px;
+	text-align: center;
+	line-height: 28px;
+	border-radius: 4px;
+	color: #666;
+	cursor: pointer;
+}
+
+#extend_btn:HOVER {
+	background: #3498db;
+	color: #fff;
+}
+
+#extend_box {
+	display: none;
+}
+
+.prop_box {
+	position: relative;
+	display: block;
+	padding: 14px 0;
+	border: 1px solid #1abc9c;
+	border-radius: 4px;
+}
+
+.prop_box:BEFORE {
+	content: "";
+	position: absolute;
+	top: -8px;
+	left: 20px;
+	margin-left: -8px;
+	width: 0;
+	height: 0;
+	border-bottom: 8px solid #1abc9c;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	z-index: 100;
+}
+
+#propertyInfo_idGroups {
+	position: relative;
+	float: left;
+}
+
+#propertyInfo_idGroups:AFTER {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.prop_box_bottom {
+	position: relative;
+	margin-top: 12px;
+	padding-left: 76px;
+}
+
+.prop_btn {
+	display: inline-block;
+	line-height: 32px;
+	padding: 0 12px;
+	font-size: 12px;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	background: #3498db;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+}
+
+.prop_cancel {
+	display: inline-block;
+	line-height: 32px;
+	padding: 0 12px;
+	font-size: 12px;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	background: #E74C3C;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+}
+

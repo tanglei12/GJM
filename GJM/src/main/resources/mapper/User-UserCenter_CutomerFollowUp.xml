@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 客户管理 -->
+<mapper namespace="com.gjp.dao.CutomerFollowUpDAO">
+
+	<sql id="menberEcpId">
+		ht_count,
+		ht_type,
+		ht_time,
+		ht_remind_time,
+		ht_remind_count,
+		cc_code,
+		em_id,
+		ht_houseType
+	</sql>
+
+	<sql id="insert">
+		#{ht_count},
+		#{ht_type },
+		#{ht_time },
+		#{ht_remind_time },
+		#{ht_remind_count },
+		#{cc_code },
+		#{em_id },
+		#{ht_houseType }
+	</sql>
+	
+	<sql id="update">
+		<if test="ht_count != null and ht_count != ''">
+			ht_count=#{ht_count },
+		</if>
+		<if test="ht_type != null and ht_type != ''">
+			ht_type=#{ht_type },
+		</if>
+		<if test="ht_time != null and ht_time != ''">
+			ht_time=#{ht_time },
+		</if>
+		<if test="ht_remind_time != null and ht_remind_time != ''">
+			ht_remind_time=#{ht_remind_time },
+		</if>
+		<if test="ht_remind_count != null and ht_remind_count != ''">
+			ht_remind_count=#{ht_remind_count },
+		</if>
+		<if test="cc_code != null and cc_code != ''">
+			cc_code=#{cc_code},
+		</if>
+		<if test="em_id != null and em_id != ''">
+			em_id=#{em_id},
+		</if>
+		<if test="ht_houseType != null and ht_houseType != ''">
+			ht_houseType=#{ht_houseType},
+		</if>
+		ht_id=#{ht_id }
+	</sql>
+	
+	
+	
+	<!-- 查询客户跟进 -->
+	<select id="selectAllCutomerFollowUp" resultType="com.gjp.model.CutomerFollowUp">
+		select * from GJP_UserCenter_CutomerFollowUp cfu
+		LEFT JOIN
+		GJP_UserCenter_Employee em ON cfu.em_id = em.em_id
+		where
+		1=1
+		<if test="cc_code != null and cc_code != ''">
+		and cc_code=#{cc_code}
+		</if>
+	</select>
+
+
+	<!-- 添加客户跟进记录 -->
+	<insert id="insertCutomerFollowUp" useGeneratedKeys="true" parameterType="com.gjp.model.CutomerFollowUp" keyProperty="ht_id">
+		insert into GJP_UserCenter_CutomerFollowUp(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+	
+</mapper>

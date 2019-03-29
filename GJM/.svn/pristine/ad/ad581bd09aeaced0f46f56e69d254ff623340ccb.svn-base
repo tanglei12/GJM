@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 维修跟踪 GJP_Maintenance_Tracks -->
+<mapper namespace="com.gjp.dao.HandleDao">
+
+	<!-- 添加维修过程 -->
+	<insert id="addTracks" keyProperty="id">
+		insert into GJP_Maintenance_Tracks(
+		mtk_start_time,
+		mtk_end_time,
+		mtk_spe_cir,
+		mtk_createTime,
+		mtk_updataTime,
+		em_id,
+		md_id,
+		mtk_state)
+		values
+		(
+		#{mtk_start_time},
+		#{mtk_end_time},
+		#{mtk_spe_cir},
+		#{mtk_createTime},
+		#{mtk_updataTime},
+		#{em_id},
+		#{md_id},
+		#{mtk_state})
+	</insert>
+
+	<!-- 添加维修图片 -->
+	<insert id="addMaintenancePicture" keyProperty="id">
+		INSERT INTO GJP_Maintenance_Picture(mpe_path,md_id,mpe_type)
+		VALUES(#{mpe_path},#{md_id},#{mpe_type})
+	</insert>
+
+	<!-- 根据维修编号查询派工单 -->
+	<select id="selectMaintenanceDispatching" resultType="com.gjp.model.MaintenanceDispatching">
+		SELECT * FROM
+		GJP_Maintenance_Dispatching
+		WHERE
+		md_id=#{md_id} LIMIT 1
+	</select>
+
+	<!-- 根据维修编号查询维修图片 -->
+	<select id="selectMaintenancePicture" resultType="com.gjp.model.MaintenancePicture">
+		select
+		mpe_id,
+		mpe_path,
+		md_id,
+		mpe_type
+		from
+		GJP_Maintenance_Picture
+		where md_id=#{md_id}
+	</select>
+
+	<!-- 服务订单流程 -->
+	<select id="selectMaintenanceOrderListByMdId" resultType="com.gjp.model.MaintenanceOrder">
+		SELECT
+		mo_id,
+		mo_state,
+		mo_step,
+		mo_date,
+		mo_content
+		FROM
+		GJP_Maintenance_Order
+		WHERE
+		md_id=#{md_id}
+		ORDER BY mo_date ASC
+	</select>
+
+	<!-- -->
+	<select id="selectMaintenanceOrderByMdId" resultType="com.gjp.model.MaintenanceOrder">
+		SELECT
+		mo_id,
+		mo_state,
+		mo_step,
+		mo_date,
+		mo_content
+		FROM
+		GJP_Maintenance_Order
+		WHERE
+		md_id=#{md_id}
+		ORDER BY mo_id DESC LIMIT 1
+	</select>
+
+	<!-- -->
+	<select id="selectMaintenanceTracks" resultType="com.gjp.model.MaintenanceTracks">
+		SELECT
+		mt.mtk_id,
+		mt.mtk_start_time,
+		mt.mtk_end_time,
+		mt.mtk_real_time,
+		mt.mtk_spe_cir,
+		mt.mtk_createTime,
+		mt.em_id,
+		mt.md_id,
+		mt.mtk_state,
+		em.em_name,
+		em.em_phone
+		FROM
+		GJP_business.GJP_Maintenance_Tracks AS mt
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON mt.em_id = em.em_id
+		WHERE
+		md_id=#{md_id}
+		ORDER BY mtk_id DESC
+		LIMIT 1
+	</select>
+
+	<!-- 分页查询维修申报 -->
+	<select id="selectServe" resultType="com.gjp.model.MaintenanceDeclaration">
+		SELECT
+		mdec.md_id,
+		mdec.md_name,
+		mdec.md_problem,
+		mdec.md_time,
+		mdec.md_state,
+		mdec.user_id,
+		mdec.hi_id,
+		mdec.st_id,
+		mdec.md_source,
+		mdec.md_applyType,
+		mdec.md_agentApplyer,
+		ct.ContractType_Name AS 'typeOfApply_Name',
+		st.st_name AS 'st_name',
+		him.hi_address AS 'hi_address'
+		FROM GJP_business.GJP_Maintenance_Declaration mdec
+		LEFT JOIN
+		GJP_Contract_Type ct ON mdec.md_applyType
+		=ct.ContractType_Id
+		LEFT JOIN GJP_Service_Type st ON mdec.st_id =
+		st.st_id
+		LEFT JOIN GJP_product.GJP_House_HouseInformation_keep him ON
+		mdec.hi_id = him.hi_id
+		WHERE mdec.md_agentApplyer=#{em_id}
+		LIMIT
+		#{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询维修申报总条数 -->
+	<select id="selectTotalServe" resultType="int">
+		SELECT COUNT(*)
+		FROM GJP_Maintenance_Declaration
+		WHERE
+		md_agentApplyer=#{em_id}
+	</select>
+
+	<!-- 根据维修申请编号查询维修过程 -->
+	<select id="selectTracks" resultType="com.gjp.model.MaintenanceTracks">
+		select
+		mtk_id,
+		mtk_start_time,
+		mtk_end_time,
+		mtk_spe_cir,
+		em_id,
+		md_id,
+		mtk_state
+		from
+		GJP_Maintenance_Tracks
+		where md_id=#{md_id}
+	</select>
+
+	<!-- 根据维修申请编号查询维修过程 -->
+	<select id="selectTracksById" resultType="com.gjp.model.MaintenanceTracks">
+		select
+		mtk_id,
+		mtk_start_time,
+		mtk_end_time,
+		mtk_spe_cir,
+		em_id,
+		md_id,
+		mtk_state
+		from
+		GJP_Maintenance_Tracks
+		where md_id=#{md_id}
+	</select>
+
+	<!-- 修改派工单 -->
+	<update id="updataMaintenanceDispatching">
+		UPDATE
+		GJP_Maintenance_Dispatching
+		<set>
+			<if test="mdg_moneyCode !=null and mdg_moneyCode !=''">
+				mdg_moneyCode=#{mdg_moneyCode},
+			</if>
+			<if test="mdg_sumMoney !=null and mdg_sumMoney !=''">
+				mdg_sumMoney=#{mdg_sumMoney},
+			</if>
+			<if test="mdg_state !=null and mdg_state !=''">
+				mdg_state=#{mdg_state}
+			</if>
+		</set>
+		WHERE
+		md_id=#{md_id}
+	</update>
+
+
+	<!-- -->
+	<update id="updataTracks">
+		UPDATE
+		GJP_Maintenance_Tracks
+		<set>
+			<if test="mtk_start_time != null">
+				mtk_start_time =#{mtk_start_time},
+			</if>
+			<if test="mtk_end_time != null">
+				mtk_end_time =#{mtk_end_time},
+			</if>
+			<if test="mtk_real_time != null">
+				mtk_real_time =#{mtk_real_time},
+			</if>
+			<if test="mtk_spe_cir != null">
+				mtk_spe_cir =#{mtk_spe_cir},
+			</if>
+			<if test="mtk_state != null">
+				mtk_state =#{mtk_state}
+			</if>
+		</set>
+		WHERE
+		md_id=#{md_id}
+		LIMIT 1
+	</update>
+
+	<!-- 删除完成维修图片 -->
+	<delete id="deleteMaintenancePicture">
+		DELETE FROM
+		GJP_Maintenance_Picture where mpe_path = #{mpe_path}
+	</delete>
+
+	<insert id="saveOrderMD" useGeneratedKeys="true" keyProperty="co_id">
+		INSERT INTO GJP_Bill_ContractOrderMD
+		(
+		md_id,
+		so_id,
+		order_code
+		) VALUES (
+		#{md_id},
+		#{so_id},
+		#{order_code}
+		)
+	</insert>
+
+	<select id="queryOrderMDCount" resultType="java.lang.Integer">
+		SELECT COUNT(co_id) FROM GJP_Bill_ContractOrderMD WHERE md_id = #{md_id}
+	</select>
+</mapper>

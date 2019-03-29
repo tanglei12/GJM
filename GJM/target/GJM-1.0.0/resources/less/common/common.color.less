@@ -1,0 +1,114 @@
+/*红*/
+@error: #E74C3C;
+@error-hover: rgba(231, 76, 60, 0.78);
+/*黄*/
+@hint: #F39C12;
+@hint-hover: rgba(243, 156, 18, 0.78);
+/*绿*/
+@ok: #18bc9c;
+@ok-hover: rgba(26, 188, 156, 0.78);
+/*蓝*/
+@next: #3498DB;
+@next-hover: rgba(52, 152, 219, 0.78);
+/*暗灰*/
+@disabled: #909090;
+/*灰*/
+@ddd: #ddd;
+
+/*常用颜色*/
+.error {
+    color: @error ! important;
+    &[disabled] { color: @disabled ! important; }
+}
+.hint {
+    color: @hint ! important;
+    &[disabled] { color: @disabled ! important; }
+}
+.ok {
+    color: @ok ! important;
+    &[disabled] { color: @disabled ! important; }
+}
+.next {
+    color: @next ! important;
+    &[disabled] { color: @disabled ! important; }
+}
+.disabled {
+    color: @disabled ! important;
+}
+/*常用背景颜色*/
+.error-bg {
+    background: @error ! important; color: #fff ! important;
+    &:hover {background: @error-hover !important; color: #fff !important; }
+}
+.hint-bg {
+    background: @hint ! important; color: #fff ! important;
+    &:hover { background: @hint-hover !important; color: #fff !important; }
+}
+.ok-bg {
+    background: @ok ! important; color: #fff ! important;
+    &:hover { background: @ok-hover !important; color: #fff !important; }
+}
+.next-bg {
+    background: @next ! important; color: #fff ! important;
+    &:hover { background: @next-hover !important; color: #fff !important; }
+}
+.disabled-bg {
+    background: @disabled ! important; color: #fff ! important;
+    &:hover { background: @disabled !important; color: #fff; cursor: no-drop; }
+}
+[class $=-bg] {
+    > option { background: #fff ! important; color: #666 }
+    &[disabled] {
+        background: #c1c1c1 ! important; cursor: no-drop;
+        &:hover {
+            background: #c1c1c1 ! important; cursor: no-drop;
+        }
+    }
+}
+/*常用边框颜色*/
+.error-border-color { border-color: @error !important; background: #fff !important; color: @error !important; }
+.hint-border-color { border-color: @hint !important; background: #fff !important; color: @hint !important; }
+.ok-border-color { border-color: @ok !important; background: #fff !important; color: @ok !important; }
+.next-border-color { border-color: @next !important; background: #fff !important; color: @next !important; }
+[class$=-border-color] {
+    > option { background: #fff !important; color: #666 }
+    &[disabled] { border-color: #c1c1c1 !important; background: #fff !important; color: #c1c1c1 !important; cursor: no-drop; }
+}
+/*常用背景颜色-白*/
+/*:default 白色背景，彩色字体*/
+/*:hover 彩色背景，白色字体*/
+.error-bg-w {
+    background: #ffffff !important; color: @error !important;
+    &:hover { background: @error !important; color: #fff !important; }
+}
+.hint-bg-w {
+    background: #ffffff !important; color: @hint !important;
+    &:hover { background: #f6b246 !important; color: #fff !important; }
+}
+.ok-bg-w {
+    background: #ffffff !important; color: @ok !important;
+    &:hover { background: @ok !important; color: #fff !important; }
+}
+.next-bg-w {
+    background: #ffffff !important; color: @next !important;
+    &:hover { background: @next !important; color: #fff !important; }
+}
+.disabled-bg-w {
+    background: #ffffff !important; color: @disabled; cursor: no-drop;
+    &:hover { background: @disabled !important; color: #fff; cursor: no-drop; }
+}
+/**/
+.next-bg-bd-w {
+    background: none;
+    box-shadow: 0 0 0 1px @ddd;
+    color: @next;
+    border: none;
+    &:hover { box-shadow: none; background: @next-hover; color: #fff; }
+}
+.error-bg-bd-w {
+    background: none;
+    box-shadow: 0 0 0 1px @ddd;
+    color: @error;
+    border: none;
+    &:hover { box-shadow: none; background: @error-hover; color: #fff; }
+}

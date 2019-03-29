@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserCenterStatementDao">
+
+	<!-- 添加结算单 -->
+	<insert id="addStatement" useGeneratedKeys="true" keyProperty="statement_id">
+		INSERT INTO
+		GJP_Contract_Statement(
+		statement_code,
+		cco_code,
+		contractObject_code,
+		contractObject_no,
+		statement_type,
+		statement_costs,
+		statement_penalty,
+		statement_agent,
+		statement_totalCost,
+		statement_balance,
+		statement_balancer,
+		statement_balanceTime,
+		statement_handoverDate,
+		statement_bankCard,
+		statement_bankType,
+		statement_createTime,
+		statement_remarks,
+		statement_path,
+		statement_sign
+		)
+		VALUES
+		(
+		#{statement_code},
+		#{cco_code},
+		#{contractObject_code},
+		#{contractObject_no},
+		#{statement_type},
+		#{statement_costs},
+		#{statement_penalty},
+		#{statement_agent},
+		#{statement_totalCost},
+		#{statement_balance},
+		#{statement_balancer},
+		#{statement_balanceTime},
+		#{statement_handoverDate},
+		#{statement_bankCard},
+		#{statement_bankType},
+		#{statement_createTime},
+		#{statement_remarks},
+		#{statement_path},
+		#{statement_sign}
+		)
+	</insert>
+
+	<insert id="addStatementBalance" useGeneratedKeys="true" keyProperty="">
+		INSERT INTO GJP_Contract_StatementBalance(
+		statement_code,
+		csb_type,
+		csb_credit,
+		csb_debit,
+		csb_desc
+		) VALUES (
+		#{statement_code},
+		#{csb_type},
+		#{csb_credit},
+		#{csb_debit},
+		#{csb_desc}
+		)
+	</insert>
+
+	<!-- 添加结算消费清单 -->
+	<insert id="addStatementCostItems" useGeneratedKeys="true" keyProperty="sci_id">
+		INSERT INTO
+		GJP_Contract_StatementCostItems(
+		statement_code,
+		sci_type,
+		sci_itemName,
+		sci_unitPrice,
+		sci_number,
+		sci_penalty,
+		sci_desc,
+		sci_totalCosts
+		)
+		VALUES
+		(
+		#{statement_code},
+		#{sci_type},
+		#{sci_itemName},
+		#{sci_unitPrice},
+		#{sci_number},
+		#{sci_penalty},
+		#{sci_desc},
+		#{sci_totalCosts}
+		)
+	</insert>
+
+	<!-- 添加结算损坏清单 -->
+	<insert id="addStatementDamageItems" useGeneratedKeys="true" keyProperty="sdi_id">
+		INSERT INTO
+		GJP_Contract_StatementDamageItems(
+		statement_code,
+		sdi_type,
+		sdi_list,
+		sdi_cost,
+		sdi_desc
+		)
+		VALUES
+		(
+		#{statement_code},
+		#{sdi_type},
+		#{sdi_list},
+		#{sdi_cost},
+		#{sdi_desc}
+		)
+	</insert>
+
+	<!-- 查询结算单信息 -->
+	<select id="queryStatementOrder" resultType="com.gjp.model.UserCenterStatementVo">
+		SELECT
+		*
+		FROM
+		GJP_Contract_Statement
+		WHERE
+		1=1
+		<if test="cco_code !='' and cco_code !=null ">AND cco_code =#{cco_code}</if>
+		<if test="contractObject_code !=null ">AND contractObject_code =#{contractObject_code}</if>
+		<if test="statement_type !=null ">AND statement_type=#{statement_type}</if>
+		<if test="statement_state !=null ">AND statement_state=#{statement_state}</if>
+		LIMIT 1
+	</select>
+
+	<!-- 查询消费清单列表 -->
+	<select id="queryStatementCostItems" resultType="com.gjp.model.UserCenterStatementCostItemsVo">
+		SELECT
+		*
+		FROM
+		GJP_Contract_StatementCostItems
+		WHERE
+		statement_code =#{statement_code}
+	</select>
+
+	<!-- 查询损坏物品清单列表 -->
+	<select id="queryStatementDamageItems" resultType="com.gjp.model.UserCenterStatementDamageItemsVo">
+		SELECT
+		*
+		FROM
+		GJP_Contract_StatementDamageItems
+		WHERE
+		statement_code
+		=#{statement_code}
+	</select>
+
+	<!-- 查询结算结余 -->
+	<select id="queryStatementBalances" resultType="com.gjp.model.ContractStatementBalanceVo">
+		SELECT
+		*
+		FROM
+		GJP_Contract_StatementBalance
+		WHERE
+		statement_code =#{statement_code}
+	</select>
+
+	<!-- 更新结算单 -->
+	<update id="updateStatement">
+		UPDATE GJP_Contract_Statement
+		<set>
+			<if test="statement_type != null">statement_type=#{statement_type},</if>
+			<if test="statement_deposit != null">statement_deposit=#{statement_deposit},</if>
+			<if test="statement_costs != null">statement_costs=#{statement_costs},</if>
+			<if test="statement_penalty != null">statement_penalty=#{statement_penalty},</if>
+			<if test="statement_agent != null">statement_agent=#{statement_agent},</if>
+			<if test="statement_totalCost != null">statement_totalCost=#{statement_totalCost},</if>
+			<if test="statement_balance != null">statement_balance=#{statement_balance},</if>
+			<if test="statement_balancer != null">statement_balancer=#{statement_balancer},</if>
+			<if test="statement_balanceTime != null">statement_balanceTime=#{statement_balanceTime},</if>
+			<if test="statement_handoverDate != null">statement_handoverDate=#{statement_handoverDate},</if>
+			<if test="statement_bankPerson != null">statement_bankPerson=#{statement_bankPerson},</if>
+			<if test="statement_bankCard != null">statement_bankCard=#{statement_bankCard},</if>
+			<if test="statement_bankType != null">statement_bankType=#{statement_bankType},</if>
+			<if test="statement_path != null">statement_path=#{statement_path},</if>
+			<if test="statement_remarks != null">statement_remarks=#{statement_remarks},</if>
+			<if test="statement_sign != null">statement_sign=#{statement_sign},</if>
+		</set>
+		WHERE
+		statement_code=#{statement_code}
+	</update>
+
+	<!-- 更新结算消费记录 -->
+	<update id="updateStatementCostItems">
+		UPDATE GJP_Contract_StatementCostItems
+		<set>
+			<if test="sci_unitPrice != null">sci_unitPrice=#{sci_unitPrice},</if>
+			<if test="sci_number != null">sci_number=#{sci_number},</if>
+			<if test="sci_penalty != null">sci_penalty=#{sci_penalty},</if>
+			<if test="sci_desc != null">sci_desc=#{sci_desc},</if>
+			<if test="sci_totalCosts != null">sci_totalCosts=#{sci_totalCosts},</if>
+		</set>
+		WHERE
+		statement_code=#{statement_code}
+		AND
+		sci_type =#{sci_type}
+		AND
+		sci_itemName =#{sci_itemName}
+	</update>
+
+	<!-- 更新结算费用结余记录 -->
+	<update id="updateStatementBalance">
+		UPDATE GJP_Contract_StatementBalance
+		<set>
+			<if test="csb_credit != null">csb_credit=#{csb_credit},</if>
+			<if test="csb_debit != null">csb_debit=#{csb_debit},</if>
+			<if test="csb_desc != null">csb_desc=#{csb_desc},</if>
+		</set>
+		WHERE
+		statement_code=#{statement_code}
+		AND
+		csb_type =#{csb_type}
+	</update>
+
+	<!-- 删除结算消费项目数据 -->
+	<delete id="deleteStatementCostItems">
+		DELETE FROM GJP_Contract_StatementCostItems
+		WHERE
+		statement_code=#{statement_code}
+	</delete>
+
+	<!-- 删除损坏物品清单 -->
+	<delete id="deleteStatementDamageItems">
+		DELETE FROM GJP_Contract_StatementDamageItems
+		WHERE
+		statement_code=#{statement_code}
+	</delete>
+
+	<delete id="deleteStatementBalance">
+		DELETE FROM GJP_Contract_StatementBalance
+		WHERE
+		statement_code=#{statement_code}
+	</delete>
+
+</mapper>

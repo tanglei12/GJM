@@ -1,0 +1,244 @@
+@charset "utf-8";
+/* CSS Document */
+
+#print{
+	width:626px;
+	height:1010px;
+	padding:40px 58px 0 58px;
+	background-color:#FFF;
+	position:relative;
+	}
+	.printLogo{
+		width:230px;
+		height:50px;
+		line-height:50px;
+		text-indent: 20px;
+		float:right;
+		font-size:27px;
+		}
+	.printLogo img{
+		float:left;
+		}
+	.messageLeft{
+		width:311px;
+		float:left;
+		border-right:1px solid #666;
+		}
+	.messageRight{
+		width:312px;
+		float:left;
+		}
+	.message{
+		width:99.7%;
+		height:128px;
+		border-collapse: collapse;
+		font-size:12px;
+		/* border-top:1px solid #666;
+		margin-top:70px;
+		border-left:1px solid #666;
+		border-right:1px solid #666; */
+		
+		}
+		.message ul{
+			width:100%;
+			height:25px;
+			line-height:25px;
+			}
+		.message ul li{
+			float:left;
+			width:69.6%;
+			height:25px;
+			line-height:25px;
+			border-bottom:1px solid #666;
+			text-indent:5px;
+			}
+		.message ul .fonts{
+			width:30%;
+			height:25px;
+			line-height:25px;
+			float:left;
+			border-bottom:1px solid #666;
+			border-right:1px solid #666;
+			text-align:right;
+			}
+		.message .kongbai{
+			width:100%;
+			height:52px;
+			margin-top:2px;
+			line-height:50px;
+			}
+	
+	.printPage{
+		position:absolute;
+		bottom:0;
+		left:44.4%;
+		font-size:14px;
+		margin-bottom:20px;
+		}
+	.printContent{
+		width:99.7%;
+		height:auto;
+		border-bottom:1px solid #666;
+		border-left:1px solid #666;
+		border-right:1px solid #666;
+		}
+	.printContent .printRegional{
+		width:100%;
+		height:23px;
+		line-height:23px;
+		font-size:14px;
+		background-color:#CCC;
+		text-indent:30px;
+		border-top:1px solid #666;
+		}
+	.printContent .printCp{
+		width:100%;
+		height:179px;
+		border-top:1px solid #666;
+		}
+	.printContent .printCp .printCpImage{
+		width:140px;
+		height:80px;
+		padding:50px 0;
+		text-align:center;
+		float:left;
+		}
+	.printContent .printCp .printCpImage img{
+		max-width:130px;
+		max-height:71px;
+		}
+	.printContent .printCp .printCpFont{
+		width:483px;
+		height:180px;
+		float:left;
+		border-left:1px solid #666;
+		}
+		.printContent .printCp .printCpFont .printCpFont_left{
+			width:240px;
+			height:84px;
+			font-size:12px;
+			float:left;
+			border-right:1px solid #666;
+			}
+		.printContent .printCp .printCpFont .printCpFont_right{
+			width:242px;
+			height:84px;
+			font-size:12px;
+			float:right;
+			}
+		.printContent .printCp .printCpFont .printCpFont_bottom{
+			width:100%;
+			height:96px;
+			font-size:12px;
+			float:left;
+			}
+		.printContent .printCp .printCpFont li ul{
+			width:100%;
+			height:20px;
+			line-height:20px;
+			}
+		.printContent .printCp .printCpFont li ul li{
+			float:left;
+			width:69.4%;
+			height:20px;
+			line-height:20px;
+			border-bottom:1px solid #666;
+			text-indent:5px;
+			}
+		.printContent .printCp .printCpFont li ul .fonts{
+			width:30%;
+			height:20px;
+			line-height:20px;
+			float:left;
+			border-bottom:1px solid #666;
+			border-right:1px solid #666;
+			text-align:right;
+			}
+		.printContent .printCp .printCpFont li .printCpFont_bottom_title{
+			width:72px;
+			height:96px;
+			line-height:96px;
+			border-right:1px solid #666;
+			float:left;
+			}
+		.printContent .printCp .printCpFont li .printCpFont_bottom_title li{
+			width:72px;
+			height:96px;
+			line-height:96px;
+			text-align:center;
+			border-bottom:0;
+			}
+		.printContent .printCp .printCpFont li .printCpFont_bottom_font{
+			width:410px;
+			height:96px;
+			line-height:96px;
+			float:left;
+			}
+		.printContent .printCp .printCpFont li .printCpFont_bottom_font li{
+			width:410px;
+			height:96px;
+			line-height:96px;
+			border-bottom:0;
+			
+			}
+	.xMoney{
+		width:100%;
+		height:25px;
+		line-height:25px;
+		border-top:1px solid #666;
+		border-bottom:0;
+		text-indent:400px;
+		font-size:14px;
+		}
+	.sumMoney{
+		width:99.7%;
+		height:40px;
+		line-height:40px;
+		border-bottom:1px solid #666;
+		border-left:1px solid #666;
+		border-right:1px solid #666;
+		background-color:#CCC;
+		font-size:14px;
+		}
+	.sumMoney ul{
+		width:40%;
+		height:40px;
+		float:left;
+		}
+	.sumMoney ul li{
+		width:50%;
+		height:40px;
+		text-align:right;
+		float:left;
+		font-size:13px;
+		}
+	.sumMoney .sumMoney_dx{
+		width:60%;
+		height:40px;
+		float:left;
+		}
+	.sumMoney .sumMoney_dx li{
+		width:60%;
+		height:40px;
+		text-align:right;
+		float:left;
+		font-size:13px;
+		}
+	.sumMoney .sumMoney_dx .sumMoney_font{
+		width:40%;
+		height:40px;
+		text-align:right;
+		float:left;
+		font-size:13px;
+		}
+
+		.prints_fh{
+			position:absolute;
+			float:left;
+			top:10px;
+			left:10px;
+			width:72px;
+			height:72px;
+			background:url("../image/10.png") no-repeat;
+			z-index: 3;
+			}

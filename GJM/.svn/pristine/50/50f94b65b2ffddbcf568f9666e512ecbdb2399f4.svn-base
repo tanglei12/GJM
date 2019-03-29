@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 职工表 GJP_UserCenter_Employee -->
+<mapper namespace="com.gjp.dao.UserCenterTaskMessageDAO">
+
+	<sql id="menberEcpId">
+		tm_text,
+		tm_type,
+		tm_state,
+		tm_startTime,
+		tm_startWeek,
+		tm_endTime,
+		tm_endWeek,
+		tm_href,
+		tm_result,
+		em_id,
+		tm_beizhu,
+		tm_pid,
+		tm_tmType,
+		tm_http
+	</sql>
+
+	<sql id="insert">
+		#{tm_text },
+		#{tm_type },
+		#{tm_state },
+		#{tm_startTime},
+		#{tm_startWeek},
+		#{tm_endTime },
+		#{tm_endWeek },
+		#{tm_href },
+		#{tm_result},
+		#{em_id },
+		#{tm_beizhu },
+		#{tm_pid },
+		#{tm_tmType },
+		#{tm_http }
+	</sql>
+
+	<sql id="update">
+		tm_text = #{tm_text },
+		tm_type = #{tm_type },
+		tm_state = #{tm_state },
+		tm_startTime = #{tm_startTime},
+		tm_startWeek = #{tm_startWeek},
+		tm_endTime = #{tm_endTime },
+		tm_endWeek = #{tm_endWeek },
+		tm_href = #{tm_href },
+		tm_result = #{tm_result },
+		em_id = #{em_id },
+		tm_beizhu = #{tm_beizhu },
+		tm_tmType = #{tm_tmType },
+		tm_http = #{tm_http }
+	</sql>
+
+	<!-- 插入任务消息 -->
+	<insert id="insertTaskMessage" useGeneratedKeys="true"
+		parameterType="com.gjp.model.UserCenterTaskMessage" keyProperty="tm_id">
+		insert into GJP_UserCenter_TaskMessage(
+		<include refid="menberEcpId"></include>
+		) values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 修改任务消息类 -->
+	<update id="updatetTaskMessage" parameterType="com.gjp.model.UserCenterTaskMessage">
+		update GJP_UserCenter_TaskMessage set
+		<include refid="update"></include>
+		where tm_id=#{tm_id}
+	</update>
+	
+	<!-- 修改任务消息类内容 -->
+	<update id="updatetTaskMessageText" parameterType="com.gjp.model.UserCenterTaskMessage">
+		update GJP_UserCenter_TaskMessage set
+		tm_text = #{tm_text }
+		where tm_id=#{tm_id}
+	</update>
+	
+	<!-- 根据父级ID删除任务消息类 -->
+	<delete id="deleteTaskMessagePid" parameterType="com.gjp.model.UserCenterTaskMessage">
+		delete from GJP_UserCenter_TaskMessage
+		where tm_pid=#{tm_pid}
+	</delete>
+	
+	<!-- 修改任务执行状态 -->
+	<update id="updatetTaskMessageState" parameterType="com.gjp.model.UserCenterTaskMessage">
+		update GJP_UserCenter_TaskMessage set
+		tm_result = #{tm_result }
+		<if test="tm_beizhu != null and tm_beizhu != ''">
+			,tm_beizhu = #{tm_beizhu }
+		</if>
+		where 
+		<if test="tm_id != null">
+		tm_id=#{tm_id}
+		</if>
+		<if test="tm_pid != null">
+		tm_pid=#{tm_pid}
+		</if>
+	</update>
+	
+	<!-- 根据用户编码查询任务消息 -->
+	<select id="selectTaskMessageEM" resultType="com.gjp.model.UserCenterTaskMessage">
+		select *,(
+			select count(1) from GJP_UserCenter_TaskMessage where em_id=#{em_id} and (tm_result=0 or tm_result=1) 
+			<if test="start != null and start != ''">
+			and DATE_FORMAT(tm_startTime,'%Y-%m-%d')=#{start}
+			</if>
+		) as size from GJP_UserCenter_TaskMessage where em_id=#{em_id} and (tm_result=0 or tm_result=1) 
+		<if test="start != null and start != ''">
+		and DATE_FORMAT(tm_startTime,'%Y-%m-%d')=#{start}
+		</if>
+		<if test="pageNo == null">
+			limit 0,16
+		</if>
+		<if test="pageNo != null">
+			limit #{pageNo},12
+		</if>
+	</select>
+	
+	<!-- 根据用户编码查询任务消息查询未完成任务 -->
+	<select id="selectTaskMessageUnfinished" resultType="com.gjp.model.UserCenterTaskMessage">
+		select * from GJP_UserCenter_TaskMessage where em_id=#{em_id} and tm_result=0
+	</select>
+	
+	<!-- 根据用户编码所有子级查询任务消息 -->
+	<select id="selectTaskMessagePid" resultType="com.gjp.model.UserCenterTaskMessage">
+		select * from GJP_UserCenter_TaskMessage 
+		left join GJP_UserCenter_Employee on GJP_UserCenter_TaskMessage.em_id = GJP_UserCenter_Employee.em_id
+		 where 
+		1=1
+		<if test="tm_pid != null">
+		and tm_pid=#{tm_pid}
+		</if>
+		<if test="tm_id != null">
+		and tm_id=#{tm_id}
+		</if>
+	</select>
+	
+	<!-- 根据任务消息编码查询任务消息 -->
+	<select id="selectTaskMessageID" resultType="com.gjp.model.UserCenterTaskMessage">
+		select * from GJP_UserCenter_TaskMessage
+		left join GJP_UserCenter_Employee on GJP_UserCenter_TaskMessage.em_id = GJP_UserCenter_Employee.em_id
+		where tm_id=#{tm_id}
+	</select>
+	
+	<!-- 根据任务消息父级编码和用户编码 -->
+	<select id="selectTaskMessageUser" resultType="com.gjp.model.UserCenterTaskMessage">
+		select * from GJP_UserCenter_TaskMessage where tm_pid=#{tm_pid} and em_id=#{em_id}
+	</select>
+	
+	<!-- 根据调用地址和内部人员编码查询任务消息 -->
+	<select id="selectTaskMessageUserHttp" resultType="com.gjp.model.UserCenterTaskMessage">
+		select * from GJP_UserCenter_TaskMessage where tm_http=#{tm_http}
+		<if test="em_id != null">
+		and em_id=#{em_id}
+		</if>
+		order by tm_pid asc
+	</select>
+
+</mapper>

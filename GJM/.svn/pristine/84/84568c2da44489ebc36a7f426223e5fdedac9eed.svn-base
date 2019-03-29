@@ -1,0 +1,852 @@
+var hi_id = getQueryString("phi_id"); // 房屋编号
+var type = "intent";
+var housePhiMoney = "";
+var ccCode = 0;
+$(function(){
+	dataType($("#hicode").val());
+	//跟踪记录
+	selectOrade($("#updatephi_id").val(),$("#gj-id").val());
+	$(".dateTime2").val("");
+	$(".dateTime1").val(returnDate(new Date()));
+	$(".inputTime").animate({width: 200},300);
+});
+
+//选择开始结束时间
+function dates(){
+	var date = new Date(returnDate(new Date()))
+	data = date.setFullYear(date.getFullYear(), date.getMonth(), date.getDate() + 5);
+	WdatePicker({
+		minDate : returnDate(new Date()),
+		maxDate : returnDate(data),
+		onpicked: function(dp){
+			if($(".dateTime1").val() != "" && $(".dateTime2").val() != ""){
+				//data();
+			}
+		}
+	});
+}
+
+
+//验证电话号码
+function checkphone(obj){
+	var phi_id = getUrlParam("phi_id");
+	if(phi_id == null || phi_id == ""){
+		var phone = $("#useriphone").val();//联系电话
+		if(!isPhone($("#useriphone").val())){
+			$("#useriphone").msg("请正确填写电话号码!",false);
+			$("#useriphone").css("border-color","red");
+			inptBulr("properid");
+			return;
+		}
+		
+		//获取物业号
+		 var _propertyInfo_id
+			prop_code ="";
+		if($("select[name=porp_name]").length > 0){
+			var last_porp_name = $("select[name=porp_name]:last>option:selected");
+			if(last_porp_name.attr("data-prop-id") == 0){
+				_propertyInfo_id = $("input[name=propertyInfo_id]").attr("data-id");
+			}else{
+				_propertyInfo_id = last_porp_name.attr("data-prop-id");
+				prop_code = last_porp_name.attr("data-code") + "-";
+			}
+		} else {
+			_propertyInfo_id = $("input[name=propertyInfo_id]").attr("data-id");
+		}
+		
+		inptBulr("properid");
+		if(_propertyInfo_id == null || _propertyInfo_id == ""){
+			$("#properid").msg("物业不能为空",false);
+			return;
+		}
+		
+		$(".msg-box").hide();
+		 $.ajax({
+				type:"POST",
+				url:"/intention/selectHouseIntentionPhoneCount",
+				data:"phi_phone="+phone+"&propertyInfo_Id="+_propertyInfo_id,
+				datatype:"json",
+				contentType:"application/x-www-form-urlencoded; charset=utf-8",
+				success:function(result){
+					if( result.count != null && result.count > 0){
+						$("#useriphone").msg("该小区已有类似房源！",false);
+						return ;
+					}
+				}
+			})
+	}
+}
+
+
+/**
+ * 根据房东电话判断该电话号码下载意向房源中是否已有录入房源
+ */
+function chenkphone(obj){
+	var phone = $("#useriphone").val();//联系电话
+	if(!isPhone($("#useriphone").val())){
+		$.jBox.tip("请正确填写电话号码!");
+		return;
+	}
+	 $.ajax({
+			type:"POST",
+			url:"/intention/selectHouseIntentionPhoneCount",
+			data:"phi_phone="+phone,
+			datatype:"json",
+			contentType:"application/x-www-form-urlencoded; charset=utf-8",
+			success:function(result){
+				if( result.count != null && result.count > 0){
+					$("#useriphone").msg("电话号码重复！",false);
+					return ;
+				}
+			}
+		})
+}
+
+
+/**qs*/
+function fangyuanyixiang(d){
+	
+	$("#divt"+d).css("border-color","#f39c12");
+	$("#divt"+d+"f").css("color","#f39c12");
+	$("#divt"+d+"x").css("border-color","#f39c12");
+	$("#divt"+d+"y").css("border-color","#f39c12");
+	$("#divt"+d+"x").css("background-color","#f39c12");
+	$("#divt"+d+"y").css("background-color","#f39c12");
+	$("#divt1").css("background-color","#f39c12");
+	if(d<=5){
+		var dd = d + 1;
+		$("#divt"+dd+"f").css("color","#00a0e9");
+		$("#divt"+dd+"x").css("border-color","#00a0e9");
+		$("#divt"+dd+"y").css("border-color","#00a0e9");
+		$("#divt"+dd+"x").css("background-color","#00a0e9");
+		$("#divt"+dd+"y").css("background-color","#00a0e9");
+	}
+	
+	if(d!='' && d==1){
+		$("#fangyuanluru").css("display","none");
+		$("#fangyuangenjin").css("display","block");
+	}
+	if(d!='' && d==2){
+		$("#fangyuangenjin").css("display","none");
+		$("#fangyuanshikan").css("display","block");
+	}
+	if(d!='' && d==3){
+		$("#fangyuanshikan").css("display","none");
+		$("#fangyuandingjia").css("display","block");
+	}
+	if(d!='' && d==4){
+		$("#fangyuandingjia").css("display","none");
+		$("#fangyuancunfang").css("display","block");
+	}
+	
+}
+
+/**qs*/
+function fangyuanyixianggenjin(d){
+	for (var int = 0; int < d; int++) {
+		$("#divt"+int).css("border-color","#f39c12");
+		$("#divt"+int+"f").css("color","#f39c12");
+		$("#divt"+int+"x").css("border-color","#f39c12");
+		$("#divt"+int+"y").css("border-color","#f39c12");
+	}
+	$("#divt"+d).css("border-color","#00a0e9");
+	$("#divt"+d+"f").css("color","#00a0e9");
+	$("#divt"+d+"x").css("border-color","#00a0e9");
+	$("#divt"+d+"y").css("border-color","#00a0e9");
+	
+}
+
+/** 只能输入数字 qs */
+function validate(dat){
+    var reg = new RegExp("^[0-9]*$");
+    var obj = document.getElementById(dat);
+    if(!reg.test(obj.value)){
+    	$("#"+dat).msg("请输入数字",false);
+    	
+    }
+}
+
+/** 房源跟进提交 */
+function fangyuangenjinsubmit(obj){
+	
+	var fh = $("#fangyuanfanghao").val();
+	var lc = $("#fangyuanlouceng").val();
+	var addrs = lc + "-" + fh;
+	var phi_floor = $("#fangyuanlouceng").val();
+	 //获取物业号
+	 var _propertyInfo_id
+		prop_code ="";
+	if($("select[name=porp_name]").length > 0){
+		var last_porp_name = $("select[name=porp_name]:last>option:selected");
+		_propertyInfo_id = last_porp_name.attr("data-prop-id");
+		prop_code = last_porp_name.attr("data-code") + "-";
+	} else {
+		_propertyInfo_id = $("input[name=propertyInfo_id]").attr("data-id");
+	}
+	
+	if(_propertyInfo_id == 0){
+		_propertyInfo_id = "";
+	}
+	console.log(tipnum);
+	var count = "propertyInfo_Id="+_propertyInfo_id+"&phi_type=房源跟进"+"&tipnum="+tipnum
+	+"&phi_floor="+phi_floor+"&phi_address="+addrs+ "&phi_money="+$("#fangdongbaojia").val()
+	+"&phi_user="+$("#lianxiren").val()+"&phi_phone="+$("#useriphone").val()+"&phi_name="
+	+"&phi_source="+$("#fangyuanlaiyuan").val()+"&hi_function="+$("#fangyuanyoushi").val()
+	+ "&phi_user_sex="+$("input[name='phi_user_sex']:checked").val()+ "&hi_houseS="+$("#fangwushi").val()
+	+ "&hi_houseT="+$("#fangwuting").val()+ "&hi_houseW="+$("#fangwuwei").val()+ "&buildType="+$("input[name='buildTypes']:checked").val()+ "&hi_code="+$("#hicode").val();
+	count = count +"&phi_id="+getUrlParam("phi_id")+"&new_buildType="+$("#buildtype").val()+"&cc_code="+ccCode; 
+	$.ajax({
+			type : "POST",
+			url : "/intention/addInitqs",
+			data : count,
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			dataType : "json",
+			success : function(result){
+				if(result.message == "repeat"){
+					$.jBox.tip("该房源正在跟进中");
+				}else if(result.message=="success"){
+					tipnum = result.hi.tipnum;
+					//步骤完善的添加图片√；
+			    	for (var int = 1; int < tipnum; int++) {
+			    		$("#divRadius"+int+"s").addClass("aimage");
+			    	}
+					var houseMoney = "";
+	    			if(result.hi.phi_money != null && result.hi.phi_money != ""){//报价
+	    				houseMoney = houseMoney + "报价："+result.hi.phi_money+"元";
+	    				if(result.hi.phi_price != null && result.hi.phi_price != ""){//定价
+	    					houseMoney = houseMoney + "/定价："+result.hi.phi_price+"元";
+	    				}
+	    			}
+	    			$("#houseUpdateUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//最新跟进
+				    $("#houseUpdateType").text("(" + result.hi.buildType+")"+result.hi.phi_type);//房源状态
+				    $("#phi_name_span").text((result.hi.phi_name==null ? "" : result.hi.phi_name));//标题
+			    	$("#propertyInfo_Name_span").text((result.hi.propertyInfo_Name==null ? "":result.hi.propertyInfo_Name)+"-"+(result.hi.phi_address==null?"":result.hi.phi_address));//地址
+			    	$("#hi_houseSTW_span").text((result.hi.hi_houseS==null ? "" : result.hi.hi_houseS)+'室'+(result.hi.hi_houseT==null?"":result.hi.hi_houseT)+'厅'+(result.hi.hi_houseW==null?"":result.hi.hi_houseW));//户型
+			    	$("#phi_price_span").text(houseMoney);//价格
+			    	$("#phi_user_span").text((result.hi.phi_user==null ? "" : result.hi.phi_user)+' · '+(result.hi.phi_user_sex==null?"":result.hi.phi_user_sex)+'（'+(result.hi.phi_phone==null?"":result.hi.phi_phone)+")");//房东
+			    	$("#hi_function_span").text((result.hi.hi_function==null ? "" : result.hi.hi_function));//优势
+			    	
+			    	$(".address").text((result.hi.propertyInfo_Name==null ? "":result.hi.propertyInfo_Name)+"-"+(result.hi.phi_address==null?"":result.hi.phi_address));//概述地址
+			    	//户型
+			    	$(".houseType").text((result.hi.hi_houseS==null ? "" : result.hi.hi_houseS)+'室'+(result.hi.hi_houseT==null?"":result.hi.hi_houseT)+'厅'+(result.hi.hi_houseW==null?"":result.hi.hi_houseW)+"卫");//概述户型
+			    	$(".houseMoneys").text("报价:" + (result.hi.phi_money == null ? "" : result.hi.phi_money) + "元");//概述报价
+			    	
+			    	housePhiMoney = "报价:" + result.hi.phi_money;
+			    	
+			    	$(".newUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//概述最新跟进
+			    	$(".propertyType").text("(" + result.hi.buildType+")"+result.hi.phi_type);//概述房源状态
+			    	
+			    	//户型
+			    	$(".houseType").text((result.hi.hi_houseS==null ? "" : result.hi.hi_houseS)+'室'+(result.hi.hi_houseT==null?"":result.hi.hi_houseT)+'厅'+(result.hi.hi_houseW==null?"":result.hi.hi_houseW) + '卫');
+			    	//房东
+			    	$(".peoplePhone").text((result.hi.phi_user==null ? "" : result.hi.phi_user)+' · '+(result.hi.phi_user_sex==null?"":result.hi.phi_user_sex)+'（'+(result.hi.phi_phone==null?"":result.hi.phi_phone)+")");
+			    	//来源
+			    	$(".houseSource").text(result.hi.phi_source == null ? "" : result.hi.phi_source);
+			    	//类型
+			    	$(".propertyType").text("(" + result.hi.buildType+")"+result.hi.phi_type);
+			    	//优势
+			    	$(".advantage").text(result.hi.hi_function == null ? "" : result.hi.hi_function);
+			    	
+			    	//室
+			    	$("#fangwushis").val((result.hi.hi_houseS==null || result.hi.hi_houseS=="") ? "" : result.hi.hi_houseS);
+			    	//厅
+			    	$("#fangwutings").val((result.hi.hi_houseT==null || result.hi.hi_houseT=="") ? "" : result.hi.hi_houseT);
+			    	//卫
+			    	$("#fangwuweis").val((result.hi.hi_houseW==null || result.hi.hi_houseW=="") ? "" : result.hi.hi_houseW);
+			    	if(result.stage==0){
+						$.jBox.tip("信息跟进成功，请继续完善带*的内容");
+					}else{
+						$.jBox.tip("房源跟进完成，进入实勘中！");
+					}
+				}
+			},
+			
+		});
+	
+	
+}
+
+/** 房源实勘提交qs */
+function fangyuanshikansubmit(obj){
+	
+	var hi_content = $("#fangyuandianpings").val();
+	if(isNaN($('#fangwushis').val()) || isNaN($('#fangwutings').val()) || isNaN($('#fangwuweis').val())){
+		$.jBox.tip("房屋 室、厅、卫 请输入整数!");
+		return false;
+	}
+	var properId = "";//页面加载时获取物业IF
+	if($("#propertyInfo_Id").val() != null && $("#propertyInfo_Id").val() != ""){
+		properId = $("#propertyInfo_Id").val();
+	}
+	if($("#hpropertyInfo_Id").val() != null && $("#hpropertyInfo_Id").val() != ""){
+		properId = $("#hpropertyInfo_Id").val();
+	}
+	
+	var code = "";
+	if($("#hicode").val() != null || $("#hicode").val() != ""){
+		code = $("#hicode").val();
+	}
+	var img_path = "";
+	var imagenum = 0;
+	$("#image-upload-box .image-item-img").each(function(){
+		img_path += $(this).attr("src") + ",";
+		imagenum += 1;
+	});
+	if(imagenum == null || imagenum == ""){
+		imagenum = 0;
+	}
+	console.log(tipnum);
+	var count =  "hi_measure="+$("#fangyuanmianji").val()+"&hi_code="+code+"&RecommendGroup_Id="+$("#tuijianqunti").val()+"&tipnum="+tipnum
+	+"&hi_situation="+$("#zhuangxiuqingkuang").val()+"&hi_houseS="+$("#fangwushis").val()
+	+"&hi_houseT="+$("#fangwutings").val()+"&hi_houseW="+$("#fangwuweis").val()+"&his_id="+$("#housepinpai").val()
+	+"&hi_project="+$("#fangyuanpeizhi").val()+"&hi_content="+hi_content+"&imageNum="+imagenum
+	+"&phi_type=房源实勘"+"&phi_id="+getUrlParam("phi_id")+"&propertyInfo_Id="+properId+"&hb_id="+$("#housepinpai").val()+"&imageNumEnd="+$("#imageNumEnd").val()
+	+"&new_buildType="+$("#buildtype").val()+"&path="+img_path+"&phi_style="+$("#phi_style").val();
+	console.log(tipnum);
+	$.ajax({
+		type:"POST",
+		url:"/intention/addInitqs",
+		data:count,
+		datatype:"json",
+		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		success:function(result){
+			if(result.message=="success"){
+				var html ="";
+				tipnum = result.hi.tipnum;
+				console.log(tipnum);
+				//步骤完善的添加图片√；
+		    	for (var int = 1; int < tipnum; int++) {
+		    		$("#divRadius"+int+"s").addClass("aimage");
+		    	}
+				$("#houseUpdateUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//最新跟进
+		    	//$("#houseUpdateType").text(result.hi.phi_type);//房源状态
+		    	//房源装修下情况
+	    		var situ = "无";
+	    		if(result.hi.hi_situation != null && result.hi.hi_situation != "" && result.hi.hi_situation == 0){
+	    			situ = "清水";
+	    		}else if(result.hi.hi_situation != null && result.hi.hi_situation != "" && result.hi.hi_situation == 1){
+	    			situ = "简装";
+	    		}else if(result.hi.hi_situation != null && result.hi.hi_situation != "" && result.hi.hi_situation == 2){
+	    			situ = "精装";
+	    		}else if(result.hi.hi_situation != null && result.hi.hi_situation != "" && result.hi.hi_situation == 3){
+	    			situ = "豪装";
+	    		}else if(result.hi.hi_situation != null && result.hi.hi_situation != "" && result.hi.hi_situation == 4){
+	    			situ = "中装";
+	    		}
+	    		// 加载房屋图片
+	    		if(result.hi.tipnum == 5){
+	    			$("#image-upload-box").hide();
+	    		}
+	    		$("#hi_houseSTW_span").text((result.hi.hi_houseS==null ? "" : result.hi.hi_houseS)+'室'+(result.hi.hi_houseT==null?"":result.hi.hi_houseT)+'厅'+(result.hi.hi_houseW==null?"":result.hi.hi_houseW));//户型
+	    		$("#hi_situation_span").text(situ);//装修
+	    		$("#his_name_span").text((result.hi.his_name==null ? "" : result.hi.his_name));//品牌
+	    		//$("#recommend_name_span").text((result.hi.recommend_name==null ? "" : result.hi.recommend_name));//推荐
+	    		$("#hi_project_span").text((result.hi.hi_project==null ? "" : result.hi.hi_project));//配置
+		    	$("#houseImage_span").html(html);//信息展示图片加载
+		    	
+		    	$(".address").text((result.hi.propertyInfo_Name==null ? "":result.hi.propertyInfo_Name)+"-"+(result.hi.phi_address==null?"":result.hi.phi_address));//概述地址
+		    	//户型
+		    	$(".houseType").text((result.hi.hi_houseS==null ? "" : result.hi.hi_houseS)+'室'+(result.hi.hi_houseT==null?"":result.hi.hi_houseT)+'厅'+(result.hi.hi_houseW==null?"":result.hi.hi_houseW) + '卫('+((result.hi.hi_measure==null || result.hi.hi_measure=="") ? "" : result.hi.hi_measure)+'㎡)');//概述户型
+		    	$(".newUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//概述最新跟进
+		    	
+		    	$(".propertyType").text("(" + result.hi.buildType+")"+result.hi.phi_type);//概述房源状态
+		    	
+		    	//+'('+(result.hi.hi_measure == null || result.hi.hi_measure == "")? "" : result.hi.hi_measure+'㎡)'
+		    	//地址
+		    	$(".address").text((result.hi.propertyInfo_Name==null ? "":result.hi.propertyInfo_Name)+"-"+(result.hi.phi_address==null?"":result.hi.phi_address));
+		    	//报价
+		    	$(".houseMoneys").text("报价:" + (result.hi.phi_money == null ? "" : result.hi.phi_money) + "元");
+		    	//品牌
+		    	$(".brand").text((result.hi.his_name == null || result.hi.his_name == "") ? "" : result.hi.his_name);
+		    	//装修
+		    	$(".renovation").text(situ);
+		    	//推荐
+		    	$(".group").text((result.hi.recommend_name == null ? "" : result.hi.recommend_name));
+		    	//点评
+		    	$(".comment").text(result.hi.hi_content == null ? "" : result.hi.hi_content);
+		    	//配置
+		    	$(".houseConfigure").text(result.hi.hi_project == null ? "" : result.hi.hi_project);
+				if(result.stage==0){
+					$("#imageNumEnd").val(0);
+					$.jBox.tip("请将带星号的信息完善!");
+					return;
+				}else{
+					$("#imageNumEnd").val(0);
+				}
+			}
+		}
+	})
+	
+	
+
+}
+
+
+/** 房源定价提交qs */
+function fangyuandingjiasubmit(obj){
+	var beginTime = null;
+	var endTime = null;
+	if($("#protect_beginTime").val() != null && $("#protect_beginTime").val() !=""){
+		beginTime = $("#protect_beginTime").val();
+	}
+	if($("#protect_endTine").val() != null && $("#protect_endTine").val() != ""){
+		endTime = $("#protect_endTine").val();
+	}
+	
+	if(endTime != null && endTime != ""){
+		if($("#protect_cause").val() == null || $("#protect_cause").val() == ""){
+			$.jBox.tip("房源保护原因不能为空！");
+			return ;
+		}
+	}
+	var v = $("#dingjia").val();
+	if(v == ""){
+		$.jBox.tip("房源成交价不能为空！");
+		return ;
+	}
+	
+	var properId = "";//页面加载时获取物业IF
+	if($("#propertyInfo_Id").val() != null && $("#propertyInfo_Id").val() != ""){
+		properId = $("#propertyInfo_Id").val();
+	}
+	var protect_cause = null;
+	if($("#protect_cause").val() != null && $("#protect_cause").val() != ""){
+		protect_cause = $("#protect_cause").val();
+	}
+	var code = "";
+	if($("#hicode").val() != null || $("#hicode").val() != ""){
+		code = $("#hicode").val();
+	}
+	
+	var buildtys = $("input[name='buildTypeDingjia']:checked").val();
+	var dataWhere =  "propertyInfo_Id="+properId+"&phi_type=房源定价"+"&phi_id="+getUrlParam("phi_id")+"&tipnum="+tipnum
+			+"&phi_price="+v+"&hi_code="+code+"&buildType="+buildtys+"&protect_cause="+protect_cause;
+	
+	if(buildtys == "保护"){
+		phiEndTimeIsNull();
+		dataWhere = dataWhere +"&beginTime="+beginTime+"&endTime="+endTime;
+	}
+	dataWhere = dataWhere +"&new_buildType="+$("#buildtype").val();
+	$.ajax({
+		type : "POST",
+		url : "/intention/addInitqs",
+		data :dataWhere,
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		dataType : "json",
+		success : function(result){
+			if(result.message=="success"){
+				tipnum = result.hi.tipnum;
+				//步骤完善的添加图片√；
+		    	for (var int = 1; int < tipnum; int++) {
+		    		$("#divRadius"+int+"s").addClass("aimage");
+		    	}
+				//$("#houseUpdateUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//最新跟进
+		    	//$("#houseUpdateType").text(result.hi.phi_type);//房源状态
+		    	//$("#phi_price_span").text(result.hi.phi_money);//价格 
+				
+		    	$(".newUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//概述最新跟进
+		    	//定价
+		    	$(".houseMoneys").text("报价："+result.hi.phi_money + "元/定价:" + (result.hi.phi_price == null ? "" : result.hi.phi_price) + "元");		
+		    	//楼盘类型
+		    	$(".propertyType").text("(" + result.hi.buildType+")"+result.hi.phi_type);//概述房源状态
+		    	
+				if(result.stage == 1){
+					$.jBox.tip("房源定价完成，进入存房！");
+				}
+			}else{
+				$.jBox.tip("请将带*的内容完善！");
+
+			}
+		},
+	});
+	
+
+}
+
+
+/** 房源存房提交qs */
+function fangyuancunfangsubmit(obj){
+	var v = $("#rb_lx").val();//操作类型
+	var endtext = $("#genjinjieguo").val();
+	if(endtext != null && endtext == "完成" && v != null && (v == "定金" || v == "诚意金")){
+		genjinjieguosubmit();
+	}
+	var properId = "";//页面加载时获取物业IF
+	if($("#propertyInfo_Id").val() != null && $("#propertyInfo_Id").val() != ""){
+		properId = $("#propertyInfo_Id").val();
+	}
+	if($("#hpropertyInfo_Id").val() != null && $("#hpropertyInfo_Id").val() != ""){
+		properId = $("#hpropertyInfo_Id").val();
+	}
+	var code = ""
+	if($("#hicode").val() != null || $("#hicode").val() != ""){
+		code = $("#hicode").val();
+	}
+	$.ajax({
+		type:"POST",
+		url:"/intention/addInitqs",
+		data:"propertyInfo_Id="+properId+"&phi_type="+$("#genjinjieguo").val()+"&phi_id="+getUrlParam("phi_id")+"&hi_code="+code
+			+"&buildType=封盘"+"&tipnum="+tipnum+"&new_buildType="+$("#buildtype").val()+"&phi_rentDay="+$("#phi_rentDay").val(),
+		datatype:"json",
+		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		success:function(result){
+			if(result.message=="success"){
+				msg = "success";
+				tipnum = result.hi.tipnum;
+				//步骤完善的添加图片√；
+		    	for (var int = 1; int < tipnum; int++) {
+		    		$("#divRadius"+int+"s").addClass("aimage");
+		    	}
+				$("#houseUpdateUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));//最新跟进
+		    	$("#houseUpdateType").text("(" + result.hi.buildType+")"+result.hi.phi_type);//房源状态
+		    	
+		    	$(".newUser").text(result.hi.new_emName+'/'+returnDate(result.hi.phi_new_addTime));
+		    	$(".propertyType").text("(" + result.hi.buildType+")"+result.hi.phi_type);
+		    	
+		    	//存房结果
+		    	$(".houseResult").text((result.hi.phi_type == null || result.hi.phi_type == "") ? "" : result.hi.phi_type);
+		    	
+				if(result.stage==0){
+					$.jBox.tip("请将带星号的信息完善!");
+					return;
+				}else{
+					//修改意向房源签订合同/修改库存按钮可用
+					if(result.hi.phi_type == "完成"){
+			    		$("#updateContent").attr("onclick","hrefClick(this)");
+			    		$("#updateContent").attr("data-type","/houseLibrary/jumpHouseInfo?hi_code="+result.hi.hi_code+"#contractTG");
+			    		$("#updateHouse").attr("data-type","hrefClick(this)");
+			    		$("#updateHouse").attr("data-type","/houseLibrary/jumpHouseInfoEdit?hi_code="+result.hi.hi_code);
+			    		
+			    		$("#updateContent").attr("style","");
+			    		$("#updateHouse").attr("style","");
+			    		
+			    		window.location.href = "/intention/houseIntentionContent?phi_id="+getUrlParam("phi_id")+"&typeState=1";		    	
+			    		}else{
+			    		$("#updateContent").attr("style","background: #ddd !important; cursor:no-drop !important;");
+			    		$("#updateHouse").attr("style","background: #ddd !important; cursor:no-drop !important;");
+			    	}
+					
+					$.jBox.tip("意向房源跟进完成！");
+				}
+					
+			}else{
+				msg = "error";
+				$.jBox.tip("请将带*的内容完善！");
+			}	
+			
+		}
+	})
+	
+	
+
+}
+
+/** 删除房源优势qs */
+function deleteTypes(obj){
+	$(obj).parent().remove();
+}
+
+
+/** 选择群体qs */
+function changeqt(obj){
+	var check = $(obj).find("input").is(":checked");
+	if(check == false){
+		$(obj).addClass("span-checked");
+		$(obj).find("input").attr("checked",true);
+		$("#tuijianqunti").val($("#tuijianqunti").val() + "," + $(obj).find("input").val());
+	}else{
+		$(obj).removeClass("span-checked");
+		$(obj).find("input").attr("checked",false);
+		$("#tuijianqunti").val($("#tuijianqunti").val().replace($(obj).find("input").val(),""));
+	}
+}
+
+
+/** 选择房源配置qs */
+function changefangyuanpeizhi(obj){
+	var check = $(obj).find("input").is(":checked");
+	if(check == false){
+		$(obj).addClass("span-checked");
+		$(obj).find("input").attr("checked",true);
+		$("#fangyuanpeizhi").val($("#fangyuanpeizhi").val() + "," + $(obj).find("input").val());
+	}else{
+		$(obj).removeClass("span-checked");
+		$(obj).find("input").attr("checked",false);
+		$("#fangyuanpeizhi").val($("#fangyuanpeizhi").val().replace($(obj).find("input").val(),""));
+		
+	}
+}
+
+
+var nub = 60;
+
+/** 删除房源配置qs*/
+function deletefangyuanpeizhi(obj){
+	$(obj).parent().find("input").remove();
+	$(obj).parent().remove();
+	$(obj).remove();
+}
+
+
+/** 存房付款方式选择 */
+function checkedxinxi(obj){
+	var v = $("#fukuanxinxi").val();
+	if(v=="定金" || v=="诚意金"){
+		$("#zhifuzhuangtai").val("无");
+		$("#fukuanfangshi").val("无");
+		$("#lx").html(v);
+		$("#div1").css("display","block");
+		$("#typediv").css("display","none");
+	}else{
+		$("#div1").css("display","none");
+		$("#typediv").css("display","none");
+	}
+}
+
+/**qs*/
+function zhifuzt(){
+	var v = $("#zhifuzhuangtai").val();//支付状态
+	var s = $("#fukuanfangshi").val();//付款方式
+	var d = parseInt($("#zhifujine").val(),10);//支付金额
+	$("#sa").html(v);
+	$("#zffs").html(s);
+	if(d==null || d==""){
+		$("#zfje").html("0.00");
+	}else{
+		$("#zfje").html(d.toFixed(2));
+	}
+	$("#zfje").css("color","red");
+	if(v=="已付款"){
+		$("#sa").css("color","green");
+	}
+	if(v=="未付款"){
+		$("#sa").css("color","red");
+	}
+	
+	$("#typediv").css("display","block");
+	$("#div1").css("display","none");
+}
+
+/**  房源存房提交qs */
+function genjinjieguosubmit(){
+	var code = $("#hicode").val();
+	var count = "rb_playType="+$("#rb_lx").val()+"&rb_houseNum="+code+"&rb_name="+$("#phiUserName").val()
+			+"&rb_phone="+$("#lianxiphone").val();
+	if($("#genjinjieguo").val()==null || $("#genjinjieguo").val() ==""){
+		$.jBox.tip("请选择跟进结果");
+		return;
+	}
+	if($("#rb_lx").val()!= "" && $("#rb_lx").val()!="合同"){
+		if($("#zhifujine").val() == null || $("#zhifujine").val()=="" || $("#fukuanfangshi").val() == null || $("#fukuanfangshi").val() == ""){
+			$.jBox.tip("请将带*的内容完善");
+			return;
+		}
+		count = count + "&rb_money="+$("#zhifujine").val()+"&playType="+$("#fukuanfangshi").val();
+//				+"&bs_state="+$("#zhifuzhuangtai").val()
+	}
+	
+	$.ajax({
+		type:"POST",
+		url:"/intention/insertReserveBill",
+		data:count,
+		datatype:"json",
+		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		success:function(result){
+			if(result.message=="error"){
+				$.jBox.tip("添加失败");
+				return;
+			}
+			
+		}
+	})
+	
+}
+$(function(){
+	var tem = $("#genjinjieguo").val();
+	if(tem == "完成"){
+		$("#div2s").css("display","block");
+	}else{
+		$("#div2s").css("display","none");
+	}
+})
+function cunfangjieguo(obj){
+	if(obj == "完成"){
+		$("#dlType").css("display","block");
+	}else{
+		$("#dlType").css("display","none");
+	}
+}
+
+//房屋号处理
+function fanghaochuli(obj,n){
+	var arr = obj.split("-");
+	if(arr.length >= 2){
+		return arr[arr.length-n];
+	}
+}
+
+//加载得到值得多选默认选中
+function StringJiexi(obj,ids){
+	if(obj != null && obj != ""){
+		strCheck = obj+",";
+		var obj = obj.split(",");
+		$(ids).find(".type-label").each(function() {
+			for (var int = 0; int < obj.length; int++) {
+				if(obj[int]==$(this).find(".type-radio").val()){
+					$(this).addClass("span-checked");
+					$(this).find(".type-radio").attr("checked", true);
+					strCheck = strCheck.replace(obj[int]+",","");
+				}
+			}
+		});
+	}
+	
+}
+
+//房源优势新增的加载到页面
+function addProject(obj,ids){
+	var obj = obj.split(",");
+	for (var i = 0; i < obj.length; i++) {
+		var v = obj[i];
+		var pz = "<label class='type-label  span-checked' onclick='changefangyuanpeizhi(this)'  for='type"+nub+"' style='padding: 0px 18px;'>"
+			+v
+			+ "<i></i><input type='checkbox' checked='checked' class='type-radio' id='type"+nub+"' name='hi_function' value='"+v+"'></label>"
+		
+		var ss = "<label class='type-label span-checked' onclick='changeTypes(this)' for='type"+nub+">"
+			+ v
+			+ "<i></i><input type='checkbox' checked='checked' class='type-radio' id='type"+nub+"' name='phi_configure' value='"+v+"'></label>";
+		if (v != null && v != '') {
+			if(ids == 1){
+				$("#addpzlab").before(pz);//房源配置
+			}
+			if(ids == 2){
+				$("#addyslab").before(ss);//房源优势
+			}
+			
+		}
+		nub++
+	}
+	
+}
+
+
+function chenkphones(obj,phone){
+	var isMobile=/^(?:13\d|15\d)\d{5}(\d{3}|\*{3})$/;   
+	var isPhone=/^((0\d{2,3}))?(\d{7,8})((\d{3,}))?$/;
+	 if(!isMobile.test($.trim(phone)) && !isPhone.test($.trim(phone))){
+		 $.jBox.tip("请正确填写电话号码!");
+		 //obj.focus();
+	            return false;
+	        }
+}
+
+function checkSelect(){
+	if($("#fangwutings").val()!=null && $("#fangwutings").val() !="" && $("#fangwuweis").val()!=null && $("#fangwuweis").val() != ""){
+		$(".msg-box").hide();
+	}else{
+		$(".msg-box").show();
+		return;
+	}
+}
+
+
+function chanageBuildType(obj){
+	if(obj != null && obj != "" && obj == "保护"){
+		$("#selectBuildTypePublic").show();
+	}else{
+		$("#selectBuildTypePublic").hide();
+	}
+	
+}
+
+
+function phiEndTimeIsNull(){
+	if($("#protect_endTine").val() == null || $("#protect_endTine").val() == ""){
+		$.jBox.tip("房源保护结束时间不能为空！");
+		return;
+	}
+	if($("#protect_cause").val() == null || $("#protect_cause").val() == ""){
+		$.jBox.tip("房源保护原因不能为空！");
+		return;
+	}
+}
+
+function chanageTipStyle(obj){
+	for (var int = 0; int < tipnum; int++) {
+		if(obj == int){
+			$("#tip"+int).addClass("tipnum1");
+			chanageDiv(obj)
+		}else{
+			$("#tip"+int).removeClass("tipnum1");
+		}
+		
+		if(obj == tipnum){
+			$("#tip"+tipnum).addClass("tipnum2");
+			chanageDiv(tipnum)
+		}else{
+			$("#tip"+tipnum).removeClass("tipnum2");
+		}
+	}
+	
+}
+
+function chanageDiv(obj){
+	$("#fangyuanluru").css("display", "none");
+	$("#fangyuangenjin").css("display", "none");
+	$("#fangyuanshikan").css("display", "none");
+	$("#fangyuandingjia").css("display", "none");
+	$("#fangyuancunfang").css("display", "none");
+	if (obj == 1) {
+		$("#fangyuanluru").css("display", "block");
+		$("#ios").show();
+	}
+	if (obj==2) {
+		$("#fangyuangenjin").css("display", "block");
+	}
+	if (obj==3) {
+		$("#fangyuanshikan").css("display", "block");
+	}
+	if (obj == 4) {
+		$("#fangyuandingjia").css("display", "block");
+	}
+	if (obj == 5) {
+		$("#fangyuancunfang").css("display", "block");
+	}
+}
+
+
+/**  房源存房提交qs */
+function selectReserveBillCode(){
+	$.ajax({
+		type:"POST",
+		url:"/intention/selectReserveBillCode",
+		data:"hicode="+$("#hicode").val(),
+		datatype:"json",
+		contentType:"application/x-www-form-urlencoded; charset=utf-8",
+		success:function(result){
+			
+			if(result.message=="error"){
+				
+			}else{
+				$("#zhifuzhuangtai").val("已付款");
+				$("#zhifujine").val(result.rbll.rb_money);
+				$("#fukuanfangshi").val(result.rbll.bs_payType);
+			}	
+			
+		}
+	})
+	
+}
+
+function checkTextLength(obj){
+	var ct = $("#"+obj).text().trim();
+	$("#"+obj+"text").val(ct.length+"/100");
+	$('#'+obj).bind('input propertychange', function() {
+		if($(this).val().length > 100){
+			$("#"+obj).val($("#"+obj).val().substring(0,100));
+			$("#"+obj+"text").val("100/100");
+		}else{
+			$("#"+obj+"text").val($(this).val().length+"/100");
+		}
+	});
+}

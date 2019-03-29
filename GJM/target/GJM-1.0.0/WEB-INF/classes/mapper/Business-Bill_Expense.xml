@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillExpenseDao">
+	<insert id="addExpense" useGeneratedKeys="true" keyProperty="ex_id">
+		INSERT INTO GJP_Bill_Expense(
+			ex_id,
+			ex_custom,
+			ex_expense_money,
+			ex_pay,
+			ex_em_id,
+			ex_person,
+			ex_partment,
+			ex_category_details,
+			ex_enclasure,
+			ex_number,
+			ex_state,
+			ex_time
+		)VALUES(
+			#{ex_id},
+			#{ex_custom},
+			#{ex_expense_money},
+			#{ex_pay},
+			#{ex_em_id},
+			#{ex_person},
+			#{ex_partment},
+			#{ex_category_details},
+			#{ex_enclasure},
+			#{ex_number},
+			#{ex_state},
+			#{ex_time}
+		)
+	</insert>
+	<!-- 列表数据 -->
+	<select id="selectExpenseList" resultType="com.gjp.model.ViewBillExpenseVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_Expense t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ex_em_id = t2.em_id
+		where 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="queryTotalExpenseList" resultType="com.gjp.model.ViewBillExpenseVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_Expense t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ex_em_id = t2.em_id
+		where 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+	</select>
+	
+	<!-- 弹出框数据 -->
+	<select id="selectExpense" resultType="com.gjp.model.ViewBillExpenseVo">
+		SELECT
+			*
+		FROM
+			GJP_Bill_Expense t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ex_em_id = t2.em_id
+		where 1=1
+		<if test="ex_number != null and ex_number != ''">
+			and ex_number = ${ex_number}
+		</if>
+	</select>
+	<!-- 修改 -->
+	<update id="updateExpense" parameterType="com.gjp.model.ViewBillExpenseVo">
+		 update GJP_Bill_Expense
+		 <set>
+		 	<if test="ex_custom != null and ex_custom  != ''">ex_custom =#{ex_custom},</if>
+		 	<if test="ex_expense_money != null and ex_expense_money  != ''">ex_expense_money =#{ex_expense_money},</if>
+		 	<if test="ex_pay != null and ex_pay  != ''">ex_pay =#{ex_pay},</if>
+		 	<if test="ex_em_id != null and ex_em_id  != ''">ex_em_id =#{ex_em_id},</if>
+		 	<if test="ex_person != null and ex_person  != ''">ex_person =#{ex_person},</if>
+		 	<if test="ex_partment != null and ex_partment  != ''">ex_partment =#{ex_partment},</if>
+		 	<if test="ex_category_details != null and ex_category_details  != ''">ex_category_details =#{ex_category_details},</if>
+		 	<if test="ex_enclasure != null and ex_enclasure  != ''">ex_enclasure =#{ex_enclasure},</if>
+		 	<if test="ex_number != null and ex_number  != ''">ex_number =${ex_number},</if>
+		 	<if test="ex_state != null and ex_state  != ''">ex_state =#{ex_state},</if>
+		 	<if test="ex_time != null and ex_time  != ''">ex_time =#{ex_time}</if>
+		 </set>
+			where ex_id = #{ex_id}
+	</update>
+</mapper>

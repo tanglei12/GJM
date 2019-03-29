@@ -1,0 +1,1596 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 客户管理 -->
+<mapper namespace="com.gjp.dao.CustomerDAO">
+
+    <sql id="menberEcpId">
+		cc_code,
+		cc_name,
+		cc_type,
+		cc_sex,
+		cc_cardType,
+		cc_cardNum,
+		cc_state,
+		cc_email,
+		cc_occupation,
+		cc_qq,
+		cc_wx,
+		cc_work,
+		cc_createTime,
+		cc_account,
+		cc_source,
+		cc_remarks,
+		cc_fraction,
+		cc_date,
+		cc_ucc_id,
+		cc_em_id
+	</sql>
+
+    <sql id="insert">
+		#{cc_code },
+		#{cc_name },
+		#{cc_type },
+		#{cc_sex },
+		#{cc_cardType },
+		#{cc_cardNum },
+		#{cc_state },
+		#{cc_email },
+		#{cc_occupation},
+		#{cc_qq },
+		#{cc_wx },
+		#{cc_work },
+		#{cc_createTime},
+		#{cc_account },
+		#{cc_source },
+		#{cc_remarks },
+		#{cc_fraction },
+		#{cc_date },
+		#{cc_ucc_id},
+		#{cc_em_id}
+	</sql>
+
+    <sql id="update">
+        <if test="cc_sex != null">
+            cc_sex=#{cc_sex},
+        </if>
+        <if test="cc_type != null">
+            cc_type=#{cc_type},
+        </if>
+        <if test="cc_cardType != null">
+            cc_cardType=#{cc_cardType},
+        </if>
+        <if test="cc_cardNum != null">
+            cc_cardNum=#{cc_cardNum},
+        </if>
+        <if test="cc_state != null">
+            cc_state=#{cc_state},
+        </if>
+        <if test="cc_email != null">
+            cc_email=#{cc_email},
+        </if>
+        <if test="cc_occupation != null">
+            cc_occupation=#{cc_occupation},
+        </if>
+        <if test="cc_qq != null">
+            cc_qq=#{cc_qq},
+        </if>
+        <if test="cc_wx != null">
+            cc_wx=#{cc_wx},
+        </if>
+        <if test="cc_work != null">
+            cc_work=#{cc_work},
+        </if>
+        <if test="cc_createTime != null">
+            cc_createTime=#{cc_createTime},
+        </if>
+        <if test="cc_account != null">
+            cc_account=#{cc_account},
+        </if>
+        <if test="cc_source != null">
+            cc_source=#{cc_source},
+        </if>
+        <if test="cc_remarks != null">
+            cc_remarks=#{cc_remarks},
+        </if>
+        <if test="cc_fraction != null">
+            cc_fraction=#{cc_fraction},
+        </if>
+        <if test="cc_date != null">
+            cc_date=#{cc_date},
+        </if>
+        cc_name=#{cc_name}
+    </sql>
+
+
+    <!-- 查询所有客户 -->
+    <select id="selectAllCustomer" resultType="com.gjp.model.UserCustomer">
+		select * from GJP_UserCenter_Customer
+	</select>
+
+    <!-- 根据证件号查询客户是否存在 -->
+    <select id="selectCustomerCard" resultType="com.gjp.model.UserCustomer">
+        select * from GJP_UserCenter_Customer where 1=1
+        <if test="cc_cardNum != null and cc_cardNum != ''">
+            and cc_cardNum=#{cc_cardNum}
+        </if>
+        order by cc_createTime desc
+        LIMIT 1
+    </select>
+
+    <!-- 查询客户信息 -->
+    <select id="queryCustomerInfo" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        view_GJP_CustomerList
+        <where>
+            <if test="cc_id !=null">cc_id = #{cc_id}</if>
+            <if test="cc_code !=null">AND cc_code = #{cc_code}</if>
+            <if test="cc_name !=null">AND cc_name = #{cc_name}</if>
+            <if test="cc_phone !=null">AND cc_phone = #{cc_phone}</if>
+            <if test="cc_cardNum !=null">AND cc_cardNum = #{cc_cardNum}</if>
+            <if test="cc_state !=null">AND cc_state = #{cc_state}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 查询客户合同关系列表 -->
+    <select id="queryCustomerRelaContractList" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        view_GJP_CustomerRelaContractList
+        WHERE
+        contractObject_code = #{contractObject_code}
+        <if test="crc_role !=null">AND crc_role=#{crc_role}</if>
+    </select>
+
+    <!-- 查询客户图片 -->
+    <select id="queryCustomerImage" resultType="com.gjp.model.UserCustomerImage">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_CustomerImage
+        WHERE
+        cc_id = #{cc_id}
+        <if test="cci_state !=null">AND cci_state =#{cci_state}</if>
+    </select>
+
+    <!-- 查询客户图片 -->
+    <select id="queryCustomerBank" resultType="com.gjp.model.UserCustomerBank">
+		SELECT
+		*
+		FROM GJP_UserCenter_CustomerBank
+		WHERE 1 = 1
+		AND cc_id = #{cc_id}
+		AND
+		cbc_state = 0
+		LIMIT 1
+	</select>
+
+    <!-- 查询客户分页数据 -->
+    <select id="queryCustomerInfoPageList" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        view_GJP_CustomerList
+        WHERE
+        1=1
+        AND (
+        cc_name LIKE CONCAT('%',#{t.cc_name},'%')
+        OR ccp_phone LIKE CONCAT('%',#{t.ccp_phone},'%')
+        OR cc_cardNum LIKE CONCAT('%',#{t.cc_cardNum},'%')
+        )
+        <if test="t.cc_ids !=null and t.cc_ids !='' ">
+            AND cc_id IN
+            <foreach collection="t.cc_ids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY cc_createTime DESC
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <!-- 查询客户分页数据 -->
+    <select id="queryCustomerInfoPageListRecord" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        view_GJP_CustomerList
+        WHERE
+        1=1
+        AND (
+        cc_name LIKE CONCAT('%',#{t.cc_name},'%')
+        OR ccp_phone LIKE CONCAT('%',#{t.ccp_phone},'%')
+        OR cc_cardNum LIKE CONCAT('%',#{t.cc_cardNum},'%')
+        )
+        <if test="t.cc_ids !=null and t.cc_ids !='' ">
+            AND cc_id IN
+            <foreach collection="t.cc_ids" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询所有分页总数据条数 -->
+    <select id="queryTotalRecords" resultType="int">
+		SELECT FOUND_ROWS()
+	</select>
+
+    <!-- 添加客户图片 -->
+    <insert id="addCustomerImage" useGeneratedKeys="true" parameterType="com.gjp.model.UserCustomerImage" keyProperty="cci_id">
+		INSERT INTO GJP_UserCenter_CustomerImage(
+		cci_type,
+		cci_path,
+		cci_time,
+		cc_id
+		) VALUES (
+		#{cci_type},
+		#{cci_path},
+		#{cci_time},
+		#{cc_id}
+		)
+	</insert>
+
+    <!-- 添加客户图片 -->
+    <insert id="addCustomerRelaContractInfo" useGeneratedKeys="true" parameterType="com.gjp.model.UserCustomerRelationship" keyProperty="crc_id">
+		INSERT INTO GJP_UserCenter_CustomerRelationship(
+		hi_code,
+		contractObject_code,
+		crc_state,
+		crc_time,
+		cc_code,
+		crc_role,
+		em_id
+		) VALUES (
+		#{hi_code},
+		#{contractObject_code},
+		#{crc_state},
+		#{crc_time},
+		#{cc_code},
+		#{crc_role},
+		#{em_id}
+		)
+	</insert>
+
+    <!-- 删除旧客户合同关系数据 -->
+    <delete id="deleteCustomerRelaContractInfo">
+		DELETE FROM GJP_UserCenter_CustomerRelationship
+		WHERE
+		contractObject_code = #{contractObject_code}
+	</delete>
+
+    <!-- 添加新的客户信息 -->
+    <insert id="insertCustomerOne" useGeneratedKeys="true" parameterType="com.gjp.model.UserCustomer" keyProperty="cc_id">
+		INSERT INTO GJP_UserCenter_Customer(
+		cc_code,
+		cc_name,
+		cc_type,
+		cc_sex,
+		cc_cardType,
+		cc_cardNum,
+		cc_state,
+		cc_email,
+		cc_occupation,
+		cc_qq,
+		cc_wx,
+		cc_work,
+		cc_createTime,
+		cc_account,
+		cc_source,
+		cc_remarks,
+		cc_fraction,
+		cc_date
+		) VALUES (
+		#{cc_code},
+		#{cc_name},
+		#{cc_type},
+		#{cc_sex},
+		#{cc_cardType},
+		#{cc_cardNum},
+		#{cc_state},
+		#{cc_email},
+		#{cc_occupation},
+		#{cc_qq},
+		#{cc_wx},
+		#{cc_work},
+		#{cc_createTime},
+		#{cc_account},
+		#{cc_source},
+		#{cc_remarks},
+		#{cc_fraction},
+		#{cc_date}
+		)
+	</insert>
+
+    <!-- 根据条件查询客户 -->
+    <select id="selectCustomerWhere" resultType="com.gjp.model.UserCustomer">
+        select *,(
+        select count(*) from view_GJP_CustomerList where 1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+        ) as size from view_GJP_CustomerList where 1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+        order by cc_state asc
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 根据房屋地址查询房屋 -->
+    <select id="selectCustomerHouseWhere" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM (SELECT
+        IF (
+        hik.upn_code IS NULL
+        OR hik.upn_code = '',
+        CONCAT(
+        hik.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        hik.upn_sname,
+        hik.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hi_code,
+        cc_code,
+        crc_time,
+        contractObject_code
+        from view_GJP_UserCustomerHouse as hik ) house_info where 1=1
+        <if test="sqlWhere != null and sqlWhere != ''">
+            ${sqlWhere}
+        </if>
+        <if test="cc_code != null and cc_code != ''">
+            and cc_code = #{cc_code}
+        </if>
+        order by crc_time desc limit 0,3
+    </select>
+
+    <!-- 根据合同编码查询室友 -->
+    <select id="selectCustomerRelationshipPerson" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        cc_name,
+        ob.ContractObject_No,
+        ContractObject_Type,
+        ContractObject_State,
+        ContractBody_StartTOEnd,
+        crc_role
+        FROM GJP_UserCenter_CustomerRelationship cr
+        LEFT JOIN GJP_UserCenter_Customer ucc on cr.cc_code = ucc.cc_code
+        LEFT JOIN GJP_business.GJP_Contract_Object ob on ob.contractObject_code=cr.contractObject_code
+        LEFT JOIN GJP_business.GJP_Contract_Body cb on cb.contractObject_Code=ob.contractObject_Code
+        WHERE
+        cr.contractObject_code=#{contractObject_code}
+    </select>
+
+    <!-- 根据客户编号查询客户信息 -->
+    <select id="selectCustomerCode" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_Customer uc
+        LEFT JOIN GJP_UserCenter_CustomerPhone ucp ON ucp.cc_id = uc.cc_id AND ucp.ccp_state = 1
+        WHERE
+        uc.cc_code=#{cc_code}
+        <!-- and ccp_state=1 shenhx 20170724 意向客户也查询 -->
+    </select>
+
+    <!-- 根据客户姓名和电话查询是否存在该客户 -->
+    <select id="selectCustomerOne" resultType="com.gjp.model.UserCustomer">
+        select cp.ccp_phone as cc_phone,cus.*,ccp_time as ccp_time from GJP_UserCenter_Customer as cus LEFT JOIN
+        GJP_UserCenter_CustomerPhone as cp
+        on cus.cc_id = cp.cc_id
+        where (ccp_state = 1 or ccp_state = 2) and cp.ccp_phone = #{ccp_phone} limit 1
+    </select>
+
+    <!-- 身份证查询用户 -->
+    <select id="selectCustomerOneNum" resultType="com.gjp.model.UserCustomer">
+        select cp.ccp_phone as cc_phone,cus.*,ccp_time as ccp_time from GJP_UserCenter_Customer as cus LEFT JOIN
+        GJP_UserCenter_CustomerPhone as cp
+        on cus.cc_id = cp.cc_id
+        where (ccp_state = 1 or ccp_state = 2) and cus.cc_cardNum = #{cc_cardNum} limit 1
+    </select>
+
+    <!-- 根据客户Code查询该客户信息 -->
+    <select id="selectCustomerCodeOne" resultType="com.gjp.model.UserCustomer">
+        select cp.ccp_phone as cc_phone,cus.*,ccp_time as ccp_time from GJP_UserCenter_Customer as cus LEFT JOIN
+        GJP_UserCenter_CustomerPhone as cp
+        on cus.cc_id = cp.cc_id
+        where cus.cc_code = #{cc_code}
+        <if test="cp.ccp_phone != null">
+            cp.ccp_phone = #{ccp_phone}
+        </if>
+        limit 1
+    </select>
+
+    <!-- 根据客户电话查询是否存在客户 -->
+    <select id="selectCustomerPhoneOne" resultType="com.gjp.model.UserCustomer">
+        select cp.ccp_phone as cc_phone,cus.*,ccp_time as ccp_time from GJP_UserCenter_Customer as cus LEFT JOIN
+        GJP_UserCenter_CustomerPhone as cp
+        on cus.cc_id = cp.cc_id
+        where 1=1
+        <if test="ccp_phone != null">
+         AND  cp.ccp_phone = #{ccp_phone}
+        </if>
+        limit 1
+    </select>
+
+    <!-- 查询客户电话 -->
+    <select id="queryCustomerPhone" resultType="com.gjp.model.UserCustomerPhone">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_CustomerPhone
+        WHERE
+        cc_id =#{cc_id}
+    </select>
+
+    <!-- 查询客户 -->
+    <select id="queryCustomerPerson" resultType="com.gjp.model.UserCustomer">
+        select * from view_GJP_CustomerPerson where
+        1=1
+        <if test="sqlWhere != null and sqlWhere != ''">
+            and (cc_name LIKE CONCAT('%',#{sqlWhere},'%') or ccp_phone LIKE CONCAT('%',#{sqlWhere},'%') or house_address LIKE CONCAT('%',#{sqlWhere},'%'))
+        </if>
+        <if test="cc_type != null and cc_type != ''">
+            and cc_type=#{cc_type}
+        </if>
+        <if test="cc_type == null or cc_type == ''">
+            and (cc_type is null or cc_type = '')
+        </if>
+        limit #{start},#{end}
+    </select>
+
+    <select id="queryCustomerPersonCount" resultType="com.gjp.model.UserCustomer">
+        select count(*) as size from view_GJP_CustomerPerson where
+        1=1
+        <if test="sqlWhere != null and sqlWhere != ''">
+            and (cc_name LIKE CONCAT('%',#{sqlWhere},'%') or ccp_phone LIKE CONCAT('%',#{sqlWhere},'%') or house_address LIKE CONCAT('%',#{sqlWhere},'%'))
+        </if>
+        <if test="cc_type != null and cc_type != ''">
+            and cc_type=#{cc_type}
+        </if>
+        <if test="cc_type == null or cc_type == ''">
+            and (cc_type is null or cc_type = '')
+        </if>
+    </select>
+
+    <!-- 查询客户电话 -->
+    <select id="queryCustomerBankList" resultType="com.gjp.model.UserCustomerBank">
+        SELECT
+        *
+        FROM GJP_UserCenter_CustomerBank
+        WHERE
+        cc_id =#{cc_id}
+        ORDER BY cbc_state ASC
+    </select>
+
+    <!-- 查询客户id查询客户信息和电话 -->
+    <select id="queryCustomerID" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_Customer as ucc
+        left join GJP_UserCenter_CustomerPhone as uccp on ucc.cc_id = uccp.cc_id
+        WHERE
+        ccp_state = 1
+        and ucc.cc_id =#{cc_id}
+        limit 1
+    </select>
+
+    <!-- 根据手机号和名称查询客户 -->
+    <select id="queryCustomerByPhone" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        cc.*,
+        ccp.ccp_phone
+        FROM
+        GJP_UserCenter_Customer AS cc
+        LEFT JOIN GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id
+        WHERE ccp.ccp_phone = #{ccp_phone}
+        AND ccp.ccp_state = 1
+    </select>
+
+    <!-- 修改客户信息 -->
+    <update id="updateCustomer" parameterType="com.gjp.model.UserCustomer">
+        update GJP_UserCenter_Customer
+        <set>
+            <if test="cc_code !=null">cc_code =#{cc_code},</if>
+            <if test="cc_name !=null">cc_name =#{cc_name},</if>
+            <if test="cc_sex !=null">cc_sex =#{cc_sex},</if>
+            <if test="cc_type !=null">cc_type =#{cc_type},</if>
+            <if test="cc_cardType !=null">cc_cardType =#{cc_cardType},</if>
+            <if test="cc_cardNum !=null">cc_cardNum =#{cc_cardNum},</if>
+            <if test="cc_state !=null">cc_state =#{cc_state},</if>
+            <if test="cc_email !=null">cc_email =#{cc_email},</if>
+            <if test="cc_occupation !=null">cc_occupation =#{cc_occupation},</if>
+            <if test="cc_qq !=null">cc_qq =#{cc_qq},</if>
+            <if test="cc_wx !=null">cc_wx =#{cc_wx},</if>
+            <if test="cc_work !=null">cc_work =#{cc_work},</if>
+            <if test="cc_account !=null">cc_account =#{cc_account},</if>
+            <if test="cc_source !=null">cc_source =#{cc_source},</if>
+            <if test="cc_remarks !=null">cc_remarks =#{cc_remarks},</if>
+            <if test="cc_fraction !=null">cc_fraction =#{cc_fraction},</if>
+            <if test="cc_address !=null">cc_address =#{cc_address},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="cc_id != null">cc_id =#{cc_id}</when>
+            <when test="cc_code != null">cc_code =#{cc_code}</when>
+        </choose>
+    </update>
+
+    <!-- 更新客户图片信息 -->
+    <update id="updateCustomerImage">
+        UPDATE GJP_UserCenter_CustomerImage
+        <set>
+            <if test="cci_state !=null">cci_state =#{cci_state}</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="cci_id !=null">cci_id =#{cci_id}</when>
+            <when test="cc_id !=null">cc_id =#{cc_id}</when>
+        </choose>
+        <if test="cci_path !=null">AND cci_path=#{cci_path}</if>
+    </update>
+
+    <!-- 更新客户银行卡信息 -->
+    <update id="updateCustomerBank">
+        UPDATE GJP_UserCenter_CustomerBank
+        <set>
+            <if test="cbc_name !=null ">cbc_name =#{cbc_name},</if>
+            <if test="cbc_cardNum !=null ">cbc_cardNum =#{cbc_cardNum},</if>
+            <if test="cbc_bankName !=null ">cbc_bankName =#{cbc_bankName},</if>
+            <if test="cbc_grade !=null ">cbc_grade =#{cbc_grade},</if>
+            <if test="cbc_type !=null ">cbc_type =#{cbc_type},</if>
+            <if test="cbc_address !=null ">cbc_address =#{cbc_address},</if>
+            <if test="cbc_path !=null ">cbc_path =#{cbc_path},</if>
+            <if test="cbc_state !=null ">cbc_state =#{cbc_state},</if>
+            <if test="cc_id !=null ">cc_id =#{cc_id}</if>
+        </set>
+        WHERE
+        cbc_id =#{cbc_id}
+    </update>
+
+    <!-- 添加客户银行卡信息 -->
+    <insert id="addCustomerBank" useGeneratedKeys="true" keyProperty="cbc_id">
+        INSERT INTO GJP_UserCenter_CustomerBank(
+        cc_id,
+        cbc_name,
+        cbc_cardNum,
+        cbc_bankName,
+        cbc_grade,
+        cbc_type,
+        cbc_address,
+        cbc_path,
+        cbc_state,
+        cbc_time
+        ) VALUES (
+        #{cc_id},
+        #{cbc_name},
+        #{cbc_cardNum},
+        #{cbc_bankName},
+        #{cbc_grade},
+        #{cbc_type},
+        #{cbc_address},
+        #{cbc_path},
+        #{cbc_state},
+        #{cbc_time}
+        )
+    </insert>
+
+    <insert id="addCustomerPhone" useGeneratedKeys="true" keyProperty="ccp_id">
+        INSERT INTO GJP_UserCenter_CustomerPhone(
+        cc_id,
+        ccp_phone,
+        ccp_state,
+        ccp_time
+        ) VALUES (
+        #{cc_id},
+        #{ccp_phone},
+        #{ccp_state},
+        #{ccp_time}
+        )
+    </insert>
+
+    <!-- 更新客户合同关系数据 -->
+    <update id="updateCustomerRelaContractForState">
+		UPDATE GJP_UserCenter_CustomerRelationship
+		SET crc_state = #{crc_state}
+		WHERE
+		contractObject_code = #{contractObject_code}
+	</update>
+
+    <delete id="deleteCustomerPhone">
+		DELETE FROM GJP_UserCenter_CustomerPhone
+		WHERE
+		cc_id=#{cc_id}
+	</delete>
+
+    <delete id="deleteCustomerImage">
+        DELETE FROM GJP_UserCenter_CustomerImage
+        WHERE
+        <choose>
+            <when test="cc_id != null">cc_id=#{cc_id}</when>
+            <when test="cci_id != null">cci_id=#{cci_id}</when>
+        </choose>
+    </delete>
+
+    <delete id="deleteCustomerBank">
+        DELETE FROM GJP_UserCenter_CustomerBank
+        WHERE
+        <choose>
+            <when test="cc_id != null">cc_id=#{cc_id}</when>
+            <when test="cbc_id != null">cbc_id=#{cbc_id}</when>
+        </choose>
+    </delete>
+
+    <!-- 查询待签合同的租客 -->
+    <select id="queryContractTenantCustomer" resultType="com.gjp.model.CustomerStayThingVo">
+        SELECT * FROM (
+        SELECT
+        GJP_product.GJP_House_HouseSeeing.hs_id,
+        GJP_product.GJP_House_HouseSeeing.hs_content,
+        GJP_product.GJP_House_HouseSeeing.hs_createTime,
+        GJP_product.GJP_House_HouseSeeing.cc_code,
+        GJP_product.GJP_House_HouseSeeing.em_id,
+        GJP_product.GJP_House_HouseSeeing.hi_code,
+        IF (
+        (
+        isnull(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code`
+        )
+        OR (
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code` = ''
+        )
+        ),
+        concat(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_sname`,
+        `GJP_product`.`GJP_House_HouseInformation_keep`.`hi_address`
+        ),
+        concat(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_sname`,
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code`,
+        '-',
+        `GJP_product`.`GJP_House_HouseInformation_keep`.`hi_address`
+        )
+        ) AS house_address,
+        GJP_user.GJP_UserCenter_Employee.em_name,
+        GJP_user.GJP_UserCenter_Employee.em_phone,
+        GJP_user.GJP_UserCenter_Customer.cc_name,
+        GJP_user.GJP_UserCenter_CustomerPhone.ccp_phone,
+        GJP_user.GJP_UserCenter_Customer.cc_type
+        FROM
+        GJP_product.GJP_House_HouseSeeing
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep ON GJP_product.GJP_House_HouseInformation_keep.hi_code = GJP_product.GJP_House_HouseSeeing.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo ON GJP_product.GJP_PropertyInfo.propertyInfo_Id = GJP_product.GJP_House_HouseInformation_keep.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName ON GJP_product.GJP_PropertyInfo_PropertyInfoName.upn_id = GJP_product.GJP_PropertyInfo.upn_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ON GJP_user.GJP_UserCenter_Employee.em_id = GJP_product.GJP_House_HouseSeeing.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer ON GJP_user.GJP_UserCenter_Customer.cc_code = GJP_product.GJP_House_HouseSeeing.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone ON GJP_user.GJP_UserCenter_CustomerPhone.cc_id = GJP_user.GJP_UserCenter_Customer.cc_id
+        WHERE
+        (GJP_user.GJP_UserCenter_CustomerPhone.ccp_state = 1 OR GJP_user.GJP_UserCenter_CustomerPhone.ccp_state IS NULL)
+        AND (GJP_product.GJP_House_HouseSeeing.hs_content LIKE '%收定%' or GJP_product.GJP_House_HouseSeeing.hs_content LIKE '%签订合同%')
+        ) temp WHERE 1 = 1
+        <if test="t.em_id != null">
+            AND em_id = #{t.em_id}
+        </if>
+        <if test="where != null and where != ''">
+            ${where}
+        </if>
+        ORDER BY hs_createTime ASC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询未签合同的房东 -->
+    <select id="queryContractLandlordCustomer" resultType="com.gjp.model.CustomerStayThingVo">
+        SELECT * FROM (
+        SELECT
+        IF (
+        (
+        isnull(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code`
+        )
+        OR (
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code` = ''
+        )
+        ),
+        concat(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_sname`,
+        `GJP_product`.`GJP_House_HouseInformation_keep`.`hi_address`
+        ),
+        concat(
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_sname`,
+        `GJP_product`.`GJP_PropertyInfo_PropertyInfoName`.`upn_code`,
+        '-',
+        `GJP_product`.`GJP_House_HouseInformation_keep`.`hi_address`
+        )
+        ) AS house_address,
+        GJP_product.GJP_House_HouseInformation_keep.hi_code,
+        GJP_product.GJP_House_HouseInformation_keep.hi_date,
+        GJP_product.GJP_House_HouseInformation_keep.cc_code,
+        GJP_user.GJP_UserCenter_Customer.cc_name,
+        GJP_user.GJP_UserCenter_CustomerPhone.ccp_phone,
+        GJP_user.GJP_UserCenter_Employee.em_id,
+        GJP_user.GJP_UserCenter_Employee.em_name,
+        GJP_user.GJP_UserCenter_Employee.em_phone
+        FROM
+        GJP_product.GJP_House_HouseInformation_keep
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer ON GJP_user.GJP_UserCenter_Customer.cc_code = GJP_product.GJP_House_HouseInformation_keep.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone ON GJP_user.GJP_UserCenter_CustomerPhone.cc_id = GJP_user.GJP_UserCenter_Customer.cc_id
+        LEFT JOIN GJP_product.GJP_PropertyInfo ON GJP_product.GJP_PropertyInfo.propertyInfo_Id = GJP_product.GJP_House_HouseInformation_keep.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName ON GJP_product.GJP_PropertyInfo_PropertyInfoName.upn_id = GJP_product.GJP_PropertyInfo.upn_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord ON GJP_product.GJP_House_HouseInformation_keep.hi_code = GJP_product.GJP_House_PositionRecord.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ON GJP_user.GJP_UserCenter_Employee.em_id = GJP_product.GJP_House_PositionRecord.hpr_newEmp
+        WHERE
+        (GJP_user.GJP_UserCenter_CustomerPhone.ccp_state = 1 OR GJP_user.GJP_UserCenter_CustomerPhone.ccp_state IS NULL)
+        AND GJP_product.GJP_House_HouseInformation_keep.contract_intoStatus = '未签合同'
+        ) temp WHERE 1=1
+        <if test="t.em_id != null">
+            AND em_id = #{t.em_id}
+        </if>
+        <if test="where != null and where != ''">
+            ${where}
+        </if>
+        ORDER BY hi_date ASC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 保存客户扩展信息 -->
+    <insert id="addCustomerExtendInfo" useGeneratedKeys="true" keyProperty="ce_id">
+        insert into
+        GJP_UserCenter_Customer_Extend
+        (
+        cc_code,
+        nation,
+        native_place,
+        birthday,
+        age,
+        stature,
+        education,
+        major,
+        work_years,
+        interests,
+        fax,
+        contact_address,
+        business,
+        profession,
+        marital_status,
+        income_status,
+        update_time,
+        company_name,
+        company_address,
+        company_tel
+        ) values (
+        #{cc_code},
+        #{nation},
+        #{native_place},
+        #{birthday},
+        #{age},
+        #{stature},
+        #{education},
+        #{major},
+        #{work_years},
+        #{interests},
+        #{fax},
+        #{contact_address},
+        #{business},
+        #{profession},
+        #{marital_status},
+        #{income_status},
+        #{update_time},
+        #{company_name},
+        #{company_address},
+        #{company_tel}
+        )
+    </insert>
+
+    <!-- 保存客户其他证件信息 -->
+    <insert id="addCustomerIDInfo" useGeneratedKeys="true" keyProperty="ci_id">
+        insert into
+        GJP_UserCenter_Customer_ID
+        (
+        cc_id,
+        id_type,
+        id_no,
+        id_use,
+        id_pastDate,
+        id_location,
+        id_remark,
+        id_path,
+        update_time
+        ) values (
+        #{cc_id},
+        #{id_type},
+        #{id_no},
+        #{id_use},
+        #{id_pastDate},
+        #{id_location},
+        #{id_remark},
+        #{id_path},
+        #{update_time}
+        )
+    </insert>
+
+    <!-- 保存客户关联人信息 -->
+    <insert id="addCustomerLinkMan" useGeneratedKeys="true" keyProperty="cl_id">
+        insert into
+        GJP_UserCenter_Customer_LinkMan
+        (
+        cl_id,
+        cc_id,
+        cl_name,
+        cl_sex,
+        cl_cardType,
+        cl_cardNum,
+        cl_email,
+        cl_occupation,
+        cl_phone,
+        cl_qq,
+        cl_wx,
+        cl_work,
+        cl_createTime,
+        cl_account,
+        cl_remarks,
+        cl_fraction,
+        cl_address,
+        cl_date,
+        relationship
+        ) values (
+        #{cl_id},
+        #{cc_id},
+        #{cl_name},
+        #{cl_sex},
+        #{cl_cardType},
+        #{cl_cardNum},
+        #{cl_email},
+        #{cl_occupation},
+        #{cl_phone},
+        #{cl_qq},
+        #{cl_wx},
+        #{cl_work},
+        #{cl_createTime},
+        #{cl_account},
+        #{cl_remarks},
+        #{cl_fraction},
+        #{cl_address},
+        #{cl_date},
+        #{relationship}
+        )
+    </insert>
+
+    <!-- 根据客户ID查询扩展信息 -->
+    <select id="queryCustomerExtendInfoById" resultType="com.gjp.model.UserCustomer">
+        select * from GJP_UserCenter_Customer_Extend where ce_id = #{ce_id}
+    </select>
+
+    <!-- 根据客户ID查询扩展信息 -->
+    <select id="queryCustomerExtendInfoByCode" resultType="com.gjp.model.UserCustomer">
+        select * from GJP_UserCenter_Customer_Extend where cc_code = #{cc_code}
+    </select>
+
+    <!-- 根据客户ID查询其他证件信息 -->
+    <select id="queryCustomerIDInfoById" resultType="com.gjp.model.UserCustomerID">
+        select * from GJP_UserCenter_Customer_ID where cc_id = #{cc_id}
+    </select>
+
+    <!-- 根据客户ID查询联系人信息 -->
+    <select id="queryCustomerLinkManInfoById" resultType="com.gjp.model.UserCustomerLinkMan">
+        select * from GJP_UserCenter_Customer_LinkMan where cc_id = #{cc_id}
+    </select>
+
+    <update id="updCustomerExtendInfo">
+        update GJP_UserCenter_Customer_Extend
+        set
+        <if test="nation != null and nation != ''">
+            nation = #{nation},
+        </if>
+        <if test="native_place != null and native_place != ''">
+            native_place = #{native_place},
+        </if>
+        <if test="birthday != null and birthday != ''">
+            birthday = #{birthday},
+        </if>
+        <if test="age != null and age != ''">
+            age = #{age},
+        </if>
+        <if test="stature != null and stature != ''">
+            stature = #{stature},
+        </if>
+        <if test="education != null and education != ''">
+            education = #{education},
+        </if>
+        <if test="major != null and major != ''">
+            major = #{major},
+        </if>
+        <if test="work_years != null and work_years != ''">
+            work_years = #{work_years},
+        </if>
+        <if test="interests != null and interests != ''">
+            interests = #{interests},
+        </if>
+        <if test="fax != null and fax != ''">
+            fax = #{fax},
+        </if>
+        <if test="contact_address != null and contact_address != ''">
+            contact_address = #{contact_address},
+        </if>
+        <if test="business != null and business != ''">
+            business = #{business},
+        </if>
+        <if test="profession != null and profession != ''">
+            profession = #{profession},
+        </if>
+        <if test="marital_status != null and marital_status != ''">
+            marital_status = #{marital_status},
+        </if>
+        <if test="income_status != null and income_status != ''">
+            income_status = #{income_status},
+        </if>
+        <if test="company_name != null and company_name != ''">
+            company_name = #{company_name},
+        </if>
+        <if test="company_address != null and company_address != ''">
+            company_address = #{company_address},
+        </if>
+        <if test="company_tel != null and company_tel != ''">
+            company_tel = #{company_tel},
+        </if>
+        <if test="star_level != null and star_level != ''">
+            star_level = #{star_level},
+        </if>
+        <if test="customer_comment != null and customer_comment != ''">
+            customer_comment = #{customer_comment},
+        </if>
+        update_time = #{update_time}
+        where cc_code = #{cc_code}
+    </update>
+
+    <delete id="delCustomerIDInfo">
+        delete from
+        GJP_UserCenter_Customer_ID
+        where cc_id = #{cc_id}
+    </delete>
+
+    <delete id="delCustomerLinkMan">
+        delete from
+        GJP_UserCenter_Customer_LinkMan
+        where cc_id = #{cc_id}
+    </delete>
+
+    <insert id="addCustomerIntention" useGeneratedKeys="true" keyProperty="cc_id">
+        insert into
+        GJP_UserCenter_Customer_Intention
+        (
+        cc_code,
+        cc_name,
+        cc_sex,
+        ccp_phone,
+        cc_type,
+        cc_em_id,
+        customer_need,
+        contact_remark,
+        follow_status,
+        cc_cardType,
+        cc_cardNum,
+        contact_time,
+        img_card1,
+        img_card2,
+        cc_code2
+        ) values (
+        #{cc_code},
+        #{cc_name},
+        #{cc_sex},
+        #{ccp_phone},
+        #{cc_type},
+        #{cc_em_id},
+        #{customer_need},
+        #{contact_remark},
+        #{follow_status},
+        #{cc_cardType},
+        #{cc_cardNum},
+        #{contact_time},
+        #{img_card1},
+        #{img_card2},
+        #{cc_code2}
+        )
+    </insert>
+
+    <update id="updCustomerIntention">
+        UPDATE GJP_UserCenter_Customer_Intention
+        SET
+        <if test="cc_code != null and cc_code != ''">
+            cc_code = #{cc_code},
+        </if>
+        <if test="cc_name != null and cc_name != ''">
+            cc_name = #{cc_name},
+        </if>
+        <if test="cc_sex != null and cc_sex != ''">
+            cc_sex = #{cc_sex},
+        </if>
+        <if test="ccp_phone != null and ccp_phone != ''">
+            ccp_phone = #{ccp_phone},
+        </if>
+        <if test="cc_type != null and cc_type != ''">
+            cc_type = #{cc_type},
+        </if>
+        <if test="cc_em_id != null and cc_em_id != ''">
+            cc_em_id = #{cc_em_id},
+        </if>
+        <if test="customer_need != null and customer_need != ''">
+            customer_need = #{customer_need},
+        </if>
+        <if test="contact_remark != null and contact_remark != ''">
+            contact_remark = #{contact_remark},
+        </if>
+        <if test="follow_status != null and follow_status != ''">
+            follow_status = #{follow_status},
+        </if>
+        <if test="cc_cardType != null and cc_cardType != ''">
+            cc_cardType = #{cc_cardType},
+        </if>
+        <if test="cc_cardNum != null and cc_cardNum != ''">
+            cc_cardNum = #{cc_cardNum},
+        </if>
+        <if test="contact_time != null and contact_time != ''">
+            contact_time = #{contact_time},
+        </if>
+        <if test="img_card1 != null and img_card1 != ''">
+            img_card1 = #{img_card1},
+        </if>
+        <if test="img_card2 != null and img_card2 != ''">
+            img_card2 = #{img_card2},
+        </if>
+        cc_id = #{cc_id}
+        WHERE cc_id = #{cc_id}
+    </update>
+
+    <select id="queryCustomerIntention" resultType="com.gjp.model.UserCustomerIntention">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        ci.*, ue.em_name,
+        gd1.dictionary_name AS follow_statusStr,
+        CONCAT(
+        ci.cc_name,
+        "-",
+        (CASE WHEN ci.cc_sex = 1 THEN '男' WHEN ci.cc_sex = 0 THEN '女' ELSE '未知' END),
+        "-",
+        ci.ccp_phone
+        ) AS cust,
+        CONCAT(
+        gd3.dictionary_name,
+        "-",
+        ci.cc_cardNum
+        ) AS idCard
+        FROM
+        GJP_UserCenter_Customer_Intention ci
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = ci.cc_em_id
+        LEFT JOIN GJP_user.GJP_Dictionary gd1 ON gd1.dictionary_value = ci.follow_status
+        AND gd1.dictionary_status = 1
+        RIGHT JOIN GJP_user.GJP_Dictionary gd2 ON gd2.dr_id = gd1.dr_pid
+        AND gd2.propertyId = 'follow_status'
+        LEFT JOIN (
+        SELECT
+        d3.*
+        FROM
+        GJP_Dictionary d3
+        RIGHT JOIN GJP_Dictionary d4 ON d3.dr_pid = d4.dr_id
+        AND d4.propertyId = "id_type"
+        AND d4.dictionary_status = 1
+        ) gd3 ON gd3.dictionary_value = ci.cc_cardType
+        AND gd3.dictionary_status = 1
+        AND ci.cc_cardType IS NOT NULL
+        WHERE
+        1 = 1
+        AND gd3.dr_id IS NOT NULL
+        OR ci.cc_cardType IS NULL
+        ORDER BY
+        ci.contact_time DESC
+        ) a
+        WHERE
+        1 = 1
+        AND a.em_name IS NOT NULL
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义日期'">
+                <if test="t.dateStart != '' and t.dateEnd != ''">
+                    AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},' 00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart == '' and t.dateEnd != ''">
+                    AND ${t.dateType} &lt;= CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart != '' and t.dateEnd == ''">
+                    AND ${t.dateType} &gt;= CONCAT(#{t.dateStart},' 00:00:00')
+                </if>
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <select id="queryCustomerIntentionCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        ci.*, ue.em_name,
+        gd1.dictionary_name AS follow_statusStr,
+        CONCAT(
+        ci.cc_name,
+        "-",
+        (CASE WHEN ci.cc_sex = 1 THEN '男' WHEN ci.cc_sex = 0 THEN '女' ELSE '未知' END),
+        "-",
+        ci.ccp_phone
+        ) AS cust,
+        CONCAT(
+        gd3.dictionary_name,
+        "-",
+        ci.cc_cardNum
+        ) AS idCard
+        FROM
+        GJP_UserCenter_Customer_Intention ci
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = ci.cc_em_id
+        LEFT JOIN GJP_user.GJP_Dictionary gd1 ON gd1.dictionary_value = ci.follow_status
+        AND gd1.dictionary_status = 1
+        RIGHT JOIN GJP_user.GJP_Dictionary gd2 ON gd2.dr_id = gd1.dr_pid
+        AND gd2.propertyId = 'follow_status'
+        LEFT JOIN (
+        SELECT
+        d3.*
+        FROM
+        GJP_Dictionary d3
+        RIGHT JOIN GJP_Dictionary d4 ON d3.dr_pid = d4.dr_id
+        AND d4.propertyId = "id_type"
+        AND d4.dictionary_status = 1
+        ) gd3 ON gd3.dictionary_value = ci.cc_cardType
+        AND gd3.dictionary_status = 1
+        AND ci.cc_cardType IS NOT NULL
+        WHERE
+        1 = 1
+        AND gd3.dr_id IS NOT NULL
+        OR ci.cc_cardType IS NULL
+        ORDER BY
+        ci.contact_time DESC
+        ) a
+        WHERE
+        1 = 1
+        AND a.em_name IS NOT NULL
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义日期'">
+                <if test="t.dateStart != '' and t.dateEnd != ''">
+                    AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},' 00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart == '' and t.dateEnd != ''">
+                    AND ${t.dateType} &lt;= CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart != '' and t.dateEnd == ''">
+                    AND ${t.dateType} &gt;= CONCAT(#{t.dateStart},' 00:00:00')
+                </if>
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+    </select>
+
+    <select id="queryCustomerIntentionById" resultType="com.gjp.model.UserCustomerIntention">
+        SELECT
+        ci.*,
+        ue.em_name
+        FROM
+        GJP_UserCenter_Customer_Intention ci
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = ci.cc_em_id
+        WHERE cc_id = #{cc_id}
+    </select>
+
+    <update id="updCustomerIntentionByCode">
+        UPDATE GJP_UserCenter_Customer_Intention
+        SET
+        cc_code = #{cc_code},
+        <if test="follow_status != null and follow_status != ''">
+            follow_status = #{follow_status},
+        </if>
+        <if test="cc_code2 != null and cc_code2 != ''">
+            cc_code2 = #{cc_code2}
+        </if>
+        WHERE cc_code = #{cc_code}
+    </update>
+
+    <!-- 查询客户类型 -->
+    <select id="queryUserCenterTypeList" resultType="com.gjp.model.UserCenterType">
+        select * from GJP_UserCenter_Type where type_parent = #{type_parent}
+    </select>
+
+    <insert id="addUserCustomerLog" useGeneratedKeys="true" keyProperty="cl_id">
+        insert into
+        GJP_UserCenter_Customer_Log
+        (
+        cc_code,
+        cl_type,
+        cl_content,
+        cl_author,
+        cl_source,
+        cl_createTime
+        ) values (
+        #{cc_code},
+        #{cl_type},
+        #{cl_content},
+        #{cl_author},
+        #{cl_source},
+        #{cl_createTime}
+        )
+    </insert>
+
+    <insert id="addUserCustomerLogAttachment" useGeneratedKeys="true" keyProperty="ca_id">
+        insert into
+        GJP_UserCenter_Customer_LogAttachment
+        (
+        cl_id,
+        ca_name,
+        ca_path,
+        ca_status,
+        ca_type,
+        ca_createTime
+        ) values (
+        #{cl_id},
+        #{ca_name},
+        #{ca_path},
+        #{ca_status},
+        #{ca_type},
+        #{ca_createTime}
+        )
+    </insert>
+
+    <select id="queryUserCustomerLogList" resultType="com.gjp.model.UserCustomerLog">
+        SELECT
+        cl.*, ct.type_name AS cl_typeZH, ue.em_name
+        FROM
+        GJP_UserCenter_Customer_Log cl
+        LEFT JOIN GJP_UserCenter_Type ct ON ct.type_id = cl.cl_type
+        LEFT JOIN GJP_UserCenter_Employee ue ON ue.em_id = cl.cl_author
+        where cc_code = #{t.cc_code}
+        <if test="t.cl_type != null and t.cl_type != ''">
+            AND cl.cl_type = #{t.cl_type}
+        </if>
+        ORDER BY cl_createTime DESC
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <select id="queryUserCustomerLogListCount" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM
+        GJP_UserCenter_Customer_Log cl
+        LEFT JOIN GJP_UserCenter_Type ct ON ct.type_id = cl.cl_type
+        LEFT JOIN GJP_UserCenter_Employee ue ON ue.em_id = cl.cl_author
+        where cc_code = #{t.cc_code}
+        <if test="t.cl_type != null and t.cl_type != ''">
+            AND cl.cl_type = #{t.cl_type}
+        </if>
+        ORDER BY cl_createTime DESC
+    </select>
+
+    <select id="queryLogAttachmentListByClId" resultType="com.gjp.model.UserCustomerLogAttachment">
+        SELECT * FROM GJP_UserCenter_Customer_LogAttachment WHERE cl_id = #{cl_id}
+    </select>
+
+    <delete id="delLogAttachmentListByClId">
+        delete from GJP_UserCenter_Customer_LogAttachment WHERE cl_id = #{cl_id}
+    </delete>
+
+    <select id="queryCustomerIntentionByCode" resultType="com.gjp.model.UserCustomerIntention">
+        SELECT
+        ci.*,
+        ue.em_name
+        FROM
+        GJP_UserCenter_Customer_Intention ci
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue ON ue.em_id = ci.cc_em_id
+        WHERE ci.cc_code = #{cc_code}
+    </select>
+
+    <select id="queryHouseSeeingListByCode" resultType="com.gjp.model.CustomerStayThingVo">
+        SELECT
+        hs.*,
+        ha.house_address,
+        ce.em_name
+        FROM
+        GJP_product.GJP_House_HouseSeeing hs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON ha.hi_code = hs.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ce ON ce.em_id = hs.em_id
+        WHERE cc_code = #{t.cc_code}
+        ORDER BY hs.hs_createTime DESC
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <select id="queryHouseSeeingListByCodeCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(hs_id)
+        FROM
+        GJP_product.GJP_House_HouseSeeing hs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress ha ON ha.hi_code = hs.hi_code
+        WHERE cc_code = #{t.cc_code}
+        ORDER BY hs.hs_createTime DESC
+    </select>
+
+    <insert id="addCustomerBlackList" useGeneratedKeys="true" keyProperty="bl_id">
+        INSERT INTO
+        GJP_UserCenter_Customer_BlackList
+        (
+        cc_name,
+        cc_sex,
+        cc_cardType,
+        cc_cardNum,
+        cc_phone,
+        black_comment,
+        em_id,
+        bl_date,
+        bl_state,
+        cc_code,
+        cc_type
+        ) VALUES (
+        #{cc_name},
+        #{cc_sex},
+        #{cc_cardType},
+        #{cc_cardNum},
+        #{cc_phone},
+        #{black_comment},
+        #{em_id},
+        #{bl_date},
+        #{bl_state},
+        #{cc_code},
+        #{cc_type}
+        )
+    </insert>
+
+    <select id="queryCustomerBlackList" resultType="com.gjp.model.UserCustomerBlackList">
+        SELECT * FROM
+        (
+        SELECT
+        bl.*, ue.em_name,
+        CONCAT(
+        gd1.dictionary_name,
+        "-",
+        bl.cc_cardNum
+        ) AS idCard,
+        CONCAT(
+        bl.cc_name,
+        "-",
+        (CASE WHEN bl.cc_sex = 1 THEN '男' WHEN bl.cc_sex = 2 THEN '女' ELSE '未知' END),
+        "-",
+        bl.cc_phone
+        ) AS cust
+        FROM
+        GJP_UserCenter_Customer_BlackList bl
+        LEFT JOIN GJP_UserCenter_Employee ue ON bl.em_id = ue.em_id
+        LEFT JOIN (
+        SELECT
+        d1.*
+        FROM
+        GJP_Dictionary d1
+        RIGHT JOIN GJP_Dictionary d2 ON d1.dr_pid = d2.dr_id
+        AND d2.propertyId = "id_type"
+        AND d2.dictionary_status = 1
+        ) gd1 ON gd1.dictionary_value = bl.cc_cardType
+        AND gd1.dictionary_status = 1
+        AND bl.cc_cardType IS NOT NULL
+        WHERE
+        1 = 1
+        AND gd1.dr_id IS NOT NULL
+        OR bl.cc_cardType IS NULL
+        ORDER BY
+        bl.bl_date DESC) a
+        WHERE 1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义日期'">
+                <if test="t.dateStart != '' and t.dateEnd != ''">
+                    AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},' 00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart == '' and t.dateEnd != ''">
+                    AND ${t.dateType} &lt;= CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart != '' and t.dateEnd == ''">
+                    AND ${t.dateType} &gt;= CONCAT(#{t.dateStart},' 00:00:00')
+                </if>
+            </when>
+            <when test="t.sqlWhere != null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+        LIMIT ${pageNo},${pageSize}
+    </select>
+    <select id="queryCustomerBlackListCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        (
+        SELECT
+        bl.*, ue.em_name,
+        CONCAT(
+        gd1.dictionary_name,
+        "-",
+        bl.cc_cardNum
+        ) AS idCard,
+        CONCAT(
+        bl.cc_name,
+        "-",
+        (CASE WHEN bl.cc_sex = 1 THEN '男' WHEN bl.cc_sex = 2 THEN '女' ELSE '未知' END),
+        "-",
+        bl.cc_phone
+        ) AS cust
+        FROM
+        GJP_UserCenter_Customer_BlackList bl
+        LEFT JOIN GJP_UserCenter_Employee ue ON bl.em_id = ue.em_id
+        LEFT JOIN (
+        SELECT
+        d1.*
+        FROM
+        GJP_Dictionary d1
+        RIGHT JOIN GJP_Dictionary d2 ON d1.dr_pid = d2.dr_id
+        AND d2.propertyId = "id_type"
+        AND d2.dictionary_status = 1
+        ) gd1 ON gd1.dictionary_value = bl.cc_cardType
+        AND gd1.dictionary_status = 1
+        AND bl.cc_cardType IS NOT NULL
+        WHERE
+        1 = 1
+        AND gd1.dr_id IS NOT NULL
+        OR bl.cc_cardType IS NULL
+        ORDER BY
+        bl.bl_date DESC) a
+        WHERE 1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义日期'">
+                <if test="t.dateStart != '' and t.dateEnd != ''">
+                    AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},' 00:00:00') AND CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart == '' and t.dateEnd != ''">
+                    AND ${t.dateType} &lt;= CONCAT(#{t.dateEnd},' 23:59:59')
+                </if>
+                <if test="t.dateStart != '' and t.dateEnd == ''">
+                    AND ${t.dateType} &gt;= CONCAT(#{t.dateStart},' 00:00:00')
+                </if>
+            </when>
+            <when test="t.sqlWhere != null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+    </select>
+
+    <select id="queryCustomerBlackListById" resultType="com.gjp.model.UserCustomerBlackList">
+        SELECT * FROM GJP_UserCenter_Customer_BlackList WHERE bl_id = #{bl_id}
+    </select>
+
+    <update id="updCustomerBlackList">
+        UPDATE GJP_UserCenter_Customer_BlackList
+        SET
+        <if test="bl_state != null and bl_state != ''">
+            bl_state = #{bl_state},
+        </if>
+        bl_id = #{bl_id}
+        WHERE bl_id = #{bl_id}
+    </update>
+
+    <select id="queryCustomerInfoById" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        gc.*
+        FROM
+        GJP_UserCenter_Customer gc
+        LEFT JOIN GJP_UserCenter_Customer_Extend ge ON gc.cc_code = ge.cc_code
+        WHERE ge.ce_id = #{ce_id}
+    </select>
+
+    <select id="checkBlackList" resultType="com.gjp.model.UserCustomerBlackList">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_Customer_BlackList
+        WHERE 1 = 1
+        <if test="cc_cardNum != null and cc_cardNum != '' and cc_phone == null and cc_phone == ''">
+            AND cc_cardNum = #{cc_cardNum}
+        </if>
+        <if test="cc_cardNum == null or cc_cardNum == '' and cc_phone != null and cc_phone != ''">
+            AND cc_phone = #{cc_phone}
+        </if>
+        <if test="cc_cardNum != null or cc_cardNum != '' and cc_phone != null and cc_phone != ''">
+            AND (cc_cardNum = #{cc_cardNum} OR cc_phone = #{cc_phone})
+        </if>
+        AND bl_state = 1
+    </select>
+
+    <select id="queryCustomerIntentionByCardNum" resultType="com.gjp.model.UserCustomerIntention">
+        select * from GJP_UserCenter_Customer_Intention where cc_cardNum = #{cc_cardNum}
+    </select>
+
+    <update id="updHouseSeeingRecordByCode">
+        UPDATE GJP_product.GJP_House_HouseSeeing
+        SET hs_content = replace(hs_content,'未支付','已支付')
+        WHERE cc_code = #{cc_code}
+        ORDER BY hs_createTime DESC LIMIT 1
+    </update>
+
+    <!-- 根据身份证号查询房屋合同 -->
+    <select id="selectHiCode" resultType="com.gjp.model.UserCustomer">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,t3.ContractObject_Code
+        FROM
+        GJP_UserCenter_Customer t1
+        LEFT JOIN GJP_UserCenter_CustomerRelationship t2 ON t1.cc_code = t2.cc_code
+        LEFT JOIN GJP_business.GJP_Contract_Object t3 ON t2.contractObject_code=t3.ContractObject_Code
+        ) T
+        where 1=1
+        <if test="cc_cardNum != null or cc_cardNum != '' ">
+            AND cc_cardNum = #{cc_cardNum}
+        </if>
+    </select>
+
+    <select id="queryUserByCode" resultType="com.gjp.model.User">
+        SELECT uu.* FROM GJP_user.GJP_UserCenter_User uu LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uu.user_cardNumber = uc.cc_cardNum WHERE uc.cc_code = #{cc_code}
+    </select>
+
+    <select id="queryCustomerByHiCode" resultType="com.gjp.model.UserCustomer">
+        SELECT cc.*,cp.ccp_phone FROM GJP_user.GJP_UserCenter_Customer cc
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerRelationship cr ON cr.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone cp ON cp.cc_id = cc.cc_id AND cp.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Contract_Object co ON co.ContractObject_Code = cr.ContractObject_Code
+        WHERE (co.ContractObject_State = 1 OR co.ContractObject_State = 2) AND cr.hi_code = #{hi_code}
+    </select>
+</mapper>

@@ -1,0 +1,54 @@
+@error: #E74C3C;
+@hint: #F39C12;
+@ok: #18bc9c;
+@next: #3498DB;
+@disabled: #909090;
+
+.error { color: @error ! important; }
+.hint { color: @hint ! important; }
+.ok { color: @ok ! important; }
+.next { color: @next ! important; }
+.disabled { color: @disabled ! important; }
+.error-bg { background: @error ! important; color: #fff ! important; }
+.hint-bg { background: @hint ! important; color: #fff ! important; }
+.ok-bg { background: @ok ! important; color: #fff ! important; }
+.next-bg { background: @next ! important; color: #fff ! important; }
+.disabled-bg { background: @disabled ! important; color: #fff ! important; }
+[class $=-bg] > option { background: #fff ! important; color: #666 }
+[class $=-bg][disabled] { background: #c1c1c1 ! important; cursor: no-drop; }
+input, button, fieldset, textarea, select { display: inline-block; }
+// 保存中
+.content-saveing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.6);
+    .content-saveing-main {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        width: 90%;
+        margin-left: -45%;
+        padding: 20px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.13);
+        border-radius: 4px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+        background: #fff;
+        > .icon {
+            padding-bottom: 10px;
+            > i {
+                position: relative;
+                display: block;
+            }
+        }
+        > .title {
+            line-height: 2;
+            font-size: 16px;
+        }
+    }
+}

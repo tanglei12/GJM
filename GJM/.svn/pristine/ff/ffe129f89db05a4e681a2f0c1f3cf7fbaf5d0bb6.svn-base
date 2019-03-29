@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 客户图图片 -->
+<mapper namespace="com.gjp.dao.CustomerImageDAO">
+
+	<sql id="menberEcpId">
+		cci_id,
+		cci_type,
+		cci_path,
+		cci_time,
+		cc_id
+	</sql>
+
+	<sql id="insert">
+		#{cci_type },
+		#{cci_path },
+		NOW(),
+		#{cc_id }
+	</sql>
+	
+	<sql id="update">
+		<if test="cci_type != null and cci_type != ''">
+			cci_type=#{cci_type },
+		</if>
+		<if test="cci_time != null and cci_time != ''">
+			cci_time=#{cci_time },
+		</if>
+		<if test="cc_id != null and cc_id != ''">
+			cc_id=#{cc_id },
+		</if>
+		cci_path=#{cci_path }
+	</sql>
+	
+	<!-- 插入客户图片 -->
+	<insert id="insertCustomerImage" useGeneratedKeys="true"
+		parameterType="com.gjp.model.UserCustomerImage" keyProperty="cci_id">
+		insert into GJP_UserCenter_CustomerImage(
+			cci_type,cci_path,cci_time,cc_id
+		) values (
+			<include refid="insert"></include>
+		)
+	</insert>
+	
+	<!-- 根据客户编号查询客户图片 -->
+	<select id="selectCustomerImage" resultType="com.gjp.model.UserCustomerImage">
+		select * from GJP_UserCenter_CustomerImage
+		where 1=1
+		<if test="cc_id != null and cc_id != ''">
+		and cc_id=#{cc_id}
+		</if>
+		<if test="cci_path != null and cci_path != ''">
+		and cci_path=#{cci_path}
+		</if>
+	</select>
+	
+	<!-- 修改客户图片 -->
+	<update id="updateCustomerImage" parameterType="com.gjp.model.UserCustomerImage">
+		update GJP_UserCenter_CustomerImage set
+		<include refid="update"></include>
+		where cc_id = #{cc_id} and cci_type=#{cci_type}
+	</update>
+	
+	<!-- 修改客户图片 -->
+	<update id="updateCustomerImages" parameterType="com.gjp.model.UserCustomerImage">
+		update GJP_UserCenter_CustomerImage set
+		<include refid="update"></include>
+		where cc_id = #{cc_id}
+	</update>
+	
+	<!-- 删除客户图片 -->
+	<delete id="deleteCustomerImage" parameterType="com.gjp.model.UserCustomerImage">
+		DELETE FROM GJP_UserCenter_CustomerImage where
+		<choose>
+			<when test="cc_id != null">cc_id=#{cc_id}</when>
+			<when test="cci_id != null">cci_id=#{cci_id}</when>
+		</choose>
+	</delete>
+	
+</mapper>

@@ -1,0 +1,144 @@
+body {background: #f9f9f9;}
+
+.content {
+	position: relative;
+//	margin-bottom: 10px;
+//	margin-top: 10px;
+	background: #ffffff;
+	.content-item {
+		position: relative;
+		width: 100%;
+		padding: 0 10px;
+		.item-title {
+			position: relative;
+			display: flex;
+			font-size: 14px;
+			line-height: 36px;
+			color: #000;
+			.item-title-content {
+				em {
+					position: relative;
+					top: 2px;
+					display: inline-block;
+					height: 20px;
+					width: 14px;
+					text-align: center;
+					color: #E74C3C;
+				}
+			}
+
+			.item-title-option {
+				flex: 1;
+				padding-left: 10px;
+			}
+		}
+		&:first-child{
+			.item-content {
+				border-top: none;
+			}
+		}
+		.item-content {
+			position: relative;
+			display: flex;
+			flex: 1;
+			font-size: 14px;    
+    		line-height: 24px;
+    		padding:10px 0;
+    		border-top: solid 1px #f1f1f1;
+			> input {
+				flex: 1;
+				font-size: 14px;
+				line-height: 40px;
+			}
+			> select {
+				flex: 1;
+				font-size: 14px;
+				padding: 0 6px;
+				line-height: 40px;
+			}
+			> textarea {
+				flex: 1;
+				line-height: 24px;
+				font-size: 14px;
+				padding: 0 10px;
+				padding-top: 8px;
+				height: 80px;
+				resize: none;
+			}
+			.item-option {
+				position: relative;
+				width: 40px;
+				background: none;
+				text-align: center;
+			}
+			.item-content-icon{
+		        border: 1px solid #f1f1f1;
+			    width: 48px;
+			    height: 48px;
+			    line-height: 48px;
+			    border-radius: 2px;
+			    text-align: center;
+			    >img{
+			    	width: 100%;
+				    height: 100%;
+				    font-size: 12px;
+			    }
+			}
+			.item-content-main{
+			    flex: 1;
+   				padding-left: 10px;
+			}
+			.item-content-option{
+			    width : 48px;
+			    font-size : 14px;
+		        padding-right: 12px;
+			}
+		}
+	}
+	.item-mask{
+        position: fixed;
+	    top: 93px;
+	    left: 0;
+	    bottom: 0;
+	    width: 100%;
+	    display : none;
+        background: rgba(0, 0, 0, 0.18);
+	    z-index: 10;
+        .item-mask-main{
+	   		background: #fff;
+	        line-height: 39px;
+	        max-height: 320px;
+            overflow: hidden;
+            overflow-y: auto;
+	      	.mask-main-item{
+      		    border-bottom: 1px solid #e8e8e8;
+    			padding: 0 10px;
+			    font-size: 14px;
+			    color:#222;
+	      	}
+        }
+	}
+
+	.content-submmit {
+		background: #ddd;
+		line-height: 48px;
+		font-size: 14px;
+		text-align: center;
+		margin: 0 10px;
+		border-radius: 3px;
+		position: relative;
+		display: block;
+		flex: 1;
+	}
+}
+
+button[name="customer-add"]{
+    margin: 0 auto;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 0 10px;
+    color: #4cb2fe;
+    > i {
+	    margin-right: 4px;
+    }
+}

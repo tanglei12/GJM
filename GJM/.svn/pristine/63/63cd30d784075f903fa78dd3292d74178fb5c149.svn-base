@@ -1,0 +1,78 @@
+# ==【请求地址】===================================
+# 上传文件
+best.sign.upload_file=/storage/upload
+# 转换文件
+best.sign.convert_file=/file/convert
+# 获取文件META
+best.sign.get_file_meta=/file/meta
+# 创建合同
+best.sign.create_contract=/contract/create
+# 设置合同配置
+best.sign.set_contract_signer_config=/contract/setSignerConfig
+# 获取合同配置
+best.sign.get_contract_signer_config=/contract/getSignerConfig
+# 签署合同
+best.sign.set_contract_sign_cert=/contract/sign/cert
+best.sign.upload_contract_sign_photo=/contract/uploadSignPhoto
+# 查询合同
+best.sign.query_contract=/contract/getInfo
+# 查询合同
+best.sign.query_contract_status=/contract/getSignerStatus
+# 创建用户签名图片
+best.sign.create_user_sign_image=/signatureImage/user/create
+# 上传用户签名图片
+best.sign.upload_user_sign_image=/signatureImage/user/upload
+# 下载用户签名图片
+best.sign.download_user_sign_image=/signatureImage/user/download
+# 下载合同签名图片
+best.sign.download_contract_url=/contract/getDownloadURLs
+# 添加合同签署者
+best.sign.add_contract_signer=/contract/addSigner
+# 添加用户
+best.sign.user_reg=/user/reg
+# 获取用户证件信息
+best.sign.get_user_card_info=/user/getPersonalCredential
+# 获取企业证件信息
+best.sign.get_enterprise_card_info=/user/getEnterpriseCredential
+# 设置用户证件信息
+best.sign.set_user_card_info=/user/setPersonalCredential
+# 设置企业证件信息
+best.sign.set_enterprise_card_info=/user/setEnterpriseCredential
+# 申请用户数字证书
+best.sign.apply_cert=/user/applyCert
+# 获取用户数字证书
+best.sign.get_cert=/user/getCert
+# 获取用户数字证书详细信息
+best.sign.get_cert_info=/user/cert/info
+
+# 批量添加合同签署者
+best.sign.add_contract_signers=/contract/addSigners
+# 预览合同
+best.sign.preview_contract=/contract/getPreviewURL
+# 获取合同签名地址
+best.sign.get_contract_signurl=/contract/getSignURL
+# 结束签署
+best.sign.contract_finish=/contract/finish
+# 拒绝签署
+best.sign.contract_refuse=/contract/refuse
+#
+# ==【公共参数】===================================
+# 账号
+best.sign.account=cqguanjiapo@163.com
+# 过期天数，默认30天
+best.expire_time=30
+#
+# ==【测试参数】===================================
+## 开发者ID
+#best.sign.developerId=1809786620908405349
+## 测试私钥
+#best.sign.privateKey=MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvtn31ZV4GSFZIwYUH/Xqwn8Mz8ITxF9egSzr9QPBRJGn0xtakWb59mes+A1sxcosiyB/J1tir0VXkiZiS9lebX+UHV2sG9HVxXa6DcJOSqJZodnRXUFjov5G2eIMMSesdF4SBrx90gjeyCRPy4zBYfAs7sgE7VmNxz9pT6jh+OacYUGDl96TGVK1N4Aqlw8w4eJt26MCW0smHG7omZfPMk0SLJ3U+ffyR8DJBfpi3FVpoLHLe5szARmhkfbBjr/sq8jCVFyicEsQzik9TUc8m/tQmdztx37GzRoDi/2Nrr0kxkzCQaoVbrfT6Ssouo3lwa1pu67RMj7BISewSICCDAgMBAAECggEAFcauEY2Ae5LXbqjdDcJyRBVoobU7JI3p4Smxo9U6czPqFbXWwAOHQhWjO8o6sQQbDjJzDhacP57v4CTVTdFNxim6PpCs6O2+6E/N4ug+wbw297dGb9O7UQz8x/pjc1Bt3OsfNts3ML86m8vYNw/E3BJzafCDipEIPgCedCvg2HOj/Bqz5jBC6vleXXhR4qlq0z6bPb9yfHXoU6zDLxsQm21huTj6gzMvl98GstMm44KkFGSDyIhjXYF7WaOCzWyVAJifiKXkR63kNRD2HE7FMbCrJix4mKKcEcFLmOaMyQ8gSfWJZvmafUit9RRFciKEjFPkwaZzGTUjV7Z5x6Ap0QKBgQDirZTNfcsvpIAyXvyHpeAJh2hdX388YHlUtpOzU2qoxPAzLLc3cDSh7ERwsI5QTDa/yI/geZLH/qIeLomZFfOl3BUuwtFhyixp7C1N+SjZVCuIe+U9k1DZcqVs4szl94JB8FtmsWdndKjnL/r08hveoWoIaWpz5ltUw9D8KH/mfwKBgQDGcTQ7UFcJbFUptoK0ZBSBbP/mdOB2iSt57xIeBsqi4+T4UtE0B3jcOKhVhckU9QCIHt4whtv/BfLvZlcMPg72pl9uFOwrYU6vae9H6l1cb5talHSniNm2Y6K8z+esTcnDU/Impd4RJAEbOaGDtvOxyoP3IlatRx53OkgZIv4r/QKBgQCvIqQEfLufDL8Lq/36pDtLwXXuJpl8waEcxY+qjrmqubZII7VPPP89V/mtA4yBF9F5LfGT4vp4URFatmQThjVgoYEwRs9VecoE8Lg0NVzNRU35Pphokch2qTCMx1K+HxRh8936ovicozLYpGaGGAVWZmoxI5lfAMzx2fU+zd+76wKBgC3WRDxXKGOS1HEYKUTFwT7MEKgI4zg+Iv69TDAHXZMWlPMPHieoejBUHf3zMylWFlNa3fPTkslrdFv8BatcQlSSxYRF7O9wQJ6gF5dC+WG6neXkWLXCFJfel96JH3hbV3l40HxA3/SRnnfNbhNglRXCM41IL0FDJjRgD/tOa+t5AoGAA/E+cf9lNTKcPrvMWPBqprn7M4Vf215vzT45gZ5DZf5+eNVM20Nq/YbtJu/emLXdVA1Ui7ftOFDPnfip9vPVAMkRzc29oOn8A2Y5rbQnwpv6sx2ralravfofUVfF4+EeephLgX3Wienqo0ZJysn4ssm7AP9athngnY0QRO3FplA=
+## 测试地址
+#best.sign.url=https://openapi.bestsign.info/openapi/v3
+# ==【正式参数】===================================
+# 开发者ID
+best.sign.developerId=1812096012131500615
+# 私钥
+best.sign.privateKey=MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAK4statXPAvQLW7oV0FCf5KEDl2LjKWrvW5exs+dB2m33ZdjBPPv6Tool4jR9QdlAarjLlAUGhAVMq09BDzU26FsZXBCh+Ntwf11f7+3Ml3arpqbHWmIf6A6gw7TLlxIe8mBKsw0AlNMDGp5qMEPsGMOTm0YLDO4LTbCGBgHFr+3AgMBAAECgYBS1h6806tSLvs8sTG2bur/guDWKqWEsY5RbK//U76P0AuKkWRso+B3cZDIWJrBno9Rd+Sx3y2aEorci5V1XQLrFRgiegWGIaejBQYPW4polyRY5oq/POIseiKXMoK2KU63VTeYv6S3jgknZwbJ5w2deoJ4WYzXqzGNkt+MePtXMQJBANiJEKuqxrh/ah8Kt1aXJnYqyjbMNmhSoMJqqfkYcgOtdUuXP2OBLdV6lzvHp+SUPVSysqmSwgGGdwObTmrfwZ8CQQDN6zXKZNXiJchMv5b/BrHEIFWWch7RN9HwuSqWA73mgp0UAELs/hfuAF9XrxJefO/FWo6Uw9TIKQe0luUN/rrpAkEAx8cF02x3dadQkJ1Bc6l2udVWxeH5XJzHZzgj5AdSwePacUh1GmgHkotNVsEpPLIsN6W7Qsp9Jg0aZwB2BBK3PwJBAMvy4K37PVPldAN/5v/kE4FbPSnrEdbKYKb53tICFr4OM6GxuJed+vmBaO0huyHWwGxJitqRM1ikOruEkI1R9LECQHYibn6gzZpNaiF3U+tp48LnoJpSf/wGb1xq/Jl2oqf3N8FHqH8M/wLEVQ6vRcE5dSgDFGIhbeMHnozAduda2xQ=
+# 正式地址
+best.sign.url=https://openapi.bestsign.cn/openapi/v3

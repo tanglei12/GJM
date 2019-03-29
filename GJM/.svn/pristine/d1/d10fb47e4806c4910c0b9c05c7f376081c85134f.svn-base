@@ -1,0 +1,147 @@
+body {
+	margin: 0;
+	padding: 0;
+	color: #666;
+	background: #f8f8f8;
+}
+
+.mui-scroll-wrapper{
+	top: 50px;
+}
+.search{
+	width: 100%;
+	height: 43px;
+	background-color: #FFF;
+}
+.search .font-icon{
+    position: absolute;
+    top: 0px;
+    left: 8px;
+    display: inline;
+    width: 8px;
+    margin: 18px 2px 0 10px;
+    background: none!important;
+    height: 8px;
+    border: solid #000;
+    border-width:0 0 1px 1px;
+    -webkit-transform: rotate(45deg);
+    margin-right: 15px;
+    float: left;
+}
+.search .search-text{
+	margin-left: 10px;
+	float: left;
+	width: 77%;
+}
+.search .search-text .search-input{
+	border: none;
+	height: 30px;
+    line-height: 30px;
+    width: 98%;
+    margin-top: 6px;
+    text-indent: 3px;
+    outline: none;
+    font-size: 14px;
+}
+.search .button-label{
+	float: left;
+	width: 13vw;
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+	border: none;
+	outline: none;
+	background-color: #FFF;
+	font-size: 14px;
+	color: #666;
+}
+.content{
+	background-color: #FFF;
+	padding-left: 2%;
+	font-size: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+.content .address_house{
+	width: 100%;
+	height: 30px;
+	line-height: 25px;
+	font-size: 15px;
+}
+.content .center{
+	height: auto;
+	overflow: hidden;
+}
+.content .address_name{
+	float: left;
+}
+.content .address_time{
+	color: #CCC;
+	float: right;
+	margin-right: 2%;
+}
+
+.content button{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: transparent;
+}
+.data-list{
+	position: relative;
+}
+.data-list .null{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.null:enabled:active{
+	background-color: transparent;
+	opacity: 1;
+}
+.error-bg {
+    background: #E74C3C !important;
+    color: #FFF;
+    padding: 4px;
+    border-radius: 3px;
+    font-size: 13px;
+    position: relative;
+    top: 0px;
+    right: 2%;
+}
+.ok-bg {
+	background: #1ABC9C !important;
+	color: #fff !important;
+    padding: 4px;
+    border-radius: 3px;
+    font-size: 13px;
+    position: relative;
+    top: 0px;
+    right: 2%;
+}
+.next-bg {
+	padding: 4px;
+	color: #fff !important;
+    border-radius: 3px;
+    font-size: 13px;
+	background: #3498DB !important;
+	position: relative;
+    top: 0px;
+    right: 2%;
+}
+.content .click{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: transparent;
+}

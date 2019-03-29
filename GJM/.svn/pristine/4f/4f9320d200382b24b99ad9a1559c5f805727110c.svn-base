@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillClearBillDAO">
+
+	<sql id="allmenbers">
+		cb_id,
+		cb_code,
+		cb_name,
+		cb_phone,
+		cb_state,
+		cb_shouldMoney,
+		cb_money,
+		cb_payWay,
+		cb_payCycleNum,
+		cb_date,
+		cb_statementNum
+	</sql>
+
+	<sql id="menberEcpId">
+		cb_code,
+		cb_name,
+		cb_phone,
+		cb_state,
+		cb_shouldMoney,
+		cb_money,
+		cb_payWay,
+		cb_payCycleNum,
+		cb_date,
+		cb_statementNum
+	</sql>
+
+	<sql id="insert">
+		#{cb_code },
+		#{cb_name },
+		#{cb_phone },
+		#{cb_state },
+		#{cb_shouldMoney },
+		#{cb_money },
+		#{cb_payWay },
+		#{cb_payCycleNum },
+		NOW(),
+		#{cb_statementNum }
+	</sql>
+
+	<!-- 添加保洁账单 -->
+	<insert id="addBillClearBill" useGeneratedKeys="true" keyProperty="cb_id">
+		insert into GJP_Bill_ClearBill(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<select id="selectBillClearBill" resultType="com.gjp.model.BillClearBill">
+		select count(*) as size from GJP_Bill_ClearBill where cb_code=#{cb_code} and cb_state ='处理完成'
+	</select>
+
+	<!-- 查询是否还有未处理完成的保洁 -->
+	<select id="selectBillClearBillBool" resultType="com.gjp.model.BillClearBill">
+		select count(*) as size from GJP_Bill_ClearBill where cb_code=#{cb_code} and cb_state !='处理完成'
+	</select>
+
+	<!-- 查询第一个待服务 -->
+	<select id="selectBillClearBillFirst" resultType="com.gjp.model.BillClearBill">
+		select * from GJP_Bill_ClearBill where cb_code=#{cb_code} and cb_state !='处理完成' LIMIT 1
+	</select>
+
+	<!-- 更新托管账单状态 -->
+	<update id="updateBillClearBill">
+		UPDATE
+		GJP_Bill_ClearBill
+		<set>
+			cb_state=#{cb_state}
+		</set>
+		WHERE
+		cb_id=#{cb_id}
+	</update>
+
+	<!-- 更新账单金额 -->
+	<update id="updateBillClearBillMoney">
+		UPDATE
+		GJP_Bill_ClearBill
+		<set>
+			cb_shouldMoney=#{cb_shouldMoney}
+		</set>
+		WHERE
+		cb_code=#{cb_code}
+	</update>
+
+</mapper>

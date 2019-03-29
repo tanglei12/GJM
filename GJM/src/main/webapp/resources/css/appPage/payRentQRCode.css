@@ -1,0 +1,90 @@
+html, body{height: auto}
+.content {
+	position: relative;
+	margin: 20px auto;
+	width: 90%;
+    font-size: 14px;
+	background-color: #FFF;
+	border-radius: 5px;
+	box-shadow: 0 0px 12px 0 rgba(0, 0, 0, .14);
+}
+
+.content .content-head {
+	width: 100%;
+	text-align: center;
+	color: #666;
+	line-height: 50px;
+	font-size:16px;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+.content .content-main {
+	background-color: #FFF;
+}
+
+.content .content-main .code-title {
+	color: #000;
+	text-align: center;
+    line-height: 36px;
+}
+
+.content .content-main .code-money {
+	color: #FF6666;
+	text-align: center;
+    line-height: 24px;
+}
+
+.content .content-main .code-main {
+	position: relative;
+	text-align: center;
+    margin: 30px auto 40px;
+    height: 170px;
+}
+
+.content .content-main .code-bottom {
+    position: relative;    
+    height: 60px;
+    line-height: 66px;
+    font-size: 14px;
+    background-color: #e7e7e7;
+    text-align: center;
+    color: #666;
+    border-radius: 0 0 5px 5px;
+}
+
+.content .content-main .code-bottom .bottom-yuan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2px;
+    height: 9px;
+    background: url(/resources/image/appPage/yuan.png);
+}
+
+.biils {
+	width: 100%;
+	text-align: center;
+	font-size: 14px;
+}
+
+.content .content-main .code-bottom .payImage {
+	position: absolute;
+	left: 32%;
+	top: 0;
+	height: 22px;
+	width: 22px;
+}
+
+.paySuccess {
+	width: 150px;
+	margin: 0 auto;
+	height: 60px;
+}
+
+.paySuccess img {
+	width: 22px;
+	height: 22px;
+	float: left;
+	margin-top: 18px;
+	margin-left: 8%;
+}

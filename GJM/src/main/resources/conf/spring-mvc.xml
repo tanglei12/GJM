@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/websocket
+    http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.gjp.controller"/>
+    <!-- 扫描定时器任务 -->
+    <context:component-scan base-package="com.gjp.config"/>
+
+    <!-- 注册requestMappingHandlerMapping,requestMappingHandlerAdapter, 使mvc注释@controller提前配置 -->
+    <mvc:annotation-driven/>
+
+    <!-- 静态资源解析 -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <!-- 网络爬虫排除标准 -->
+    <mvc:resources mapping="/robots.txt" location="/robots.txt"/>
+
+    <!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+    </bean>
+
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+        <property name="definitions" value="classpath:/conf/tiles-config.xml"/>
+    </bean>
+    <!-- 启动JSON格式的配置 -->
+    <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <!--解决 HttpMediaTypeNotAcceptableException: Could not find acceptable representation(406) -->
+        <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+    </bean>
+    <!-- 上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="204800000"/>
+    </bean>
+    <!-- 解析视图名到对应的文件/WEB-INF/index/*.jsp中 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!-- 注解定时器配置 -->
+    <task:annotation-driven executor="executor" scheduler="qbScheduler"/>
+    <task:executor id="executor" pool-size="5"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
+
+    <!-- 系统邮件消息提示 -->
+    <bean id="meessageSocket" class="com.gjp.websocket.MeessageSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/meessageSocket" handler="meessageSocket"/>
+    </websocket:handlers>
+
+    <!-- 聊天系统 -->
+    <bean id="chatSocket" class="com.gjp.websocket.ChatSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/chatSocket" handler="chatSocket"/>
+    </websocket:handlers>
+
+    <!-- 服务 -->
+    <bean id="serviceBillSocket" class="com.gjp.websocket.ServiceBillSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/serviceBillSocket" handler="serviceBillSocket"/>
+    </websocket:handlers>
+
+    <!-- 扫码登陆 -->
+    <bean id="loginSocket" class="com.gjp.websocket.LoginSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/loginSocket" handler="loginSocket"/>
+    </websocket:handlers>
+
+    <!-- 单点登陆 -->
+    <bean id="loginOneSocket" class="com.gjp.websocket.LoginOneSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/loginOneSocket" handler="loginOneSocket"/>
+    </websocket:handlers>
+
+    <mvc:interceptors>
+        <!-- 配置Token拦截器，防止用户重复提交数据 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/><!--这个地方时你要拦截得路径 我这个意思是拦截所有得URL-->
+            <bean class="com.gjp.token.TokenInterceptor"/><!--class文件路径改成你自己写得拦截器路径！！ -->
+        </mvc:interceptor>
+        <!-- csrf攻击防御 -->
+        <mvc:interceptor>
+            <!-- 需拦截的地址 -->
+            <mvc:mapping path="/**"/>
+            <!-- 需排除拦截的地址 -->
+            <mvc:exclude-mapping path="/resources/**"/>
+            <bean class="com.gjp.csrf.CSRFInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>

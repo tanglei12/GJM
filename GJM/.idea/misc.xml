@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+    <file type="web" url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-sdk-java-DEV20171204104715.jar!/" />
+    <file type="web" url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170818173712-source.jar!/" />
+    <file type="web" url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170818173712.jar!/" />
+    <file type="web" url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/com.lowagie.text-2.1.7.jar!/" />
+    <file type="web" url="jar://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar!/" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="JSX" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="SvnBranchConfigurationManager">
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

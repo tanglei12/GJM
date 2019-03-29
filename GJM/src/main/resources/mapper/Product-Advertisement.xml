@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.AdvertisementDAO">
+	<!--广告列表  -->
+	<select id="selectAdvertisement" resultType="com.gjp.model.Advertisement">
+		SELECT
+			*
+		FROM
+			GJP_Advertisement t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ad_em_id = t2.em_id
+		WHERE 1 = 1
+		<if test="inte !='' and inte != null">
+			and ad_state &lt;&gt; #{inte}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="totalSelectAdvertisement" resultType="com.gjp.model.Advertisement">
+		SELECT
+			*
+		FROM
+			GJP_Advertisement t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ad_em_id = t2.em_id
+		WHERE 1 = 1
+		<if test="inte !='' and inte != null">
+			and ad_state &lt;&gt; #{inte}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+	</select>
+	<!-- 添加 -->
+	<insert id="addAdvertisement" useGeneratedKeys="true" keyProperty="ad_id">
+		INSERT INTO GJP_Advertisement(
+			ad_id,
+			ad_em_id,
+			ad_name,
+			ad_image,
+			ad_url,
+			ad_alert,
+			ad_title,
+			ad_content,
+			ad_channel,
+			ad_position,
+			ad_text,
+			am_code,
+			ad_state,
+			ad_time
+		)VALUES(
+			#{ad_id},
+			#{ad_em_id},
+			#{ad_name},
+			#{ad_image},
+			#{ad_url},
+			#{ad_alert},
+			#{ad_title},
+			#{ad_content},
+			#{ad_channel},
+			#{ad_position},
+			#{ad_text},
+			#{am_code},
+			#{ad_state},
+			#{ad_time}
+		)
+	</insert>
+	<!-- 查询某一条数据 -->
+	<select id="selectOneAdvertisement" resultType="com.gjp.model.Advertisement">
+		SELECT
+			*
+		FROM
+			GJP_Advertisement t1
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ad_em_id = t2.em_id
+		WHERE 1 = 1
+		<if test="ad_id !='' and ad_id != null"> and ad_id= #{ad_id}</if>
+	</select>
+	<!-- 更改 -->
+	<update id="updateAdvertisement" parameterType="com.gjp.model.Advertisement">
+		update GJP_Advertisement 
+		 <set>
+		 	<if test="ad_em_id !=null and ad_em_id !=''">ad_em_id = #{ad_em_id},</if>
+		 	<if test="ad_name !=null and ad_name !=''">ad_name = #{ad_name},</if>
+		 	<if test="ad_image !=null and ad_image !=''">ad_image= #{ad_image},</if>
+		 	<if test="ad_url !=null and ad_url !=''">ad_url= #{ad_url},</if>
+		 	<if test="ad_alert !=null and ad_alert !=''">ad_alert= #{ad_alert},</if>
+		 	<if test="ad_title !=null and ad_title !=''">ad_title= #{ad_title},</if>
+		 	<if test="ad_content !=null and ad_content !=''">ad_content = #{ad_content},</if>
+		 	<if test="ad_channel !=null and ad_channel !=''">ad_channel = #{ad_channel},</if>
+		 	<if test="ad_position !=null and ad_position !=''">ad_position = #{ad_position},</if>
+		 	<if test="ad_text !=null and ad_text !=''">ad_text = #{ad_text},</if>
+		 	<if test="am_code !=null and am_code !=''">am_code = #{am_code},</if>
+		 	<if test="ad_state !=null and ad_state !=''">ad_state = #{ad_state},</if>
+		 	<if test="ad_time !=null and ad_time !=''">ad_time = #{ad_time},</if>
+		 </set>
+			where ad_id = #{ad_id}
+	</update>
+	<!-- 查询数量 -->
+	<select id="countAdvertisement" resultType="com.gjp.model.Advertisement">
+		SELECT
+			*
+		FROM
+			GJP_Advertisement
+		WHERE 1=1
+		<if test="ad_channel !='' and ad_channel != null">
+			and ad_channel = #{ad_channel}
+		</if>
+		<if test="ad_position !='' and ad_position != null">
+			and ad_position = #{ad_position}
+		</if>
+		<if test="ad_state !='' and ad_state != null">
+			and ad_state = 1
+		</if>
+	</select>
+</mapper>

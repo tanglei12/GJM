@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 客户管理 -->
+<mapper namespace="com.gjp.dao.UserCenterComplaintsRecordDao">
+	<select id="selectUserCenterComplaintsRecord" resultType="com.gjp.model.UserCenterComplaintsRecord">
+		select * from GJP_UserCenter_ComplaintsRecord 
+		where 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="queryTotalComplaintsRecord" resultType="com.gjp.model.UserCenterComplaintsRecord">
+		select * from GJP_UserCenter_ComplaintsRecord 
+		where 1=1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		${houseModel.sqlOrderBy}
+	</select>
+	
+	<select id="queryComplaintsRecordObject" resultType="com.gjp.model.UserCenterComplaintsRecord">
+		select * from GJP_UserCenter_ComplaintsRecord 
+		where 1=1
+		<if test="coRe_id !=null and coRe_id !=''">
+			and coRe_id =#{coRe_id}
+		</if>
+	</select>
+	<select id="queryComplaintsResultObject" resultType="com.gjp.model.ViewUserComplaintsResultVo">
+		SELECT
+			*
+		FROM
+			GJP_UserCenter_ComplaintsResult t1
+		LEFT JOIN GJP_UserCenter_Employee t2 ON t1.ret_em_id = t2.em_id
+		where 1=1
+		<if test="ret_coRd_id !=null and ret_coRd_id !=''">
+			and ret_coRd_Id=#{ret_coRd_id}
+		</if>
+	</select>
+	<!-- 回复处理结果 -->
+	<insert id="addComplaintsResult" useGeneratedKeys="true" keyProperty="ret_id">
+		INSERT INTO GJP_UserCenter_ComplaintsResult (
+		ret_coRd_id,
+		ret_em_id,
+		ret_result,
+		ret_time
+		) VALUES (
+		#{ret_coRd_id},
+		#{ret_em_id},
+		#{ret_result},
+		#{ret_time}
+		)
+	</insert>
+	<!-- 处理完毕 -->
+	<update id="updateComplaintsRecord">
+		UPDATE GJP_UserCenter_ComplaintsRecord
+		<set>
+			<if test="coRe_id !=null">coRe_id=#{coRe_id},</if>
+			<if test="coRe_content !=null">coRe_content=#{coRe_content},</if>
+			<if test="coRe_extentContent !=null">coRe_extentContent=#{coRe_extentContent},</if>
+			<if test="coRe_name !=null">coRe_name=#{coRe_name},</if>
+			<if test="coRe_phone !=null">coRe_phone=#{coRe_phone},</if>
+			<if test="coRe_time !=null">coRe_time=#{coRe_time},</if>
+			<if test="coRe_state !=null">coRe_state=#{coRe_state}</if>
+			WHERE
+			coRe_id =#{coRe_id}
+		</set>
+	</update>
+</mapper>

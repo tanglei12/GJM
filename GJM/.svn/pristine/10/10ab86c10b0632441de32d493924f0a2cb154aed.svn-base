@@ -1,0 +1,235 @@
+
+.selects{
+	width: 175px;
+	height: 30px;
+	border: 1px solid #ccc;
+ 	text-indent: 5px;
+ 	border-radius:4px;
+ 	float: left;
+}
+select option{
+	width: 170px;
+	min-height: 45px;
+	font-size: 14px;;
+}
+.type-label{
+	position: relative;
+    border: 2px solid #ccc;
+    color: #888;
+    padding: 0px 18px;
+    font-size: 14px;
+    display: block;
+    float: left;
+    margin-right: 14px;
+    margin-bottom : 10px;
+    cursor: pointer;
+    -moz-border-radius:4px; 
+    -webkit-border-radius:4px; 
+    border-radius:4px;
+    float: left;
+    line-height: 26px;
+    height: 30px;
+}
+.clear:AFTER{
+	content: "";
+	display: block;
+	clear: both;
+}
+.span-checked{border: 2px solid #1ABC9C; color: #1ABC9C;}
+.span-checked i{
+	position: absolute;
+	right: 1px;
+    bottom: 1px;
+	width: 14px;
+	height: 14px;
+	background-image: url("/resources/image/true.png");
+	background-repeat: no-repeat;
+}
+.type-label input[type="checkbox"]{display: none;height: 0;opacity: 0;}
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.delete{
+	position: absolute;
+	left: -6px;
+	top:-6px;
+    bottom: 1px;
+    font-size:16px;
+	width: 12px;
+	height: 12px;
+	color:#666;
+}
+/** 索引房屋编码*/
+#queryList{
+	position: absolute;
+	top: 40px;
+    left: 0;
+	height: auto;
+	clear: both;
+	display:none;
+	min-width: 424px;
+	border: 1px solid #dddddd;/* #CAE2F0; */
+	background-color: #fff;
+	z-index: 99;
+	-moz-box-shadow:0px 0px 13px #BFBFBF;
+	-webkit-box-shadow:0px 0px 13px #BFBFBF;
+	box-shadow: 0px 0px 13px #BFBFBF;
+}
+
+#search-show{
+	min-height: 34px;
+}
+.search-tisp{
+	color: #666;
+	line-height: 34px;
+	text-indent: 10px;
+}
+#queryList table { width: 100%;}
+#queryList table tr{ border-bottom: 1px solid #e6e6e6;}
+#queryList table tbody>tr:HOVER,tr.item-hover{background-color: #e1eff7;cursor: pointer;}
+#queryList table tr th{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	white-space:nowrap;
+	padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+#queryList table tr td{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	-o-text-overflow:ellipsis;
+	white-space:nowrap;
+	padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+/** 索引房屋编码end*/
+/** 房屋列表Start*/
+#hosueList{
+	position: relative;
+	width: 1020px;
+	background: #069;
+}
+#hosueList .house-title{
+	position: relative;
+	height: 30px;
+}
+#hosueList .house-content{
+	position: relative;
+	height: 120px;	
+}
+/** 房屋列表end*/
+
+
+#more-a{
+	border: 1px solid #e1e1e1;
+    padding: 0 20px;
+    display: block;
+    line-height: 34px;
+    font-size: 14px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/***/
+#more-hide{
+	display: none;
+	border: 1px dashed #e1e1e1;margin: 0 30px 20px 30px; padding-top: 30px;
+}
+#more-hide .dl .dt{
+	width: 89px;
+}
+em{
+color: red;
+font-style: normal;
+}
+/***/
+#more-hide #saveContract3{
+	width: 80px;
+    float: left;
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+    display: block;
+    padding: 6px 12px;
+    margin-top: 2px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    border-radius: 4px;
+}
+#more-hide #saveContract3:HOVER{
+	background-color: #69afd6;
+	border: 1px solid #69afd6;
+	color: #fff;
+	cursor: pointer;
+}
+
+.images-box .images-btn {
+    position: relative;
+    display: inline-block;
+    border: 1px dashed #cccccc;
+    background: url("/resources/image/add_img.png") no-repeat 60% 24%;
+    border-radius: 3px;
+    width: 100px;
+    height: 100px;
+    line-height: 160px;
+    text-align: center;
+}
+
+
+
+
+
+div.info-box {
+	position: relative;
+	float: left;
+}
+div.info-box>lable.item {
+	display: block;
+	float: left;
+	line-height: 34px;
+	height: 34px;
+	width: 120px;
+	text-align: right;
+}
+div.info-box>lable.item>.item-titile {
+	font-size: 14px;
+	font-weight: normal;
+	color: #000;
+}
+div.info-box>lable.item {
+	position: relative;
+	display: block;
+	float: left;
+	line-height: 34px;
+	margin-left: 10px;
+}
+
+div.input-box {
+	position: relative;
+}

@@ -1,0 +1,115 @@
+/**表格插件样式 作者：陈智颖**/
+*{padding: 0;margin: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+:after,:before {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+body {font: 12px/150% '微软雅黑',Arial, Verdana, "\5b8b\4f53";min-width: 980px;color: #666;}
+.table-public{ margin: 10px; }
+a { text-decoration: none; color: #666; /* float: left;  */}
+/*表格样式*/
+.personTable{ width: 100%; border-collapse: collapse; font-size: 12px;}
+.personTable thead{ background-color: #34495E; color:#FFF; height: 36px; line-height: 36px; }
+.personTable thead td{ text-indent: 8px; position: relative; white-space:nowrap; }
+.personTable thead td i{ cursor: pointer; }
+.personTable thead td .arrow-up { border-left:5px solid transparent; border-right:5px solid transparent; border-bottom:5px solid #fff; display: inline-block; font-size: inherit; text-rendering: auto; -webkit-font-smoothing: antialiased; margin-left: 5px;}
+.personTable thead td .arrow-down { border-left:5px solid transparent; border-right:5px solid transparent;  border-top:5px solid #fff; display: inline-block; font-size: inherit; text-rendering: auto; -webkit-font-smoothing: antialiased; margin-left: 5px;}
+.personTable tbody{ position: relative;}
+.personTable tbody tr{ background-color: #FFF; height: 36px; line-height: 36px; }
+.personTable tbody tr.odd{background: #f5f8fa;}
+.personTable tbody tr:hover{background:#e5ebee;}
+.personTable tbody tr td{ text-indent: 8px; font-size: 12px; position: relative; white-space:nowrap; }
+.personTable tbody tr td .fa-outdent{ color : #3498DB; font-size: 15px; cursor : pointer; }
+.personTable tbody tr td a{text-decoration:none;color: #666;}
+.personTable tbody tr td a:hover{color:#00a4ac;text-decoration:none;}
+.personTable tbody tr td .table-item-icon{
+    position: relative;
+    margin-left: 6px;
+    display: inline-block;
+    padding: 0 6px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 2px;
+    text-indent: initial;
+}
+/* .personTable .success{ display: block; padding: 0 5px; color: #1ABC9C; } */
+/* .personTable .error{ display: block; padding: 0 5px; color: #E74C3C; } */
+
+/* 图片文字 */
+.fa-image{float: left; margin-top: 11px;font-size: 15px;color: #3498DB;cursor: pointer;}
+
+.form-control{position: relative;width: auto;height: 40px; background-color:#FFF; line-height: 40px;padding: 0 10px;border: 1px solid #BDC6CF;}
+
+/*page*/
+.pagin{position:relative;margin-top:10px;line-height: 28px; font-size: 12px; height: auto; overflow: hidden;}
+.pagin .message{float: left;}
+.pagin .pageNos{float: right;}
+.pagin .pageNos a{display:block;float:left;width:31px;height:28px;border:1px solid #DDD; text-align:center;line-height:28px;border-left:none;color:#3399d5;}
+.pagin .pageNos #upPage{border-left: 1px solid #DDD; border-right: none; }
+.pagin ul{float: left;}
+.pagin ul li{float: left;}
+.pagin .blue{color:#056dae;font-style:normal;}
+.pagin .paginList .paginItem{float:left;}
+.pagin .paginList .paginItem a{display:block;float:left;width:31px;height:28px;border:1px solid #DDD; text-align:center;line-height:28px;border-left:none;color:#3399d5;}
+.pagin .paginList .paginItem:first-child a{border-left:1px solid #DDD;}
+.pagin .paginList .paginItem.current,.pagin .paginList .paginItem.current a{background:#f5f5f5; cursor:default;color:#737373;}
+.pagin .paginList .paginItem:hover{background:#f5f5f5;}
+.pagin .pageNos a:hover{background:#f5f5f5;}
+.pagin .paginList .paginItem.more,.pagin .paginList .paginItem.more a:hover{ cursor:default;}
+.pagin .paginList .paginItem.more:hover{background:#FFF;}
+.pagin .paginList .paginItem.more a{color:#737373;}
+.pagepre{ display:block; background:url(../image/pre_1.gif) no-repeat center center; width:31px; height:28px; }
+.pagenxt{ display:block; background:url(../image/next.gif) no-repeat center center; width:31px; height:28px;}
+.Nums{ display: block; width: auto; overflow: hidden; height: auto;}
+#sizeCount{ margin-left:10px; float: left;}
+#sizeCount>input{height: 28px; line-height: 28px; text-indent:5px; position: relative; margin-top: 0px; border: 1px solid #DDD;}
+
+/*自定义checkbox*/
+.personTable .checkbox-min {position: relative;display: block;width: 34px;}
+.checkbox-min .input_check {display: none;}
+.checkbox-min .input_check+span {display: inline-block;border: 1px solid #a9a9a9;width: 16px;height: 16px;position: absolute;top: 50%;left: 50%;margin-top: -8px;margin-left: -8px; border-radius: 2px; background-color: #FFF;}
+.checkbox-min .input_check:checked+span{border: 1px solid #18bc9c}
+.checkbox-min .input_check:checked+span:after {content: "";position: absolute;left: 0px; bottom: 5px; width: 15px; height: 9px;border: 2px solid #18bc9c;border-top-color: transparent;border-right-color: transparent;-ms-transform: rotate(-60deg); -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-45deg);}  
+
+/*搜索样式*/
+.tools{height: auto;}
+.tools:AFTER{content: "";display: block;clear: both;}
+.searchBar{float: left;margin-bottom: 8px;}
+.searchBar ul,li{list-style:none;}
+.searchBar>li{float: left; margin-right: 6px;}
+.mouseDown{ color:#FFF; background-color: #1ABC9C; margin-right: 0px; }
+.timeClick{ padding:0 20px; text-align: center; height: 40px; line-height: 40px; cursor: default; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+.dateTimeTitle{ display: block; width: 100%; height: 40px; position: relative; border: 1px solid #1ABC9C; }
+.dateTimeTitle i.fa-calendar{ position: absolute; top: 11px; left: 8px;  z-index: 11; color: #3498db; font-size: 16px; }
+.dateTimeTitle .dateTimeContent{ width: 167px; height: 40px; line-height: 40px; margin-left: 31px; position: relative; }
+.dateTimeTitle .dateTimeContent .dateTime1{ width: 79px; height: 38px; line-height: 38px; position: absolute; top: 0px; left: -2px; border: none; outline: none;}
+.dateTimeTitle .dateTimeContent .dateTimeC{ width: 1px;  height: 20px; line-height: 20px; position: absolute; top: 9px; left: 80px; border: 0; background-color: #ddd;}
+.dateTimeTitle .dateTimeContent .dateTime2{ width: 79px; height: 38px; line-height: 38px; position: absolute; top: 0px; left: 86px; border: 0; outline: none;}
+.jselect{ padding:0 20px; text-align: center; height: 40px; line-height: 40px; color:#666; cursor: default; -webkit-user-select:none; -moz-user-select:none;  -ms-user-select:none; user-select:none; position: relative;}
+.jselectDown{ color:#FFF; background-color: #1ABC9C; }
+.jselect i{ display: block; content: ' '; position: absolute; left: 40px; top: 40px; display: none; border-width: 8px; border-style: solid;border-color: #1ABC9C transparent transparent;}
+.selectDiv{ width: 100%; margin-bottom: 10px; border: 1px dashed #ACCBE0; display: none;}
+.selectDiv .button{ width: 100%; height: 30px; margin: 5px; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+.selectDiv ul{ width: 100%; height: 30px;}
+.selectDiv ul li{ padding: 0 15px; float: left; margin-right: 5px; height: 30px; line-height: 30px; cursor: pointer; }
+.selectDiv ul .buttonTitle{ color: #FFF; background-color: #3498db; }
+.selectList{ width: 100%; height: 96px; margin: 0 5px 5px 5px; position: relative; overflow-y:scroll; }
+.selectList::-webkit-scrollbar{width: 0px;height: 0px;}
+.selectList ul{ height: 25px; line-height: 25px; position: relative; margin: 3px 0;}
+.selectList ul li{ padding:0; height: 25px; line-height: 25px; }
+.closeLi{ position: absolute; left: 403px; }
+.selectList .titles{ color: #E74C3C; }
+.selectList .content .contentText{ width: 220px; border: 0; height: 25px; line-height: 25px; color: #F39C12; border: 1px solid #ACCBE0; }
+.selectCeng{ width: 200px; height: 162px; background-color: #FFF; position: absolute; top: 24px; left: 39px; z-index: 100; margin-right: 0; box-shadow: 0 1px 3px 0 rgba(0,0,0,.14); border: 1px solid #ddd;display: none; overflow-y:scroll;}
+.selectCeng:hover::-webkit-scrollbar-thumb{ background-color: #ccc; }
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.selectCeng::-webkit-scrollbar{width: 5px; height: 5px; }
+/*定义滚动条轨道 内阴影+圆角*/  
+.selectCeng::-webkit-scrollbar-track{}
+/*定义滑块 内阴影+圆角*/  
+.selectCeng::-webkit-scrollbar-thumb{ border-radius: 5px; background-color: #FFF; }
+.selectCeng li{ text-indent: 5px; width: 100%; margin-right: 0; cursor: default; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;user-select:none;}
+.selectCeng li:hover{ background-color: #eee; }
+.inputTime{ width: 0;  display: none; }
+/*按钮样式*/
+.toolbar{ float: left;margin-bottom: 8px;}
+.toolbar li{ float: left; height: 40px; line-height: 40px; background-color: #3498db; padding: 0px 10px; margin-right: 5px; cursor: pointer;}
+.toolbar li i{color: #FFF; margin-right: 10px; font-size: 16px; float: left; display: block; margin-top: 13px;}
+.toolbar li a{ color: #FFF; font-size: 14px; display: block; height: 40px; line-height: 40px; float: left;}

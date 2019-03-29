@@ -1,0 +1,120 @@
+.tree-center{
+	width:340px;
+	height: 500px;
+	border: 1px solid #ededed;
+	color: #000;
+	font-size: 14px;
+	float: left;
+	overflow:Hidden;
+	overflow-y:scroll;
+}
+.tree-center::-webkit-scrollbar{
+	width: 5px;
+}
+.tree-center ul{
+	padding: 5px;
+}
+.tree-center ul li{
+	line-height: 25px;
+	position: relative;
+}
+.tree-center .clicks{
+	display: block;
+	width: 100%;
+	height: 25px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.tree-center li ul {
+    padding: 0 0 0 42px;
+}
+.tree-center .tree-icon{
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	position: relative;
+	display: block;
+	float: left;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+.tree-center .tree-icon .fa-plus{
+	color:#F39C12;
+	position: absolute;
+	left: 2px;
+	top: 1px;
+	font-size: 15px;
+}
+.tree-center .tree-icon .fa-minus{
+	color:#F39C12;
+	position: absolute;
+	left: 2px;
+	top: 1px;
+	font-size: 15px;
+}
+
+.tree-center .left-solid{
+	display: block;
+	width: 16px;
+	height: 100%;
+	position: absolute;
+	left: -21px;
+	top: -3px;
+}
+
+.tree-center .left-solid .vertical-solid{
+	width: 7px;
+	height: 100%;
+	float: left;
+	display: block;
+	border-right: 1px dashed #F39C12;
+}
+
+.tree-center .left-solid .vertical-solid{
+	width: 7px;
+	height: 100%;
+	float: left;
+	display: block;
+	border-right: 1px dotted #F39C12;
+}
+.tree-center .left-solid .line-solid{
+	width: 7px;
+	height: 16px;
+	float: left;
+	display: block;
+	border-bottom: 1px dotted #F39C12;
+}
+
+.tree-center .bottom-solid{
+	display: block;
+	width: 16px;
+	height: 25px;
+	position: absolute;
+	left: -21px;
+	top: -3px;
+}
+
+.tree-center .bottom-solid .vertical-solid{
+	width: 7px;
+	height: 17px;
+	float: left;
+	display: block;
+	border-right: 1px dotted #F39C12;
+}
+
+.tree-center .bottom-solid .line-solid{
+	width: 7px;
+	height: 16px;
+	float: left;
+	display: block;
+	border-bottom: 1px dotted #F39C12;
+}
+
+/*自定义checkbox*/
+.checkbox-a {position: relative;}
+.checkbox-a .input_check {display: none;}
+.checkbox-a .input_check+span {display: inline-block;border: 1px solid #a9a9a9;width: 16px;height: 16px;position: absolute;top: 2px;left: 0; border-radius: 2px;}
+.checkbox-a .input_check:checked+span{border: 1px solid #18bc9c}
+.checkbox-a .input_check:checked+span:after {content: "";position: absolute;left: 0px; bottom: 5px; width: 15px; height: 8px;border: 2px solid #18bc9c;border-top-color: transparent;border-right-color: transparent;-ms-transform: rotate(-60deg); -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-45deg);}  
+.checkbox-a i{font-style: normal;margin-left: 20px;}

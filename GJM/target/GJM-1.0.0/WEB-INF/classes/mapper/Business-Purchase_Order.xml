@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PurchaseOrderDAO">
+
+	<sql id="allmenbers">
+		pur_id,
+		pur_code,
+		pur_addTime,
+		pur_audit_emid,
+		pur_audit_time,
+		pur_type,
+		pur_audit_suggestion,
+		pur_specification,
+		pur_sumMoney,
+		pur_emId,
+		pur_purId,
+		pur_purTime,
+		pur_addres
+	</sql>
+
+	<sql id="menberEcpId">
+		pur_code,
+		pur_addTime,
+		pur_audit_emid,
+		pur_audit_time,
+		pur_type,
+		pur_audit_suggestion,
+		pur_specification,
+		pur_sumMoney,
+		pur_emId,
+		pur_purId,
+		pur_purTime,
+		pur_addres
+	</sql>
+
+	<sql id="insert">
+		#{pur_code},
+		#{pur_addTime},
+		#{pur_audit_emid},
+		#{pur_audit_time},
+		#{pur_type},
+		#{pur_audit_suggestion},
+		#{pur_specification},
+		#{pur_sumMoney},
+		#{pur_emId},
+		#{pur_purId},
+		#{pur_purTime},
+		#{pur_addres}
+	</sql>
+	
+	<sql id="update">
+		<if test="pur_audit_emid !=null and pur_audit_emid !=''">
+			pur_audit_emid=#{pur_audit_emid },
+		</if>
+		<if test="pur_audit_time !=null and pur_audit_time !=''">
+			pur_audit_time=#{pur_audit_time },
+		</if>
+		<if test="pur_type !=null and pur_type !=''">
+			pur_type =#{pur_type },
+		</if>
+		<if test="pur_audit_suggestion !=null and pur_audit_suggestion !=''">
+			pur_audit_suggestion=#{pur_audit_suggestion },
+		</if>
+		<if test="pur_specification !=null and pur_specification !=''">
+			pur_specification = #{pur_specification},
+		</if>
+		<if test="pur_emId !=null and pur_emId !=''">
+			pur_emId=#{pur_emId },
+		</if>
+		<if test="pur_purId !=null and pur_purId !=''">
+			pur_purId=#{pur_purId },
+		</if>
+		<if test="pur_purTime !=null and pur_purTime !=''">
+			pur_purTime=#{pur_purTime },
+		</if>
+		<if test="pur_addres !=null and pur_addres !=''">
+			pur_addres=#{pur_addres },
+		</if>
+		pur_code=#{pur_code}
+	</sql>
+	
+	<!-- 采购单添加 -->
+	<insert id="addPurchaseOrder" useGeneratedKeys="true"
+		parameterType="com.gjp.model.PurchaseOrder" keyProperty="cb_id">
+		insert into GJP_Purchase_Order(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+	
+	<!-- 采购单查询 -->
+	<select id="selectPurchaseOrderList" resultType="com.gjp.model.PurchaseOrder">
+		<!-- select * from GJP_Purchase_Order where 1=1 -->
+		select gpo.*,emp.em_name AS user_name from GJP_Purchase_Order as  gpo
+			LEFT JOIN GJP_user.GJP_UserCenter_Employee as emp
+				ON gpo.pur_emId = emp.em_id where 1=1 
+			<if test="pur_code != null and pur_code != ''">
+				and pur_code = #{pur_code}
+			</if>	
+				ORDER BY pur_type desc,pur_addTime DESC LIMIT #{start},#{end}
+			
+	</select>
+	
+	
+	
+	<!-- 采购单总条数 -->
+	<select id="selectPurchaseOrderCount" resultType="int">
+		select count(*) from GJP_Purchase_Order where 1=1
+	</select>
+	
+	<!-- 根据采购单Code查询采购单信息 -->
+	<select id="selectPurchaseOrderCodeOne" resultType="com.gjp.model.PurchaseOrder">
+		select * from GJP_Purchase_Order where pur_code = #{pur_code}
+	</select>
+	
+	<!-- 根据采购单Code修改采购单信息 -->
+	<update id="updatePurchaseOrderCode" parameterType="com.gjp.model.PurchaseOrder">
+		update GJP_Purchase_Order set
+		<include refid="update"></include>
+		where pur_code=#{pur_code}
+	</update>
+	
+		<!-- 根据采房屋/合同Code查询该采购单审核通过后的出库物品 -->
+	<select id="selectInventorList" parameterType="com.gjp.model.PurchaseOrder" resultType="com.gjp.model.ItemsInventory">
+		select iv.* from 
+			GJP_Purchase_Order as po LEFT JOIN GJP_Purchase_Article as pa on po.pur_code = pa.pur_code
+			LEFT JOIN GJP_Items_Inventory as iv on iv.art_code = pa.art_code
+			WHERE po.pur_type = 1 and  iv.inv_state = 0 and  po.pur_addres = #{pur_addres}
+	</select>
+
+</mapper>

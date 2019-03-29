@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ServiceMoneyDAO">
+
+    <!-- 添加服务清单 -->
+    <insert id="addServiceMoney" useGeneratedKeys="true" keyProperty="ssm_id">
+		INSERT INTO
+		GJP_Service_ServiceMoney(
+		mdg_moneyCode,
+		ssm_source,
+		ssm_money,
+		ssm_univalent,
+		ssm_num,
+		ssm_company,
+		ssm_beizhu,
+		ssm_date
+		) VALUES (
+		#{mdg_moneyCode},
+		#{ssm_source},
+		#{ssm_money},
+		#{ssm_univalent},
+		#{ssm_num},
+		#{ssm_company},
+		#{ssm_beizhu},
+		#{ssm_date}
+		)
+	</insert>
+
+    <!-- 根据费用清单查询服务清单 -->
+    <select id="selectServiceMoney" resultType="com.gjp.model.ServiceMoney">
+		SELECT * FROM GJP_Service_ServiceMoney WHERE mdg_moneyCode=#{mdg_moneyCode}
+	</select>
+
+	<delete id="delServiceMoneyByCode">
+		DELETE FROM GJP_Service_ServiceMoney WHERE mdg_moneyCode=#{mdg_moneyCode}
+	</delete>
+
+</mapper>

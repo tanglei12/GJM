@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.CustomerSeeDAO">
+
+	<sql id="allmenbers">
+		cs_id,
+		cs_year,
+		cs_day,
+		cs_date,
+		cs_surplusNum,
+		cs_per,
+		em_id
+	</sql>
+
+	<sql id="insert">
+		#{cs_id },
+		#{cs_year },
+		#{cs_day },
+		#{cs_date },
+		#{cs_surplusNum },
+		#{cs_per },
+		#{em_id }
+	</sql>
+	
+	<sql id="update">
+		cs_year=#{cs_year },
+		cs_day=#{cs_day },
+		cs_date=#{cs_date },
+		cs_surplusNum=#{cs_surplusNum },
+		cs_per=#{cs_per },
+		em_id=#{em_id }
+	</sql>
+
+	<!-- 插入客户带看 -->
+	<insert id="insertCustomerSee" useGeneratedKeys="true" parameterType="com.gjp.model.CustomerSee" keyProperty="cs_id">
+         insert into GJP_Customer_See(<include refid="allmenbers"></include>) 
+         values 
+         (<include refid="insert"></include>)
+    </insert>
+    
+    <!-- 修改客户带看 -->
+	<update id="updateCustomerSee" parameterType="com.gjp.model.CustomerSee">
+		update GJP_Customer_See set
+		<include refid="update"></include>
+		where cs_id=#{cs_id}
+	</update>
+
+	<!-- 查询客户带看 -->
+	<select id="queryCustomerSee" resultType="com.gjp.model.CustomerSee">
+		SELECT * FROM GJP_Customer_See
+	</select>
+	
+	<!-- 根据周数，内部人员查询客户带看信息 -->
+	<select id="queryCustomerSeeList" resultType="com.gjp.model.CustomerSee">
+		SELECT *,count(*) as size FROM GJP_Customer_See where cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and em_id=#{em_id} GROUP BY cs_id
+	</select>
+	
+	<!-- 根据模糊时间段，内部人员查询客户带看信息 -->
+	<select id="queryCustomerSeeListSize" resultType="com.gjp.model.CustomerSee">
+		SELECT *,count(*) as size FROM GJP_Customer_See where cs_year=#{cs_year} and cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and em_id=#{em_id} GROUP BY cs_id
+	</select>
+	
+	<!-- 根据周数，内部人员，客户电话号码查询客户带看信息 -->
+	<select id="queryCustomerCountPhone" resultType="com.gjp.model.CustomerSee">
+		select *,(select count(*) from view_GJP_Customer where cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and em_id=#{em_id} and ctm_phone=#{ctm_phone} ) as size from view_GJP_Customer where cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and em_id=#{em_id} and ctm_phone=#{ctm_phone}
+	</select>
+	
+	<!-- 查询客户带看数据并分页 -->
+	<select id="queryCustomerList" resultType="com.gjp.model.CustomerSee">
+		select * from view_GJP_Customer where em_id=#{em_id}
+		<if test="sqlWhere != null and sqlWhere != ''">
+			${sqlWhere}
+		</if>
+		order by ctm_name,cs_date desc
+	</select>
+	
+	<!-- 根据客户带看编码查询数据 -->
+	<select id="queryCustomerListID" resultType="com.gjp.model.CustomerSee">
+		select * from view_GJP_Customer where csm_id=#{csm_id}
+	</select>
+	
+	<!-- 根据周数，内部人员查看成功带看次数 -->
+	<select id="queryCustomerSeeSuccessCountDK" resultType="com.gjp.model.CustomerSee">
+		select count(distinct(ctm_phone)) as size from view_GJP_Customer where 1=1
+		<if test="cs_date != null and cs_date !=''">
+		and cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d')
+		</if>
+		<if test="sqlWhere != null and sqlWhere !=''">
+			${sqlWhere}
+		</if>
+		 and em_id=#{em_id} <!-- and csm_image is not null and csm_image !='' -->
+	</select>
+	
+	<!-- 根据周数，内部人员查看成功的次数 -->
+	<select id="queryCustomerSeeSuccessCount" resultType="com.gjp.model.CustomerSee">
+		select count(*) as size from view_GJP_Customer where cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and em_id=#{em_id} and csm_state=1
+	</select>
+	
+	<!-- 根据周数，内部人员编码查询带看总次数 -->
+	<select id="queryCustomerSeeCount" resultType="com.gjp.model.CustomerSee">
+		select count(DISTINCT sm.ctm_id) as size from GJP_Customer_See as cs,GJP_Customer_SeeMessage as sm where cs.cs_id=sm.cs_id and cs.cs_date=DATE_FORMAT(#{cs_date},'%Y-%m-%d') and cs.em_id=#{em_id}
+	</select>
+	
+	<!-- 查看未签租赁合同的托管合同 -->
+	<select id="selectViewContractListCUS" resultType="com.gjp.model.ViewBusinessContractVo">
+		SELECT * FROM GJP_business.view_GJP_Contract_ObjectList
+		WHERE hi_isForRent = 1
+		AND
+		(
+		cc_name LIKE CONCAT('%',#{t.cc_name}, '%') 
+		OR house_address LIKE CONCAT('%',#{t.house_address}, '%') 
+		OR ccp_phone LIKE CONCAT('%',#{t.ccp_phone}, '%')
+		)
+		LIMIT ${pageNo},${pageSize}
+	</select>
+	
+	<!-- 根据房屋编码查询托管合同 -->
+	<select id="selectViewContractListHouseID" resultType="com.gjp.model.ViewBusinessContractVo">
+		select * from 
+		view_GJP_Contract_ObjectList
+		where contractObject_state = 2 and contractObject_Type='托管合同' and (he_state = 'free' or he_state = 'edit') and hi_code=#{hi_code}
+	</select>
+	
+	<!-- 根据房屋编码查询托管合同 -->
+	<select id="selectViewContractListHouseIDs" resultType="com.gjp.model.ViewBusinessContractVo">
+		select * from View_GJP_UserCenter_Houseinfor
+		where hi_code=#{hi_code}
+	</select>
+</mapper>

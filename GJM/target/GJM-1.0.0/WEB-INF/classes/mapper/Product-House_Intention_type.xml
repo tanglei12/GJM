@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 意向房源 GJP_House_Intention -->
+<mapper namespace="com.gjp.dao.HouseIntentionTypeDao">
+	<sql id="allhouseIntType">
+		ht_id,
+		ht_type,
+		ht_count,
+		ht_time,
+		ht_remind_time,
+		ht_remind_count,
+		hi_code,
+		em_id,
+		ht_houseType
+	</sql>
+
+	<sql id="menberEcpId">
+		ht_type,
+		ht_count,
+		ht_time,
+		ht_remind_time,
+		ht_remind_count,
+		hi_code,
+		em_id,
+		ht_houseType
+	</sql>
+
+
+	<sql id="insert">
+		#{ht_type } ,
+		#{ht_count } ,
+		#{ht_time } ,
+		#{ht_remind_time }
+		,
+		#{ht_remind_count },
+		#{hi_code},
+		#{em_id},
+		#{ht_houseType}
+	</sql>
+
+	<sql id="update">
+		<if test="ht_type != null and ht_type != ''">
+			ht_type=#{ht_type },
+		</if>
+		<if test="ht_count != null and ht_count != ''">
+			ht_count=#{ht_count },
+		</if>
+		<if test="ht_remind_count != null and ht_remind_count != ''">
+			ht_remind_count=#{ht_remind_count },
+		</if>
+		<if test="ht_remind_time != null and ht_remind_time != ''">
+			ht_remind_time=#{ht_remind_time },
+		</if>
+		<if test="em_id != null and em_id != ''">
+			em_id=#{em_id },
+		</if>
+		hi_code=#{hi_code }
+	</sql>
+
+	<!-- 添加意向房源跟进内容 -->
+	<insert id="insertHouseIntentionType" useGeneratedKeys="true"
+		parameterType="com.gjp.model.HouseIntentionType" keyProperty="ht_id">
+		insert
+		into GJP_House_Intention_Type(
+		ht_type,
+		ht_count,
+		ht_time,
+		ht_remind_time,
+		ht_remind_count,
+		hi_code,
+		em_id,
+		ht_houseType
+		)
+		values
+		(
+		#{ht_type } ,
+		#{ht_count } ,
+		#{ht_time } ,
+		#{ht_remind_time } ,
+		#{ht_remind_count },
+		#{hi_code},
+		#{em_id},
+		#{ht_houseType}
+		)
+	</insert>
+
+	<!-- 修改意向房源跟进内容 -->
+	<update id="updateHouseIntentionType" parameterType="com.gjp.model.HouseIntentionType">
+		update GJP_House_Intention_Type set
+		<include refid="update"></include>
+		where ht_id = #{ht_id}
+	</update>
+
+	<!-- 根据房源编号查询跟进内容数据并分页 -->
+	<select id="selectHouseIntentionTypeList" resultType="com.gjp.model.HouseIntentionType">
+		select *
+		from (select hit.*,em.em_name,em.em_phone,em.ucc_name
+		from GJP_House_Intention_Type hit
+		LEFT JOIN GJP_user.view_GJP_EmployeeTrusteesh em
+		ON hit.em_id = em.em_id ) as a
+		where hi_code=#{hi_code} group by ht_id
+	</select>
+	<!-- 根据房源编号查询跟进内容数量并分页 -->
+	<select id="selectHouseIntentionTypeCount" resultType="int">
+		select
+		count(*)
+		from GJP_House_Intention_Type hit
+		LEFT JOIN GJP_user.view_GJP_EmployeeTrusteesh em
+		ON hit.em_id = em.em_id
+		and hit.hi_code=#{hi_code}
+	</select>
+
+</mapper>

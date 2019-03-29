@@ -1,0 +1,222 @@
+*{padding: 0;margin: 0;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+:after,:before {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+body {font: 12px/150% '微软雅黑',Arial, Verdana, "\5b8b\4f53";min-width: 980px;color: #666;}
+ul,li{list-style:none; margin: 0; padding: 0;}
+
+.content{
+	margin: 0 20px;
+	margin-top: 20px;
+}
+.fa-pencil{
+	color: #16A085;
+	cursor: pointer;
+}
+.setting .title{
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	font-size: 16px;
+	border-bottom: 1px solid #ACCBE0;
+	text-indent: 15px;
+	position: relative;
+}
+.setting .title span{
+	float: left;
+}
+.setting .title .addContent{
+	float: left;
+}
+.setting .title .addContent .fa-plus{
+	width: 24px;
+	height: 25px;
+	display: block;
+	background-color: #3498DB;
+	position: relative;
+	text-indent: 0;
+	margin-left: 8px;
+	margin-top: 2px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.fa-plus:before{
+	position: absolute;
+	top: 6px;
+	left: 6px;
+	color: #FFF;
+}
+.setting .title:AFTER {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 16px;
+    position: absolute;
+    background: #3e97c9;
+    top: 7px;
+    border-radius: 2px;
+    visibility: visible;
+}
+
+.setting .setting-content table{
+	width: 864px;
+ 	border-collapse: collapse;
+ 	margin-top: 10px;
+} 
+.setting .setting-content thead{
+	background-color: #f5f5f5;
+	height: 35px;
+	line-height: 35px;
+}
+.setting .setting-content td{
+	position: relative;
+	font-size: 14px;
+	height: 30px;
+	line-height: 30px;
+	text-indent: 5px;
+    border: 1px solid #ddd;
+} 
+.setting .setting-content .fa-minus-square{
+	color: #E74C3C;
+	cursor: pointer;
+	margin: 0 4px;
+} 
+.setting .setting-content .fa-reorder{
+	color: #3498DB;
+	cursor: pointer;
+	margin: 0 4px;
+} 
+.activeContent{
+	margin: 0;
+}
+.activeContent .activeTitle{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px dashed #ddd;
+}
+.activeContent .activeTitle .activeButton{
+	width: 40px;
+	height: 25px;
+	float: right;
+	border: none;
+	color: #FFF;
+	margin-top: 5px;
+	margin-right: 40px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+.activeContent .success{
+	background-color: #1ABC9C;
+}
+.activeContent .error{
+	background-color: #E74C3C;
+}
+.activeContent .activeTitle .fa-pencil{
+	color: #1ABC9C;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-left: 10px;
+	cursor: pointer;
+	float: left;
+}
+.activeContent .activeTitle .addActive{
+	float: left;
+	margin-left: 10px;
+    line-height: 37px;
+    display: none;
+}
+.activeContent .activeTitle .addActive input{
+	height: 30px;
+	line-height: 30px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	text-indent: 5px;
+	background: #fdf7f7;
+}
+.activeContent .activeTitle .addActive select{
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #ddd;
+	width: 50px;
+	background: #FFF;
+	margin-left: 3px;
+	border-radius: 4px;
+}
+.activeContent .activeTitle .addActive button{
+	width: 60px;
+	height: 30px;
+	background: #3498DB;
+	border: none;
+	color: #FFF;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.activeContent .activeBody{
+	margin-top: 10px;
+	height: auto;
+	overflow: hidden;
+	padding-left: 20px;
+	padding-bottom: 4px;
+}
+.activeContent .activeBody label{
+	height: 35px;
+	line-height: 35px;
+	display: block;
+	width: 210px;
+	float: left;
+    margin-bottom: 10px;
+}
+.activeContent .activeBody input{
+	height: 30px;
+	line-height: 30px;
+	margin-top: 3px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	text-indent: 5px;
+	background: #F7F7F7;
+}
+
+.strategyAdd dl{
+	margin: 10px 0;
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	float: left;
+}
+.strategyAdd dt{
+	float: left;
+	width: 120px;
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+	text-align: right;
+}
+.strategyAdd dd{
+	float: left;
+}
+.strategyAdd dd input{
+	width: 208px;
+	height: 30px;
+	line-height: 30px;
+	margin-left: 10px;
+	text-indent: 10px;
+}
+.strategyAdd .important{
+	float: left;
+	background: #fdf7f7;
+	border: 1px solid #ddd;
+}
+.strategyAdd select{
+	background: #FFF;
+	width: 90px;
+	height: 30px;
+	margin-left: 10px;
+	border: 1px solid #ddd;
+}
+
+/*自定义checkbox*/
+.personTable .checkbox-min {position: relative;display: block;width: 34px;}
+.checkbox-min .input_check {display: none;}
+.checkbox-min .input_check+span {display: inline-block;border: 1px solid #a9a9a9;width: 16px;height: 16px;position: absolute;top: 50%;left: 50%;margin-top: -8px;margin-left: -8px; border-radius: 2px; background-color: #FFF;}
+.checkbox-min .input_check:checked+span{border: 1px solid #18bc9c}
+.checkbox-min .input_check:checked+span:after {content: "";position: absolute;left: 0px; bottom: 5px; width: 15px; height: 9px;border: 2px solid #18bc9c;border-top-color: transparent;border-right-color: transparent;-ms-transform: rotate(-60deg); -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-45deg);}  
+.checkbox-min i{font-style: normal;margin-left: 20px;}

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserDao">
+
+    <!-- 查询用户认证分页列表 -->
+    <select id="queryUserAuthViewList" resultType="com.gjp.model.ViewUserAuthListVo">
+        SELECT
+        user_id,
+        user_type,
+        user_lv,
+        user_account,
+        user_nickName,
+        user_phone,
+        user_sex,
+        user_picPath,
+        user_birthday,
+        user_marrState,
+        user_address,
+        user_email,
+        user_state,
+        user_loginState,
+        user_safeState,
+        user_pwdSafeLv,
+        user_realName,
+        user_cardNumber,
+        userExtend_id,
+        userVerify_cardUserName,
+        userVerify_id,
+        userVerify_cardType,
+        userVerify_cardNumber,
+        userVerify_cardPicPath1,
+        userVerify_cardPicPath2,
+        userVerify_state,
+        userVerify_cardValid,
+        userVerify_authTime,
+        userVerify_createTime,
+        userVerify_remark
+        FROM
+        view_GJP_UserAuthList
+        WHERE
+        1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询用户认证分页列表数据条数 -->
+    <select id="queryUserAuthViewListTotalRecords" resultType="int">
+        SELECT COUNT(*) FROM
+        view_GJP_UserAuthList
+        WHERE
+        1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+    </select>
+
+    <!-- 查询用户认证信息 -->
+    <select id="queryUserAuthView" resultType="com.gjp.model.ViewUserAuthListVo">
+		SELECT
+		user_id,
+		user_type,
+		user_lv,
+		user_account,
+		user_nickName,
+		user_phone,
+		user_sex,
+		user_picPath,
+		user_birthday,
+		user_marrState,
+		user_address,
+		user_email,
+		user_state,
+		user_loginState,
+		user_safeState,
+		user_pwdSafeLv,
+		user_realName,
+		user_cardNumber,
+		userExtend_id,
+		userVerify_cardUserName,
+		userVerify_id,
+		userVerify_cardType,
+		userVerify_cardNumber,
+		userVerify_cardPicPath1,
+		userVerify_cardPicPath2,
+		userVerify_state,
+		userVerify_cardValid,
+		userVerify_authTime,
+		userVerify_createTime,
+		userVerify_remark
+		FROM
+		view_GJP_UserAuthList
+		WHERE
+		user_id=#{user_id}
+	</select>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUserInfo">
+        UPDATE GJP_UserCenter_User
+        <set>
+            user_realName=#{user_realName},
+            user_cardNumber=#{user_cardNumber}
+        </set>
+        WHERE
+        user_id=#{user_id}
+    </update>
+
+    <!-- 更新用户认证信息 -->
+    <update id="updateUserAuthInfo">
+        UPDATE
+        GJP_UserCenter_UserExtendVerifyAuth
+        <set>
+            <if test="userVerify_cardUserName !=null and userVerify_cardUserName !='' ">userVerify_cardUserName=#{userVerify_cardUserName},</if>
+            <if test="userVerify_cardPicPath1 !=null and userVerify_cardPicPath1 !='' ">userVerify_cardPicPath1=#{userVerify_cardPicPath1},</if>
+            <if test="userVerify_cardPicPath2 !=null and userVerify_cardPicPath2 !='' ">userVerify_cardPicPath2=#{userVerify_cardPicPath2},</if>
+            <if test="userVerify_state !=null and userVerify_state !='' ">userVerify_state=#{userVerify_state},</if>
+            <if test="userVerify_authTime !=null and userVerify_authTime !='' ">userVerify_authTime=#{userVerify_authTime},</if>
+            <if test="userVerify_remark !=null and userVerify_remark !='' ">userVerify_remark=#{userVerify_remark}</if>
+        </set>
+        WHERE
+        userVerify_id=#{userVerify_id}
+    </update>
+
+    <!-- 查询用户合同关系 -->
+    <insert id="addRelationContract" useGeneratedKeys="true" keyProperty="rc_id">
+		INSERT INTO GJP_UserCenter_RelationContract(
+		user_id,
+		contractObject_Id
+		) VALUES (
+		#{user_id},
+		#{contractObject_Id}
+		)
+	</insert>
+
+    <!-- 根据合同ID去删除合同用户关联表 -->
+    <delete id="deleteRelationContract">
+        DELETE FROM GJP_UserCenter_RelationContract WHERE contractObject_Id = #{contractObject_Id}
+    </delete>
+
+    <!-- 根据身份证查询用户 -->
+    <select id="queryUserCardNum" resultType="com.gjp.model.User">
+        SELECT
+        *
+        FROM
+        GJP_UserCenter_User
+        WHERE 1=1
+        <if test="user_cardNumber != null and user_cardNumber !=''">
+            AND user_cardNumber = #{user_cardNumber}
+        </if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同认证是否存在 -->
+    <select id="queryRelationContractCount" resultType="int">
+		SELECT count(*) FROM GJP_UserCenter_RelationContract
+		WHERE
+		user_id = #{user_id}
+		AND contractObject_Id = #{contractObject_Id}
+	</select>
+
+    <!-- 查询合同关系列表 -->
+    <select id="queryRelationContractList" resultType="com.gjp.model.RelationContract">
+		SELECT
+		co.ContractObject_No as contractObject_No,
+		co.ContractObject_Date as contractObject_Date,
+		co.ContractObject_DeadlineTime as contractObject_DeadlineTime
+		FROM GJP_UserCenter_RelationContract AS rc
+		LEFT JOIN GJP_business.GJP_Contract_Object AS co ON rc.contractObject_Id = co.ContractObject_Id
+		WHERE 1=1
+		AND rc.user_id=#{user_id}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+    <!-- 根据条件查询用户合同关系 -->
+    <select id="queryRelationContractWhere" resultType="com.gjp.model.RelationContract">
+		SELECT
+		co.ContractObject_No as contractObject_No,
+		co.ContractObject_Date as contractObject_Date,
+		co.ContractObject_DeadlineTime as contractObject_DeadlineTime
+		FROM GJP_UserCenter_RelationContract AS rc
+		LEFT JOIN GJP_business.GJP_Contract_Object AS co ON rc.contractObject_Id = co.ContractObject_Id
+		WHERE 1=1
+		AND rc.user_id=#{user_id}
+	</select>
+
+    <!-- 根据合同No查询合同编号 -->
+    <select id="queryContractRelationship" resultType="com.gjp.model.RelationContract">
+        SELECT
+        co.hi_code,
+        co.ContractObject_No as contractObject_No,
+        co.ContractObject_Id as contractObject_Id,
+        co.contractObject_code as contractObject_code
+        FROM GJP_UserCenter_CustomerRelationship AS cr
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON cr.contractObject_code = co.contractObject_code
+        WHERE 1=1
+        <if test="contractObject_No != null and contractObject_No != ''">
+            AND co.contractObject_No = #{contractObject_No}
+        </if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同室友 -->
+    <select id="queryContractUser" resultType="int">
+        SELECT
+        count(*)
+        FROM GJP_business.GJP_Contract_Object AS co
+        JOIN GJP_UserCenter_CustomerRelationship AS cr ON co.ContractObject_Code = cr.contractObject_code
+        JOIN GJP_UserCenter_Customer AS ucc ON ucc.cc_code = cr.cc_code
+        JOIN GJP_UserCenter_CustomerPhone AS cp ON cp.cc_id = ucc.cc_id
+        <if test="user_phone == null or user_phone == ''">
+            JOIN GJP_UserCenter_User AS users ON users.user_cardNumber = ucc.cc_cardNum
+        </if>
+        WHERE 1=1
+        <if test="user_id != null">
+            AND users.user_id=#{user_id}
+        </if>
+        <if test="contractObject_No != null and contractObject_No != ''">
+            AND co.ContractObject_No = #{contractObject_No}
+        </if>
+        <if test="user_phone != null and user_phone != ''">
+            AND crc_role = 0
+            AND cp.ccp_state = 1
+            AND cp.ccp_phone = #{user_phone}
+        </if>
+    </select>
+
+    <!-- 根据用户身份证查询合同合同签约或者室友 -->
+    <select id="queryCardContractUser" resultType="com.gjp.model.RelationContract">
+		SELECT
+		co.ContractObject_Id as contractObject_Id
+		FROM GJP_business.GJP_Contract_Object AS co
+		JOIN GJP_UserCenter_CustomerRelationship AS cr ON co.ContractObject_Code = cr.contractObject_code
+		JOIN GJP_UserCenter_Customer AS ucc ON ucc.cc_code = cr.cc_code
+		WHERE 1=1
+		AND ucc.cc_cardNum = #{cc_cardNum}
+	</select>
+
+    <insert id="addCustomerRelationship" useGeneratedKeys="true" keyProperty="crc_id">
+		INSERT INTO GJP_UserCenter_CustomerRelationship(
+		hi_code,
+		contractObject_code,
+		crc_state,
+		crc_time,
+		cc_code,
+		crc_role,
+		em_id
+		) VALUES (
+		#{hi_code},
+		#{contractObject_code},
+		#{crc_state},
+		NOW(),
+		#{cc_code},
+		#{crc_role},
+		#{em_id}
+		)
+	</insert>
+
+    <select id="queryUserAssetsRecordPageList" resultType="com.gjp.model.UserAssetsRecordVo">
+        SELECT
+        *
+        FROM GJP_User_AssetsRecord
+        <where>
+            <choose>
+                <when test="t != null">
+                    <if test="t.ua_id != null">ua_id =#{t.ua_id}</if>
+                </when>
+            </choose>
+        </where>
+        ORDER BY uar_trade_time DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryUserAssets" resultType="com.gjp.model.UserAssetsVo">
+        SELECT
+        *
+        FROM GJP_User_Assets
+        WHERE
+        user_id = #{user_id}
+    </select>
+
+    <select id="queryUser" resultType="com.gjp.model.User">
+        SELECT
+        *
+        FROM GJP_UserCenter_User
+        <where>
+            <if test="user_id != null">AND user_id =#{user_id}</if>
+            <if test="user_cardNumber != null">AND user_cardNumber =#{user_cardNumber}</if>
+        </where>
+    </select>
+
+    <insert id="addUserAssets" useGeneratedKeys="true" keyProperty="ua_id">
+        INSERT INTO GJP_User_Assets(
+        user_id,
+        ua_total_amount,
+        ua_balance_amount,
+        ua_create_time
+        ) VALUES (
+        #{user_id},
+        #{ua_total_amount},
+        #{ua_balance_amount},
+        #{ua_create_time}
+        )
+    </insert>
+
+    <insert id="addUserAssetsRecord" useGeneratedKeys="true" keyProperty="uar_id">
+        INSERT INTO GJP_User_AssetsRecord(
+        ua_id,
+        uar_type,
+        statement_sn,
+        uar_title,
+        uar_amount,
+        uar_status,
+        uar_trade_time,
+        uar_create_time
+        ) VALUES (
+        #{ua_id},
+        #{uar_type},
+        #{statement_sn},
+        #{uar_title},
+        #{uar_amount},
+        #{uar_status},
+        #{uar_trade_time},
+        #{uar_create_time}
+        )
+    </insert>
+
+    <update id="updateUserAssets">
+        UPDATE GJP_User_Assets
+        <set>
+            ua_total_amount = ua_total_amount + IFNULL(#{ua_total_amount}, 0),
+            ua_balance_amount = ua_balance_amount + IFNULL(#{ua_balance_amount}, 0)
+        </set>
+        WHERE
+        ua_id = #{ua_id}
+    </update>
+
+    <insert id="addUserMember" useGeneratedKeys="true" keyProperty="um_id">
+        INSERT INTO GJP_User_Member(
+        user_id,
+        um_level,
+        um_create_time
+        ) VALUES (
+        #{user_id},
+        #{um_level},
+        #{um_create_time}
+        )
+    </insert>
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 数据字典 -->
+<mapper namespace="com.gjp.dao.UserDictionaryDAO">
+
+	<insert id="addDictionaryInfo" useGeneratedKeys="true" parameterType="com.gjp.model.UserDictionary" keyProperty="dr_id">
+		insert into GJP_Dictionary 
+			(
+				dr_pid,
+				is_parent,
+				propertyId,
+				dictionary_name,
+				dictionary_value,
+				dictionary_status,
+				remark,
+				update_time
+			) values (
+				#{dr_pid},
+				#{is_parent},
+				#{propertyId},
+				#{dictionary_name},
+				#{dictionary_value},
+				#{dictionary_status},
+				#{remark},
+				#{update_time}
+			)
+	</insert>
+	
+	<update id="updDictionaryInfo">
+		update GJP_Dictionary 
+			set 
+				dr_pid = #{dr_pid},
+				is_parent = #{is_parent},
+				propertyId = #{propertyId},
+				dictionary_name = #{dictionary_name},
+				dictionary_value = #{dictionary_value},
+				dictionary_status = #{dictionary_status},
+				remark = #{remark},
+				update_time = #{update_time}
+		where dr_id = #{dr_id}
+	</update>
+	
+	<select id="queryDictionaryInfoById" resultType="com.gjp.model.UserDictionary">
+		select * from GJP_Dictionary where dr_id = #{dr_id}
+	</select>
+	
+	<select id="queryDictionaryInfoByPid" resultType="com.gjp.model.UserDictionary">
+		select * from GJP_Dictionary where dr_pid = #{dr_pid}
+	</select>
+	
+	<select id="queryDictionaryInfo" resultType="com.gjp.model.UserDictionary">
+		select * from GJP_Dictionary where dictionary_name like #{dictionary_name}
+	</select>
+	
+	<select id="queryCountByPropertyID" resultType="java.lang.Integer">
+		select count(dr_id) from GJP_Dictionary where propertyId = #{propertyId}
+	</select>
+	
+	<select id="queryDictionaryList" resultType="com.gjp.model.UserDictionary">
+		select 
+			* 
+		from 
+			GJP_Dictionary 
+		where 1 = 1
+		<if test="dictionary_name != null and dictionary_name != ''">
+			and dictionary_name like #{dictionary_name}
+		</if>
+	</select>
+	
+	<!-- 根据父节点编码查询 -->
+	<select id="queryDictionaryByPropertyId" resultType="com.gjp.model.UserDictionary">
+		SELECT
+			*
+		FROM
+			GJP_Dictionary
+		WHERE
+			dr_pid IN (
+				SELECT
+					dr_id
+				FROM
+					GJP_Dictionary
+				WHERE
+					propertyId = #{propertyId}
+			)
+		AND dictionary_status = 1
+	</select>
+	
+	<select id="queryDistrictDictionary" resultType="java.lang.String">
+		SELECT district_address FROM GJP_District_Dictionary
+		WHERE 1=1
+		<if test="pc_id != null">
+			AND pc_id = #{pc_id}
+		</if>
+		<if test="ci_id != null">
+			AND ci_id = #{ci_id}
+		</if>
+		<if test="sj_id != null">
+			AND sj_id = #{sj_id}
+		</if>
+		ORDER BY ga_id ASC
+		limit 1
+	</select>
+</mapper>

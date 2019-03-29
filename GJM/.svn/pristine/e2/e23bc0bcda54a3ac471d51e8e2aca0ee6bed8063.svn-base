@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PropertyInfoNameDAO">
+	<!-- 查询所有物业父子级 -->
+	<select id="selectPropertyInfoNameALL" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName
+	</select>
+	<!-- 查询所有sid为0的物业 -->
+	<select id="selectpropertyInfoSid" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName where upn_sid=0 ORDER BY upn_name asc
+	</select>
+
+	<!-- 查询所有最高级物业 按照名称查找 -->
+	<select id="selectpropertyByParent" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName where upn_pid=0
+		<if test="upn_name != null and upn_name !=''">
+			and upn_name like CONCAT('%',#{upn_name},'%')
+		</if>
+		ORDER BY CONVERT( upn_name USING gbk ) COLLATE gbk_chinese_ci ASC
+		limit 0,10
+	</select>
+
+
+	<!-- 查询所有sid物业 -->
+	<select id="selectpropertyInfoBySname" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName where upn_pid=#{upn_id}
+	</select>
+
+	<!-- 查询所有sid不为0的物业 -->
+	<select id="selectpropertyInfoSidNot" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName where upn_sid!=0
+	</select>
+	<!-- 根据条件物业父子级 -->
+	<select id="selectPropertyInfoNameWhere" resultType="com.gjp.model.PropertyInfoName">
+		select pn.upn_id,pn.upn_name,pn.upn_pid,pn.upn_code,pn.upn_time,pn.upn_sid,pn.upn_sname,pi.propertyInfo_Name,pi.propertyInfo_id from GJP_PropertyInfo_PropertyInfoName as pn,GJP_PropertyInfo as pi where pn.upn_id = pi.upn_id
+		<if test="upn_name !=null and upn_name !=''">
+			and ( pn.upn_sid in (select upn_id from GJP_PropertyInfo_PropertyInfoName where upn_name LIKE CONCAT('%', #{upn_name}, '%')) or
+			pn.upn_id in (select upn_id from GJP_PropertyInfo_PropertyInfoName where upn_name LIKE CONCAT('%', #{upn_name}, '%') and pn.upn_pid=0) )
+		</if>
+		order by pn.upn_name asc
+	</select>
+
+	<!-- 修改物业结构 -->
+	<update id="updatepropertyInfoNamejiegou" parameterType="com.gjp.model.PropertyInfoName">
+		update GJP_PropertyInfo_PropertyInfoName set
+		upn_name=#{upn_name},
+		upn_code=#{upn_code},
+		upn_sname=#{upn_sname},
+		upn_sid=#{upn_sid},
+		upn_pid=#{upn_pid}
+		where
+		upn_id=#{upn_id}
+	</update>
+
+	<!-- 修改物业 -->
+	<update id="updatepropertyInfo" parameterType="com.gjp.model.PropertyInfoName">
+		update GJP_PropertyInfo_PropertyInfoName set
+		upn_name=#{upn_name},
+		upn_code=#{upn_code},
+		upn_sname=#{upn_sname}
+		where
+		upn_id=#{upn_id}
+	</update>
+	
+	<!-- 查询物业父级 -->
+	<select id="findPropertyInfoNameById" parameterType="int" resultType="com.gjp.model.PropertyInfoName">
+		SELECT
+		ppi.upn_id,
+		ppi.upn_name,
+		ppi.upn_pid,
+		ppi.upn_code,
+		ppi.upn_time,
+		ppi.upn_sid,
+		ppi.upn_sname,
+		pi.propertyInfo_success
+		FROM
+		GJP_PropertyInfo_PropertyInfoName ppi,
+		GJP_PropertyInfo pi
+		WHERE
+		ppi.upn_id = pi.upn_id
+		AND
+		ppi.upn_pid =#{id}
+	</select>
+
+	<!-- 修改物业号 -->
+	<update id="updatepropertyInfowuhehao" parameterType="com.gjp.model.PropertyInfoName">
+		update GJP_PropertyInfo_PropertyInfoName set
+		upn_code=#{upn_code}
+		where
+		upn_id=#{upn_id}
+	</update>
+
+
+	<!-- 添加物业 -->
+	<insert id="addpropertyInfoziji" useGeneratedKeys="true" keyProperty="upn_id" parameterType="com.gjp.model.PropertyInfoName">
+		insert into GJP_PropertyInfo_PropertyInfoName(upn_name,upn_pid,upn_code,upn_time,upn_sid,upn_sname) values(#{upn_name},#{upn_pid},#{upn_code},NOW(),#{upn_sid},#{upn_sname})
+	</insert>
+
+	<!-- 查询所有物业父子级 -->
+	<select id="selectPropertyInfoNameALLwuye" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName where 1=1
+		<if test="upn_name!=null and upn_name!=''">
+			and upn_name like "%"#{upn_name}"%"
+		</if>
+		ORDER BY upn_name
+	</select>
+	<!-- 查询当前id物业 -->
+	<select id="findPropertyInfoNameBySid" resultType="com.gjp.model.PropertyInfoName" parameterType="int">
+		select * from GJP_PropertyInfo_PropertyInfoName where upn_id=#{upn_id}
+	</select>
+
+	<!-- 查询所有超级物业父级为参数值那种的 -->
+	<select id="findpropertyInfoBySuperId" resultType="com.gjp.model.PropertyInfoName" parameterType="int">
+		SELECT
+		ppi.upn_id,
+		ppi.upn_name,
+		ppi.upn_pid,
+		ppi.upn_code,
+		ppi.upn_time,
+		ppi.upn_sid,
+		ppi.upn_sname,
+		pi.propertyInfo_Id,
+		pi.propertyInfo_stage,
+		pi.propertyInfo_success
+		FROM
+		GJP_PropertyInfo_PropertyInfoName ppi,
+		GJP_PropertyInfo pi
+		WHERE
+		ppi.upn_id = pi.upn_id
+		AND
+		ppi.upn_sid =#{integer}
+		ORDER BY ppi.upn_name
+	</select>
+
+	<select id="findPropertyNamePageList" resultType="com.gjp.model.PropertyInfoName">
+		SELECT
+		ppi.upn_id,
+		ppi.upn_name,
+		ppi.upn_pid,
+		ppi.upn_code,
+		ppi.upn_time,
+		ppi.upn_sid,
+		ppi.upn_sname,
+		pi.propertyInfo_Id,
+		pi.propertyInfo_stage,
+		pi.propertyInfo_success
+		FROM
+		GJP_PropertyInfo_PropertyInfoName ppi,
+		GJP_PropertyInfo pi
+		WHERE
+		ppi.upn_id = pi.upn_id
+		AND
+		ppi.upn_sid =#{t.upn_sid}
+		AND
+		ppi.upn_name LIKE CONCAT('%', #{t.upn_name}, '%')
+		ORDER BY ppi.upn_name
+		<if test="isPage">
+			LIMIT ${pageNo},${pageSize}
+		</if>
+	</select>
+
+	<!-- 根据物业编码查询物业父子级数据 -->
+	<select id="findpropertyInfoToSuperId" resultType="com.gjp.model.PropertyInfoName" parameterType="int">
+		select * from GJP_PropertyInfo_PropertyInfoName as pn,GJP_PropertyInfo as pi where pn.upn_id = pi.upn_id and pi.propertyInfo_Id=#{propertyInfo_Id} order by pn.upn_id
+	</select>
+	
+	<select id="selectPropertyInfoPid" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName 
+		where 1=1
+		<if test="upn_pid !='' and upn_pid != null">
+			and upn_pid = #{upn_pid}
+		</if>
+		<if test="upn_sid !='' and upn_sid != null">
+			and upn_sid = #{upn_sid}
+		</if>
+		<if test="upn_name !='' and upn_name != null">
+			and upn_name = #{upn_name}
+		</if>
+		<if test="upn_id !='' and upn_id != null">
+			and upn_id = #{upn_id}
+		</if>
+		limit 1
+	</select>
+	
+	<!-- 根据父级编码查询多条子级 -->
+	<select id="queryproperInfo" resultType="com.gjp.model.PropertyInfoName">
+		select * from GJP_PropertyInfo_PropertyInfoName 
+		where 1=1
+		<if test="upn_pid !='' and upn_pid != null">
+			and upn_pid = #{upn_pid}
+		</if>
+		<if test="upn_name !='' and upn_name != null">
+			and upn_name LIKE "%"#{upn_name}"%"
+		</if>
+	</select>
+</mapper>

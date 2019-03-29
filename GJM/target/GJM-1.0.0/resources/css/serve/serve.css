@@ -1,0 +1,22 @@
+#content{
+    padding: 14px 12px;
+    min-width: 1405px;
+}
+/* 受理状态 */
+.state_no{color: #F39C12;}
+.state_ok{color: #1ABC9C;}
+.state_err{color: #E74C3C;}
+.jd-a{
+	background-color: #3E97C9;
+    line-height: 26px;
+    display: inline-block;
+    text-align: center;
+    padding: 0 10px;
+    text-indent: 0;
+    color: #fff;
+    border-radius: 4px;
+}
+.jd-a:HOVER {
+	color: #fff;
+	background-color: #60aad2;
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillClearOrderDAO">
+
+	<sql id="allmenbers">
+		bco_id,
+		bco_code,
+		bco_contractCode,
+		bco_name,
+		bco_phone,
+		bco_payState,
+		bco_shouldMoney,
+		bco_money,
+		bco_numMoney,
+		bco_startDate,
+		bco_state,
+		bco_num
+	</sql>
+
+	<sql id="menberEcpId">
+		bco_code,
+		bco_contractCode,
+		bco_name,
+		bco_phone,
+		bco_payState,
+		bco_shouldMoney,
+		bco_money,
+		bco_numMoney,
+		bco_startDate,
+		bco_state,
+		bco_num
+	</sql>
+
+	<sql id="insert">
+		#{bco_code },
+		#{bco_contractCode },
+		#{bco_name },
+		#{bco_phone },
+		#{bco_payState },
+		#{bco_shouldMoney },
+		#{bco_money },
+		#{bco_numMoney },
+		NOW(),
+		#{bco_state },
+		#{bco_num }
+	</sql>
+
+	<!-- 添加保洁订单 -->
+	<insert id="addBillClearOrder" useGeneratedKeys="true" keyProperty="bco_id">
+		insert into GJP_Bill_ClearOrder(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<select id="selectBillClearOrder" resultType="com.gjp.model.BillClearOrder">
+		select * from GJP_Bill_ClearOrder where bco_code=#{bco_code}
+	</select>
+
+	<!-- 维修修改订单金额 -->
+	<update id="updateClearOrderMoney">
+		update GJP_Bill_ClearOrder set bco_numMoney=#{bco_numMoney},bco_shouldMoney=#{bco_shouldMoney} where bco_code=#{bco_code}
+	</update>
+
+	<!-- 修改订单状态 -->
+	<update id="updateClearOrderState">
+		update GJP_Bill_ClearOrder set bco_payState=#{bco_payState} where bco_code=#{bco_code}
+	</update>
+
+</mapper>

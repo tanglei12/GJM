@@ -1,0 +1,987 @@
+<%@page import="com.gjp.util.AppUtil"%>
+<%@ page language="java" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE>
+<html>
+<head>
+<title>意向房源</title>
+<link href="/resources/css/manage_index.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/common/common.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/body.css" rel="stylesheet" type="text/css">
+<link href="/resources/common/imageUpload/css/jquery.image-upload.css" rel="stylesheet" type="text/css">
+<link href="/resources/common/swipeslider-develop/dist/swipeslider.css" rel="stylesheet" type="text/css">
+<link href="/resources/common/perfect-scrollbar/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+<link href="/resources/common/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="/resources/Plug-in/jbox-v2.3/jBox/Skins/Blue/jbox.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/houseIntention/houseIntentionContent.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/houseIntention/addInitIntentionText.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/product/addInitIntention.css" rel="stylesheet" type="text/css">
+
+<script src="/resources/js/jquery-1.7.2.min.js"></script>
+<script src="/resources/js/common/common.js"></script>
+<script src="/resources/common/imageUpload/js/jquery.image-upload.js"></script>
+<script src="/resources/common/My97DatePicker/WdatePicker.js"></script>
+<script src="/resources/Plug-in/jbox-v2.3/jBox/jquery.jBox-2.3.min.js" charset="utf-8"></script>
+<script src="/resources/Plug-in/jbox-v2.3/jBox/i18n/jquery.jBox-zh-CN.js" charset="utf-8"></script>
+<script src="/resources/common/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+<script src="/resources/js/product/jquery-cookie.js"></script>
+<link href="/resources/common/sweet-alert/css/sweet-alert.css" rel="stylesheet" type="text/css">
+<script src="/resources/common/sweet-alert/js/sweet-alert.min.js"></script>
+<script src="/resources/js/intention/house-intent-eidt.js"></script>
+
+<!-- 有谁能把下面这三个文件理清楚、哪个JS控制哪块HTML，错综复杂，头大 -->
+<script src="/resources/js/intention/addHouseIntention.js?v=1.0"></script><!-- 意向房源跟进步骤提交 -->
+<script src="/resources/js/intention/addInitIntentionText.js"></script>
+<script src="/resources/js/intention/houseIntentionContent2.js"></script><!-- 房源基本信息数据读取 -->
+
+<script src="/resources/js/intention/orderProcess.js"></script>
+<script src="/resources/js/intention/followUp.js"></script>
+
+
+<style type="text/css">
+.checkbox input[type="checkbox"]:checked+label::after {
+	font-family: 'FontAwesome';
+	content: "\f00c";
+	color: #fff;
+	position: absolute;
+	top: 0px;
+	left: 2px;
+	z-index: 100;
+	width: 17px;
+	height: 17px;
+	text-indent: 0;
+	font-size: 13px;
+}
+</style>
+</head>
+<body>
+	<input type="hidden" name="imageNum" id="imageNum" value="">
+	<input type="hidden" name="imageNumEnd" id="imageNumEnd" value="0">
+	<input type="hidden" value="${hi.phi_id}" id="updatephi_id" />
+	<input type="hidden" id="gj_emID" name="emcode" value="<%=AppUtil.getCookieEmployee(request).getEm_id()%>" />
+	<input type="hidden" value="${hi.propertyInfo_Id}" id="propertyInfo_Id" type="hidden" />
+	<input type="hidden" value="${hi.phi_address }" id="fangyuanfanghaos" name="phi_address" />
+	<input type="hidden" value="${hi.buildType }" name="buildtype" id="buildtype">
+	<input type="hidden" value="${hi.hi_project }" id="fangyuanpeizhi">
+	<input type="hidden" value="${hi.hb_id }" name="houseid" id="houseid">
+	<input type="hidden" value="${hi.recommendGroup_Id }" name="recommendGroup" id="recommendGroup">
+	<input type="hidden" value="${rb.rb_playType }" id="rb_lx" name="rb_lx">
+	<input type="hidden" value="${hi.hi_function }" id="resfangyuanyoushi" name="resfangyuanyoushi">
+	<input type="hidden" value="${hi.hi_function }" name="fangyuanyoushi" id="fangyuanyoushi">
+	<input type="hidden" value="${hi.hi_code}" id="hicode" name="hicode" />
+	<input type="hidden" value="${hi.recommendGroup_Id }" id="tuijianqunti">
+	<input type="hidden" value="${hi.phi_phone }" id="lianxiphone" name="phi_phone" />
+	<input type="hidden" id="phiUserName" name="phiUserName">
+	<!-- <input type="hidden" id="cc_code" name="cc_code"> -->
+	<!-- 菜单导航 -->
+	<div class="leftTitle">
+		<div class="leftTile-menu">
+			<a class="nav-menu nav-menu-focus" onclick="clickTitle(this)">房源概述</a>
+			<a class="nav-menu" onclick="clickTitle(this)" id="houseIntention2">意向跟进</a>
+			<a class="nav-menu" onclick="clickTitle(this)">执行记录</a>
+		</div>
+	</div>
+	
+	<!-- 意向描述 -->
+	<div class="contents" id="contents1">
+		<div class="content">
+			<div class="content-title">
+				<div class="content-title-font">基本信息</div>
+			</div>
+			<div class="content-title-content">
+				<label style="width: 18%;">
+					<span class="title-title">地址：</span>
+					<span class="title-content address"></span>
+				</label>
+				<label style="width: 22%;">
+					<span class="title-title">户型：</span>
+					<span class="title-content houseType" style="color: #3498DB !important"></span>
+				</label>
+				<label style="width: 26%;">
+					<span class="title-title">联系人：</span>
+					<span class="title-content peoplePhone" style="color: #3498DB !important"></span>
+				</label>
+				<label style="width: 27%;">
+					<span class="title-title">价格：</span>
+					<span class="title-content houseMoneys" style="color: #3498DB !important"></span>
+				</label>
+				<label style="width: 18%;">
+					<span class="title-title">收录人：</span>
+					<span class="title-content insertHousePeople" style="color: #3498DB !important"></span>
+				</label>
+				<label style="width: 22%;">
+					<span class="title-title">最新跟进人：</span>
+					<span class="title-content newUser" style="color: #3498DB !important" id="name"></span>
+				</label>
+				<label style="width: 22%;">
+					<span class="title-title">房源状态：</span>
+					<span class="title-content propertyType" style="color: #3498DB !important"></span>
+				</label>
+			</div>
+			<input type="hidden" id="hi_code" />
+			<input type="hidden" id="em_id" />
+			<div class="conten-text" style="margin-top: 10px; overflow: hidden;" id="contentHouse">
+				<div class="buttonDiv" style="margin-bottom: 18px; margin-top: 0px;">
+					<button id="updateHouse" onclick="updateHouseInform()" data-type="">修改库存</button>
+					<button id="updateContent" onclick="" data-type="">签订合同</button>
+
+					<button onclick="moreHouseMessage()" style="float: right;">查看详情</button>
+					<button style="float: right;" onclick="processOver()">完善流程</button>
+				</div>
+				<div id="textContent" style="display: none; padding-top: 10px;">
+					<div class="content-text-div" style="margin-bottom: 20px;">
+						<div class="content-text-title">房屋信息</div>
+						<div class="content-text-div-content">
+							<dl style="width: 100%;">
+								<dt>标题：</dt>
+								<dd class="houseTile" style="width: 80%;"></dd>
+							</dl>
+							<dl style="width: 100%;">
+								<dt>点评：</dt>
+								<dd class="comment" style="width: 80%; color: #E74C3C"></dd>
+							</dl>
+							<dl>
+								<dt>地址：</dt>
+								<dd class="address" style="width: 65%;"></dd>
+							</dl>
+							<dl>
+								<dt>户型：</dt>
+								<dd class="houseType" style="width: 65%"></dd>
+							</dl>
+							<dl>
+								<dt>装修情况：</dt>
+								<dd class="renovation"></dd>
+							</dl>
+							<dl>
+								<dt>联系人：</dt>
+								<dd class="peoplePhone" style="width: 65%"></dd>
+							</dl>
+							<dl>
+								<dt>来源：</dt>
+								<dd class="houseSource"></dd>
+							</dl>
+							<dl>
+								<dt>楼盘类型：</dt>
+								<dd class="propertyType"></dd>
+							</dl>
+							<dl>
+								<dt>类型：</dt>
+								<dd class="brand"></dd>
+							</dl>
+							<dl>
+								<dt>配置：</dt>
+								<dd class="houseConfigure" style="width: 65%;"></dd>
+							</dl>
+							<dl>
+								<dt>推荐人群：</dt>
+								<dd class="group" style="width: 130px;"></dd>
+							</dl>
+							<dl style="width: 100%;">
+								<dt>优势：</dt>
+								<dd class="advantage" style="width: 80%;"></dd>
+							</dl>
+							<dl style="width: 100%;">
+								<dt>概况：</dt>
+								<dd class="survey" style="width: 80%;"></dd>
+							</dl>
+							<dl style="width: 100%; overflow: hidden; height: auto;">
+								<dt>图片：</dt>
+								<dd style=" overflow: hidden; height: auto; width: 80%;" class="houseImage">
+								</dd>
+							</dl>
+						</div>
+					</div>
+
+					<div class="content-text-div">
+						<div class="content-text-title">存房情况</div>
+						<div class="content-text-div-content">
+							<dl>
+								<dt>存房结果：</dt>
+								<dd class="houseResult"></dd>
+							</dl>
+							<dl style="width: 60%;">
+								<dt>操作类型：</dt>
+								<dd class="houseResult"></dd>
+							</dl>
+							<dl>
+								<dt>支付类型：</dt>
+								<dd id="payType"></dd>
+							</dl>
+							<dl>
+								<dt>支付金额：</dt>
+								<dd id="payMoney"></dd>
+							</dl>
+							<dl>
+								<dt>支付方式：</dt>
+								<dd id="payMode"></dd>
+							</dl>
+							<dl>
+								<dt>支付状态：</dt>
+								<dd id="payState"></dd>
+							</dl>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="content-title">
+				<div class="content-title-font">跟进记录</div>
+			</div>
+			<div class="conten-text" id="conten-text1">
+				<table>
+					<thead>
+						<tr>
+							<td>跟进时间</td>
+							<td>跟进方式</td>
+							<td>跟进内容</td>
+							<td>跟进人</td>
+							<td>提醒</td>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+
+			<div class="buttonDiv" style="margin-bottom: 10px; margin-top: 2px;">
+				<a class="addButton-icon addButton-icon-add" style="width: 80px; margin-left: 47%; cursor: pointer;"
+					onclick="messageFollowUp(this)">
+					<font style="left: 33px; font-size: 15px; position: absolute; top: 10px;">跟进</font>
+				</a>
+				<a href="javascript:;" class="addButton-icon addButton-icon-up"
+					style="background-color: #fff; width: 80px; margin-left: 47%; cursor: pointer; display: none;"
+					onclick="messageFollowUp(this)"></a>
+			</div>
+
+			<div class="messageList">
+				<dl>
+					<dt>
+						<span>*</span>
+						跟进方式：
+					</dt>
+					<dd>
+						<select class="form-control" id="htType" onchange="changeRemindShow(this)" style="margin-left: 10px;">
+							<option value="-1">请选择</option>
+							<option value="电话" id="">电话</option>
+							<option value="预约看房" id="">预约看房</option>
+							<option value="实勘" id="">实勘</option>
+							<option value="跟进" id="">跟进</option>
+							<option value="合同" id="">合同</option>
+							<option value="提醒" id="">提醒</option>
+						</select>
+					</dd>
+				</dl>
+				<dl style="height: 81px;" id="followUp">
+					<dt>
+						<span>*</span>
+						跟进内容：
+					</dt>
+					<dd style="width: 53%; position: relative;">
+						<textarea class="form-control" maxlength="100" id="htCount" name="htCount" placeholder="跟进内容"
+							style="width: 500px;" rows="3"></textarea>
+						<span class="addRemind" onclick="remindShow()">
+							<div class="checkbox checkbox-success" style="float: left; margin-top: 10px; margin-right: 5px;">
+								<input name="chickes" type="checkbox" />
+								<label for="chickes" id="ckLabel"></label>
+							</div>
+							<span style="float: left;">添加提醒</span>
+						</span>
+					</dd>
+				</dl>
+				<div id="remindShow" style="display: none; width: 100%; height: 153px;">
+					<dl>
+						<dt>提醒时间：</dt>
+						<dd style="width: 80%;">
+							<div class="dateTimeTitle" style="width: 195px; float: left;">
+								<i class="icon-calendar"></i>
+								<div class="dateTimeContent">
+									<input type="text" id="ht_remind_time" class="dateTime2" value="" placeholder="提醒跟进时间" onfocus="dates()"
+										style="width: 190px; background: none; left: 0px;">
+								</div>
+							</div>
+							<div style="float: left; margin-left: 10px;">
+								<input type="text" placeholder="时" id="hour"
+									style="width: 40px; height: 40px; line-height: 40px; float: left; text-align: center; border: 1px solid #1ABC9C;"
+									maxlength="2" onkeyup="value=value.replace(/[^\d]/g,'')" onBlur="hourJudge(this)" value="9" />
+							</div>
+							<div style="float: left; margin-left: 10px;">
+								<input type="text" placeholder="分" id="min"
+									style="width: 40px; height: 40px; line-height: 40px; float: left; text-align: center; border: 1px solid #1ABC9C;"
+									maxlength="2" onkeyup="value=value.replace(/[^\d]/g,'')" onBlur="minJudge(this)" value="40" />
+							</div>
+						</dd>
+					</dl>
+					<dl style="height: 81px; margin-bottom: 15px;">
+						<dt>提醒内容：</dt>
+						<dd>
+							<textarea class="form-control" maxlength="100" id="htRemindCount" name="htRemindCount" placeholder="提醒内容"
+								style="width: 500px;" rows="3"></textarea>
+						</dd>
+					</dl>
+				</div>
+				<dl>
+					<dd style="margin-left: 110px;">
+						<button onclick="houseIntenType()">添加跟进</button>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="contents" id="contents2" style="display: none;">
+		<div class="content">
+			<div class="content-title">
+				<div class="content-title-font">执行记录</div>
+			</div>
+			<div class="conten-text">
+				<table>
+					<thead>
+						<tr>
+							<td>执行时间</td>
+							<td>执行方式</td>
+							<td>执行内容</td>
+							<td>执行人</td>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="contents" id="contents3" style="display: none;">
+		<div class="content">
+			<div class="content-title">
+				<div class="content-title-font">意向基本信息</div>
+			</div>
+			<!-- 房源基本信息title展示 -->
+			<div class="content-title-content" style="margin-top: 10px; height: 40px;">
+				<dl style="width: 33%;"><dt>房源收录：</dt><dd><span id="houseAddUser"></span></dl>
+				<dl style="width: 33%;"><dt>最新跟进：</dt><dd><span id="houseUpdateUser" class="newUser"></span></dd></dl>
+				<dl style="width: 33%;"><dt>房源状态：</dt><dd><span id="houseUpdateType" class="propertyType"></span></dd></dl>
+			</div>
+			<div class="conten-text" style="margin-top: 50px; font-size: 14px;">
+<!-- 				<div class="content-text-div" style="margin-bottom: 20px; margin-top: 20px;" onmouseenter="chanageCountShow3()" onmouseleave="chanageCountHide3()"> -->
+<!-- 					<div class="content-text-title">房源基本信息</div> -->
+<!-- 					<div id="countDiv3"> -->
+<!-- 						<div class="divRadius" style="margin-left: 10%;"> -->
+<!-- 							<a id="divRadius1s" class="ainput" href="javascript:updateHouseDiv(1);">房源跟进</a> -->
+<!-- 						</div> -->
+<!-- 						<div class="divRadius"> -->
+<!-- 							<a id="divRadius2s" class="ainput" href="javascript:updateHouseDiv(2);">房源实勘</a> -->
+<!-- 						</div> -->
+<!-- 						<div class="divRadius"> -->
+<!-- 							<a id="divRadius3s" class="ainput" href="javascript:updateHouseDiv(3);">房源定价</a> -->
+<!-- 						</div> -->
+<!-- 						<div class="divRadius"> -->
+<!-- 							<a id="divRadius4s" class="ainput" href="javascript:updateHouseDiv(4);">房源存房</a> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					房源基本信息展示 -->
+<!-- 					<div class="content-text-div-content" id="countDivShow3"> -->
+<!-- 	    			   <dl><dt>地址：</dt><dd><span class="address"></span></dd></dl> -->
+<!-- 	    			   <dl><dt>户型：</dt><dd><span class="houseType"></span></dd></dl> -->
+<!-- 	    			   <dl><dt>装修：</dt><dd><span class="renovation"></span></dd></dl> -->
+<!-- 	    			   <dl><dt>价格：</dt><dd><span class="houseMoneys"></span></dd></dl> -->
+<!-- 	    			   <dl><dt>房东：</dt><dd><span class="peoplePhone"></span></dd></dl> -->
+<!--     				   <dl><dt>类型：</dt><dd><span class="brand"></span></dd></dl> -->
+<!--     				   <dl><dt>推荐：</dt><dd><span class="group"></span></dd></dl> -->
+<!--     				   <dl style="width:66%;"><dt>配置：</dt><dd style="width:500px;"><span class="houseConfigure"></span></dd></dl> -->
+<!--     		           <dl style="width:100%;"><dt>优势：</dt><dd style="width:80%;"><span class="advantage"></span></dd></dl> -->
+<!--     		           <dl style="width:100%;"><dt>点评：</dt><dd style="width:86%;"><span class="comment"></span></dd></dl> -->
+<!--     		           <dl style="width:100%;height: auto;overflow: hidden;"><dt>图片：</dt><dd style=" width: 80%;height: auto;overflow: hidden;" class="houseImage"></dd></dl> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+				<!-- 房源跟进 -->
+				<div class="" id="updateDiv" style="margin-bottom: 40px; ">
+<!-- 					<fieldset id="fieldset1s"> -->
+					<div style="border: 1px dashed #ACCBE0;">
+						<div style="margin-top: -11px; margin-left: 10px; color: #288eb7;">房源录入</div>
+						<div style="" class="houseDiv">
+							<dl style="width: 66%;">
+								<dt>
+									<em>*</em>
+									&nbsp;所属物业：
+								</dt>
+								<dd style="width: 80%;">
+									<label class="item" id="propertyInfo_idGroups" style="position: relative;float: left;">
+										<input type="text" class="form-control updateInput" id="properid" name="propertyInfo_id" placeholder="所属物业" style="margin-right: 12px;text-align: left;width: 175px;position: relative;float: left;" readonly required />
+									</label>
+									<label class="tisp"> </label>
+					
+								</dd>
+							</dl>
+							<hr>
+							<hr>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房源房号：
+								</dt>
+								<dd>
+									<input type="text" value="" placeholder="楼层" id="fangyuanlouceng" name="phi_floors"
+										class="updateInput short number " value="0" />
+									<span class="block">-</span>
+									<input type="text" value="" placeholder="房号" id="fangyuanfanghao"
+										name="phi_address" class="updateInput short number" value="0" />
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房源户型：
+								</dt>
+								<dd>
+									<input value="${hi.hi_houseS }" name="hi_houseS" id="fangwushi" placeholder="室"
+										class="updateInput min-short number">
+									<span class="block">室</span>
+									<input value="${hi.hi_houseT }" name="hi_houseT" id="fangwuting" placeholder="厅"
+										class="updateInput min-short number">
+									<span class="block">厅</span>
+									<input value="${hi.hi_houseW }" name="hi_houseW" id="fangwuwei" placeholder="卫"
+										class="updateInput min-short number">
+									<span class="block">卫</span>
+								</dd>
+							</dl>
+							<hr>
+
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房东姓名：
+								</dt>
+								<dd>
+									<input value="${hi.phi_user }" id="lianxiren" name="phi_user" placeholder="房东姓名" class="updateInput">
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房东性别：
+								</dt>
+								<dd style="padding-top:5px;">
+									<label class="common-checkbox" style="margin-left: 0px;">
+										<input type="radio" name="phi_user_sex" value="女士">女士
+									</label>
+									<label class="common-checkbox" style="margin-left: 35px;">
+										<input type="radio" name="phi_user_sex" value="先生">先生
+									</label>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房东电话：
+								</dt>
+								<dd>
+									<input value="${hi.phi_phone }" id="useriphone" onchange="chenkphone(useriphone);" name="useriphone"
+										placeholder="房东电话" class="updateInput number" readonly="readonly">
+								</dd>
+							</dl>
+							<hr>
+
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房东报价：
+								</dt>
+								<dd>
+									<input value="${hi.phi_money }" name="fangdongbaojia" id="fangdongbaojia" placeholder="房东报价"
+										class="updateInput number">
+									&nbsp;元
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房源来源：
+								</dt>
+								<dd>
+									<%-- <input value="${hi.phi_source }" name="phi_source" id="phi_source"> --%>
+									<select id="fangyuanlaiyuan" name="phi_source" class="selects">
+										<option value="">请选择</option>
+										<option value="线下开发" id="">线下开发</option>
+										<option value="网络来源" id="">网络来源</option>
+										<option value="广告" id="">广告</option>
+										<option value="上门" id="">上门</option>
+										<option value="官网" id="">官网</option>
+										<option value="其他" id="">其他</option>
+									</select>
+								</dd>
+							</dl>
+<!-- 							<dl> -->
+<!-- 								<dt> -->
+<!-- 									<em>*</em> -->
+<!-- 									&nbsp;楼盘类型： -->
+<!-- 								</dt> -->
+<!-- 								<dd style="padding-top:5px;"> -->
+<!-- 									<label class="common-checkbox" style="margin-left: 0px;"> -->
+<!-- 										<input type="radio" name="buildTypes" value="公盘">公盘 -->
+<!-- 									</label> -->
+<!-- 									<label class="common-checkbox" style="margin-left: 35px;"> -->
+<!-- 										<input type="radio" name="buildTypes" value="私盘">私盘 -->
+<!-- 									</label> -->
+									
+<!-- 								</dd> -->
+<!-- 							</dl> -->
+							<hr>
+							<dl style="width: 80%;">
+								<dt>
+									<em>*</em>
+									&nbsp;房源优势：
+								</dt>
+								<dd style="width: 80%;">
+									<div id="fangyuanyoushigenjin">
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											家电齐全
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="家电齐全">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											拎包入住
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="拎包入住">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											全新装修
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="全新装修">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											临近轻轨
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="临近轻轨">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											欧式风格
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="欧式风格">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											通风
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="通风">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											采光好
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="采光好">
+										</label>
+										<label class="type-label" onclick="changeTypes(this)" style="padding: 0px 18px;">
+											温馨
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="温馨">
+										</label>
+<!-- 										<label class="type-label" onclick="addyslabel();" id="addyslab"> -->
+<!-- 											+ -->
+<!-- 											<i></i> -->
+<!-- 										</label> -->
+										<div id="divys" style="display: none;">
+											<input type="text" value="" name="addys" id="addys" style="width: 80px; height: 30px; line-height: 30px; border: 1px solid #cccccc;">
+											<input type="button" value="确  定" onclick="submitys(1)"
+												style="background-color: #5bc0de; color: #fff; width: 60px; height: 30px; border-radius: 3px;cursor: pointer;">
+										</div>
+									</div>
+								</dd>
+							</dl>
+							<hr>
+<!-- 							<div class="col-md-12  modelAdd" style="width: 300px; margin: auto; margin-bottom: 40px;"> -->
+<!-- 								<input class="btn btn-info pull-left" style="margin-top: 40px; width: 100px; margin-bottom: 40px;" -->
+<!-- 									onclick="submit1(1)" type="button" value=" 提  交  " /> -->
+<!-- 								<input class="btn btn-info pull-left" -->
+<!-- 									style="margin-left: 77px; margin-top: 40px; width: 100px; margin-bottom: 40px;" onclick="updateDivCheck()" -->
+<!-- 									type="button" value=" 返  回  " /> -->
+<!-- 							</div> -->
+						</div>
+					</div>
+<!-- 					</fieldset> -->
+<!-- 					<fieldset id="fieldset2s"> -->
+					<div style="border: 1px dashed #ACCBE0;margin-top: 15px;">
+						<div style="margin-top: -11px; margin-left: 10px; color: #288eb7;">房源实勘</div>
+						<div style="" class="houseDiv">
+<!-- 							<dl> -->
+<!-- 								<dt> -->
+<!-- 									<em>*</em> -->
+<!-- 									&nbsp;房源户型： -->
+<!-- 								</dt> -->
+<!-- 								<dd> -->
+<%-- 									<input value="${hi.hi_houseS }" name="hi_houseS" id="fangwushis" placeholder="室" --%>
+<!-- 										class="updateInput min-short number"> -->
+<!-- 									<span class="block">室</span> -->
+<%-- 									<input value="${hi.hi_houseT }" name="hi_houseT" id="fangwutings" placeholder="厅" --%>
+<!-- 										class="updateInput min-short number"> -->
+<!-- 									<span class="block">厅</span> -->
+<%-- 									<input value="${hi.hi_houseW }" name="hi_houseW" id="fangwuweis" placeholder="卫" --%>
+<!-- 										class="updateInput min-short number"> -->
+<!-- 									<span class="block">卫</span> -->
+<!-- 								</dd> -->
+<!-- 							</dl> -->
+
+							<hr>
+
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房屋面积：
+								</dt>
+								<dd>
+									<input value="${hi.hi_measure }" name="fangyuanmianji" id="fangyuanmianji" placeholder="请输入房源面积"
+										class="updateInput money">
+									&nbsp;m²
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;装修情况：
+								</dt>
+								<dd>
+									<%-- <input type="hidden" value="${hi.hi_situation }" name="hi_situation" id="hi_situation"> --%>
+									<select id="zhuangxiuqingkuang" class="selects">
+										<option value="">请选择</option>
+										<option value="0">清水</option>
+										<option value="1">简装</option>
+										<option value="2">精装</option>
+										<option value="3">豪装</option>
+										<option value="4">中装</option>
+									</select>
+
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;装修风格：
+								</dt>
+								<dd>
+									<select id="phi_style" class="selects">
+										<option value="">请选择</option>
+										<option value="欧式">欧式</option>
+										<option value="中式">中式</option>
+										<option value="简约">简约</option>
+										<option value="其他">其他</option>
+									</select>
+
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<em>*</em>
+									&nbsp;房屋类型：
+								</dt>
+								<dd>
+									<%-- <input value="${hi.recommend_name }" name="recommend_name" id="recommend_name" placeholder="请输入房源品牌"> --%>
+									<div id="fangyuanpinpaidiv"></div>
+								</dd>
+							</dl>
+							<hr>
+							<dl style="width: 100%;">
+								<dt>
+									<em>*</em>
+									&nbsp;推荐群体：
+								</dt>
+								<dd id="recommendGroupDiv1" style="width: 80%;"></dd>
+							</dl>
+							<hr>
+							<dl style="width: 100%;">
+								<dt>
+									<em>*</em>
+									&nbsp;房屋配置：
+								</dt>
+								<dd style="width: 80%;">
+									<div id="houseProject">
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											床
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="床">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											衣柜
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="衣柜">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											沙发
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="沙发">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											电视
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="电视">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											冰箱
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="冰箱">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											洗衣机
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="洗衣机">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											空调
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="空调">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											热水器
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="热水器">
+										</label>
+										<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">
+											宽带
+											<i></i>
+											<input type="checkbox" class="type-radio" name="hi_function" value="宽带">
+										</label>
+										<%--<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">--%>
+											<%--茶几--%>
+											<%--<i></i>--%>
+											<%--<input type="checkbox" class="type-radio" name="hi_function" value="茶几">--%>
+										<%--</label>--%>
+										<%--<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">--%>
+											<%--餐桌--%>
+											<%--<i></i>--%>
+											<%--<input type="checkbox" class="type-radio" name="hi_function" value="餐桌">--%>
+										<%--</label>--%>
+										<%--<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">--%>
+											<%--椅子--%>
+											<%--<i></i>--%>
+											<%--<input type="checkbox" class="type-radio" name="hi_function" value="椅子">--%>
+										<%--</label>--%>
+										<%--<label class="type-label" onclick="changefangyuanpeizhi(this)" style="padding: 0px 18px;">--%>
+											<%--通气--%>
+											<%--<i></i>--%>
+											<%--<input type="checkbox" class="type-radio" name="hi_function" value="通气">--%>
+										<%--</label>--%>
+									</div>
+									<div id="divys1" style="display: none;">
+										<input type="text" value="" name="addpz" id="addpz" style="width: 80px; height: 30px; line-height: 30px; border: 1px solid #bbb;">
+										<input type="button" value="确  定" onclick="submitys(2)"
+											style="background-color: #5bc0de; color: #fff; width: 60px; height: 30px; border-radius: 3px;">
+									</div>
+
+								</dd>
+							</dl>
+							<hr>
+							<dl style="width: 100%; min-height: 115px;">
+								<dt>
+									<em>*</em>
+									&nbsp;房源点评：
+								</dt>
+								<dd style="">
+									<div>
+										<textarea id="fangyuandianpings" name="phi_status" placeholder="请对该房点评，不低于20字" rows="5" style="width: 345px; margin-left: 0px;">${hi.hi_content }</textarea>
+									</div>
+									<div style="margin-left: 100px;">
+										<em style="font-style: normal;">温馨提示：房源点评不能低于20字</em>
+									</div>
+								</dd>
+								<dd>
+									<div style="float: left; width: 80px; margin-top: 65px;">
+										<input type="text" value="" id="fangyuandianpingstext" name="fangyuandianpingstext" readonly="readonly" style="width: 100px; border: none;">
+									</div>
+								</dd>
+							</dl>
+							<dl style="width:100%; float: none; margin-top: 85px; height: auto;overflow: hidden;">
+								<dt>
+									<em>*</em>
+									&nbsp;房屋图片：
+								</dt>
+								<dd style="width: 86%;height: auto;overflow: hidden;">
+									<div id="image-upload-box">
+									</div>
+								</dd>
+							</dl>
+							<hr>
+<!-- 							<div class="col-md-12  modelAdd" style="width: 300px; margin: auto; position: relative; margin-top: 10px;"> -->
+<!-- 								<input class="btn btn-info pull-left" style="margin-top: 40px; width: 100px; margin-bottom: 40px;" -->
+<!-- 									onclick="submit1(2)" type="button" value=" 提  交  " /> -->
+<!-- 								<input class="btn btn-info pull-left" -->
+<!-- 									style="margin-left: 77px; margin-top: 40px; width: 100px; margin-bottom: 40px;" onclick="updateDivCheck()" -->
+<!-- 									type="button" value=" 返  回  " /> -->
+<!-- 							</div> -->
+
+
+						</div>
+					</div>
+<!-- 					</fieldset> -->
+<!-- 					<fieldset id="fieldset3s" style=""> -->
+					<div style="border: 1px dashed #ACCBE0;margin-top: 15px;">
+						<div style="margin-top: -11px; margin-left: 10px; color: #288eb7;">房源定价</div>
+						<div style="" class="houseDiv">
+							<dl style="width: 63%;">
+								<dt>
+									<em>*</em>
+									&nbsp;房源成交价：
+								</dt>
+								<dd style="">
+									<input type="text" value="${hi.phi_price }" placeholder="请输入房屋定价价格" id="dingjia" name="phi_price"
+										class="updateInput number" />
+									元
+									<em style="font-style: normal;">
+										( 房东报价：
+										<span id="houseUserPicer"></span>
+										元 )
+									</em>
+								</dd>
+							</dl>
+							<dl style="width:35%;">
+								<dt>
+									<em>*</em>
+									&nbsp;楼盘类型：
+								</dt>
+								<dd style="padding-top: 5px">
+									<label class="common-checkbox" style="margin-left: 0px;">
+										<input type="radio" name="buildTypeDingjia" value="公盘">公盘
+									</label>
+									<label class="common-checkbox" style="margin-left: 15px;">
+										<input type="radio" name="buildTypeDingjia" value="私盘">私盘
+									</label>
+									<label class="common-checkbox" style="margin-left: 15px;">
+										<input type="radio" name="buildTypeDingjia" value="保护">保护
+									</label>
+									<label class="common-checkbox" id='closePan' style="margin-left: 15px;display: none;">
+										<input type="radio" name="buildTypeDingjia" value="封盘">封盘
+									</label>
+								</dd>
+							</dl>
+							<hr>
+							<div style="display: none; width: 100%;" id="selectBuildTypePublic">
+								<dl style="width: 100%;">
+									<dt>
+										<em>*</em>
+										&nbsp;保护时间：
+									</dt>
+									<dd style="width: 80%;">
+										<input type="text" id="protect_beginTime" class="updateInput dateTime1" readonly="readonly"
+											style="width: 100px;" />
+										-
+										<input type="text" id="protect_endTine" class="updateInput dateTime2" value="" placeholder="保护结束时间"
+											onfocus="dates()" style="width: 100px;" />
+									<dd>
+								</dl>
+
+								<hr>
+								<dl style="width: 66%;">
+									<dt>
+										<em>*</em>
+										&nbsp;保护原因：
+									</dt>
+									<dd style="width: 80%;">
+										<textarea rows="5" style="width: 80%;margin-left: 0px;" id="protect_cause" name="protect_cause" onchange="phiEndTimeIsNull()" >${hi.protect_cause }</textarea>
+									</dd>
+								</dl>
+								<hr>
+							</div>
+
+<!-- 							<div class="col-md-12  modelAdd" style="width: 300px; margin: auto; margin-top: 25px;"> -->
+<!-- 								<input class="btn btn-info pull-left" style="margin-top: 40px; width: 100px; margin-bottom: 40px;" -->
+<!-- 									onclick="submit1(3)" type="button" value=" 提  交  " /> -->
+<!-- 								<input class="btn btn-info pull-left" -->
+<!-- 									style="margin-left: 77px; margin-top: 40px; width: 100px; margin-bottom: 40px;" onclick="updateDivCheck()" -->
+<!-- 									type="button" value=" 返  回  " /> -->
+<!-- 							</div> -->
+						</div>
+					</div>
+<!-- 					</fieldset> -->
+<!-- 					<fieldset id="fieldset4s" style=""> -->
+					<div style="border: 1px dashed #ACCBE0;margin-top: 15px;">
+						<div style="margin-top: -11px; margin-left: 10px; color: #288eb7;">房源存房</div>
+						<div class="houseDiv">
+							<dl>
+								<dt>存房结果：</dt>
+								<dd>
+									<%-- <input type="hidden" value="${hi.phi_type }" name="phi_type" id="phi_type"> --%>
+									<select id="genjinjieguo" onchange="cunfangjieguo(this.value)" name="genjinjieguo" class="selects">
+										<option value="">--请选择--</option>
+										<option value="完成">存房成功</option>
+										<option value="存房失败">存房失败</option>
+									</select>
+								</dd>
+							</dl>
+							<hr>
+							<div id="dlType">
+								<dl style="width: 96%;">
+									<dt>操作类型：</dt>
+									<dd style="width: 80%;">
+										<div id="moneyType">
+											<label class="type-label" onclick="chanageradio(1)" for="type1" id="type1" style="padding: 0px 18px;">
+												定 金
+												<i></i>
+												<input type="radio" style="display: none" class="common-radio" name="radio1" value="定金" id="radio1">
+											</label>
+											<!-- shenhx 20170512 诚意金与APP保持一致，取消 -->
+<!-- 											<label class="type-label" onclick="chanageradio(2)" for="type2" id="type2" style="padding: 0px 18px;"> -->
+<!-- 												诚意金 -->
+<!-- 												<i></i> -->
+<!-- 												<input type="radio" style="display: none" class="common-radio" name="radio2" value="诚意金" id="radio2"> -->
+<!-- 											</label> -->
+											<label class="type-label" onclick="chanageradio(3)" id="type3" style="padding: 0px 18px;">
+												合 同
+												<i></i>
+												<input type="radio" style="display: none" class="common-radio" name="radio3" value="合同" id="radio3">
+											</label>
+										</div>
+									</dd>
+								</dl>
+								<dl>
+									<dt>
+										<em>*</em>
+										&nbsp;免租期：
+									</dt>
+									<dd>
+										<input class="updateInput number"  placeholder="免租期" id="phi_rentDay" name="phi_rentDay"
+											 value="">&nbsp; 首年
+									</dd>
+								</dl>
+								<hr>
+								<div id="div1" style="display: none;">
+									<div style="clear: both;" id="jinediv">
+										<dl>
+											<dt>支付金额：</dt>
+											<dd>
+												<input type="text" value="${rb.rb_money }" placeholder="请输入支付金额" id="zhifujine" name="phi_price"
+													class="updateInput number" />
+												元
+											</dd>
+										</dl>
+									</div>
+									<div style="clear: both; margin-top: 20px;" id="fangshidiv">
+										<dl>
+											<dt>支付方式：</dt>
+											<dd>
+												<%-- <input type="hidden" value="${rb.bs_payType }" name="fangshis" id="fangshis">  --%>
+												<select id="fukuanfangshi" name="phi_source" class="selects">
+													<option value="" id="">--请选择--</option>
+													<option value="现金" id="">现金</option>
+													<option value="支付宝" id="">支付宝</option>
+													<option value="微信" id="">微信</option>
+													<option value="银行卡" id="">银行卡</option>
+												</select>
+											</dd>
+										</dl>
+									</div>
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+						<div class="col-md-12  modelAdd" style="width: 300px; margin: auto;">
+							<input class="btn btn-info pull-left" style="margin-top: 25px; width: 100px; margin-bottom: 40px;"
+								onclick="submit1(1)" type="button" value=" 提  交  " />
+							<input class="btn btn-info pull-left"
+								style="margin-left: 77px; margin-top: 25px; width: 100px; margin-bottom: 40px;" onclick="updateDivCheck()"
+								type="button" value=" 返  回  " />
+						</div>
+<!-- 					</fieldset> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

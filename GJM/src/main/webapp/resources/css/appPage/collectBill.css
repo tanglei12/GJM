@@ -1,0 +1,137 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+	color: #666;
+	background: #f8f8f8;
+}
+
+.mui-scroll-wrapper{
+	top: 50px;
+}
+.search{
+	width: 100%;
+	height: 43px;
+	background-color: #FFF;
+}
+.search .font-icon{
+    position: absolute;
+    top: 0px;
+    left: 8px;
+    display: inline;
+    width: 8px;
+    margin: 18px 2px 0 10px;
+    background: none!important;
+    height: 8px;
+    border: solid #000;
+    border-width:0 0 1px 1px;
+    -webkit-transform: rotate(45deg);
+    margin-right: 15px;
+    float: left;
+}
+.search .search-text{
+	margin-left: 10px;
+	float: left;
+	width: 76%;
+}
+.search .search-text .search-input{
+	border: none;
+	height: 30px;
+    line-height: 30px;
+    width: 98%;
+    margin-top: 8px;
+    text-indent: 3px;
+    outline: none;
+    font-size: 14px;
+}
+.search .button-label{
+	float: left;
+	width: 20%;
+	height: 43px;
+	line-height: 43px;
+	text-align: center;
+	border: none;
+	outline: none;
+	background-color: #FFF;
+	font-size: 14px;
+	color: #666;
+    padding: 0;
+}
+
+.contents{
+	background-color: #FFF;
+	padding: 16px 10px;
+	border-bottom: 1px solid #e8e8e8;
+	display: flex;
+	position: relative;
+}
+.contents .imagePhoto{
+	width: 50px;
+	height: 50px;
+	float: left;
+}
+.contents .imagePhoto img{
+	width: 100%;
+	height: 100%;
+}
+.contents .text_center{
+	margin-left: 10px;
+	flex: 1;
+	display: flex;
+    flex-direction: column;
+}
+.contents .text_center .name{
+	color: #000;
+	font-size: 15px;
+    margin-top: 4px;
+}
+.contents .text_center .address{
+	font-size: 13px;
+	color: #999;
+	margin-top: 8px;
+}
+.contents .text_center .state{
+	background-color: #FF6666;
+	color: #FFF;
+	font-size: 12px;
+	padding: 1px 4px;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+
+.contents .moneys label{
+	width: 100%;
+	display: block;
+	text-align: right;
+}
+.contents .moneys .money{
+	font-size: 16px;
+	color: #FF6666;
+    margin-top: 4px;
+}
+.contents .moneys .month{
+	font-size: 13px;
+	color: #999;
+    margin-top: 8px;
+}
+.contents .click{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.data-list{
+	position: relative;
+}
+.data-list .null{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.null:enabled:active{
+	background-color: transparent;
+	opacity: 1;
+}

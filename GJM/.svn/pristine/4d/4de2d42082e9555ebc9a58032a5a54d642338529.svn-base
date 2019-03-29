@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition name=".*" template="/WEB-INF/views/manage/{1}.jsp">
+        <put-attribute name="title" value="管家婆首页"/>
+    </definition>
+
+    <definition name="_*_*" template="/WEB-INF/views/{1}/{2}.jsp">
+    </definition>
+    <!-- end -->
+
+</tiles-definitions>

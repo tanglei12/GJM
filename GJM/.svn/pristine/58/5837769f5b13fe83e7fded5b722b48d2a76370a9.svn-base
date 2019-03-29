@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 业绩设置 -->
+<mapper namespace="com.gjp.dao.ItemsRelationDAO">
+
+	<sql id="menberEcpId">
+		inv_code,
+		hi_code,
+		contractObject_code,
+		ir_state,
+		ir_createTime,
+		ir_isCalAchi,
+		ir_addDate
+	</sql>
+
+	<sql id="insert">
+		#{inv_code },
+		#{hi_code },
+		#{contractObject_code },
+		#{ir_state },
+		#{ir_createTime },
+		#{ir_isCalAchi },
+		#{ir_addDate }
+	</sql>
+
+	<sql id="update">
+		<if test="inv_code !=null and inv_code!=''">
+			inv_type=#{inv_type },
+		</if>
+		<if test="hi_code !=null and hi_code !=''">
+			hi_code=#{hi_code },
+		</if>
+		<if test="ir_state !=null and ir_state !=''">
+			ir_state=#{ir_state },
+		</if>
+		<if test="ir_isCalAchi !=null and ir_isCalAchi !=''">
+			ir_isCalAchi=#{ir_isCalAchi },
+		</if>
+		contractObject_code=#{contractObject_code}
+	</sql>
+
+
+	<!-- 物品账单添加 -->
+	<insert id="addItemsRelationOne" useGeneratedKeys="true" keyProperty="ir_id">
+		insert into GJP_Items_Relation(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+
+	<!-- 查询库存列表 -->
+	<select id="selectItemsRelationList" resultType="com.gjp.model.ItemsRelation">
+		select iv.inv_type as inv_type,iv.inv_name as inv_name,iv.inv_price as inv_price,ir.*
+		from GJP_Items_Relation as ir LEFT JOIN GJP_Items_Inventory as iv
+		ON ir.inv_code = iv.inv_code where 1=1 and iv.inv_state = 1 and ir.ir_state = 1
+		<if test="inv_code != null and inv_code !=''">
+			and ir.inv_code=#{inv_code}
+		</if>
+		<if test="contractObject_code != null || contractObject_code != '' ">
+			and ir.contractObject_code = #{contractObject_code}
+		</if>
+		order by ir.ir_addDate desc
+	</select>
+
+
+	<!-- 物品解绑 -->
+	<update id="updateItemsInventoryState">
+		update GJP_Items_Relation set ir_state=#{ir_state} where inv_code=#{inv_code}
+	</update>
+
+
+
+</mapper>

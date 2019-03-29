@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "微软雅黑";
+    font-size: 14px;
+    background: #f7f7f7;
+}
+
+dl, dt, dd, ul, li {
+    list-style: none;
+}
+
+p, span, tr {
+    color: #5a5a5a;
+}
+
+dl:AFTER, dd:AFTER, ul:AFTER, li:AFTER {
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+.content {
+    width: 100%;
+    background: #FFF;
+    overflow: hidden;
+    height: auto;
+}
+
+.line {
+    width: 100%;
+    display: flex;
+    border-bottom: 10px solid #f7f7f7;
+}
+
+.left_img {
+    width: 18px;
+    height: 16px;
+    margin-top: 12px;
+    margin-left: 10px;
+}
+
+.line-left {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 5px;
+    /* width: 63px;*/
+    width: 21%;
+}
+
+.line-right {
+    margin-left: 10px;
+    width: 66%;
+}
+
+.state-select {
+    float: right;
+    height: 25px;
+    margin-right: 20px;
+    line-height: 25px;
+    margin-top: 8px;
+    color: #999999;
+}
+
+.ssm_source {
+    width: 60%;
+    float: right;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 8px;
+    text-align: right;
+    color: #666;
+    border: none;
+    padding-right: 20px;
+}
+
+.sumMoney {
+    width: 60%;
+    font-size: 20px;
+    float: right;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 8px;
+    text-align: right;
+    color: #ff6666;
+    border: none;
+    padding-right: 20px;
+}
+
+.lines {
+    width: 100%;
+    border-bottom: 10px solid #f7f7f7;
+}
+
+.line-lefts {
+    height: 40px;
+    line-height: 40px;
+    margin-left: 4px;
+    width: 20%;
+}
+
+.line-rights {
+    margin-left: 10px;
+}
+
+.addtable input {
+    text-align: center;
+    line-height: 20px;
+    border-radius: 3px;
+    border: none;
+    border: 1px solid #c5c5c5;
+}
+
+.line .line-right .totalMoney {
+    line-height: 40px;
+    color: #ff6666;
+}
+
+.line .line-right .description {
+    width: 100%;
+    margin-top: 13px;
+    text-indent: 10px;
+    padding: 5px;
+}
+
+.line .line-right .send {
+    display: block;
+    float: left;
+    margin-top: 14px;
+    margin-left: 2px;
+}
+
+.line .line-right .sends {
+    line-height: 40px;
+    margin-left: 5px;
+    color: #999999;
+}
+
+.button {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    background: #FF6666;
+    border: none;
+    color: #FFF;
+    font-size: 16px;
+    outline: none;
+}
+.right-img{
+    width: 16px;
+    height: 16px;
+    margin-top: 12px;
+    margin-right: 10px;
+}
+.divSelect{
+    width: 100px;
+    float: right;
+    overflow:hidden;
+}
+.payObject{
+    float: left;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 8px;
+    text-align: right;
+    border: none;
+    padding-right: 0px;
+    background: #fff;
+    color: #666;
+    width: 120px;
+    overflow:hidden;
+}
+
+select option{
+    text-align: right;
+}

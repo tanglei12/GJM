@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.HotspotIssuesImageDAO">
+
+	<sql id="allmenbers">
+		hii_id,
+		hii_name,
+		hii_image,
+		sip_id
+	</sql>
+
+	<sql id="menberEcpId">
+		hii_name,
+		hii_image,
+		sip_id
+	</sql>
+
+	<select id="queryAllHotspotIssuesImage" resultType="com.gjp.model.HotspotIssuesImage">
+		select * from GJP_HotspotIssues_image
+	</select>
+
+</mapper>

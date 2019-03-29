@@ -1,0 +1,283 @@
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font: 12px/150% '\5FAE\8F6F\96C5\9ED1', Arial, Verdana, "\5b8b\4f53";
+    color: #000;
+    min-width: inherit;
+}
+
+input, textarea, select, button {
+    font-family: '\5FAE\8F6F\96C5\9ED1';
+}
+
+td {
+    font-size: 12px;
+    font-family: "黑体";
+    font-weight: normal;
+}
+
+input, button, fieldset, textarea, select {
+    display: block;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+hr {
+    clear: both;
+    padding: 0;
+    margin: 0
+}
+
+ul, li {
+    list-style: none;
+}
+
+hr {
+    border: none;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+.logoImg {
+    width: 5vw;
+    height: 5vw;
+    float: left;
+    /*     margin-left: 15vw; */
+}
+
+.font18 {
+    font-family: "黑体";
+    font-weight: bold;
+    letter-spacing: 1vw;
+    text-indent: 3vw;
+    font-size: 3vw;
+    text-align: left;
+    float: left;
+}
+
+.rightFont {
+    margin-right: 0vw;
+    text-align: right;
+    font-size: 2vw;
+    font-family: "黑体";
+    font-weight: bold;
+    float: right;
+    /*     margin-right: 15vw; */
+}
+
+.tdLine {
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 1px solid black;
+}
+
+.conTitle {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 3vw;
+    font-family: "黑体";
+    font-weight: bold;
+}
+
+.conTitle_sub {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2vw;
+    font-family: "黑体";
+    font-weight: bold;
+}
+
+.conNo {
+    font-size: 14px;
+    font-family: "黑体";
+    font-weight: normal;
+    color: #F00;
+    text-align: right;
+}
+
+.conDigest {
+    font-size: 2vw;
+    font-family: "黑体";
+    font-weight: bold;
+    line-height: 1.4em;
+}
+
+.conDigest_left {
+    font-size: 1em;
+    font-family: "黑体";
+    text-align: left;
+    font-weight: bold;
+    line-height: 1.4em;
+}
+
+.conInfo {
+    font-family: "黑体";
+    font-weight: normal;
+    text-align: left;
+    line-height: 1.4em;
+    text-indent: 2em;
+    /*padding: 4px 0;*/
+    line-height: 1.6em;
+}
+
+.conInfo:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.textUnderLine {
+    font-size: 14px;
+    text-align: left;
+    font-family: "黑体";
+    text-decoration: underline;
+}
+
+.font12 {
+    font-size: 14px;
+    font-family: "黑体";
+    font-weight: bold;
+}
+
+.fontLabel {
+    font-size: 2vw;
+    font-family: "黑体";
+    font-weight: normal;
+}
+
+.content {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    background: #ffffff;
+}
+
+.next-btn {
+    display: block;
+    height: 44px;
+    line-height: 44px;
+    font-size: 14px;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.box-head {
+
+}
+
+.box-hr {
+    width: 100%;
+    height: 1px;
+    border: none;
+    border-top: 2px solid #555555;
+}
+
+.box-title {
+    padding: 16px 0 10px;
+    text-align: center;
+    text-align: center;
+    font-size: 15px;
+    font-family: "黑体";
+    font-weight: bold;
+}
+
+dl.dl-list {
+    position: relative;
+    padding: 4px 0;
+    font-size: 14px;
+}
+
+dl.dl-list > dt {
+    position: relative;
+    text-align: left;
+    font-weight: bold;
+}
+
+dl.dl-list > dd {
+    position: relative;
+    text-align: left;
+    text-indent: 2em;
+    line-height: 1.6em;
+}
+
+@media screen and (min-width: 650px) {
+    .flex-list {
+        position: relative;
+        display: flex;
+        font-size: 15px;
+    }
+
+    .flex-list .flex-item-img {
+        top: -80px;
+        right: 40px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .flex-list {
+        position: relative;
+        display: flex;
+        font-size: 15px;
+        flex-direction: column;
+    }
+}
+
+.flex-list > .flex-item {
+    position: relative;
+    display: flex;
+    flex: 1;
+    margin-top: 6px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.flex-list > .flex-item > span:FIRST-CHILD {
+    flex: initial;
+    font-weight: bold;
+    width: 101px;
+    text-align: right;
+    padding-right: 10px;
+    border-bottom: none;
+}
+
+.flex-list > .flex-item > span {
+    text-align: left;
+}
+
+.flex-item-img {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 160px;
+    background: transparent;
+    z-index: 1;
+}
+
+.top-warning {
+    position: fixed;
+    height: 24px;
+    top: 0;
+    background: #fde8c9;
+    width: 100%;
+    z-index: 1;
+}

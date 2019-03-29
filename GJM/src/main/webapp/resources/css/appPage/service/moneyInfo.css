@@ -1,0 +1,116 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+    margin:0;
+    padding:0;
+    font: 12px/150% Arial,Verdana,"\5b8b\4f53";
+    color: #666;
+    background: #fff;
+}
+a{
+    text-decoration:none;
+    color: #666;
+}
+li{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+ul{
+    margin:0;
+    padding:0;
+}
+img{
+    border:none;
+}
+a:hover{
+    color:#E74C3C;
+}
+
+.center{
+    padding: 0 15px 20px 15px;
+}
+
+.center .titles{
+    font-size: 17px;
+    color: #575757;
+    text-align: center;
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px solid #EDEDED;
+}
+.center .project_service{
+    margin-top: 15px;
+}
+.center .project_service .project_title{
+    height: 45px;
+    line-height: 45px;
+}
+.center .project_service .project_title img{
+    width: 45px;
+    height: 45px;
+    float: left;
+}
+img{
+    float: left;
+}
+.center .project_service .project_title span{
+    margin-left: 10px;
+    font-size: 15px;
+    color: #FF6666;
+}
+.center .project_service .project_content{
+    margin-top: 5px;
+    color: #999999;
+}
+.center .title{
+    margin-top: 15px;
+    overflow: hidden;
+}
+.center .title i{
+    display: block;
+    width: 5px;
+    height: 15px;
+    border-radius: 3px;
+    background-color: #FF6666;
+    float: left;
+    margin-top: 1px;
+}
+.center .title span{
+    display: block;
+    float: left;
+    margin-left: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.center table{
+    width: 100%;
+    margin-top: 15px;
+    border-collapse:collapse;
+    font-size: 12px;
+    text-align: center;
+}
+.center table tr{
+    height: 24px;
+    line-height: 24px;
+}
+.center table thead{
+    background-color: #FFF3F3;
+}
+.center table td{
+    border: 1px solid #CCCCCC;
+}
+.center table tbody td{
+    color: #999999;
+}
+.center table thead .num{
+    width: 25px;
+}
+.center table thead .table_money{
+    width: 65px;
+}
+.center .shuoming_content{
+    margin-top: 12px;
+    color: #999999;
+}

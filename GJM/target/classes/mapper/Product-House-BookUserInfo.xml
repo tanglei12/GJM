@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预约 GJP_House_Book_TemplateInfo -->
+<mapper namespace="com.gjp.dao.HouseBookUserDao">
+	
+	<!-- 增加预约模板信息 -->
+	<insert id="addHouseBookUserInfo"  useGeneratedKeys="true" keyProperty="bu_id" parameterType="com.gjp.model.HouseBookUserInfo">
+		insert into GJP_business.GJP_House_Book_UserInfo
+		(
+		bs_id,
+		bt_id,
+		book_type,
+		resent_type,
+		xiao_qu,
+		house_type,
+		house_area,
+		special_need,
+		book_user_name,
+		book_user_tel,
+		book_date
+		) values (
+		#{bs_id},
+		#{bt_id},
+		#{bookType},
+		#{resentType},
+		#{xiaoQu},
+		#{houseType},
+		#{houseArea},
+		#{specialNeed},
+		#{bookUserName},
+		#{bookUserTel},
+		#{bookDate}
+		)
+	</insert>
+	
+</mapper>

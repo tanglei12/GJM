@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 测评人GJP_UserCenter_EvaluationPerson -->
+<mapper namespace="com.gjp.dao.UserCenterEvaluationPersonDao">
+
+	<sql id="allmenbers">
+		ep_id,
+		ep_name,
+		ep_sex,
+		ep_phone,
+		ep_time,
+		uda_id,
+		ep_state,
+		ep_money,
+		ep_wayMon,
+		ep_way,
+		ep_leave
+	</sql>
+
+	<sql id="menberEcpId">
+		ep_name,
+		ep_sex,
+		ep_phone,
+		ep_time,
+		uda_id,
+		ep_state,
+		ep_money,
+		ep_wayMon,
+		ep_way,
+		ep_leave
+	</sql>
+	
+	<!-- 根据测评人编号查询测评 -->
+	<select id="selectEvaluationPersonById" resultType="com.gjp.model.UserCenterEvaluationPerson">
+		select 
+		   <include refid="allmenbers" />
+		from GJP_UserCenter_EvaluationPerson where ep_id=#{ep_id}
+	</select>
+	
+	<!-- 根据测评人编号查询测评内容 -->
+	<select id="selectEvaluationContent" resultType="com.gjp.model.UserCenterEvaluationContent">
+		select 
+		   ec_id,
+		   ec_title,
+		   ec_content,
+		   ep_id
+		from GJP_UserCenter_EvaluationContent where ep_id=#{ep_id}
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="selectEvaluationPerson" resultType="com.gjp.model.UserCenterEvaluationPerson">
+		select 
+		   <include refid="allmenbers" />
+		 from GJP_UserCenter_EvaluationPerson where 1=1
+		 <if test="houseModel.ep_name != 'jsp'">
+			and ep_name=#{houseModel.ep_name}
+		</if>
+		<!-- 用户类型筛选 --> 
+		<if test="houseModel.ep_state != 'jsp'">
+			and ep_state=#{houseModel.ep_state}
+		</if>
+			and ep_way='新一贷'
+		 LIMIT #{pageNo},#{pageSize}
+    </select>
+      
+    <!-- 查询测评人总条数 -->
+    <select id="selectTotalEvaluationPerson" resultType="int">
+        select count(*) from GJP_UserCenter_EvaluationPerson where 1=1
+        <if test="houseModel.ep_name != 'jsp'">
+			and ep_name=#{houseModel.ep_name}
+		</if>
+		<!-- 用户类型筛选 --> 
+		<if test="houseModel.ep_state != 'jsp'">
+			and ep_state=#{houseModel.ep_state}
+		</if>
+		and ep_way='新一贷'
+    </select>
+    
+    <!-- 查询ejz收益 -->
+    <select id="selectEjz" resultType="com.gjp.model.UserCenterEvaluationPerson">
+        select 
+        	uep.ep_name,
+        	uep.ep_money,
+        	ucs.ew_way,
+        	ucs.ew_date,
+        	ucs.ew_state,
+        	ucs.ew_money,
+        	ucs.ew_id,
+        	ucs.ew_grade
+        from GJP_UserCenter_EvaluationPerson uep,GJP_UserCenter_Separate ucs where ucs.uda_id=#{uda_id}
+        and uep.ep_id = ucs.ep_id
+        <if test="ep_name != ''">
+			and uep.ep_name=#{ep_name}
+		</if>
+		<!-- 用户类型筛选 --> 
+		<if test="ew_way != 'jsp'">
+			and ucs.ew_way=#{ew_way}
+		</if>
+		<!-- 用户类型筛选 --> 
+		<if test="stateTime != null">
+			<![CDATA[   and DATE_FORMAT(ucs.ew_date, '%Y-%m-%d')>=  DATE_FORMAT(#{stateTime}, '%Y-%m-%d')   ]]>
+		</if>
+		<if test="endTime != null">
+			<![CDATA[  and DATE_FORMAT(ucs.ew_date, '%Y-%m-%d') <= DATE_FORMAT(#{endTime}, '%Y-%m-%d')    ]]>
+		</if>
+    </select>
+    
+    <!-- 修改贷款状态 -->
+	<update id="updateState" parameterType="com.gjp.model.UserCenterEvaluationPerson">
+         update GJP_UserCenter_EvaluationPerson set 
+           ep_state=#{ep_state},
+           ep_money=#{ep_money},
+           ep_wayMon=#{ep_wayMon},
+           ep_leave=#{ep_leave}
+         where 
+           ep_id=#{ep_id}
+     </update>
+</mapper>

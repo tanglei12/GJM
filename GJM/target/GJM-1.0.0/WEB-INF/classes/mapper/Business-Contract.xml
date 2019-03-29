@@ -1,0 +1,2765 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 合同对象 -->
+<mapper namespace="com.gjp.dao.ContractDao">
+
+    <!-- 更新业务账单 -->
+    <update id="updateBusinessBill">
+        UPDATE GJP_Bill_BusinessBill
+        <set>
+            <if test="bbo_code!=null">bbo_code=#{bbo_code},</if>
+            <if test="contractObject_code!=null">contractObject_code=#{contractObject_code},</if>
+            <if test="hi_code!=null">hi_code=#{hi_code},</if>
+            <if test="bbo_type!=null">bbo_type=#{bbo_type},</if>
+            <if test="bbb_balPay!=null">bbb_balPay=#{bbb_balPay},</if>
+            <if test="bbb_payWay!=null">bbb_payWay=#{bbb_payWay},</if>
+            <if test="bbb_repayment!=null">bbb_repayment=#{bbb_repayment},</if>
+            <if test="bbb_repaymentDate!=null">bbb_repaymentDate=#{bbb_repaymentDate},</if>
+            <if test="bbb_realPayment!=null">bbb_realPayment=#{bbb_realPayment},</if>
+            <if test="bbb_realPaymentDate!=null">bbb_realPaymentDate=#{bbb_realPaymentDate},</if>
+            <if test="bbb_applyPerson!=null">bbb_applyPerson=#{bbb_applyPerson},</if>
+            <if test="bbb_acceptPerson!=null">bbb_acceptPerson=#{bbb_acceptPerson},</if>
+            <if test="bbb_statementNum!=null">bbb_statementNum=#{bbb_statementNum},</if>
+            <if test="bbb_state!=null">bbb_state=#{bbb_state},</if>
+            <if test="bbb_remark!=null">bbb_remark=#{bbb_remark},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="bbo_code != null">bbo_code =#{bbo_code}</when>
+            <when test="bbb_id != null">bbb_id =#{bbb_id}</when>
+        </choose>
+    </update>
+
+    <update id="updateContractCompanyRelation">
+        UPDATE GJP_Contract_CompanyRelation
+        <set>
+            <if test="co_code != null">co_code=#{co_code},</if>
+            <if test="ucc_id != null">ucc_id=#{ucc_id},</if>
+        </set>
+        <where>
+            <if test="ccr_id != null">ccr_id = #{ccr_id}</if>
+        </where>
+    </update>
+
+    <update id="updateContractSignVerify">
+        UPDATE GJP_Contract_SignVerify
+        <set>
+            <if test="con_code != null">con_code=#{con_code},</if>
+            <if test="cs_state != null">cs_state=#{cs_state},</if>
+            <if test="cs_fid != null">cs_fid=#{cs_fid},</if>
+            <if test="cs_contractId != null">cs_contractId=#{cs_contractId},</if>
+            <if test="cs_signer != null">cs_signer=#{cs_signer},</if>
+        </set>
+        <where>
+            <if test="cs_id != null">cs_id = #{cs_id}</if>
+        </where>
+    </update>
+
+    <insert id="addContractSignVerify" useGeneratedKeys="true"
+            keyProperty="cs_id">
+        INSERT INTO GJP_Contract_SignVerify (
+        con_code,
+        cs_fid,
+        cs_contractId,
+        cs_signer,
+        cs_state,
+        cs_createTime
+        ) VALUES (
+        #{con_code},
+        #{cs_fid},
+        #{cs_contractId},
+        #{cs_signer},
+        #{cs_state},
+        #{cs_createTime}
+        )
+    </insert>
+
+    <insert id="addContractCompanyRelation" useGeneratedKeys="true"
+            keyProperty="ccr_id">
+        INSERT INTO GJP_Contract_CompanyRelation (
+        co_code,
+        ucc_id,
+        ccr_createTime
+        ) VALUES (
+        #{co_code},
+        #{ucc_id},
+        #{ccr_createTime}
+        )
+    </insert>
+
+    <!--添加协议审核-->
+    <insert id="addContractAgreementAuditing" useGeneratedKeys="true" keyProperty="caa_id">
+        INSERT INTO GJP_Contract_AgreementAuditing (
+        con_code,
+        caa_state,
+        caa_content,
+        caa_createTime
+        ) VALUES (
+        #{con_code},
+        #{caa_state},
+        #{caa_content},
+        #{caa_createTime}
+        )
+    </insert>
+
+    <!-- 添加物业账单 -->
+    <insert id="addBusinessBill" useGeneratedKeys="true"
+            keyProperty="bbb_id">
+        INSERT INTO GJP_Bill_BusinessBill
+        (
+        bbo_code,
+        contractObject_code,
+        hi_code,
+        bbo_type,
+        bbb_balPay,
+        bbb_payWay,
+        bbb_repayment,
+        bbb_repaymentDate,
+        bbb_realPayment,
+        bbb_realPaymentDate,
+        bbb_applyPerson,
+        bbb_acceptPerson,
+        bbb_statementNum,
+        bbb_state,
+        bbb_remark,
+        bbb_createTime
+        ) VALUES (
+        #{bbo_code},
+        #{contractObject_code},
+        #{hi_code},
+        #{bbo_type},
+        #{bbb_balPay},
+        #{bbb_payWay},
+        #{bbb_repayment},
+        #{bbb_repaymentDate},
+        #{bbb_realPayment},
+        #{bbb_realPaymentDate},
+        #{bbb_applyPerson},
+        #{bbb_acceptPerson},
+        #{bbb_statementNum},
+        #{bbb_state},
+        #{bbb_remark},
+        #{bbb_createTime}
+        )
+    </insert>
+
+    <!-- 添加合同执行记录附件 -->
+    <insert id="addContractAttachment" useGeneratedKeys="true"
+            keyProperty="ca_id">
+        INSERT INTO GJP_Contract_Attachment(
+        cir_id,
+        ca_name,
+        ca_path,
+        ca_addTime,
+        ca_state
+        )
+        VALUES
+        (
+        #{cir_id},
+        #{ca_name},
+        #{ca_path},
+        #{ca_addTime},
+        #{ca_state}
+        )
+    </insert>
+
+    <!-- 添加合同照片 -->
+    <insert id="addContractImage">
+        INSERT INTO GJP_Contract_Image(
+        contractObject_Code,
+        ci_type,
+        ci_path,
+        ci_state,
+        ci_createTime
+        )
+        VALUES
+        (
+        #{contractObject_Code},
+        #{ci_type},
+        #{ci_path},
+        #{ci_state},
+        #{ci_createTime}
+        )
+    </insert>
+
+    <select id="queryContractAgreementAuditing" resultType="com.gjp.model.ContractAgreementAuditingVo">
+        SELECT
+        *
+        FROM GJP_Contract_AgreementAuditing
+        WHERE
+        con_code = #{con_code}
+        LIMIT 1
+    </select>
+
+    <!-- 查看合同服务费 -->
+    <select id="queryContractServiceCharge" resultType="com.gjp.model.ServiceContractServiceChargeVo">
+        select * from
+        GJP_Service_ContractServiceCharge where contractObject_no =
+        #{contractObject_no}
+    </select>
+
+    <!-- 修改合同服务费 -->
+    <update id="updateContractServiceCharge">
+        UPDATE GJP_Service_ContractServiceCharge
+        SET
+        csc_money=#{csc_money}
+        WHERE
+        contractObject_no = #{contractObject_no}
+    </update>
+
+    <update id="updateContractAgreementAuditing">
+        UPDATE GJP_Contract_AgreementAuditing
+        <set>
+            <if test="caa_content">caa_content = #{caa_content},</if>
+            <if test="caa_state">caa_state = #{caa_state},</if>
+        </set>
+        WHERE
+        caa_id = #{caa_id}
+    </update>
+
+    <!-- 添加第一期账单收款记录 -->
+    <insert id="addFirstBillReceiptRecord" useGeneratedKeys="true"
+            keyProperty="bfrr_id">
+        INSERT INTO
+        GJP_Bill_FirstBillReceiptRecord(
+        bfrr_id,
+        contractObject_no,
+        hi_code,
+        tb_code,
+        bfrr_type,
+        bfrr_receiptWay,
+        bfrr_receiptMoney,
+        bfrr_realMoney,
+        bfrr_dueInMoney,
+        bfrr_createTime
+        )
+        VALUES
+        (
+        #{bfrr_id},
+        #{contractObject_no},
+        #{hi_code},
+        #{tb_code},
+        #{bfrr_type},
+        #{bfrr_receiptWay},
+        #{bfrr_receiptMoney},
+        #{bfrr_realMoney},
+        #{bfrr_dueInMoney},
+        #{bfrr_createTime}
+        )
+    </insert>
+
+    <!-- 添加解约申请订单 -->
+    <insert id="addCancelContractOrder" useGeneratedKeys="true"
+            keyProperty="auditingRecord_id">
+        INSERT INTO
+        GJP_Contract_CancelOrder(
+        cco_code,
+        contractObject_Code,
+        cco_applicant,
+        cco_phone,
+        cco_path,
+        cco_subletCost,
+        cco_applicationContent,
+        cco_applicationTime,
+        cco_applicationType,
+        contractObject_No,
+        hi_code,
+        cco_state,
+        cco_FinishTime,
+        cco_peopleName,
+        cco_handleDate,
+        cco_processMode,
+        cco_processer
+        )
+        values
+        (
+        #{cco_code},
+        #{contractObject_Code},
+        #{cco_applicant},
+        #{cco_phone},
+        #{cco_path},
+        #{cco_subletCost},
+        #{cco_applicationContent},
+        #{cco_applicationTime},
+        #{cco_applicationType},
+        #{contractObject_No},
+        #{hi_code},
+        #{cco_state},
+        #{cco_FinishTime},
+        #{cco_peopleName},
+        #{cco_handleDate},
+        #{cco_processMode},
+        #{cco_processer}
+        )
+    </insert>
+
+    <!-- 添加合同审核记录 -->
+    <insert id="addContractRecord" useGeneratedKeys="true" keyProperty="auditingRecord_id">
+        INSERT INTO GJP_Contract_AuditingRecord(
+        contractObject_code,
+        auditingRecord_content,
+        auditingRecord_author,
+        auditingRecord_createTime
+        ) VALUES (
+        #{contractObject_code},
+        #{auditingRecord_content},
+        #{auditingRecord_author},
+        #{auditingRecord_createTime}
+        )
+    </insert>
+
+    <!-- 添加合同主体信息 -->
+    <insert id="addUserCenterContractBody" useGeneratedKeys="true"
+            keyProperty="ContractBody_Id">
+        INSERT INTO
+        GJP_Contract_Body(
+        ContractObject_Code,
+        ContractBody_Use,
+        ContractBody_AdditionConditions,
+        ContractBody_TimeLimit,
+        ContractBody_StartTOEnd,
+        ContractBody_FreeTime,
+        ContractBody_Rent,
+        ContractBody_RentPlus,
+        ContractBody_Depslit,
+        ContractBody_Pay,
+        ContractBody_Service,
+        ContractBody_GuaranteeCost,
+        ContractBody_PayStyle,
+        ContractBody_PayType,
+        ContractBody_StartPayTime,
+        ContractBody_BillTime,
+        ContractBody_PayTime,
+        ContractBody_Increasing,
+        ContractBody_GjName,
+        ContractBody_GjPhone,
+        ContractBody_Remark,
+        ContractBody_Optioner,
+        ContractBody_RentRate_A,
+        ContractBody_RentRate_B,
+        ContractBody_AgreedRepayTime,
+        ContractBody_Active,
+        ContractBody_SpecialOffer,
+        ContractBody_Recovery,
+        ContractBody_Discount,
+        ContractBody_BillWay,
+        ContractBody_RecordSource,
+        ContractBody_ContractMode
+        ) VALUES (
+        #{ContractObject_Code},
+        #{ContractBody_Use},
+        #{ContractBody_AdditionConditions},
+        #{ContractBody_TimeLimit},
+        #{ContractBody_StartTOEnd},
+        #{ContractBody_FreeTime},
+        #{ContractBody_Rent},
+        #{ContractBody_RentPlus},
+        #{ContractBody_Depslit},
+        #{ContractBody_Pay},
+        #{ContractBody_Service},
+        #{ContractBody_GuaranteeCost},
+        #{ContractBody_PayStyle},
+        #{ContractBody_PayType},
+        #{ContractBody_StartPayTime},
+        #{ContractBody_BillTime},
+        #{ContractBody_PayTime},
+        #{ContractBody_Increasing},
+        #{ContractBody_GjName},
+        #{ContractBody_GjPhone},
+        #{ContractBody_Remark},
+        #{ContractBody_Optioner},
+        #{ContractBody_RentRate_A},
+        #{ContractBody_RentRate_B},
+        #{ContractBody_AgreedRepayTime},
+        #{ContractBody_Active},
+        #{ContractBody_SpecialOffer},
+        #{ContractBody_Recovery},
+        #{ContractBody_Discount},
+        #{ContractBody_BillWay},
+        #{ContractBody_RecordSource},
+        #{ContractBody_ContractMode}
+        )
+    </insert>
+
+    <!-- 添加合同对象信息 -->
+    <insert id="addContractObject" useGeneratedKeys="true"
+            keyProperty="ContractObject_Id">
+        INSERT INTO GJP_Contract_Object(
+        ContractObject_Code,
+        ContractObject_No,
+        hi_code,
+        ContractObject_Mode,
+        ContractObject_Type,
+        ContractObject_Source,
+        ContractObject_Version,
+        ContractObject_ProductMode,
+        ContractObject_1st,
+        ContractObject_2nd,
+        ContractObject_3rd,
+        ContractObject_4th,
+        ContractObject_Annex,
+        ContractObject_FillTime,
+        ContractObject_Date,
+        ContractObject_DeadlineTime,
+        ContractObject_RealDate,
+        ContractObject_UpdateTime,
+        ContractObject_State,
+        ContractObject_OptionState,
+        ContractObject_ExtState,
+        ContractObject_Successor,
+        ContractObject_Other,
+        ContractExt_Id,
+        ContractObject_Contractor,
+        ContractObject_CreateTime,
+        ContractObject_Bool,
+        ContractObject_RentStr,
+        ContractObject_RentFreeMode,
+        ContractObject_ForRentDate,
+        ContractObject_ServiceBool,
+        ContractObject_goodsMoney,
+        ContractObject_PeopleNumber,
+        ContractObject_RecordSource
+        ) VALUES (
+        #{ContractObject_Code},
+        #{ContractObject_No},
+        #{hi_code},
+        #{ContractObject_Mode},
+        #{ContractObject_Type},
+        #{ContractObject_Source},
+        #{ContractObject_Version},
+        #{ContractObject_ProductMode},
+        #{ContractObject_1st},
+        #{ContractObject_2nd},
+        #{ContractObject_3rd},
+        #{ContractObject_4th},
+        #{ContractObject_Annex},
+        #{ContractObject_FillTime},
+        #{ContractObject_Date},
+        #{ContractObject_DeadlineTime},
+        #{ContractObject_RealDate},
+        #{ContractObject_UpdateTime},
+        #{ContractObject_State},
+        #{ContractObject_OptionState},
+        #{ContractObject_ExtState},
+        #{ContractObject_Successor},
+        #{ContractObject_Other},
+        #{ContractExt_Id},
+        #{ContractObject_Contractor},
+        #{ContractObject_CreateTime},
+        #{ContractObject_Bool},
+        #{ContractObject_RentStr},
+        #{ContractObject_RentFreeMode},
+        #{ContractObject_ForRentDate},
+        #{ContractObject_ServiceBool},
+        #{ContractObject_goodsMoney},
+        #{ContractObject_PeopleNumber},
+        #{ContractObject_RecordSource}
+        )
+    </insert>
+
+    <!-- 添加合同对象信息 -->
+    <insert id="addContractRentBill" useGeneratedKeys="true"
+            keyProperty="rentBill_id">
+        INSERT INTO GJP_UserCenter_RentBill(
+        rentBill_id,
+        rentBill_orderCode,
+        rentBill_realName,
+        rentBill_phone,
+        rentBill_billStatus,
+        rentBill_cyclenum,
+        rentBill_amount,
+        rentBill_payAmount,
+        rentBill_payDate,
+        rentBill_realPaydate,
+        rentBill_payTypeId,
+        rentBill_messageNum
+        ) VALUES (
+        #{rentBill_id},
+        #{rentBill_orderCode},
+        #{rentBill_realName},
+        #{rentBill_phone},
+        #{rentBill_billStatus},
+        #{rentBill_cyclenum},
+        #{rentBill_amount},
+        #{rentBill_payAmount},
+        #{rentBill_payDate},
+        #{rentBill_realPaydate},
+        #{rentBill_payTypeId},
+        #{rentBill_messageNum}
+        )
+    </insert>
+
+    <insert id="addContractRelaEmp" useGeneratedKeys="true"
+            keyProperty="cre_id">
+        INSERT INTO GJP_Contract_RelaEmp(
+        contractObject_Id,
+        em_id,
+        cre_role,
+        contract_perforSplit
+        )
+        VALUES
+        (
+        #{contractObject_Id},
+        #{em_id},
+        #{cre_role},
+        #{contract_perforSplit}
+        )
+    </insert>
+
+    <!-- 修改合同招租期-(免租期-招租期)-(剩余免租期) -->
+    <update id="updateContractObjectRentStr">
+        UPDATE GJP_Contract_Object SET
+        ContractObject_RentStr=#{contractObject_RentStr}
+        where
+        ContractObject_No = #{contractObject_No}
+    </update>
+
+    <!-- 查询合约订单数据 -->
+    <select id="queryCancelContractByWhere" resultType="com.gjp.model.BusinessCancelContractOrder">
+        SELECT
+        co.*, cs.statement_balanceTime, cs.statement_handoverDate
+        FROM
+        GJP_Contract_CancelOrder co
+        LEFT JOIN GJP_Contract_Statement cs ON cs.cco_code = co.cco_code
+        WHERE
+        <choose>
+            <when test="contractObject_No !=null and contractObject_No !='' ">co.contractObject_No =#{contractObject_No}</when>
+            <when test="contractObject_Code !=null and contractObject_Code !='' ">co.contractObject_Code =#{contractObject_Code}</when>
+        </choose>
+        <if test="cco_state_no !=null">AND co.cco_state !=#{cco_state_no}</if>
+        <if test="cco_state != null">AND co.cco_state = #{cco_state} </if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合约订单列表数据 -->
+    <select id="queryCancelContractListInfo" resultType="com.gjp.model.BusinessCancelContractOrder">
+        SELECT
+        cc.*,
+        hh.phi_name,
+        hh.phi_address,
+        gc.crc_role,
+        gc.cc_name,
+        gc.ccp_phone,
+        co.contractObject_Type
+        FROM
+        GJP_business.GJP_Contract_CancelOrder cc
+        LEFT JOIN
+        GJP_product.GJP_House_Intention hh ON hh.hi_code = cc.hi_code
+        LEFT JOIN
+        GJP_user.view_GJP_CustomerRelaContractList gc ON
+        gc.contractObject_Code = cc. contractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Object co on co.contractObject_Code = cc.contractObject_Code
+        WHERE
+        <choose>
+            <when test="contractObject_No !=null and contractObject_No !='' ">cc.contractObject_No =#{contractObject_No}</when>
+            <when test="contractObject_Code !=null and contractObject_Code !='' ">cc.contractObject_Code =#{contractObject_Code}</when>
+        </choose>
+        <if test="cco_state_no !=null">AND cc.cco_state !=#{cco_state_no}</if>
+        <if test="sqlWhere !=null">
+            AND (
+            cc.cco_applicationType LIKE CONCAT('%',#{sqlWhere},
+            '%') OR
+            cc.cco_state LIKE CONCAT('%',#{sqlWhere}, '%') OR
+            hh.phi_name
+            LIKE CONCAT('%',#{sqlWhere}, '%') OR
+            hh.phi_address LIKE
+            CONCAT('%',#{sqlWhere}, '%') OR
+            gc.cc_name LIKE
+            CONCAT('%',#{sqlWhere}, '%') OR
+            gc.ccp_phone LIKE
+            CONCAT('%',#{sqlWhere}, '%')
+            )
+        </if>
+    </select>
+
+    <!-- 最新一份合同 -->
+    <select id="queryContractObjectLastOne" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM view_GJP_Contract_ObjectList
+        WHERE
+        hi_code=#{hi_code}
+        <if test="contractObject_Type != null">AND contractObject_Type=#{contractObject_Type}</if>
+        ORDER BY
+        contractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 根据房屋编码查询合同 -->
+    <select id="selectHouseContract" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT * FROM view_GJP_AchievementHouseContract
+        WHERE 1=1
+        <if test="hi_code != null and hi_code != ''">
+            and hi_code=#{hi_code}
+        </if>
+        <if test="contractObject_No != null and contractObject_No != ''">
+            and ContractObject_No=#{contractObject_No}
+        </if>
+        <if test="contractObject_Type != null and contractObject_Type != ''">
+            and ContractObject_Type=#{contractObject_Type}
+        </if>
+        <if test="contractObject_Bool != null and contractObject_Bool != ''">
+            and ContractObject_Bool=#{contractObject_Bool}
+        </if>
+        order by ContractObject_CreateTime desc
+    </select>
+
+    <!-- 根据房屋编码查询该房屋所有托管合同 -->
+    <select id="selectViewGJPContrByCode" resultType="com.gjp.model.ViewGJPContrByCode">
+        SELECT
+        ContractObject_No,
+        hi_code,
+        ContractObject_Date,
+        ContractObject_FillTime,
+        ContractObject_DeadlineTime
+        FROM GJP_Contract_Object
+        WHERE
+        hi_code =#{hi_code} and ContractObject_Type
+        =#{ContractObject_Type}
+        order by ContractObject_Date ASC
+    </select>
+
+    <!-- 根据房屋编码查询该房屋所有租赁合同 -->
+    <select id="selectRentContrByCode" resultType="com.gjp.model.ViewGJPContrByCode">
+        SELECT
+        ContractObject_No,
+        hi_code,
+        ContractObject_Date,
+        ContractObject_FillTime,
+        ContractObject_DeadlineTime
+        FROM GJP_Contract_Object
+        WHERE
+        hi_code =#{hi_code} and ContractObject_Type
+        =#{ContractObject_Type}
+        order by ContractObject_Date ASC
+    </select>
+
+    <!-- 根据合同编号查询合同房屋信息 -->
+    <select id="selTrusteeshipByCode" resultType="com.gjp.model.ViewGJPContrByCode">
+        SELECT
+        ContractObject_No,
+        hi_code,
+        ContractObject_Date,
+        ContractObject_DeadlineTime
+        FROM GJP_Contract_Object
+        WHERE
+        ContractObject_No =#{ContractObject_No} and
+        ContractObject_Type
+        =#{ContractObject_Type}
+    </select>
+
+    <!-- 查询合同视图对象总条数 -->
+    <select id="selectViewContractTotalRecords" resultType="int">
+        SELECT count(*)
+        FROM view_GJP_Contract_ObjectList
+        WHERE
+        1=1
+        <if test="t.contractObject_No !=null and t.contractObject_No !=''">
+            AND contractObject_No =#{t.contractObject_No}
+        </if>
+        <if
+                test="t.contractObject_OptionState !=null and t.contractObject_OptionState !=''">
+            AND contractObject_OptionState =#{t.contractObject_OptionState}
+        </if>
+        <if test="t.contractObject_Type !=null and t.contractObject_Type !=''">
+            AND contractObject_Type=#{t.contractObject_Type}
+        </if>
+        AND
+        (
+        contractObject_A LIKE CONCAT('%',#{t.contractObject_A}, '%') OR
+        propertyInfo_address LIKE CONCAT('%',#{t.propertyInfo_address}, '%')
+        OR
+        hi_address LIKE CONCAT('%',#{t.hi_address}, '%') OR
+        contractSign_Phone LIKE CONCAT('%',#{t.contractSign_Phone}, '%')
+        )
+    </select>
+
+    <select id="isValidContractNo" resultType="String">
+        SELECT 1
+        FROM GJP_Contract_Object
+        WHERE
+        1=1
+        <if test="ContractObject_No !=null and ContractObject_No !='' ">AND ContractObject_No=#{ContractObject_No}</if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同类型List -->
+    <select id="selectUserCenterContractType" resultType="com.gjp.model.ContractType">
+        SELECT
+        ContractType_Id,
+        ContractType_Name,
+        ContractType_Value,
+        ContractType_ParentId
+        FROM
+        GJP_Contract_Type
+    </select>
+
+    <!-- 查询解约申请分页数据 -->
+    <select id="queryCancelContractPageList" resultType="com.gjp.model.ViewBusinessCancelContractListVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义时间'">
+                AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},'
+                00:00:00') AND
+                CONCAT(#{t.dateEnd},' 23:59:59')
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <!-- 查询解约申请分页数据条数 -->
+    <select id="queryCancelContractPageListTotalRecords" resultType="int">
+        SELECT COUNT(*)
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        1=1
+        <choose>
+            <when test="t.dateStr == '今天'">
+                AND ${t.dateType} = CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一周'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 7 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '最近一月'">
+                AND ${t.dateType} BETWEEN CURDATE() - INTERVAL 30 DAY
+                AND CURDATE()
+            </when>
+            <when test="t.dateStr == '自定义时间'">
+                AND ${t.dateType} BETWEEN CONCAT(#{t.dateStart},'
+                00:00:00') AND
+                CONCAT(#{t.dateEnd},' 23:59:59')
+            </when>
+            <when test="t.sqlWhere !=null">
+                ${t.sqlWhere}
+            </when>
+        </choose>
+    </select>
+
+    <!-- 查询解约申请分页数据 -->
+    <select id="queryCancelContractList" resultType="com.gjp.model.ViewBusinessCancelContractListVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        1=1
+        <choose>
+            <when test="t.hi_code !=null and t.hi_code !='' ">AND hi_code=#{t.hi_code}</when>
+            <otherwise>
+                AND cco_applicationType LIKE
+                CONCAT('%',#{t.cco_applicationType}, '%')
+                AND house_address LIKE
+                CONCAT('%',#{t.house_address}, '%')
+            </otherwise>
+        </choose>
+        <if test="t.cco_states !=null and t.cco_states !='' ">
+            AND cco_state IN
+            <foreach collection="t.cco_states" item="item" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询解约申请分页数据条数 -->
+    <select id="queryCancelContractListTotalRecords" resultType="int">
+        SELECT COUNT(*)
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        1=1
+        <choose>
+            <when test="t.hi_code !=null and t.hi_code !='' ">AND hi_code=#{t.hi_code}</when>
+            <otherwise>
+                AND cco_applicationType LIKE
+                CONCAT('%',#{t.cco_applicationType}, '%')
+                AND house_address LIKE
+                CONCAT('%',#{t.house_address}, '%')
+            </otherwise>
+        </choose>
+        <if test="t.cco_states !=null and t.cco_states !='' ">
+            AND cco_state IN
+            <foreach collection="t.cco_states" item="item" open="("
+                     separator="," close=")">#{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询类型表数据 -->
+    <select id="queryTypeList" resultType="com.gjp.model.BusinesTypeVo">
+        SELECT
+        *
+        FROM
+        GJP_Business_Type
+        WHERE
+        bt_parentCode = #{bt_parentCode}
+        ORDER BY
+        bt_order ASC
+    </select>
+
+    <!-- 查询类型表数据 -->
+    <select id="queryContractQuantityStatistics" resultType="com.gjp.model.ContractQuantityStatisticsVo">
+        SELECT
+        *
+        FROM GJP_Contract_QuantityStatistics
+        WHERE
+        cqs_date = #{cqs_date}
+        LIMIT 1
+    </select>
+
+    <!-- 查询解约申请分页数据条数 -->
+    <select id="queryCancelContractByCode" resultType="com.gjp.model.ViewBusinessCancelContractListVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        <choose>
+            <when test="cco_code !=null and cco_code !='' ">cco_code=#{cco_code}</when>
+            <when test="contractObject_Code !=null and contractObject_Code !='' ">contractObject_Code=#{contractObject_Code}</when>
+        </choose>
+        <if test="cco_state_no != null">AND cco_state &lt;&gt; #{cco_state_no}</if>
+    </select>
+
+    <!-- 查询合同类型List -->
+    <select id="selectContractTypeByIdDao" resultType="com.gjp.model.ContractType">
+        SELECT
+        ContractType_Id,
+        ContractType_Name,
+        ContractType_Value,
+        ContractType_ParentId
+        FROM
+        GJP_Contract_Type
+        WHERE
+        ContractType_Id =
+        #{_parameter} LIMIT
+        1
+    </select>
+
+    <!-- 查询合同类型List -->
+    <select id="selectContractTypeByParentId" resultType="com.gjp.model.ContractType">
+        SELECT
+        *
+        FROM
+        GJP_Contract_Type
+        WHERE
+        ContractType_ParentId = #{parentId}
+        AND
+        ContractType_isOpen &lt;&gt; 3
+        ORDER BY ContractType_Order ASC
+    </select>
+
+    <!-- 查询新增合同主体编号 -->
+    <select id="selectContractBody_Id" resultType="int">
+        SELECT
+        ContractBody_Id
+        FROM
+        GJP_Contract_Body
+        WHERE
+        ContractBody_StartTOEnd=#{ContractBody_StartTOEnd}
+    </select>
+
+    <!-- 查询甲方信息 -->
+    <select id="selectContractObject_1st" resultType="int">
+        SELECT
+        ContractSign_Id
+        FROM GJP_Contract_Object
+        WHERE
+        ContractType_Id=1 and
+        hi_code=#{hi_code};
+    </select>
+
+    <!-- 根据编号查询合同对象 -->
+    <select id="queryContractObject" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        *
+        FROM GJP_Contract_Object
+        WHERE
+        1=1
+        <choose>
+            <when test="ContractObject_Id != null">AND ContractObject_Id=#{ContractObject_Id}</when>
+            <when test="ContractObject_Code != null">AND ContractObject_Code=#{ContractObject_Code}</when>
+            <when test="ContractObject_No != null">AND ContractObject_No=#{ContractObject_No}</when>
+            <when test="hi_code != null">AND hi_code=#{hi_code}</when>
+        </choose>
+        <if test="ContractObject_Type != null">AND ContractObject_Type=#{ContractObject_Type}</if>
+        <if test="ContractObject_State != null">AND ContractObject_State=#{ContractObject_State}</if>
+        ORDER BY ContractObject_CreateTime DESC
+        LIMIT 1
+    </select>
+
+    <!-- 根据编码查询合同对象 -->
+    <select id="selectContractObjectByCNo" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM view_GJP_Contract_ObjectList
+        <where>
+            <if test="contractObject_Id !=null">contractObject_Id=#{contractObject_Id}</if>
+            <if test="contractObject_Code !=null">AND contractObject_Code=#{contractObject_Code}</if>
+            <if test="contractObject_No !=null">AND contractObject_No=#{contractObject_No}</if>
+            <if test="hi_code !=null">AND hi_code=#{hi_code}</if>
+            <if test="contractObject_Type !=null">AND ContractObject_Type=#{contractObject_Type}</if>
+            <if test="house_address !=null">AND house_address=#{house_address}</if>
+            <if test="contractObject_State !=null">AND contractObject_State=#{contractObject_State}</if>
+            <if test="contractObject_OptionState !=null">AND
+                contractObject_OptionState=#{contractObject_OptionState}
+            </if>
+        </where>
+        ORDER BY contractObject_CreateTime DESC
+        LIMIT 1
+    </select>
+
+    <!-- 通过房屋编码查询合同信息 -->
+    <select id="selectContractObjectByHICode" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        ContractObject_Id,
+        uco.ContractObject_No,
+        uco.ContractObject_Code,
+        ContractObject_Type,
+        ContractObject_Version,
+        ContractObject_ProductMode,
+        ContractObject_1st,
+        ContractObject_2nd,
+        ContractObject_3rd,
+        ContractObject_4th,
+        hi_code,
+        ContractObject_Annex,
+        ContractObject_FillTime,
+        ContractObject_DeadlineTime,
+        ContractObject_Date,
+        ContractObject_UpdateTime,
+        ContractObject_State,
+        ContractObject_Other,
+        ContractExt_Id,
+        ContractObject_OptionState,
+        ContractBody_Rent,
+        ContractBody_Increasing,
+        ContractObject_Successor,
+        ucb.ContractBody_FreeTime,
+        ContractObject_ExtState
+        FROM GJP_Contract_Object uco
+        left join GJP_Contract_Body ucb on
+        uco.contractObject_Code =
+        ucb.contractObject_Code
+        WHERE
+        hi_code
+        =#{hi_code}
+        <if test="ContractObject_Code !=null and ContractObject_Code !=''">
+            and uco.ContractObject_Code = ucb.ContractObject_Code
+        </if>
+        <if test="ContractObject_Type !=null and ContractObject_Type !=''">
+            and ContractObject_Type =#{ContractObject_Type}
+        </if>
+        <if test="contractObject_Id !=null and contractObject_Id !=''">
+            AND ContractObject_Id=#{contractObject_Id}
+        </if>
+        <if test="ContractObject_OptionState !=null">
+            AND ContractObject_OptionState != #{ContractObject_OptionState}
+        </if>
+        AND ContractObject_OptionState != 107
+        order by ContractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 查询房屋开始时间 -->
+    <select id="selectContractObjectByHICodeAsc" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        ContractObject_Id,
+        uco.ContractObject_No,
+        uco.ContractObject_Code,
+        ContractObject_Type,
+        ContractObject_Version,
+        ContractObject_ProductMode,
+        ContractObject_1st,
+        ContractObject_2nd,
+        ContractObject_3rd,
+        ContractObject_4th,
+        hi_code,
+        ContractObject_Annex,
+        ContractObject_FillTime,
+        ContractObject_DeadlineTime,
+        ContractObject_Date,
+        ContractObject_UpdateTime,
+        ContractObject_State,
+        ContractObject_Other,
+        ContractExt_Id,
+        ContractObject_OptionState,
+        ContractBody_Rent,
+        ContractBody_Increasing,
+        ContractObject_Successor
+        FROM GJP_Contract_Object
+        uco,GJP_Contract_Body ucb
+        WHERE
+        hi_code
+        =#{hi_code}
+        and ContractObject_Type =#{ContractObject_Type}
+        and
+        uco.ContractObject_Code = ucb.ContractObject_Code
+        <if test="contractObject_Id !=null and contractObject_Id !=''">
+            AND ContractObject_Id=#{contractObject_Id}
+        </if>
+        <if test="ContractObject_OptionState !=null">
+            AND ContractObject_OptionState !=
+            #{ContractObject_OptionState}
+        </if>
+        order by ContractObject_Date asc
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同信息分页列表 -->
+    <select id="selectViewContractList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        co.*,
+        uc.user_id
+        FROM
+        view_GJP_Contract_ObjectList co
+        LEFT JOIN GJP_user.GJP_UserCenter_User uc ON co.cc_cardNum = uc.user_cardNumber
+        WHERE
+        1=1
+        <if test="t.contractObject_No !=null and t.contractObject_No !=''">
+            AND co.contractObject_No =#{t.contractObject_No}
+        </if>
+        <if
+                test="t.contractObject_OptionState !=null and t.contractObject_OptionState !=''">
+            AND co.contractObject_OptionState =#{t.contractObject_OptionState}
+        </if>
+        <if
+                test="t.contractObject_OptionPerson !=null and t.contractObject_OptionPerson !=''">
+            AND co.contractObject_Type=#{t.contractObject_Type}
+        </if>
+        <if
+                test="t.contractObject_OptionPerson ==null and t.contractObject_Type !=null and t.contractObject_Type !=''">
+            AND co.contractObject_Type=#{t.contractObject_Type}
+        </if>
+        AND
+        (
+        co.cc_name LIKE CONCAT('%',#{t.cc_name}, '%')
+        OR co.house_address LIKE
+        CONCAT('%',#{t.house_address}, '%')
+        OR co.ccp_phone LIKE
+        CONCAT('%',#{t.ccp_phone}, '%')
+        )
+        AND
+        co.contractObject_Id
+        IN(
+        SELECT
+        contractObject_Id
+        FROM GJP_Contract_Object
+        ORDER BY
+        contractObject_CreateTime DESC
+        )
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <!-- 根据房屋编码查询合同信息 -->
+    <select id="selectViewContractListHiCode" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        co.*,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_id, ucc1.ucc_id) AS ucc_id,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_name, ucc1.ucc_name) AS ucc_name
+        FROM view_GJP_Contract_ObjectList co
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON hpr.hi_code = co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc1 ON ucc1.ucc_id = hpr.ucc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id = re.contractObject_Id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS uccp ON em.em_id = uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id = uccp.ucc_id
+        WHERE
+        1=1
+        <if test="hi_code !=null and hi_code !=''">
+            AND co.hi_code =#{hi_code}
+        </if>
+        <if test="contractObject_OptionState !=null and contractObject_OptionState !=''">
+            AND co.contractObject_OptionState =#{contractObject_OptionState}
+        </if>
+        <if test="contractObject_OptionPerson !=null and contractObject_OptionPerson !=''">
+            AND co.contractObject_Type=#{contractObject_Type}
+            AND co.contractObject_state != 2
+        </if>
+        <if test="contractObject_OptionPerson ==null and contractObject_Type !=null and contractObject_Type !=''">
+            AND co.contractObject_Type=#{contractObject_Type}
+            AND co.contractObject_state = 2
+        </if>
+        order by co.contractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同归属部门关系数据 -->
+    <select id="queryContractCompanyRelation" resultType="com.gjp.model.ContractCompanyRelationVo">
+        SELECT * FROM GJP_Contract_CompanyRelation
+        <where>
+            <if test="co_code != null">co_code = #{co_code}</if>
+        </where>
+    </select>
+
+    <!-- 查询合同视图列表 -->
+    <select id="selectContractViewList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        vco.*,
+        cc.*,
+        hk.contract_outDate
+        FROM view_GJP_Contract_ObjectList vco
+        LEFT JOIN GJP_business.GJP_Contract_CancelOrder cc ON vco.contractObject_Code = cc.contractObject_Code AND cc.cco_state &lt;&gt; '取消'
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep hk ON hk.hi_code = vco.hi_code
+        WHERE
+        1=1
+        <choose>
+            <when test="query_mode == null or query_mode == 'vague'">
+                <if test="contractObject_No !=null">AND vco.contractObject_No LIKE CONCAT('%',#{contractObject_No},'%')</if>
+            </when>
+            <when test="query_mode == 'accurate'">
+                <if test="contractObject_No !=null">AND vco.contractObject_No =#{contractObject_No}</if>
+            </when>
+        </choose>
+        <if test="hi_code !=null and hi_code !=''">AND vco.hi_code =#{hi_code}</if>
+        <if test="contractObject_Code !=null">AND vco.contractObject_Code =#{contractObject_Code}</if>
+        <if test="contractObject_Type !=null">AND vco.contractObject_Type =#{contractObject_Type}</if>
+        ORDER BY vco.contractObject_CreateTime ASC
+    </select>
+
+    <!-- 查询合同列表 -->
+    <select id="queryViewContractInfoList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT * FROM (
+        SELECT
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_FillTime,
+        co.ContractObject_CreateTime,
+        co.ContractObject_ExtState,
+        cco.cco_code,
+        cco.cco_applicationType,
+        cco.cco_state,
+        cb.ContractBody_Rent,
+        cb.ContractBody_StartTOEnd,
+        cb.ContractBody_PayStyle,
+        cb.ContractBody_PayType,
+        cb.ContractBody_GjName,
+        cb.ContractBody_GjPhone,
+        cb.ContractBody_Optioner,
+        cb.ContractBody_StartPayTime,
+        cb.ContractBody_Discount,
+        house.*,
+        cus.cc_name,
+        cusp.ccp_phone,
+        re.em_id,
+        re.cre_role,
+        em.em_name,
+        em.em_phone,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_id, ucc1.ucc_id) AS ucc_id,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_name, ucc1.ucc_name) AS ucc_name,
+        IF(co.ContractObject_State =2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS contractObject_dateDiff
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_CancelOrder AS cco ON cco.contractObject_Code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON hpr.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc1 ON ucc1.ucc_id = hpr.ucc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id = re.contractObject_Id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS uccp ON em.em_id = uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id = uccp.ucc_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cus ON cus.cc_code = co.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS cusp ON cus.cc_id = cusp.cc_id AND cusp.ccp_state = 1
+        ) contract_info
+        WHERE
+        1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') &gt;=
+            DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') &lt;=
+            DATE_FORMAT(#{dateEnd},'%Y-%m-%d')
+        </if>
+        <if test="t.em_id == null or t.ucc_id == null">
+            and cre_role=1
+        </if>
+        <if test="t.em_id != null">
+            and em_id=#{t.em_id}
+        </if>
+        <if test="t.ucc_id != null">
+            and ucc_id=#{t.ucc_id}
+        </if>
+        <if test="t.contractObject_OptionState != null">
+            AND contractObject_OptionState = #{t.contractObject_OptionState}
+        </if>
+        ORDER BY contractObject_dateDiff ASC,house_address ASC
+        <if test="dateTitle != null">,#{dateTitle} DESC</if>
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <!-- 查询合同列表 -->
+    <select id="queryViewContractInfoListRows" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_FillTime,
+        co.ContractObject_CreateTime,
+        co.ContractObject_ExtState,
+        cco.cco_code,
+        cco.cco_applicationType,
+        cco.cco_state,
+        cb.ContractBody_Rent,
+        cb.ContractBody_StartTOEnd,
+        cb.ContractBody_PayStyle,
+        cb.ContractBody_PayType,
+        cb.ContractBody_GjName,
+        cb.ContractBody_GjPhone,
+        cb.ContractBody_Optioner,
+        cb.ContractBody_StartPayTime,
+        cb.ContractBody_Discount,
+        house.*,
+        cus.cc_name,
+        cusp.ccp_phone,
+        re.em_id,
+        re.cre_role,
+        em.em_name,
+        em.em_phone,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_id, ucc1.ucc_id) AS ucc_id,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_name, ucc1.ucc_name) AS ucc_name,
+        IF(co.ContractObject_State =2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS contractObject_dateDiff
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_CancelOrder AS cco ON cco.contractObject_Code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON hpr.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc1 ON ucc1.ucc_id = hpr.ucc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id = re.contractObject_Id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS uccp ON em.em_id = uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id = uccp.ucc_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cus ON cus.cc_code = co.ContractObject_1st
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS cusp ON cus.cc_id = cusp.cc_id AND cusp.ccp_state = 1
+        ) contract_info
+        WHERE
+        1=1
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') &gt;=
+            DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            and DATE_FORMAT(${dateTitle},'%Y-%m-%d') &lt;=
+            DATE_FORMAT(#{dateEnd},'%Y-%m-%d')
+        </if>
+        <if test="t.em_id == null or t.ucc_id == null">
+            and cre_role=1
+        </if>
+        <if test="t.em_id != null">
+            and em_id=#{t.em_id}
+        </if>
+        <if test="t.ucc_id != null">
+            and ucc_id=#{t.ucc_id}
+        </if>
+        <if test="t.contractObject_OptionState != null">
+            AND contractObject_OptionState =#{t.contractObject_OptionState}
+        </if>
+    </select>
+
+    <!-- 查询视图合同审核总数据条数 -->
+    <select id="queryTotalRecords" resultType="int">
+        SELECT FOUND_ROWS()
+    </select>
+
+    <!-- 查询视图合同审核总数据条数 -->
+    <select id="queryFoundRows" resultType="int">
+        SELECT FOUND_ROWS()
+    </select>
+
+    <!-- 查询最新一份合同 -->
+    <select id="queryLastContract" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_ObjectList
+        WHERE
+        ContractObject_Type=#{contractObject_Type}
+        AND
+        hi_code=#{hi_code}
+        ORDER
+        BY ContractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 根据编号查询合同主体 -->
+    <select id="queryContractBody" resultType="com.gjp.model.UserCenterContractBody">
+        SELECT
+        *
+        FROM
+        GJP_Contract_Body
+        WHERE
+        ContractObject_Code =#{ContractObject_Code}
+    </select>
+
+    <!-- 分页查询预订订单列表信息 -->
+    <select id="selectReserveOrder" resultType="com.gjp.model.BillReserveOrderVo">
+        SELECT
+        rb_id,
+        rb_name,
+        rb_number,
+        rb_phone,
+        rb_money,
+        rb_houseNum,
+        hi_version,
+        hb_name,
+        propertyInfo_address,
+        rb_date,
+        rb_personNum,
+        rb_cycle,
+        rb_type,
+        rb_reserveDate,
+        rb_remarks,
+        rb_state,
+        rb_operationState,
+        rb_account
+        FROM
+        GJP_Bill_ReserveBill
+        WHERE
+        rb_state
+        =#{t.rb_state}
+        <if test="t.hb_name !=null and t.hb_name !=''">AND hb_name =#{t.hb_name}</if>
+        <if test="t.hb_name ==null or t.hb_name ==''">AND hb_name !='公寓'</if>
+        AND
+        (
+        rb_name LIKE CONCAT('%',#{t.rb_name}, '%') OR
+        rb_phone LIKE
+        CONCAT('%',#{t.rb_phone}, '%') OR
+        rb_houseNum LIKE
+        CONCAT('%',#{t.rb_houseNum}, '%')
+        )
+        ORDER BY rb_date ASC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 分页查询预订订单列表信息记录条数 -->
+    <select id="selectReserveOrderTotalRecords" resultType="int">
+        SELECT
+        COUNT(*) FROM
+        GJP_Bill_ReserveBill
+        WHERE
+        rb_state =#{t.rb_state}
+        AND
+        hb_name =#{t.hb_name}
+        AND
+        (rb_name LIKE CONCAT('%',#{t.rb_name}, '%') OR
+        rb_phone LIKE CONCAT('%',#{t.rb_phone}, '%') OR
+        rb_houseNum LIKE
+        CONCAT('%',#{t.rb_houseNum}, '%'))
+    </select>
+
+    <!-- 查询解约订单 -->
+    <select id="queryCancelContractByhiCode" resultType="com.gjp.model.ViewBusinessCancelContractListVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_CancelList
+        WHERE
+        1=1
+        <if test="contractObject_Code !=null and contractObject_Code !=''">AND contractObject_Code=#{contractObject_Code}</if>
+        <if test="contractObject_No !=null and contractObject_No !=''">AND contractObject_No=#{contractObject_No}</if>
+        <if test="hi_code !=null and hi_code !=''">AND hi_code=#{hi_code}</if>
+        <if test="cco_state !=null and cco_state !=''">AND cco_state=#{cco_state}</if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询根据预定账单签订的合同 -->
+    <select id="selectReserveContractObjectByHICode" resultType="com.gjp.model.ContractObjectVo">
+        SELECT *
+        FROM GJP_Contract_Object
+        WHERE
+        hi_code=#{rb_houseNum}
+        AND
+        ContractObject_Type ='租赁合同'
+        AND ContractObject_State = 2
+        AND
+        ContractObject_OptionState = 106
+        LIMIT 1
+    </select>
+
+    <select id="queryViewContractRelaEmp" resultType="com.gjp.model.ViewBusinessContractRelaEmpVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_RelaEmpList
+        WHERE
+        1=1
+        <if test="contractObject_Id !=null and contractObject_Id !=''">AND contractObject_Id=#{contractObject_Id}</if>
+        <if test="contractObject_No !=null and contractObject_No !=''">AND contractObject_No=#{contractObject_No}</if>
+        <if test="em_id !=null and em_id !=''">AND em_id=#{em_id}</if>
+        <if test="contractObject_Type !=null and contractObject_Type !=''">AND contractObject_Type=#{contractObject_Type}</if>
+        <if test="cre_role !=null">AND cre_role=#{cre_role}</if>
+        ORDER BY cre_role asc
+    </select>
+
+    <select id="selectContractObjectByCard" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_ObjectList
+        WHERE
+        1=1
+        <if
+                test="contractObject_OptionState !=null and contractObject_OptionState !=''">
+            AND contractObject_OptionState=#{contractObject_OptionState}
+        </if>
+        <if test="contractObject_Type !=null and contractObject_Type !=''">
+            AND contractObject_Type=#{contractObject_Type}
+        </if>
+        <if test="cc_cardNum !=null and cc_cardNum !=''">
+            AND cc_cardNum=#{cc_cardNum}
+        </if>
+        <if test="contractObject_No !=null and contractObject_No !=''">
+            AND contractObject_No=#{contractObject_No}
+        </if>
+        LIMIT 1
+    </select>
+
+    <select id="selectContractObjectPeople" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_ObjectList
+        WHERE
+        1=1
+        <if test="contractObject_Type !=null and contractObject_Type !=''">
+            AND contractObject_Type=#{contractObject_Type}
+        </if>
+        AND hi_code=#{hi_code} and (ContractObject_State = 1 or
+        ContractObject_State = 2)
+        LIMIT 1
+    </select>
+
+    <select id="queryContractNotObsolute" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        *
+        FROM
+        view_GJP_Contract_ObjectList
+        WHERE
+        1=1
+        <if test="contractObject_Type !=null and contractObject_Type !=''">
+            AND contractObject_Type=#{contractObject_Type}
+        </if>
+        AND hi_code=#{hi_code} and (ContractObject_State IS NOT NULL AND ContractObject_State &lt;&gt; 1 AND ContractObject_State &lt;&gt; 4)
+        <!--AND (ContractObject_OptionState = 106 OR ContractObject_OptionState = 201 OR ContractObject_OptionState = 303
+        OR ContractObject_OptionState = 403 OR ContractObject_OptionState = 503 OR ContractObject_OptionState = 603
+        OR ContractObject_OptionState = 703 OR ContractObject_OptionState = 903)-->
+        ORDER BY ContractObject_CreateTime DESC
+    </select>
+
+    <!-- 查询预订订单 -->
+    <select id="selectReserveOrders" resultType="com.gjp.model.BillReserveOrderVo">
+        SELECT
+        rb_id,
+        rb_name,
+        rb_number,
+        rb_phone,
+        rb_money,
+        rb_houseNum,
+        hi_version,
+        hb_name,
+        propertyInfo_address,
+        rb_date,
+        rb_personNum,
+        rb_cycle,
+        rb_type,
+        rb_reserveDate,
+        rb_remarks,
+        rb_state,
+        rb_operationState,
+        rb_account,
+        rb_fxCode,
+        rb_Ejz,
+        ep_wayMon,
+        ep_leave
+        FROM GJP_Bill_ReserveBill
+        WHERE
+        rb_name=#{rb_name}
+        AND rb_phone=#{rb_phone}
+        AND rb_state=#{rb_state}
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同审核记录列表信息 -->
+    <select id="queryContractAuditingRecordList" resultType="com.gjp.model.ContractAuditingRecordVo">
+        SELECT
+        *
+        FROM GJP_Contract_AuditingRecord
+        WHERE
+        contractObject_code =#{contractObject_code}
+        <if test="auditingRecord_content != null">AND auditingRecord_content LIKE
+            CONCAT('%',#{auditingRecord_content}, '%')
+        </if>
+        ORDER BY
+        auditingRecord_createTime DESC
+    </select>
+
+    <!-- 查询解约订单信息 -->
+    <select id="queryCancelContractOrderInfo" resultType="String">
+        SELECT 1
+        FROM GJP_Contract_CancelOrder
+        WHERE
+        1=1
+        <if test="contractObject_No !=null and contractObject_No !='' ">AND contractObject_No=#{contractObject_No}</if>
+        <if test="hi_code !=null and hi_code !='' ">AND hi_code=#{hi_code}</if>
+        AND cco_state!='取消'
+        LIMIT 1
+    </select>
+
+    <!-- 查询首付账单收款记录 -->
+    <select id="queryFirstBillReceiptRecordByAll" resultType="com.gjp.model.BillFirstBillReceiptRecordVo">
+        SELECT
+        bfrr_id,
+        contractObject_no,
+        hi_code,
+        tb_code,
+        bfrr_receiptWay,
+        bfrr_receiptMoney,
+        bfrr_realMoney,
+        bfrr_dueInMoney,
+        bfrr_createTime
+        FROM GJP_Bill_FirstBillReceiptRecord
+        WHERE
+        tb_code =#{tb_code}
+        LIMIT 1
+    </select>
+
+    <!-- -->
+    <update id="updateReserveBill">
+        UPDATE GJP_Bill_ReserveBill SET
+        rb_state=#{rb_state}
+        WHERE
+        rb_id=#{rb_id}
+    </update>
+
+    <!-- 修改合同主体 -->
+    <update id="updateContractBody">
+        UPDATE GJP_Contract_Body
+        <set>
+            <if test="contractObject_Code !=null">ContractObject_Code =#{contractObject_Code},</if>
+            <if test="contractBody_Use !=null">ContractBody_Use =#{contractBody_Use},</if>
+            <if test="contractBody_AdditionConditions !=null">ContractBody_AdditionConditions
+                =#{contractBody_AdditionConditions},
+            </if>
+            <if test="contractBody_TimeLimit !=null">ContractBody_TimeLimit =#{contractBody_TimeLimit},</if>
+            <if test="contractBody_StartTOEnd !=null">ContractBody_StartTOEnd =#{contractBody_StartTOEnd},</if>
+            <if test="contractBody_FreeTime !=null">ContractBody_FreeTime =#{contractBody_FreeTime},</if>
+            <if test="contractBody_Rent !=null">ContractBody_Rent =#{contractBody_Rent},</if>
+            <if test="contractBody_RentPlus !=null">ContractBody_RentPlus =#{contractBody_RentPlus},</if>
+            <if test="contractBody_Depslit !=null">ContractBody_Depslit =#{contractBody_Depslit},</if>
+            <if test="contractBody_Pay !=null">ContractBody_Pay =#{contractBody_Pay},</if>
+            <if test="contractBody_Service !=null">ContractBody_Service =#{contractBody_Service},</if>
+            <if test="contractBody_GuaranteeCost !=null">ContractBody_GuaranteeCost
+                =#{contractBody_GuaranteeCost},
+            </if>
+            <if test="contractBody_WorkMoney !=null">ContractBody_WorkMoney =#{contractBody_WorkMoney},</if>
+            <if test="contractBody_Increasing !=null">ContractBody_Increasing =#{contractBody_Increasing},</if>
+            <if test="contractBody_PayStyle !=null">ContractBody_PayStyle =#{contractBody_PayStyle},</if>
+            <if test="contractBody_PayType !=null">ContractBody_PayType =#{contractBody_PayType},</if>
+            <if test="contractBody_StartPayTime !=null">ContractBody_StartPayTime =#{contractBody_StartPayTime},
+            </if>
+            <if test="contractBody_BillTime !=null">ContractBody_BillTime =#{contractBody_BillTime},</if>
+            <if test="contractBody_PayTime !=null">ContractBody_PayTime =#{contractBody_PayTime},</if>
+            <if test="contractBody_GjName !=null">ContractBody_GjName =#{contractBody_GjName},</if>
+            <if test="contractBody_GjPhone !=null">ContractBody_GjPhone =#{contractBody_GjPhone},</if>
+            <if test="contractBody_Remark !=null">ContractBody_Remark =#{contractBody_Remark},</if>
+            <if test="contractBody_Optioner !=null">ContractBody_Optioner =#{contractBody_Optioner},</if>
+            <if test="contractBody_RentRate_A !=null">ContractBody_RentRate_A =#{contractBody_RentRate_A},</if>
+            <if test="contractBody_RentRate_B !=null">ContractBody_RentRate_B =#{contractBody_RentRate_B},</if>
+            <if test="contractBody_AgreedRepayTime !=null">ContractBody_AgreedRepayTime
+                =#{contractBody_AgreedRepayTime},
+            </if>
+            <if test="ContractBody_BillWay !=null">ContractBody_BillWay =#{ContractBody_BillWay},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="contractBody_Id != null">ContractBody_Id=#{contractBody_Id}</when>
+            <when test="contractObject_Code != null">ContractObject_Code=#{contractObject_Code}</when>
+        </choose>
+    </update>
+
+    <!-- 修改合同对象 -->
+    <update id="updateContractObject">
+        UPDATE GJP_Contract_Object
+        <set>
+            <if test="ContractObject_Id != null">ContractObject_Id=#{ContractObject_Id},</if>
+            <if test="ContractObject_Code != null">ContractObject_Code=#{ContractObject_Code},</if>
+            <if test="ContractObject_No != null">ContractObject_No=#{ContractObject_No},</if>
+            <if test="hi_code != null">hi_code=#{hi_code},</if>
+            <if test="ContractObject_Type != null">ContractObject_Type=#{ContractObject_Type},</if>
+            <if test="ContractObject_Mode != null">ContractObject_Mode=#{ContractObject_Mode},</if>
+            <if test="ContractObject_Source != null">ContractObject_Source=#{ContractObject_Source},</if>
+            <if test="ContractObject_Version != null">ContractObject_Version=#{ContractObject_Version},</if>
+            <if test="ContractObject_ProductMode != null">ContractObject_ProductMode=#{ContractObject_ProductMode},</if>
+            <if test="ContractObject_1st != null">ContractObject_1st=#{ContractObject_1st},</if>
+            <if test="ContractObject_2nd != null">ContractObject_2nd=#{ContractObject_2nd},</if>
+            <if test="ContractObject_3rd != null">ContractObject_3rd=#{ContractObject_3rd},</if>
+            <if test="ContractObject_4th != null">ContractObject_4th=#{ContractObject_4th},</if>
+            <if test="ContractObject_Annex != null">ContractObject_Annex=#{ContractObject_Annex},</if>
+            <if test="ContractObject_FillTime != null">ContractObject_FillTime=#{ContractObject_FillTime},</if>
+            <if test="ContractObject_Date != null">ContractObject_Date=#{ContractObject_Date},</if>
+            <if test="ContractObject_DeadlineTime != null">ContractObject_DeadlineTime=#{ContractObject_DeadlineTime},</if>
+            <if test="ContractObject_RealDate != null">ContractObject_RealDate=#{ContractObject_RealDate},</if>
+            <if test="ContractObject_UpdateTime != null">ContractObject_UpdateTime=#{ContractObject_UpdateTime},</if>
+            <if test="ContractObject_State != null">ContractObject_State=#{ContractObject_State},</if>
+            <if test="ContractObject_OptionState != null">ContractObject_OptionState=#{ContractObject_OptionState},</if>
+            <if test="ContractObject_ExtState != null">ContractObject_ExtState=#{ContractObject_ExtState},</if>
+            <if test="ContractObject_Successor != null">ContractObject_Successor=#{ContractObject_Successor},</if>
+            <if test="ContractObject_Other != null">ContractObject_Other=#{ContractObject_Other},</if>
+            <if test="ContractExt_Id != null">ContractExt_Id=#{ContractExt_Id},</if>
+            <if test="ContractObject_Contractor != null">ContractObject_Contractor=#{ContractObject_Contractor},</if>
+            <if test="ContractObject_CreateTime != null">ContractObject_CreateTime=#{ContractObject_CreateTime},</if>
+            <if test="ContractObject_Bool != null">ContractObject_Bool=#{ContractObject_Bool},</if>
+            <if test="ContractObject_RentStr != null">ContractObject_RentStr=#{ContractObject_RentStr},</if>
+            <if test="ContractObject_RentFreeMode != null">ContractObject_RentFreeMode=#{ContractObject_RentFreeMode},</if>
+            <if test="ContractObject_ForRentDate != null">ContractObject_ForRentDate=#{ContractObject_ForRentDate},</if>
+            <if test="ContractObject_ServiceBool != null">ContractObject_ServiceBool=#{ContractObject_ServiceBool},</if>
+            <if test="ContractObject_goodsMoney != null">ContractObject_goodsMoney=#{ContractObject_goodsMoney},</if>
+            <if test="ContractObject_CustomerSign != null">ContractObject_CustomerSign=#{ContractObject_CustomerSign, jdbcType=BLOB},</if>
+            <if test="ContractObject_CheckCode != null">ContractObject_CheckCode=#{ContractObject_CheckCode},</if>
+            <if test="ContractObject_PeopleNumber != null">ContractObject_PeopleNumber=#{ContractObject_PeopleNumber},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="ContractObject_Id !=null">ContractObject_Id=#{ContractObject_Id}</when>
+            <when test="ContractObject_Code !=null">ContractObject_Code=#{ContractObject_Code}</when>
+        </choose>
+    </update>
+
+    <!-- 更新合同对象客户签名 -->
+    <update id="updateContractObjectForSignature">
+        UPDATE GJP_Contract_Object SET
+        ContractObject_CustomerSign=#{ContractObject_CustomerSign, jdbcType=BLOB}
+        WHERE
+        ContractObject_Code=#{ContractObject_Code}
+    </update>
+
+    <!-- 更新合同数量统计数据 -->
+    <update id="updateContractQuantityStatistics">
+        UPDATE GJP_Contract_QuantityStatistics
+        SET
+        cqs_number =
+        cqs_number + 1
+        WHERE
+        cqs_date=#{cqs_date}
+    </update>
+
+    <!-- 解约订单审核完毕——更新订单数据 -->
+    <update id="updateCancelContractOrder">
+        UPDATE
+        GJP_Contract_CancelOrder
+        <set>
+            <if test="contractObject_Code !=null">contractObject_Code = #{contractObject_Code},</if>
+            <if test="cco_applicant !=null">cco_applicant = #{cco_applicant},</if>
+            <if test="cco_phone !=null">cco_phone =#{cco_phone},</if>
+            <if test="cco_path !=null">cco_path =#{cco_path},</if>
+            <if test="cco_subletCost !=null">cco_subletCost = #{cco_subletCost},</if>
+            <if test="cco_applicationContent !=null">cco_applicationContent = #{cco_applicationContent},</if>
+            <if test="cco_applicationTime !=null">cco_applicationTime = #{cco_applicationTime},</if>
+            <if test="cco_applicationType !=null">cco_applicationType = #{cco_applicationType},</if>
+            <if test="hi_code !=null">hi_code = #{hi_code},</if>
+            <if test="cco_state !=null">cco_state = #{cco_state},</if>
+            <if test="cco_FinishTime !=null">cco_FinishTime = #{cco_FinishTime},</if>
+            <if test="cco_peopleName !=null">cco_peopleName = #{cco_peopleName},</if>
+            <if test="cco_handleDate !=null">cco_handleDate = #{cco_handleDate},</if>
+            <if test="cco_processMode !=null">cco_processMode = #{cco_processMode},</if>
+            <if test="cco_processer !=null">cco_processer = #{cco_processer},</if>
+            <if test="cco_realDate !=null">cco_realDate = #{cco_realDate},</if>
+        </set>
+        WHERE
+        cco_code=#{cco_code}
+    </update>
+
+    <update id="updatePurchaseItems">
+        UPDATE GJP_Service_PurchaseItems SET
+        hi_code=#{hi_code},
+        ContractObject_No=#{ContractObject_No}
+        WHERE
+        purchaseItems_id =#{purchaseItems_id}
+    </update>
+
+    <update id="updatePurchaseItemsAll">
+        UPDATE GJP_Service_PurchaseItems SET
+        hi_code='',
+        ContractObject_No=''
+        WHERE
+        ContractObject_No=#{ContractObject_No}
+        <if test="purchaseItems_id !=null and purchaseItems_id !=''">AND purchaseItems_id =#{purchaseItems_id}</if>
+    </update>
+
+    <!-- 删除合同管家关系数据 -->
+    <delete id="deleteContractRaleEmp">
+        DELETE FROM GJP_Contract_RelaEmp
+        WHERE
+        contractObject_Id=#{contractObject_Id}
+    </delete>
+    <!--查询合同管家关系-->
+    <select id="selectGJPContractRelaEmp" resultType="com.gjp.model.ContractObjectVo">
+        SELECT  * FROM GJP_Contract_RelaEmp
+        <where>
+            <if test="contractObject_Id != null">AND contractObject_Id = #{contractObject_Id}</if>
+            <if test="em_id != null">AND em_id = #{em_id}</if>
+        </where>
+    </select>
+
+    <!-- 删除服务费 -->
+    <delete id="deleteContractServiceCharge">
+        DELETE FROM GJP_Service_ContractServiceCharge
+        WHERE
+        contractObject_no=#{contractObject_no}
+    </delete>
+
+    <delete id="deleteFirstBillReceiptRecord">
+        DELETE FROM GJP_Bill_FirstBillReceiptRecord
+        WHERE
+        tb_code=#{tb_code}
+    </delete>
+
+    <!-- APP根据房屋编码查询合同信息 -->
+    <select id="queryAPPContract" resultType="com.gjp.model.ViewBusinessContractVo">
+        select * from
+        view_GJP_APPContract where hi_code=#{hi_code} and
+        contractObject_Type=#{contractObject_Type} order by
+        ContractObject_CreateTime desc limit 0,1
+    </select>
+
+    <!-- 房屋合同执行记录 -->
+
+    <!-- 生成合同执行记录 -->
+    <insert id="addHouseRecord" useGeneratedKeys="true" keyProperty="cir_id" parameterType="com.gjp.model.ContractImplRecordVo">
+        INSERT INTO GJP_Contract_ImplementRecord(
+        hi_code,
+        contractObject_code,
+        cir_type,
+        cir_content,
+        cir_author,
+        cir_source,
+        cir_createTime
+        ) VALUES (
+        #{hi_code},
+        #{contractObject_code},
+        #{cir_type},
+        #{cir_content},
+        #{cir_author},
+        #{cir_source},
+        #{cir_createTime}
+        )
+    </insert>
+
+    <!-- 查询执行记录List -->
+    <select id="queryContractImplementRecordList" resultType="com.gjp.model.ContractImplRecordVo">
+        SELECT
+        cir.*,
+        emp.em_name
+        FROM
+        GJP_Contract_ImplementRecord as cir
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee AS emp ON emp.em_id = cir.cir_author
+        WHERE
+        contractObject_code =#{contractObject_code}
+        ORDER BY
+        cir_createTime DESC
+    </select>
+
+    <!-- 查询执行记录List -->
+    <select id="selectContractImplementRecordList" resultType="com.gjp.model.ContractImplRecordVo">
+        SELECT * FROM
+        GJP_Contract_ImplementRecord
+        WHERE
+        hi_code =#{hi_code}
+        <if test="contractObject_code != null and contractObject_code != ''">
+            and contractObject_code = #{contractObject_code}
+        </if>
+        <if test="(cir_type !=null and cir_type !='') or cir_type == 0">
+            and cir_type = #{cir_type}
+        </if>
+        <if test="cir_content != null and cir_content != ''">
+            and cir_content like CONCAT('%','${cir_content}','%' )
+        </if>
+        <if test="cir_author != null and cir_author != ''">
+            and cir_author like CONCAT('%','${cir_author}','%' )
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and cir_createTime &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and cir_createTime &lt;= #{endTime}
+        </if>
+        ORDER BY cir_createTime DESC
+        LIMIT #{start},#{end}
+    </select>
+
+    <!-- 查询合同执行记录分页数据 -->
+    <select id="queryContractImplRecordPageList" resultType="com.gjp.model.ContractImplRecordVo">
+        SELECT
+        cir.*,
+        co.ContractObject_No,
+        emp.em_name,
+        CASE
+        WHEN par.apply_status
+        = 1
+        AND par.review_result = 0 THEN
+        '驳回'
+        WHEN par.apply_status = 1
+        AND
+        par.review_result = 1 THEN
+        '通过'
+        WHEN par.apply_status = 0 THEN
+        '待审'
+        ELSE
+        ''
+        END AS 'priceResult',
+        par.refused_reason
+        FROM
+        GJP_Contract_ImplementRecord AS cir
+        LEFT JOIN GJP_Contract_Object AS co
+        ON cir.contractObject_code =
+        co.ContractObject_Code
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee AS emp ON emp.em_id =
+        cir.cir_author
+        LEFT JOIN GJP_Price_Apply_Record AS par ON par.cir_id = cir.cir_id
+        WHERE
+        cir.hi_code =#{t.hi_code}
+        <if test="t.contractObject_code != null and t.contractObject_code != ''">AND cir.contractObject_code=#{t.contractObject_code}</if>
+        <if test="t.cir_type != null and t.cir_type != ''">AND cir.cir_type=#{t.cir_type}</if>
+        <if test="t.cir_source != null and t.cir_source != ''">AND cir.cir_source=#{t.cir_source}</if>
+        <if test="t.cir_content != null">AND cir.cir_content LIKE CONCAT('%',#{t.cir_content},'%')
+        </if>
+        ORDER BY cir.cir_createTime DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询合同执行记录分页数据 -->
+    <select id="queryContractImplRecordPageRecords" resultType="int">
+        SELECT COUNT(*) FROM GJP_Contract_ImplementRecord
+        WHERE
+        hi_code
+        =#{t.hi_code}
+        <if test="t.contractObject_code != null and t.contractObject_code != ''">AND contractObject_code=#{t.contractObject_code}</if>
+    </select>
+
+    <!-- 查询合同图片数据 -->
+    <select id="queryContractImage" resultType="com.gjp.model.ContractImageVo">
+        SELECT *
+        FROM GJP_Contract_Image
+        WHERE
+        contractObject_Code =
+        #{contractObject_Code}
+        <if test="ci_type !=null and ci_type !='' ">AND ci_type = #{ci_type}</if>
+    </select>
+
+    <select id="queryBusinessBill" resultType="com.gjp.model.BillBusinessBillVo">
+        SELECT * FROM
+        GJP_Bill_BusinessBill
+        WHERE
+        contractObject_code =#{contractObject_code}
+        AND
+        bbo_type =#{bbo_type}
+        LIMIT 1
+    </select>
+
+    <!-- 查询执行记录数量 -->
+    <select id="queryContractImplementRecordListCount" resultType="int">
+        SELECT COUNT(*) FROM GJP_Contract_ImplementRecord WHERE
+        hi_code
+        =#{hi_code}
+        <if test="contractObject_code != null and contractObject_code != ''">
+            and contractObject_code = #{contractObject_code}
+        </if>
+        <if test="(cir_type !=null and cir_type !='') or cir_type == 0">
+            and cir_type = #{cir_type}
+        </if>
+        <if test="cir_content != null and cir_content != ''">
+            and cir_content like CONCAT('%','${cir_content}','%' )
+        </if>
+        <if test="cir_author != null and cir_author != ''">
+            and cir_author like CONCAT('%','${cir_author}','%' )
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            and cir_createTime &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            and cir_createTime &lt;= #{endTime}
+        </if>
+    </select>
+
+    <!-- 查询该房屋目前生效的合同（托管/租赁） -->
+    <select id="selectContractObjectState" resultType="com.gjp.model.ContractObjectVo">
+        SELECT * FROM GJP_Contract_Object
+        where hi_code = #{hi_code}
+        <if test="ContractObject_State != null and ContractObject_State != ''">
+            and ContractObject_State = #{ContractObject_State}
+        </if>
+    </select>
+
+    <!-- 执行合同继承 -->
+    <select id="callContractSuccessor" statementType="CALLABLE">
+        CALL proc_updateContractSuccessor(#{hi_code},#{contractObject_Type})
+    </select>
+
+    <!-- 查询合同执行记录 -->
+    <select id="queryContractImplementRecord" resultType="com.gjp.model.ContractImplRecordVo">
+        SELECT *
+        FROM
+        GJP_Contract_ImplementRecord
+        WHERE
+        cir_id = #{cir_id}
+    </select>
+
+    <!-- 修改合同的物品购置总金额 -->
+    <update id="updateContractObjectGoodsMoney">
+        UPDATE GJP_Contract_Object SET
+        ContractObject_goodsMoney = #{ContractObject_goodsMoney}
+        WHERE
+        ContractObject_Code=#{ContractObject_Code}
+    </update>
+
+    <!-- 更新合同执行记录 -->
+    <update id="updateContractImplRecord">
+        update GJP_Contract_ImplementRecord
+        <set>
+            <if test="hi_code !=null">hi_code=#{hi_code},</if>
+            <if test="contractObject_code !=null">contractObject_code=#{contractObject_code},</if>
+            <if test="cir_type !=null">cir_type=#{cir_type},</if>
+            <if test="cir_content !=null">cir_content=#{cir_content},</if>
+            <if test="cir_author !=null">cir_author=#{cir_author},</if>
+            <if test="cir_source !=null">cir_source=#{cir_source},</if>
+        </set>
+        WHERE
+        cir_id = #{cir_id}
+    </update>
+
+    <delete id="deleteBusinessBill">
+        DELETE FROM GJP_Bill_BusinessBill
+        WHERE
+        bbo_code
+        =#{bbo_code}
+    </delete>
+
+    <!-- 根据合同编码查询管家 -->
+    <select id="selectContractEm" resultType="com.gjp.model.ContractObjectVo">
+        SELECT *
+        FROM GJP_Contract_Object as co
+        JOIN GJP_Contract_RelaEmp as cr on co.ContractObject_Id = cr.contractObject_Id
+        where
+        co.ContractObject_Id=#{ContractObject_Id}
+        order by cre_role asc
+    </select>
+
+    <select id="queryContractPageList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT * FROM (
+        SELECT
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        house.house_address,
+        co.ContractObject_Type,
+        co.ContractObject_Source,
+        co.ContractObject_FillTime,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_ExtState,
+        co.ContractObject_CreateTime,
+        ucc.ucc_id,
+        ucc.ucc_name,
+        cre.em_id,
+        emp.em_name,
+        IF(co.ContractObject_State =
+        2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS
+        contractObject_dateDiff
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code =
+        house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON
+        co.ContractObject_Id
+        = cre.contractObject_Id AND
+        cre.cre_role = 1
+        LEFT
+        JOIN GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON cre.em_id =
+        uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON
+        emp.em_id = cre.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc
+        ON uccp.ucc_id =
+        ucc.ucc_id
+        ) tmp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+                <when test="t != null">
+                    <if
+                            test="t.ContractObject_Type != null and t.ContractObject_Type != '' ">
+                        AND ContractObject_Type=#{t.contractObject_Type}
+                    </if>
+                    <if
+                            test="t.contractObject_OptionState != null and t.contractObject_OptionState != '' ">
+                        AND ContractObject_Type=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.ucc_id != null and t.ucc_id != '' ">
+                        AND ucc_id=#{t.ucc_id}
+                    </if>
+                    <if test="t.em_id != null and t.em_id != '' ">
+                        AND em_id=#{t.em_id}
+                    </if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>
+                ORDER BY contractObject_CreateTime DESC
+            </otherwise>
+        </choose>
+        <if test="isPage">
+            LIMIT #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="queryContractPageRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        house.house_address,
+        co.ContractObject_Type,
+        co.ContractObject_Source,
+        co.ContractObject_FillTime,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_CreateTime,
+        ucc.ucc_id,
+        ucc.ucc_name,
+        cre.em_id,
+        emp.em_name,
+        IF(co.ContractObject_State =
+        2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS
+        contractObject_dateDiff
+        FROM GJP_business.GJP_Contract_Object AS co
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code =
+        house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON
+        co.ContractObject_Id
+        = cre.contractObject_Id AND cre.cre_role = 1
+        LEFT
+        JOIN
+        GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON cre.em_id =
+        uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON
+        emp.em_id = cre.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc
+        ON uccp.ucc_id =
+        ucc.ucc_id
+        ) tmp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+                <when test="t != null">
+                    <if
+                            test="t.ContractObject_Type != null and t.ContractObject_Type != '' ">
+                        AND ContractObject_Type=#{t.contractObject_Type}
+                    </if>
+                    <if
+                            test="t.contractObject_OptionState != null and t.contractObject_OptionState != '' ">
+                        AND
+                        ContractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.ucc_id != null and t.ucc_id != '' ">
+                        AND ucc_id=#{t.ucc_id}
+                    </if>
+                    <if test="t.em_id != null and t.em_id != '' ">
+                        AND em_id=#{t.em_id}
+                    </if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!-- app查询合同列表 -->
+    <select id="appSelectContractList" resultType="com.gjp.model.AppContractVo">
+        SELECT * FROM view_app_contract
+        WHERE 1=1
+        <if test="em_id != null and em_id != ''">
+            AND em_id = #{em_id}
+        </if>
+        <if test="contractObject_Type != null and contractObject_Type != ''">
+            AND contractObject_Type=#{contractObject_Type}
+        </if>
+        <if test="contractObject_OptionState != null and contractObject_OptionState != ''">
+            AND contractObject_OptionState=#{contractObject_OptionState}
+        </if>
+        <if test="ucc_name != null and ucc_name != ''">
+            AND ucc_name=#{ucc_name}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            AND DATE_FORMAT(${date_title},'%Y-%m-%d') >= #{dateStart}
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            AND #{dateEnd} >= DATE_FORMAT(${date_title},'%Y-%m-%d')
+        </if>
+        <if test="contractBody_PayStyle != null and contractBody_PayStyle != ''">
+            AND contractBody_PayStyle = #{contractBody_PayStyle}
+        </if>
+        <if test="contractBody_PayType != null and contractBody_PayType != ''">
+            AND contractBody_PayType = #{contractBody_PayType}
+        </if>
+        <if test="contractObject_Other != null and contractObject_Other != ''">
+            AND ContractObject_Other IS NOT NULL
+        </if>
+        <if test="overdue == true">
+            AND 0 > deadlineTime
+        </if>
+        <if test="where != null and where != ''">
+            AND (
+            house_address LIKE CONCAT('%',#{where},'%')
+            or contractObject_No LIKE CONCAT('%',#{where},'%')
+            or cc_name_tg LIKE CONCAT('%',#{where},'%')
+            or cc_name_zl LIKE CONCAT('%',#{where},'%')
+            )
+        </if>
+        <if test="where == null or where == ''">
+            AND 3 > contractObject_State
+        </if>
+        ORDER BY contractObject_CreateTime DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询结算订单分页数据 -->
+    <select id="querySettlementOrderPageList" resultType="com.gjp.model.ViewBusinessCancelContractListVo">
+        SELECT
+        *
+        FROM (
+        SELECT
+        cco.*,
+        cp.ucc_id
+        FROM
+        GJP_business.view_GJP_Contract_CancelList AS cco
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_CompanyPserson AS cp ON cco.em_id =
+        cp.em_id
+        )
+        tmp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>
+                ORDER BY cco_applicationTime DESC
+            </otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询结算订单分页数据 -->
+    <select id="querySettlementOrderPageRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM (
+        SELECT
+        cco.*,
+        cp.ucc_id
+        FROM
+        GJP_business.view_GJP_Contract_CancelList AS cco
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_CompanyPserson AS cp ON cco.em_id =
+        cp.em_id
+        )
+        tmp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 修改合同管家 -->
+    <update id="updatetContractEm">
+        UPDATE GJP_Contract_RelaEmp set
+        <if test="em_id != null">
+            em_id=#{em_id},
+        </if>
+        contract_perforSplit=#{contract_perforSplit}
+        where
+        contractObject_Id=#{contractObject_Id} and cre_role=#{cre_role}
+    </update>
+
+    <!-- 根据合同ID和人员编码删除合同人员 -->
+    <delete id="deleteContractEm">
+        DELETE FROM GJP_Contract_RelaEmp
+        WHERE
+        contractObject_Id=#{contractObject_Id} and em_id=#{em_id}
+    </delete>
+
+    <delete id="deleteContractImage">
+        DELETE FROM GJP_Contract_Image
+        WHERE 1=1
+        <if test="contractObject_Code != null and contractObject_Code != ''">
+            AND contractObject_Code=#{contractObject_Code}
+        </if>
+        <if test="ci_id != null and ci_id != ''">
+            AND ci_id=#{ci_id}
+        </if>
+        <if test="ci_type != null and ci_type != ''">
+            AND ci_type=#{ci_type}
+        </if>
+    </delete>
+
+    <update id="updateContractBodyRemark">
+        UPDATE GJP_Contract_Body SET
+        ContractBody_Remark =
+        CONCAT(IFNULL(ContractBody_Remark,''),#{contractBody_Remark})
+        WHERE
+        ContractObject_Code = #{contractObject_Code}
+    </update>
+
+    <!-- 查询超期、30天内到期合同 -->
+    <select id="queryWarnContractListToApp" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT * FROM (select gt.* from view_GJP_TimeOutContract as gt
+        <if test="ucc_id != null">
+            JOIN (SELECT * FROM GJP_user.GJP_UserCenter_Company WHERE
+            FIND_IN_SET(ucc_id, GJP_product.company(#{ucc_id}))) com ON
+            gt.ucc_id=com.ucc_id
+        </if>
+        ) contract_info
+        WHERE
+        1=1
+        AND contract_info.ContractObject_State =2 AND
+        contract_info.contractObject_dateDiff &lt;= 30
+        <if test="em_id != null">
+            and contract_info.em_id = #{em_id}
+        </if>
+        <if test="ucc_id != null">
+            and contract_info.ucc_id = #{ucc_id}
+        </if>
+        <if test="where != null">
+            AND (
+            contract_info.ContractObject_No like
+            CONCAT('%',#{where}, '%')
+            OR contract_info.house_address like
+            CONCAT('%',#{where}, '%')
+            )
+        </if>
+        ORDER BY contractObject_dateDiff ASC,house_address ASC
+        LIMIT
+        #{start},#{end}
+    </select>
+
+    <!-- 待办合同 -->
+    <select id="stayContract" resultType="com.gjp.model.ContractObjectVo">
+        select * from (select sc.* from view_GJP_stayContract as sc
+        <if test="ucc_id != null">
+            join (select * from GJP_user.GJP_UserCenter_Company where
+            FIND_IN_SET(ucc_id, GJP_product.company(#{ucc_id}))) com ON
+            sc.ucc_id=com.ucc_id
+        </if>
+        ) house
+        where 1=1
+        and (ContractObject_OptionState = 101 or
+        ContractObject_OptionState = 103
+        or ContractObject_OptionState = 105)
+        <if test="em_id != null">
+            and em_id = #{em_id}
+        </if>
+        <if test="where != null and where != ''">
+            and (
+            house_address LIKE CONCAT('%',#{where},'%')
+            or
+            ContractObject_No LIKE CONCAT('%',#{where},'%')
+            or em_name LIKE
+            CONCAT('%',#{where},'%')
+            or cc_name LIKE CONCAT('%',#{where},'%')
+            or
+            ccp_phone LIKE CONCAT('%',#{where},'%')
+            )
+        </if>
+        limit #{start},#{end}
+    </select>
+
+    <!-- 插入调价申请记录 -->
+    <insert id="addPriceApplyRecord" useGeneratedKeys="true"
+            keyProperty="pa_id">
+        insert into GJP_Price_Apply_Record
+        (
+        cir_id,
+        hi_code,
+        apply_price,
+        apply_em_id,
+        apply_time,
+        review_em_id,
+        review_time,
+        apply_status
+        ) values (
+        #{cir_id},
+        #{hi_code},
+        #{apply_price},
+        #{apply_em_id},
+        #{apply_time},
+        #{review_em_id},
+        #{review_time},
+        #{apply_status}
+        )
+    </insert>
+
+    <select id="queryPriceApplyRecordList" resultType="com.gjp.model.PriceApplyRecord">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        par.*, ue1.em_name AS apply_em_name,
+        ue2.em_name AS
+        review_em_name,
+        ci.cir_content AS apply_content,
+        vh.house_address AS
+        house_address
+        FROM
+        GJP_business.GJP_Price_Apply_Record par
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee ue1 ON ue1.em_id =
+        par.apply_em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue2 ON ue2.em_id =
+        par.review_em_id
+        LEFT JOIN GJP_business.GJP_Contract_ImplementRecord ci
+        ON ci.cir_id =
+        par.cir_id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress vh
+        ON vh.hi_code = par.hi_code
+        WHERE
+        1 = 1
+        ORDER BY
+        par.apply_time DESC,
+        vh.house_address ASC
+        ) a
+        WHERE
+        1 = 1
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and DATE_FORMAT(${houseModel.dateTitle},'%Y-%m-%d') &gt;=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(${houseModel.dateTitle},'%Y-%m-%d') &lt;=
+            DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d')
+        </if>
+        LIMIT ${pageNo},${pageSize}
+    </select>
+
+    <select id="queryPriceApplyRecordListCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        par.*, ue1.em_name AS apply_em_name,
+        ue2.em_name AS review_em_name,
+        ci.cir_content AS apply_content,
+        vh.house_address AS house_address
+        FROM
+        GJP_business.GJP_Price_Apply_Record par
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee ue1 ON ue1.em_id =
+        par.apply_em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee ue2 ON ue2.em_id =
+        par.review_em_id
+        LEFT JOIN GJP_business.GJP_Contract_ImplementRecord ci
+        ON ci.cir_id =
+        par.cir_id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress vh
+        ON vh.hi_code = par.hi_code
+        WHERE
+        1 = 1
+        ORDER BY
+        par.apply_time DESC,
+        vh.house_address ASC
+        ) a
+        WHERE
+        1 = 1
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and DATE_FORMAT(${houseModel.dateTitle},'%Y-%m-%d') &gt;=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(${houseModel.dateTitle},'%Y-%m-%d') &lt;=
+            DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d')
+        </if>
+    </select>
+
+    <select id="queryPriceApplyRecord" resultType="com.gjp.model.PriceApplyRecord">
+        SELECT
+        par.*,
+        ue1.em_name AS apply_em_name,
+        ue2.em_name AS review_em_name,
+        ci.cir_content AS apply_content,
+        vh.house_address AS house_address
+        FROM
+        GJP_Price_Apply_Record par
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee
+        ue1 ON ue1.em_id = par.apply_em_id
+        LEFT JOIN
+        GJP_user.GJP_UserCenter_Employee ue2 ON ue2.em_id = par.review_em_id
+        LEFT JOIN GJP_Contract_ImplementRecord ci ON ci.cir_id = par.cir_id
+        LEFT JOIN GJP_product.view_GJP_HouseAddress vh ON vh.hi_code =
+        par.hi_code
+        where pa_id = #{pa_id}
+    </select>
+
+    <update id="updatePriceApplyRecord">
+        update GJP_Price_Apply_Record
+        set
+        refused_reason =
+        #{refused_reason},
+        review_em_id = #{review_em_id},
+        review_time =
+        #{review_time},
+        apply_status = #{apply_status},
+        review_result =
+        #{review_result}
+        where pa_id = #{pa_id}
+    </update>
+
+    <select id="queryRecordByHiCode" resultType="com.gjp.model.PriceApplyRecord">
+        SELECT * from
+        GJP_Price_Apply_Record WHERE hi_code = #{hi_code} AND apply_status = 0
+    </select>
+
+    <!-- 查询当前该用的合同模板 -->
+    <select id="queryContractVersion" resultType="com.gjp.model.ContractVersionManage">
+        SELECT *
+        FROM
+        GJP_Contract_VersionManage
+        WHERE
+        contract_type = #{contract_type}
+        and
+        contract_uses = #{contract_uses}
+        and contract_where = #{contract_where}
+        and state = 1
+        order by
+        contract_version desc
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同版本查询合同模板 -->
+    <select id="queryContractVersionPriview" resultType="com.gjp.model.ContractVersionManage">
+        SELECT *
+        FROM
+        GJP_Contract_VersionManage
+        WHERE 1 = 1
+        <if test="contract_type != null and contract_type != ''">
+            and contract_type = #{contract_type}
+        </if>
+        <if test="contract_uses != null and contract_uses != ''">
+            and contract_uses = #{contract_uses}
+        </if>
+        <if test="contract_where != null and contract_where != ''">
+            and contract_where = #{contract_where}
+        </if>
+        <if test="contract_version != null and contract_version != ''">
+            and contract_version = #{contract_version}
+        </if>
+        order by
+        contract_version desc
+        LIMIT 1
+    </select>
+
+    <!-- 查询当前该用的合同模板 -->
+    <select id="queryContractSignVerify" resultType="com.gjp.model.ContractSignVerifyVo">
+        SELECT
+        *
+        FROM GJP_Contract_SignVerify
+        WHERE
+        con_code = #{con_code}
+        LIMIT 1
+    </select>
+
+    <!-- 根据hi_code查询最新的租赁合同 -->
+    <select id="selectNewContractObject" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        *
+        FROM GJP_Contract_Object
+        WHERE 1=1
+        <if test="hi_code != '' and hi_code != null">
+            AND hi_code = #{hi_code}
+        </if>
+        AND ContractObject_Type='租赁合同'
+        AND ContractObject_State &lt;&gt; 4
+        ORDER BY
+        contractObject_Date DESC
+        LIMIT 1
+    </select>
+
+    <!-- 根据 ContractObject_Id 查询合同-->
+    <select id="selectContractObjectId" resultType="com.gjp.model.ContractObjectVo">
+        SELECT * FROM GJP_Contract_Object
+        where 1=1
+        <if test="ContractObject_Id != '' and ContractObject_Id != null">
+            and ContractObject_Id =#{ContractObject_Id}
+        </if>
+        <if test="ContractObject_Code != '' and ContractObject_Code != null">
+            and ContractObject_Code =#{ContractObject_Code}
+        </if>
+    </select>
+    <!-- 查询附加条件合同数据-->
+    <select id="managerExamineList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT * FROM (
+        SELECT
+        caa.*,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_FillTime,
+        co.ContractObject_CreateTime,
+        co.ContractObject_ExtState,
+        house.house_address,
+        em.em_name,
+        em.em_phone,
+        ucc.ucc_id,
+        ucc.ucc_name
+        from GJP_business.GJP_Contract_AgreementAuditing caa
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON caa.con_code=co.contractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code =house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id= re.contractObject_Id and re.cre_role=1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON em.em_id =uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id =uccp.ucc_id
+        ) contract_info
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        ORDER BY house_address ASC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--查询附加条件合同数据条数-->
+    <select id="managerExamineListRows" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        caa.*,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        co.ContractObject_Date,
+        co.ContractObject_DeadlineTime,
+        co.ContractObject_FillTime,
+        co.ContractObject_CreateTime,
+        co.ContractObject_ExtState,
+        house.house_address,
+        em.em_name,
+        em.em_phone,
+        ucc.ucc_id,
+        ucc.ucc_name
+        from GJP_business.GJP_Contract_AgreementAuditing caa
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON caa.con_code=co.contractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code =house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id= re.contractObject_Id and re.cre_role=1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON em.em_id =uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id =uccp.ucc_id
+        ) contract_info
+        <where>
+            <if test="where != null ">
+                ${where}
+            </if>
+        </where>
+    </select>
+
+    <!--附加条款审核-->
+    <update id="UpdateAdditionalExamine">
+        UPDATE GJP_Contract_AgreementAuditing
+        <set>
+            <if test="caa_state!=null">caa_state=#{caa_state},</if>
+            <if test="caa_content!=null">caa_content=#{caa_content},</if>
+            <if test="caa_createTime!=null">caa_createTime=#{caa_createTime},</if>
+        </set>
+        <where>
+            <if test="caa_id != null">caa_id = #{caa_id}</if>
+            <if test="con_code!=null">AND con_code=#{con_code}</if>
+        </where>
+    </update>
+
+    <!--添加协议审核记录-->
+    <insert id="insertAgreementAuditingRecord" useGeneratedKeys="true" keyProperty="caar_id">
+		insert into GJP_Contract_AgreementAuditingRecord
+		(
+		caa_id,
+		caar_content,
+		caar_state,
+		caar_deac,
+		caar_createTime
+		) values (
+		#{caa_id},
+		#{caar_content},
+		#{caar_state},
+		#{caar_deac},
+		#{caar_createTime}
+		)
+	</insert>
+
+    <!--查询协议审核记录-->
+    <select id="queryAgreementAuditingRecordList" resultType="com.gjp.model.ContractAgreementAuditingRecordVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        caar.*, caa.con_code
+        FROM
+        GJP_Contract_AgreementAuditingRecord caar
+        LEFT JOIN GJP_Contract_AgreementAuditing caa ON caar.caa_id = caa.caa_id
+        ) T
+        WHERE 1=1
+        <if test="con_code !=null">
+            and con_code=#{con_code}
+        </if>
+    </select>
+
+
+    <!--记账本查询关联合同-->
+    <select id="selectHouse" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        house.house_address,
+        co.ContractObject_Type,
+        co.ContractObject_Code,
+        co.ContractObject_1st,
+        co.ContractObject_OptionState,
+        cc.cc_name,
+        cc.cc_type,
+        co.hi_code
+        FROM
+        GJP_product.view_GJP_HouseAddress AS house
+        INNER JOIN GJP_business.GJP_Contract_Object AS co ON house.hi_code = co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON co.ContractObject_1st = cc.cc_code
+        WHERE
+        co.ContractObject_State not IN (4)
+        <if test="house_address !='' and house_address != null">
+            AND house_address LIKE CONCAT('%',#{house_address}, '%')
+        </if>
+        <if test="hi_code !='' and hi_code != null">
+            AND co.hi_code =#{hi_code}
+        </if>
+        GROUP BY hi_code
+    </select>
+
+    <select id="selectContractObject1st" resultType="com.gjp.model.ContractObjectVo">
+        SELECT
+        hi_code,
+        ContractObject_1st,
+        ContractObject_State
+        FROM GJP_Contract_Object
+        WHERE
+        ContractObject_State NOT IN (4)
+        <if test="hi_code !='' and hi_code != null">
+            AND hi_code =#{hi_code}
+        </if>
+    </select>
+    <!--催收管理合同主体-->
+    <select id="queryHouseContract" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT
+        vco.*,
+        cc.*
+        FROM
+        view_GJP_Contract_ObjectList vco
+        LEFT JOIN
+        GJP_business.GJP_Contract_CancelOrder cc ON vco.contractObject_Code = cc.contractObject_Code AND cc.cco_state &lt;&gt; '取消'
+        WHERE
+        1=1
+        <if test="hi_code !=null and hi_code !=''">AND vco.hi_code =#{hi_code}</if>
+        <if test="contractObject_Code !=null">AND vco.contractObject_Code =#{contractObject_Code}</if>
+        <if test="contractObject_Type !=null">AND vco.contractObject_Type =#{contractObject_Type}</if>
+        ORDER BY vco.contractObject_Date ASC
+    </select>
+
+    <select id="queryContractInfo" resultType="com.gjp.model.ContractInfoVo">
+        SELECT co.*,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_id, ucc1.ucc_id) AS ucc_id,
+        IF(co.ContractObject_Type = '租赁合同', ucc.ucc_name, ucc1.ucc_name) AS ucc_name
+        FROM view_app_contract_info co
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON hpr.hi_code = co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc1 ON ucc1.ucc_id = hpr.ucc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp As re ON co.ContractObject_Id = re.contractObject_Id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee As em ON em.em_id = re.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS uccp ON em.em_id = uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON ucc.ucc_id = uccp.ucc_id
+        <where>
+            <if test="contractObject_Id != null">AND co.contractObject_Id = #{contractObject_Id}</if>
+            <if test="contractObject_Code != null">AND co.contractObject_Code = #{contractObject_Code}</if>
+            <if test="hi_code != null">AND co.hi_code = #{hi_code}</if>
+            <if test="cc_code != null">AND co.contractObject_1st = #{cc_code}</if>
+            <if test="contractObject_Type != null">AND co.ContractObject_Type = #{contractObject_Type}</if>
+            <if test="user_id != null">AND co.user_id = #{user_id}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <select id="queryBalanceListByCode" resultType="com.gjp.model.ContractStatementBalanceVo">
+        SELECT sb.* FROM GJP_Contract_StatementBalance sb
+        LEFT JOIN GJP_Contract_Statement cs ON cs.statement_code = sb.statement_code
+        WHERE cs.cco_code = #{cco_code}
+    </select>
+
+    <!-- 查询空置房 -->
+    <select id="queryVacantHouseByCode" resultType="com.gjp.model.HouseInfoKeep">
+        SELECT * FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+        WHERE contract_intoStatus = '已签合同'
+        AND hi_isForRent  = 1
+        AND hi_forRentState != 1021
+        AND (hi_forRentState = 1001 OR hi_forRentState = 1003 OR hi_forRentState = 1004 OR hi_forRentState = 1005 OR hi_forRentState = 1006)
+        AND hi_code = #{hi_code}
+    </select>
+</mapper>

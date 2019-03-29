@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.EPartTimeJobDAO">
+         
+         <sql id="allmenbers">
+		   uda_id,
+		   uda_name,
+		   uda_zfbNum,
+		   uda_account,
+		   uda_password,
+		   uda_code,
+		   uda_num,
+		   uda_time
+         </sql>
+         
+         <sql id="menberEcpId">
+		   uda_name,
+		   uda_zfbNum,
+		   uda_account,
+		   uda_password,
+		   uda_code,
+		   uda_num,
+		   uda_time
+         </sql>
+         
+          <!-- 进行e兼职注册 -->
+         <insert id="addUda" useGeneratedKeys="true" parameterType="com.gjp.model.UserCenterDistributionAccount" keyProperty="uda_id">
+         	 insert into GJP_UserCenter_DistributionAccount(  
+			   uda_name,
+			   uda_zfbNum,
+			   uda_account,
+			   uda_password,
+			   uda_code,
+			   <if test="uda_num != 0">
+				  uda_num,
+			   </if>
+			   uda_time) 
+	         values 
+	         (        
+	         #{uda_name},
+	         #{uda_zfbNum},
+	         #{uda_account},
+	         #{uda_password},
+	         #{uda_code},
+	         <if test="uda_num != 0">
+	        	#{uda_num},
+	         </if>
+	         #{uda_time})
+         </insert>
+         
+         <!-- 根据编号查询e兼职账号 -->
+         <select id="selectDistributionAccount" resultType="com.gjp.model.UserCenterDistributionAccount">
+             select 
+             <include refid="allmenbers"/>
+             from GJP_UserCenter_DistributionAccount where uda_id=#{uda_id}
+         </select>
+         
+         <!-- 根据分享码查询分享账户 -->
+         <select id="selectDistributionAccountByCode" resultType="com.gjp.model.UserCenterDistributionAccount">
+             select 
+             <include refid="allmenbers"/>
+             from GJP_UserCenter_DistributionAccount where uda_code=#{uda_code}
+         </select>
+         
+         <!-- 查询一级e兼职用户 -->
+         <select id="selectDistributionAccountByNull" resultType="com.gjp.model.UserCenterDistributionAccount">
+             select 
+             <include refid="allmenbers"/>
+             from GJP_UserCenter_DistributionAccount where uda_num is null
+         </select>
+         
+         <!-- 查询下一级e兼职用户 -->
+         <select id="selectDistributionAccountNext" resultType="com.gjp.model.UserCenterDistributionAccount">
+             select 
+             <include refid="allmenbers"/>
+             from GJP_UserCenter_DistributionAccount where uda_num=#{uda_id}
+         </select>
+         
+         <!-- 根据编号修改e兼职账号 -->
+         <update id="updateUda" parameterType="com.gjp.model.UserCenterDistributionAccount">
+             update GJP_UserCenter_DistributionAccount set 
+             uda_name = #{uda_name},
+             uda_account = #{uda_account}
+             where uda_id = #{uda_id}
+         </update>
+         
+<!--          <delete id="deleteStudent" parameterType="int">
+             delete from users_name where id = #{id}
+         </delete>
+         
+         <update id="updateStudent" parameterType="Student">
+             update users_name set name = #{name} where id = #{id}
+         </update>
+         
+         <select id="queryStudentById" parameterType="int" resultType="Student">
+           select * from users_name where id=#{id}
+         </select> 
+         
+         <select id="queryAllStudents" resultType="Student">
+             select * from users_name
+         </select> -->
+
+</mapper>

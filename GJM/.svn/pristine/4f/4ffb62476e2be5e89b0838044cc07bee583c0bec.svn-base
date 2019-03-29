@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房源发布 -->
+<mapper namespace="com.gjp.dao.AppCodeDAO">
+
+    <!-- app版本控制 -->
+    <select id="appcode" resultType="com.gjp.model.AppCode">
+        SELECT
+        *
+        FROM GJP_manage_app
+        WHERE
+        ap_type=#{ap_type}
+        ORDER BY ap_code desc limit 1
+    </select>
+
+    <!-- app版本控制 -->
+    <select id="queryAppVersionList" resultType="com.gjp.model.AppVersionVo">
+        SELECT
+        *
+        FROM GJP_App_Version
+        <where>
+            <if test="av_type != null">AND av_type = #{av_type}</if>
+            <if test="av_num_min != null">AND av_num &gt;= #{av_num_min}</if>
+            <if test="av_num_max != null">AND av_num &lt;= #{av_num_max}</if>
+            <if test="av_state != null">AND av_state = #{av_state}</if>
+            <if test="av_swith != null">AND av_swith = #{av_swith}</if>
+        </where>
+    </select>
+
+    <!-- app版本控制 -->
+    <select id="queryAppVersionLast" resultType="com.gjp.model.AppVersionVo">
+        SELECT
+        *
+        FROM GJP_App_Version
+        WHERE
+        <if test="av_type != null">av_type = #{av_type}</if>
+        <if test="av_swith != null">AND av_swith = #{av_swith}</if>
+        ORDER BY av_num DESC
+        LIMIT 1
+    </select>
+
+</mapper>

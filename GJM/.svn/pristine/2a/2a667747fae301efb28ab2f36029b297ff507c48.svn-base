@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 职工表 GJP_UserCenter_Employee -->
+<mapper namespace="com.gjp.dao.UserEmployeeTypeDAO">
+         
+         <sql id="allmenbers">
+           et_id,
+		   et_name,
+		   et_content,
+		   em_id,
+		   et_num
+         </sql>
+         
+         <sql id="menberEcpId">
+		   et_name,
+		   et_content,
+		   em_id,
+		   et_num
+         </sql>
+         
+         <sql id="insert">
+		   #{et_name},
+		   #{et_content},
+		   #{em_id},
+		   #{et_num}
+         </sql>
+         
+        <insert id="insertUserEmployeeType" useGeneratedKeys="true" parameterType="com.gjp.model.UserEmployeeType" keyProperty="et_id">
+         insert into GJP_UserCenter_EmployeeType(<include refid="menberEcpId"></include>) values (<include refid="insert"></include>)
+         </insert>
+         
+         <delete id="deleteUserEmployeeType" parameterType="int">
+             delete from GJP_UserCenter_EmployeeType where em_id = #{id}
+         </delete>
+         
+         <!-- 根据用户编号查询权限 -->
+         <select id="selectUserEmployeeTypeId" resultType="com.gjp.model.UserEmployeeType">
+             select 
+             <include refid="allmenbers" />
+              from GJP_UserCenter_EmployeeType where em_id = #{id}
+         </select>
+         
+</mapper>

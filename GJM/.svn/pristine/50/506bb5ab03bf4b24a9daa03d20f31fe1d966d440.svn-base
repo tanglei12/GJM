@@ -1,0 +1,192 @@
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+}
+body {
+    font: 12px/150% '\5FAE\8F6F\96C5\9ED1', Arial, Verdana, "\5b8b\4f53";
+    color: #666;
+}
+input, textarea, select, button {
+    font-family: '\5FAE\8F6F\96C5\9ED1';
+}
+input, button, fieldset, textarea, select {
+    display: block;
+    border: none;
+    outline: none;
+    background: none;
+}
+hr {
+    clear: both;
+    padding: 0;
+    margin: 0
+}
+ul, li {
+    list-style: none;
+}
+hr {
+    border: none;
+}
+a {
+    text-decoration: none;
+    color: #666;
+}
+a:hover {
+    color: #00a4ac;
+    text-decoration: none;
+}
+.font-money {
+    color: #E74C3C !important;
+    font-size: 15px;
+    position: relative;
+    display: inline-block;
+    line-height: 24px;
+    margin: 0 2px;
+    font-style: normal;
+}
+.error {
+    color: #E74C3C !important;
+}
+.tips {
+    color: #F39C12 !important;
+}
+.hint {
+    color: #F39C12 !important;
+}
+.ok {
+    color: #18bc9c !important;
+}
+.next {
+    color: #3498DB !important;
+}
+.disabled {
+    color: #909090 !important;
+    cursor: no-drop !important;
+}
+.error-bg {
+    background: #E74C3C !important;
+    color: #fff !important;
+}
+.hint-bg {
+    background: #F39C12 !important;
+    color: #fff !important;
+}
+.ok-bg {
+    background: #1ABC9C !important;
+    color: #fff !important;
+}
+.next-bg {
+    background: #3498DB !important;
+    color: #fff !important;
+}
+[class$=-bg] > option {
+    background: #fff !important;
+    color: #666
+}
+[class$=-bg][disabled] {
+    background: #c1c1c1 !important;
+    cursor: no-drop;
+}
+.disabled-bg {
+    background: #909090 !important;
+    color: #fff;
+    cursor: no-drop;
+}
+/** 文本、选择、按钮样式--START*/
+input.form-control, select.form-control, textarea.form-control {
+    line-height: 42px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #555;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    resize: none;
+    -webkit-appearance: none; /*去除input默认样式*/
+}
+input.form-control:FOCUS, select.form-control:FOCUS, textarea.form-control:FOCUS {
+    border-color: #3498DB;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 2px rgba(52, 152, 219, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 2px rgba(52, 152, 219, .6)
+}
+input.form-control::-moz-placeholder {
+    color: #999;
+}
+input.form-control::-ms-input-placeholder {
+    color: #999
+}
+input.form-control::-webkit-input-placeholder {
+    color: #999
+}
+input.form-control[readonly], textarea.form-control[readonly], select.form-control[readonly] {
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+input.form-control[required], textarea.form-control[required], select.form-control[required] {
+    background-color: #fdf7f7;
+}
+input.form-control[disabled], textarea.form-control[disabled], select.form-control[disabled] {
+    background-color: #e6e6e6;
+}
+/** 文本、选择、按钮样式--END*/
+.change-angle {
+    position: relative;
+    display: block;
+    flex: 1;
+    font-size: 14px;
+    height: 42px;
+}
+.change-angle:BEFORE {
+    content: "\f107";
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    right: 12px;
+    height: 8px;
+    line-height: 8px;
+    width: 14px;
+    text-align: center;
+    margin-top: -4px;
+}
+.change-angle > select {
+    width: 100%;
+    height: inherit;
+}
+.search-angle {
+    position: relative;
+    display: block;
+    flex: 1;
+    font-size: 14px;
+    height: 42px;
+}
+.search-angle:BEFORE {
+    content: "\f002";
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    left: 10px;
+    height: 8px;
+    line-height: 8px;
+    width: 14px;
+    text-align: center;
+    margin-top: -4px;
+    color: #888;
+}
+.search-angle > input {
+    width: 100%;
+    height: inherit;
+    text-indent: 24px;
+}

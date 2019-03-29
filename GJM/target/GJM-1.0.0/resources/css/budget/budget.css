@@ -1,0 +1,70 @@
+/**预算金额*/
+.table-money table{
+    width: 99%;
+    border: 1px solid #efefef;
+    margin: 15px 0px;
+}
+.table-money > table > tbody{
+    line-height: 45px;
+}
+.table-money > table > tbody > tr > td{
+    width: 12.5%;
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid #efefef;
+}
+.table-money > table > tbody > tr > .td-title{
+    background: rgb(245, 248, 250);
+    width: 13%;
+}
+.td-main:hover{
+    background: #f1f1f1; cursor: pointer;
+}
+.td-main-i{
+    display: inline-block;
+    width: 60%;
+    padding: 0 5px;
+    font-style: normal;
+}
+.td-main-sum{
+    display: inline-block;
+    width: 120px;
+    padding: 0 5px;
+    font-style: normal;
+    margin-left: -50px;
+}
+.result-option{
+    position: relative;
+    line-height: 28px;
+    display: inline-block;
+    padding: 0 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #3498db ! important;
+    color: #fff ! important;
+}
+.next-bg{
+    background: #c1c1c1 !important;
+    cursor: no-drop;
+}
+.next-bg:hover{
+    background: #c1c1c1 !important;
+    cursor: no-drop;
+}
+
+/* foot*/
+.list-table .list-table-foot .foot-page { position: relative; line-height: 30px; float: left; }
+.list-table .list-table-foot .foot-option { position: relative; line-height: 30px; float: right; }
+.list-table .list-table-foot .foot-option > .page-option { position: relative; display: block; width: 32px; line-height: 28px; float: left; cursor: pointer; border: 1px solid #ddd; border-left: none; color: #3399d5; background: #fff; -moz-user-select: none; -webkit-user-select: none; }
+.list-table .list-table-foot .foot-option > .page-option[disabled] { color: #ccc; cursor: default; }
+.list-table .list-table-foot .foot-option > button.page-prev { border-top-left-radius: 2px; border-bottom-left-radius: 2px; font-size: 18px; border-left: 1px solid #ddd; }
+.list-table .list-table-foot .foot-option > button.page-next { border-top-right-radius: 2px; border-bottom-right-radius: 2px; font-size: 18px; }
+.list-table .list-table-foot .foot-option > button.page-set { border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-left: none; padding: 0 6px; width: auto; font-size: 12px; }
+.list-table .list-table-foot .foot-option > button.page-option:HOVER { background: #f5f5f5; }
+.list-table .list-table-foot .foot-option > button.page-prev[disabled]:HOVER { background: none; }
+.list-table .list-table-foot .foot-option > button.page-next[disabled]:HOVER { background: none; }
+.list-table .list-table-foot .foot-option > button.page-num { text-align: center; border-left: none; color: #3399d5; font-size: 12px; }
+.list-table .list-table-foot .foot-option > button.page-num[disabled] { background: #f5f5f5; color: #737373; }
+.list-table .list-table-foot .foot-option > button.page-num-checked { background: #f5f5f5; color: #737373; }
+.list-table .list-table-foot .foot-option > input.page-input { position: relative; float: left; line-height: 28px; padding: 0 6px; border: 1px solid #ddd; width: 120px; margin-left: 10px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+

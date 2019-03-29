@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋执行记录附件 -->
+<mapper namespace="com.gjp.dao.ContractAttachmentDAO">
+
+    <sql id="allmenbers">
+		ca_id,
+		cir_id,
+		ca_name,
+		ca_path,
+		ca_addTime,
+		ca_type,
+		ca_state
+	</sql>
+
+    <sql id="menberEcpId">
+		cir_id,
+		ca_name,
+		ca_path,
+		ca_addTime,
+		ca_type,
+		ca_state
+	</sql>
+
+    <sql id="insert">
+		#{cir_id },
+		#{ca_name },
+		#{ca_path },
+		#{ca_addTime },
+		#{ca_type },
+		#{ca_state}
+	</sql>
+
+    <sql id="update">
+        <if test="ca_name !=null and ca_name !=''">
+            ca_name=#{ca_name },
+        </if>
+        <if test="ca_state !=null and ca_state !=''">
+            ca_state=#{ca_state },
+        </if>
+        <if test="ca_type !=null and ca_type !=''">
+            ca_type=#{ca_type },
+        </if>
+        ca_id = #{ca_id}
+    </sql>
+
+    <!-- 根据房屋执行记录附件 -->
+    <select id="selectContractAttachmentList" resultType="com.gjp.model.ContractAttachment">
+        SELECT *
+        FROM GJP_Contract_Attachment
+        WHERE 1=1
+        <if test="cir_id != null and cir_id != ''">
+            and cir_id = #{cir_id}
+        </if>
+    </select>
+
+    <!-- 添加房屋执行记录附件 -->
+    <insert id="addContractAttachment" useGeneratedKeys="true" keyProperty="ca_id">
+		INSERT INTO GJP_Contract_Attachment(
+		cir_id,
+		ca_name,
+		ca_path,
+		ca_addTime,
+		ca_type,
+		ca_state,
+		ca_title,
+		ca_desc,
+		ca_fid,
+		ca_contractId,
+		ca_signer,
+		ca_signState
+		) VALUES (
+		#{cir_id},
+		#{ca_name},
+		#{ca_path},
+		#{ca_addTime},
+		#{ca_type},
+		#{ca_state},
+		#{ca_title},
+		#{ca_desc},
+		#{ca_fid},
+		#{ca_contractId},
+		#{ca_signer},
+		#{ca_signState}
+		)
+	</insert>
+
+
+    <!-- 修改房屋执行记录附件 -->
+    <update id="updateContractAttachmentState">
+		UPDATE GJP_Contract_Attachment set ca_state =#{ca_state},cir_id=#{cir_id}
+		WHERE ca_id = #{ca_id}
+	</update>
+
+    <delete id="deleteContractAttachment">
+        DELETE from GJP_Contract_Attachment
+        WHERE
+        <choose>
+            <when test="ca_id != null and ca_id !=''">ca_id = #{ca_id}</when>
+            <when test="cir_id != null and cir_id !=''">cir_id = #{cir_id}</when>
+        </choose>
+    </delete>
+
+
+</mapper>

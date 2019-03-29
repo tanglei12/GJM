@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillContractOrderDao">
+    <!-- 查询合同订单 -->
+    <select id="queryBillContractOrderList" resultType="com.gjp.model.ContractOrderVo">
+        SELECT * from (SELECT
+        bco.bco_id,
+        bco.bco_code,
+        co.hi_code,
+        cb.ContractBody_PayStyle,
+        house.house_address,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        IF(co.ContractObject_State = 2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS contractObject_dateDiff,
+        bco.bco_cooperater,
+        ucc.cc_name AS bco_customerName,
+        uccp.ccp_phone AS bco_customerPhone,
+        uce.em_name AS bco_empName,
+        uce.em_phone AS bco_empPhone,
+        bco.bco_optionState,
+        bco.bco_currentPayment,
+        bco.bco_totalPayment,
+        bco.bco_currentDate,
+        bco.bco_currentCycle,
+        bco.bco_totalCycle,
+        bco.bco_currentOverDay,
+        uccom.ucc_id,
+        uccom.ucc_name,
+        bco.bco_type,
+        bco.bco_createTime
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON cb.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON house.hi_code= co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON bco.bco_customer = ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON uccp.cc_id = ucc.cc_id AND uccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS uce ON bco.bco_butler = uce.em_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON co.hi_code = hpr.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS uccom ON uccom.ucc_id = hpr.ucc_id) AS list
+        WHERE
+        1 = 1
+        <if test="t.bco_type != null">
+            AND bco_type = #{t.bco_type}
+        </if>
+        <if test="t.bco_code != null and t.bco_code != ''">
+            AND bco_code = #{t.bco_code}
+        </if>
+        <if test="t.bco_optionState != null">
+            AND bco_optionState = #{t.bco_optionState}
+        </if>
+        <if test="t.ucc_id != null">
+            AND ucc_id = #{t.ucc_id}
+        </if>
+        <if test="t.contractObject_State != null">
+            AND contractObject_State = #{t.contractObject_State}
+        </if>
+        <if test="t.contractBody_PayStyle != null and t.contractBody_PayStyle != ''">
+            AND contractBody_PayStyle like CONCAT('%',#{t.contractBody_PayStyle},'%')
+        </if>
+        <if test="t.bco_cooperater != null and t.bco_cooperater != ''">
+            AND bco_cooperater like CONCAT('%',#{t.bco_cooperater},'%')
+        </if>
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            AND ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            AND DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+        ORDER BY bco_currentOverDay DESC,bco_optionState ASC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询合同订单 -->
+    <select id="queryFinanceBillForMinCycle" resultType="int">
+        SELECT
+        MIN(bcb_cycle) AS bcb_cycle
+        FROM GJP_Bill_ContractBill
+        WHERE
+        bco_code = #{bco_code}
+    </select>
+
+    <!-- 查询合同订单（总数） -->
+    <select id="queryBillContractOrderListCount" resultType="int">
+        SELECT COUNT(1) from (SELECT
+        bco.bco_id,
+        bco.bco_code,
+        co.hi_code,
+        cb.ContractBody_PayStyle,
+        house.house_address,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        IF(co.ContractObject_State = 2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS contractObject_dateDiff,
+        bco.bco_cooperater,
+        ucc.cc_name AS bco_customerName,
+        uccp.ccp_phone AS bco_customerPhone,
+        uce.em_name AS bco_empName,
+        uce.em_phone AS bco_empPhone,
+        bco.bco_optionState,
+        bco.bco_currentPayment,
+        bco.bco_totalPayment,
+        bco.bco_currentDate,
+        bco.bco_currentCycle,
+        bco.bco_totalCycle,
+        bco.bco_currentOverDay,
+        uccom.ucc_id,
+        uccom.ucc_name,
+        bco.bco_type,
+        bco.bco_createTime
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON cb.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON house.hi_code= co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON bco.bco_customer = ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON uccp.cc_id = ucc.cc_id AND uccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS uce ON bco.bco_butler = uce.em_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON co.hi_code = hpr.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS uccom ON uccom.ucc_id = hpr.ucc_id) AS list
+        WHERE
+        1 = 1
+        <if test="t.bco_type != null">
+            AND bco_type = #{t.bco_type}
+        </if>
+        <if test="t.bco_code != null and t.bco_code != ''">
+            AND bco_code = #{t.bco_code}
+        </if>
+        <if test="t.bco_optionState != null">
+            AND bco_optionState = #{t.bco_optionState}
+        </if>
+        <if test="t.ucc_id != null">
+            AND ucc_id = #{t.ucc_id}
+        </if>
+        <if test="t.contractObject_State != null">
+            AND contractObject_State = #{t.contractObject_State}
+        </if>
+        <if test="t.contractBody_PayStyle != null and t.contractBody_PayStyle != ''">
+            AND contractBody_PayStyle like CONCAT('%',#{t.contractBody_PayStyle},'%')
+        </if>
+        <if test="t.bco_cooperater != null and t.bco_cooperater != ''">
+            AND bco_cooperater like CONCAT('%',#{t.bco_cooperater},'%')
+        </if>
+        <if test="sqlWhere != null and sqlWhere!= ''">
+            ${sqlWhere}
+        </if>
+        <if test="dateStart != null and dateStart != ''">
+            AND ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+        </if>
+        <if test="dateEnd != null and dateEnd != ''">
+            AND DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+        </if>
+    </select>
+
+    <!-- 查询合同订单 -->
+    <select id="queryBillContractOrderListApp" resultType="com.gjp.model.ContractOrderVo">
+        SELECT * from (SELECT
+        bco.bco_id,
+        bco.bco_code,
+        co.hi_code,
+        cb.ContractBody_PayStyle,
+        house.house_address,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        IF(co.ContractObject_State = 2, DATEDIFF(bco.bco_currentDate, NOW()), NULL) AS contractObject_dateDiff,
+        bco.bco_cooperater,
+        ucc.cc_name AS bco_customerName,
+        uccp.ccp_phone AS bco_customerPhone,
+        uce.em_name AS bco_empName,
+        uce.em_phone AS bco_empPhone,
+        bco.bco_optionState,
+        bco.bco_currentPayment,
+        bco.bco_totalPayment,
+        bco.bco_currentDate,
+        bco.bco_currentCycle,
+        bco.bco_totalCycle,
+        bco.bco_currentOverDay,
+        bco.bco_type,
+        bco.bco_createTime,
+        uce.em_id,
+        hpr.ucc_id
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON cb.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON house.hi_code= co.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON bco.bco_customer = ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON uccp.cc_id = ucc.cc_id AND uccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS uce ON bco.bco_butler = uce.em_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON co.hi_code = hpr.hi_code
+        <if test="ucc_id != null">
+            LEFT JOIN (select * from GJP_user.GJP_UserCenter_Company where FIND_IN_SET(ucc_id, GJP_product.company(#{ucc_id}))) com ON hpr.ucc_id=com.ucc_id
+        </if>
+        ) AS list
+        WHERE
+        1 = 1
+        AND (bco_optionState = 2 OR bco_optionState = 20)
+        AND contractObject_dateDiff &lt;= 15
+        <if test="em_id != null">
+            and em_id = #{em_id}
+        </if>
+        <if test="where != null and where != ''">
+            AND (
+            bco_customerName like CONCAT('%',#{where},'%')
+            OR ContractObject_No like CONCAT('%',#{where},'%')
+            OR bco_customerPhone like CONCAT('%',#{where},'%')
+            OR house_address like CONCAT('%',#{where},'%')
+            OR bco_currentPayment like CONCAT('%',#{where},'%')
+            )
+        </if>
+        <if test="bco_type != null and bco_type != ''">
+            and bco_type=#{bco_type}
+        </if>
+        ORDER BY contractObject_dateDiff ASC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 根据id查询合同订单 -->
+    <select id="queryBillContractOrderById" resultType="com.gjp.model.ContractOrderVo">
+		SELECT
+		bco.*,
+		ucc.cc_name,
+		uccp.ccp_phone,
+		co.ContractObject_No,
+		co.ContractObject_State,
+		co.ContractObject_Date,
+		co.ContractObject_DeadlineTime,
+		IF(co.ContractObject_State = 2,DATEDIFF(co.ContractObject_DeadlineTime,NOW()), NULL) AS contractObject_dateDiff
+		FROM GJP_business.GJP_Bill_ContractOrder AS bco
+		LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON bco.bco_customer = ucc.cc_code
+		LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON ucc.cc_id = uccp.cc_id
+		LEFT JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+		WHERE bco.bco_id = #{bco_id}
+		AND uccp.ccp_state = 1
+	</select>
+
+    <!-- 根据属性查询合同订单 -->
+    <select id="queryBillContractOrderByProperty" resultType="com.gjp.model.ContractOrderVo">
+        SELECT
+        bco.*,
+        ucc.cc_name,
+        uccp.ccp_phone
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON bco.bco_customer = ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS uccp ON ucc.cc_id = uccp.cc_id AND uccp.ccp_state = 1
+        <where>
+            <if test="bco_code !=null and bco_code !='' ">
+                AND bco.bco_code = #{bco_code}
+            </if>
+            <if test="bco_id !=null">
+                AND bco.bco_id = #{bco_id}
+            </if>
+            <if test="contractObject_code !=null and contractObject_code !='' ">
+                AND bco.contractObject_code = #{contractObject_code}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询是否付款成功 -->
+    <select id="selectPayBillSuccess" resultType="com.gjp.model.ContractBillVo">
+		SELECT *
+		FROM GJP_Bill_ContractBill as cb
+		LEFT JOIN GJP_Bill_StatementFiliation sf on cb.bcb_code = sf.sf_num
+		LEFT JOIN GJP_Bill_Statement st on st.bs_statementNum = sf.sf_statement
+		WHERE
+		st.bs_state='已付款'
+		AND cb.bco_code=#{bco_code}
+		AND cb.bcb_cycle=#{bcb_cycle}
+		ORDER BY bs_payDate DESC
+	</select>
+
+    <!-- 根据订单号查询月租金 -->
+    <select id="queryRentByOrderCode" resultType="double">
+		SELECT
+		cb.ContractBody_Rent
+		FROM GJP_Bill_ContractOrder AS bco
+		LEFT JOIN GJP_Contract_Body AS cb ON bco.contractObject_code = cb.ContractObject_Code
+		WHERE
+		bco.bco_code = #{bco_code}
+	</select>
+
+    <!-- 查询要初始化的合作订单 -->
+    <select id="queryInitPartnerOrder" resultType="com.gjp.model.ContractOrderVo">
+		SELECT
+		bco.*
+		FROM GJP_Bill_ContractOrder bco
+		WHERE
+		bco.bco_type = 202
+		AND bco.bco_state = 1
+		AND bco.bco_optionState = 2
+		AND (
+		bco.bco_cooperater = '58分期'
+		OR bco.bco_cooperater = '会分期'
+		)
+	</select>
+
+    <!-- 查询要初始化总金额的订单 -->
+    <select id="queryInitTotalPaymentOrder" resultType="com.gjp.model.ContractOrderVo">
+		SELECT
+		bco.bco_id,
+		bco.bco_code,
+		ABS(bill.totalPayment) AS bco_totalPayment
+		FROM GJP_Bill_ContractOrder AS bco
+		LEFT JOIN (
+		SELECT
+		bcb.bco_code,
+		SUM(
+
+		IF (
+		bcb.bcb_balPay = 1 ,- bcb.bcb_repayment,
+		bcb.bcb_repayment
+		)
+		) AS totalPayment
+		FROM GJP_Bill_ContractBill bcb
+		GROUP BY
+		bcb.bco_code
+		) AS bill ON bill.bco_code = bco.bco_code
+	</select>
+    <!-- 查询要初始化逾期天数的订单 -->
+    <select id="queryInitOverDueDayOrder" resultType="com.gjp.model.ContractOrderVo">
+		SELECT
+		bco.bco_id,
+		bco.bco_code,
+		bill.overdueDay AS bco_currentOverDay
+		FROM GJP_Bill_ContractOrder AS bco
+		LEFT JOIN (
+		SELECT
+		bcb.bco_code,
+		bcb.bcb_cycle,
+		MAX(bcb.bcb_overdueDay) AS overdueDay
+		FROM GJP_Bill_ContractBill bcb
+		GROUP BY
+		bcb.bco_code,
+		bcb.bcb_cycle
+		) AS bill ON bill.bco_code = bco.bco_code
+		AND bill.bcb_cycle = bco.bco_currentCycle
+		WHERE
+		bill.overdueDay IS NOT NULL;
+	</select>
+
+    <!-- 修改订单 -->
+    <update id="updateBillContractOrder">
+        UPDATE GJP_Bill_ContractOrder
+        <set>
+            <if test="bco_currentOverDay !=null">bco_currentOverDay=#{bco_currentOverDay},</if>
+            <if test="bco_totalPayment !=null">bco_totalPayment=#{bco_totalPayment},</if>
+        </set>
+        WHERE
+        bco_id = #{bco_id}
+    </update>
+
+    <!-- 根据订单code更改状态 -->
+    <update id="updateBillContractOrderState">
+        UPDATE GJP_Bill_ContractOrder
+        <set>
+            <if test="bco_state  !=null">bco_state =#{bco_state },</if>
+            <if test="bco_optionState !=null">bco_optionState=#{bco_optionState},</if>
+        </set>
+        WHERE bco_code = #{bco_code}
+    </update>
+
+    <!--查询合同订单，根据房屋编号  -->
+    <select id="selectContractOrder" resultType="com.gjp.model.ContractOrderVo">
+    	SELECT * FROM GJP_Bill_ContractOrder 
+    	where 1=1
+    	<if test="contractObject_code  != '' and contractObject_code  != null">
+    		and contractObject_code = #{contractObject_code}
+    	</if>
+    	<if test="bco_orderType !='' and bco_orderType != null">
+    		and bco_orderType =#{bco_orderType}
+    	</if>
+    </select>
+
+    <!-- 根据合同编号和订单类型更改订单状态 -->
+    <update id="updateContractOrderState">
+        UPDATE GJP_Bill_ContractOrder
+        <set>
+            <if test="bco_state  !=null">bco_state =#{bco_state },</if>
+            <if test="bco_optionState !=null">bco_optionState=#{bco_optionState},</if>
+        </set>
+        WHERE contractObject_code = #{contractObject_code} and bco_orderType = #{bco_orderType}
+    </update>
+</mapper>
+

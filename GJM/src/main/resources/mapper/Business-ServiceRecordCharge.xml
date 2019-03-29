@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 服务费用 GJP_Server_Charge -->
+<mapper namespace="com.gjp.dao.ServiceChargeRecordDAO">
+    <select id="queryServiceChargeRecordList" resultType="com.gjp.model.ServiceChargeRecord">
+        SELECT * FROM GJP_Server_ChargeRecord
+        WHERE 1=1
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        ${houseModel.sqlOrderBy}
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryServiceChargeRecordListRows" resultType="int">
+        SELECT COUNT(*) FROM GJP_Server_ChargeRecord
+        WHERE 1=1
+        <if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+            and ${houseModel.dateTitle} >=
+            DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+        </if>
+        <if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+            and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+            ${houseModel.dateTitle}
+        </if>
+        <if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+            ${houseModel.sqlWhere}
+        </if>
+        ${houseModel.sqlOrderBy}
+    </select>
+
+    <insert id="appAddServiceChargeRecord" useGeneratedKeys="true" keyProperty="re_id">
+		INSERT INTO GJP_Server_ChargeRecord(
+		    md_id,
+			service_charge,
+			discount,
+			hi_code,
+		    con_code,
+		    cc_code
+		)
+		VALUES (
+		    #{md_id},
+			#{service_charge},
+			#{discount},
+			#{hi_code},
+			#{con_code},
+			#{cc_code}
+		)
+	</insert>
+
+</mapper>

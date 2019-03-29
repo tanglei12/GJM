@@ -1,0 +1,74 @@
+.next-bg{
+    display: block;
+    float: left;
+    /*width: 90px;*/
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: #3498DB none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.activity-title {
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 52px;
+    padding-top: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.img-btn {
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 30px;
+}
+
+.state-check {
+    background: #3498db;
+    color: #FFFFFF;
+}
+
+.icon-activity-edit {
+    color: #3498db;
+    font-size: 14px;
+    position: absolute;
+    top: 5px;
+    line-height: 28px;
+    width: 28px;
+    text-align: center;
+    border-radius: 3PX;
+    cursor: pointer;
+}
+
+.item-box-main-option {
+    position: relative;
+    display: inline-block;
+    width: 33px;
+    line-height: 28px;
+    border-radius: 3px;
+    background: none;
+    color: #3498db;
+    cursor: pointer;
+    border: 1px solid;
+    left: 20px;
+}
+
+#search-box2 { position: absolute; top: 40px; left: 0; height: auto; clear: both; display: none; min-width: 424px; z-index: 99; box-shadow: 0 0 10px #BFBFBF; padding: 10px; background: #fff; }
+#search-box2 .search-foot .foot-left { position: relative; width: 24px; height: 24px; line-height: 24px; float: left; margin-right: 6px; text-align: center; background: #fff; font-size: 20px; color: #666; border-radius: 3px; outline: none; -moz-user-select: none; -webkit-user-select: none; }
+#search-box2 .search-foot .foot-left:LAST-CHILD { margin-right: 0; }
+#search-box2 .search-foot button.foot-left:HOVER { background-color: #1F96FF !important; color: #fff !important; cursor: pointer; }
+#search-box2 .search-foot .foot-right { position: relative; float: right; height: 24px; line-height: 24px; }
+#search-box2 #pagaText2 { background: #fff; border: 1px solid #ddd; height: 22px; width: 22px; }
+#search-box2 #pageNo2 { width: 40px; font-size: 14px; background: #fff; border: 1px solid #ddd; float: left; text-align: center; }

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.LoanRecordDAO">
+	<select id="loanRecordList" resultType="com.gjp.model.BusinessLoanRecord">
+		SELECT
+			*
+		FROM
+			GJP_Bill_LoanRecord 
+		WHERE 1 = 1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+			and bm_lease_state is not null
+			${houseModel.sqlOrderBy}
+			LIMIT #{pageNo},#{pageSize}
+	</select>
+	<select id="totalloanRecordList" resultType="com.gjp.model.BusinessLoanRecord">
+		SELECT
+			*
+		FROM
+			GJP_Bill_LoanRecord t1
+		LEFT JOIN GJP_Bill_loanResult t2 ON t1.bm_id = t2.lh_bmId
+		WHERE 1 = 1
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >=
+			DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >=
+			${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+			and bm_lease_state is not null
+			${houseModel.sqlOrderBy}
+	</select>
+	<!-- 个人借款审核数据 -->
+	<select id="selectBusinessLoanRecord" resultType="com.gjp.model.BusinessLoanRecord">
+		SELECT
+			*
+		FROM
+			GJP_Bill_LoanRecord t1
+		WHERE 1 = 1
+		<if test="bm_id != null and bm_id!= ''">
+			and bm_id = #{bm_id}
+		</if>
+	</select>
+	<!-- 贷款证件信息 -->
+	<select id="selectAddedCertificstes" resultType="com.gjp.model.AddedCertificstes">
+		SELECT
+			*
+		FROM
+			GJP_Bill_AddedCertificates t1
+		WHERE 1 = 1
+		<if test="cd_em_id != null and cd_em_id!= ''">
+			and cd_em_id = #{cd_em_id}
+		</if>
+		ORDER BY cd_time DESC
+		LIMIT 1
+	</select>
+	<!-- 个人银行信息 -->
+	<select id="selectBand" resultType="com.gjp.model.BillBand">
+		SELECT
+			*
+		FROM
+			GJP_Bill_Band
+		WHERE
+			1 = 1 
+		<if test="bd_em_id != null and bd_em_id != ''">
+			and bd_em_id = #{bd_em_id}
+		</if>
+			ORDER BY bd_time DESC
+			LIMIT 1
+	</select>
+	<!--借款处理信息  -->
+	<select id="selectLoanResult" resultType="com.gjp.model.BusinessLoanResult">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					t1.*,t2.em_name
+				FROM
+					GJP_Bill_loanResult t1
+				LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.lh_em_id = t2.em_id
+			) T
+		WHERE
+			1 = 1
+		<if test="lh_bmId != null and lh_bmId != ''">
+			and lh_bmId = #{lh_bmId}
+		</if>
+	</select>
+	<!-- 更改借款记录 -->
+	<update id="updateRecord" parameterType="com.gjp.model.BusinessLoanRecord">
+		update GJP_Bill_LoanRecord 
+		 <set>
+		 	<if test="bm_userState !=null and bm_userState !=''">bm_userState = #{bm_userState},</if>
+		 	<if test="bm_name !=null and bm_name !=''">bm_name = #{bm_name},</if>
+		 	<if test="bm_userId !=null and bm_userId !=''">bm_userId = #{bm_userId},</if>
+		 	<if test="bm_numCard !=null and bm_numCard !=''">bm_numCard = #{bm_numCard},</if>
+		 	<if test="bm_phone !=null and bm_phone !=''">bm_phone = #{bm_phone},</if>
+		 	<if test="bm_monery !=null and bm_monery !=''">bm_monery = #{bm_monery},</if>
+		 	<if test="bm_purpose !=null and bm_purpose !=''">bm_purpose = #{bm_purpose},</if>
+		 	<if test="bm_days !=null and bm_days !=''">bm_days = #{bm_days},</if>
+		 	<if test="bm_loan_state !=null and bm_loan_state !=''">bm_loan_state = #{bm_loan_state},</if>
+		 	<if test="bm_lease_state !=null and bm_lease_state !=''">bm_lease_state = #{bm_lease_state},</if>
+		 	<if test="bm_note !=null and bm_note !=''">bm_note = #{bm_note},</if>
+		 	<if test="bm_handleTime !=null and bm_handleTime !=''">bm_handleTime = #{bm_handleTime},</if>
+		 	<if test="bm_apply_time !=null and bm_apply_time !=''">bm_apply_time = #{bm_apply_time},</if>
+		 	<if test="bm_lender !=null and bm_lender !=''">bm_lender = #{bm_lender},</if>
+			<if test="bm_state !=null and bm_state !=''">bm_state = #{bm_state},</if>
+			<if test="bm_payment_time !=null and bm_payment_time !=''">bm_payment_time = #{bm_payment_time}</if>
+		 </set>
+			where bm_id = #{bm_id}	
+	</update>
+	<!--更改身份信息状态  -->
+	<update id="updateCertificstes" parameterType="com.gjp.model.AddedCertificstes">
+		update GJP_Bill_AddedCertificates
+		 <set>
+		 	<if test="cd_peopleImg !=null and cd_peopleImg !=''">cd_peopleImg = #{cd_peopleImg},</if>
+		 	<if test="cd_peopleImg_state !=null and cd_peopleImg_state !=''">cd_peopleImg_state = #{cd_peopleImg_state},</if>
+		 	<if test="cd_idCard !=null and cd_idCard !=''">cd_idCard = #{cd_idCard},</if>
+		 	<if test="cd_idCard_state !=null and cd_idCard_state !=''">cd_idCard_state = #{cd_idCard_state},</if>
+		 	<if test="cd_idCard_side !=null and cd_idCard_side !=''">cd_idCard_side = #{cd_idCard_side},</if>
+		 	<if test="cd_idCard_side_state !=null and cd_idCard_side_state !=''">cd_idCard_side_state = #{cd_idCard_side_state},</if>
+		 	<if test="cd_time !=null and cd_time !=''">cd_time = #{cd_time},</if>
+		 </set>
+		 	where cd_em_id = #{cd_em_id}	
+	</update>
+	<!-- 更改银行信息状态 -->
+	<update id="updateBand" parameterType="com.gjp.model.BillBand">
+		update GJP_Bill_Band
+		<set>
+		 	<if test="bd_bandImg !=null and bd_bandImg !=''">bd_bandImg = #{bd_bandImg},</if>
+		 	<if test="bd_band !=null and bd_band !=''">bd_band = #{bd_band},</if>
+		 	<if test="bd_number !=null and bd_number !=''">bd_number = #{bd_number},</if>
+		 	<if test="bd_state !=null and bd_state !=''">bd_state = #{bd_state},</if>
+		 </set>
+		 where bd_em_id = #{bd_em_id}	
+	</update>
+	<!--  拒绝原因-->
+	<insert id="intoloanResule" useGeneratedKeys="true" keyProperty="lh_id">
+		INSERT INTO GJP_Bill_loanResult(
+			lh_bmId,
+			lh_em_id,
+			lh_content,
+			lh_state,
+			lh_time
+		)VALUES(
+			#{lh_bmId},
+			#{lh_em_id},
+			#{lh_content},
+			#{lh_state},
+			#{lh_time}
+		)
+	</insert>
+	
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserDao">
+
+	<!-- 查询用户认证分页列表 -->
+	<select id="queryUserAuthViewList" resultType="com.gjp.model.ViewUserAuthListVo">
+		SELECT
+		user_id,
+		user_type,
+		user_lv,
+		user_account,
+		user_nickName,
+		user_phone,
+		user_sex,
+		user_picPath,
+		user_birthday,
+		user_marrState,
+		user_address,
+		user_email,
+		user_state,
+		user_loginState,
+		user_safeState,
+		user_pwdSafeLv,
+		user_realName,
+		user_cardNumber,
+		userExtend_id,
+		userVerify_cardUserName,
+		userVerify_id,
+		userVerify_cardType,
+		userVerify_cardNumber,
+		userVerify_cardPicPath1,
+		userVerify_cardPicPath2,
+		userVerify_state,
+		userVerify_cardValid,
+		userVerify_authTime,
+		userVerify_createTime,
+		userVerify_remark
+		FROM
+		view_GJP_UserAuthList
+		WHERE
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+		 LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询用户认证分页列表数据条数 -->
+	<select id="queryUserAuthViewListTotalRecords" resultType="int">
+		SELECT COUNT(*) FROM
+		view_GJP_UserAuthList
+		WHERE
+		1=1
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+	</select>
+
+	<!-- 查询用户认证信息 -->
+	<select id="queryUserAuthView" resultType="com.gjp.model.ViewUserAuthListVo">
+		SELECT
+		user_id,
+		user_type,
+		user_lv,
+		user_account,
+		user_nickName,
+		user_phone,
+		user_sex,
+		user_picPath,
+		user_birthday,
+		user_marrState,
+		user_address,
+		user_email,
+		user_state,
+		user_loginState,
+		user_safeState,
+		user_pwdSafeLv,
+		user_realName,
+		user_cardNumber,
+		userExtend_id,
+		userVerify_cardUserName,
+		userVerify_id,
+		userVerify_cardType,
+		userVerify_cardNumber,
+		userVerify_cardPicPath1,
+		userVerify_cardPicPath2,
+		userVerify_state,
+		userVerify_cardValid,
+		userVerify_authTime,
+		userVerify_createTime,
+		userVerify_remark
+		FROM
+		view_GJP_UserAuthList
+		WHERE
+		user_id=#{user_id}
+	</select>
+
+	<!-- 更新用户信息 -->
+	<update id="updateUserInfo">
+		UPDATE
+		GJP_UserCenter_User
+		<set>
+			user_realName=#{user_realName},
+			user_cardNumber=#{user_cardNumber}
+		</set>
+		WHERE
+		user_id=#{user_id}
+	</update>
+
+	<!-- 更新用户认证信息 -->
+	<update id="updateUserAuthInfo">
+		UPDATE
+		GJP_UserCenter_UserExtendVerifyAuth
+		<set>
+			<if test="userVerify_cardUserName !=null and userVerify_cardUserName !='' ">userVerify_cardUserName=#{userVerify_cardUserName},</if>
+			<if test="userVerify_cardPicPath1 !=null and userVerify_cardPicPath1 !='' ">userVerify_cardPicPath1=#{userVerify_cardPicPath1},</if>
+			<if test="userVerify_cardPicPath2 !=null and userVerify_cardPicPath2 !='' ">userVerify_cardPicPath2=#{userVerify_cardPicPath2},</if>
+			<if test="userVerify_state !=null and userVerify_state !='' ">userVerify_state=#{userVerify_state},</if>
+			<if test="userVerify_authTime !=null and userVerify_authTime !='' ">userVerify_authTime=#{userVerify_authTime},</if>
+			<if test="userVerify_remark !=null and userVerify_remark !='' ">userVerify_remark=#{userVerify_remark}</if>
+		</set>
+		WHERE
+		userVerify_id=#{userVerify_id}
+	</update>
+
+</mapper>

@@ -1,0 +1,280 @@
+@error: #E74C3C;
+@hint: #F39C12;
+@ok: #18bc9c;
+@next: #3498DB;
+@disabled: #909090;
+/**/
+.error {
+    color: @error ! important;
+    &:disabled { color: @disabled ! important; }
+}
+.hint {
+    color: @hint ! important;
+    &:disabled { color: @disabled ! important; }
+}
+.ok {
+    color: @ok ! important;
+    &:disabled { color: @disabled ! important; }
+}
+.next {
+    color: @next ! important;
+    &:disabled { color: @disabled ! important; }
+}
+.disabled { color: @disabled ! important; }
+.error-bg { background: @error ! important; color: #fff ! important; }
+.hint-bg { background: @hint ! important; color: #fff ! important; }
+.ok-bg { background: @ok ! important; color: #fff ! important; }
+.next-bg { background: @next ! important; color: #fff ! important; }
+.disabled-bg { background: @disabled ! important; color: #fff ! important; }
+[class $=-bg] > option { background: #fff ! important; color: #666 }
+[class $=-bg][disabled] { background: #c1c1c1 ! important; cursor: no-drop; }
+/*:default 白色背景，彩色字体*/
+.error-bg-w { background: #ffffff !important; color: #E74C3C !important; }
+.hint-bg-w { background: #ffffff !important; color: #F39C12 !important; }
+.ok-bg-w { background: #ffffff !important; color: #1ABC9C !important; }
+.next-bg-w { background: #ffffff !important; color: #3498DB !important; }
+.disabled-bg-w { background: #ffffff !important; color: #909090; cursor: no-drop; }
+/*:hover 彩色背景，白色字体*/
+.error-bg-w:hover { background: #ec7367 !important; color: #fff !important; }
+.hint-bg-w:hover { background: #f6b246 !important; color: #fff !important; }
+.ok-bg-w:hover { background: #4ccbb2 !important; color: #fff !important; }
+.next-bg-w:hover { background: #61afe3 !important; color: #fff !important; }
+.disabled-bg-w:hover { background: #909090 !important; color: #fff; cursor: no-drop; }
+[class$=-bg] > option { background: #fff !important; color: #666 }
+[class$=-bg][disabled] { background: #c1c1c1 !important; cursor: no-drop; }
+// 电脑端提示
+.hint-pc {
+    //position: fixed;
+    //top: 0;
+    //left: 0;
+    //right: 0;
+    //bottom: 0;
+    //z-index: 9999;
+    .hint-pc-tip-main {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        display: flex;
+        background: #fff;
+        min-height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        border-radius: 3px;
+        box-shadow: 0 0 10px 1px rgba(165, 165, 165, 0.7);
+        z-index: 99;
+        > .icon {
+            width: 36px;
+            text-align: center;
+            font-size: 20px;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        > .title {
+            flex: 1;
+            padding-right: 10px;
+            color: #000000;
+        }
+    }
+    .hint-pc-alert-main { }
+    .hint-pc-confirm-main {
+        position: fixed;
+        top: 16%;
+        left: 50%;
+        width: 450px;
+        margin-left: -225px;
+        border-radius: 4px;
+        box-shadow: 0 0 10px 1px rgba(158, 158, 158, 0.7);
+        z-index: 9999;
+        &:after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.05); z-index: -1;
+        }
+        .confirm-head {
+            display: flex;
+            flex-direction: row;
+            background: #FFFFFF;
+            line-height: 48px;
+            border-radius: 4px 4px 0 0;
+            border-bottom: 1px solid #efefef;
+            .confirm-head-title {
+                flex: 1;
+                padding-left: 10px;
+                font-size: 15px;
+                font-weight: bold;
+                color: #000;
+            }
+            .confirm-head-close {
+                width: 36px;
+                height: inherit;
+                text-align: center;
+                font-size: 15px;
+                border-top-right-radius: 4px;
+                border: none;
+                background: none;
+                cursor: pointer;
+            }
+        }
+        .confirm-main {
+            position: relative;
+            padding: 20px 10px;
+            background: #FFFFFF;
+            font-size: 14px;
+            line-height: 1.6em;
+            min-height: 50px;
+            color: #000;
+        }
+        .confirm-foot {
+            position: relative;
+            padding: 10px;
+            background: #FFFFFF;
+            text-align: right;
+            border-radius: 0 0 4px 4px;
+            .hint-btn {
+                position: relative;
+                display: inline-block;
+                line-height: 28px;
+                padding: 0 10px;
+                border-radius: 3px;
+                margin-left: 6px;
+                border: none;
+                cursor: pointer;
+            }
+        }
+    }
+}
+// 移动端提示
+.hint-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.62);
+    z-index: 9999;
+    .hint-mobile-tip-main {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        width: 90%;
+        margin-left: -45%;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+        background: #fff;
+        > .icon {
+            padding: 10px 0;
+            height: 58px;
+            > i {
+                position: relative;
+                display: inline-block;
+                font-size: 38px;
+            }
+        }
+        > .title {
+            font-size: 16px;
+            line-height: 2;
+            color: #000;
+        }
+        > .tip {
+            font-size: 12px;
+            line-height: 1.6;
+            font-style: oblique;
+            color: #666
+        }
+    }
+    .hint-mobile-alert-main { }
+    .hint-mobile-confirm-main {
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        width: 90%;
+        margin-left: -45%;
+        border-radius: 3px;
+        background: #ffffff;
+        padding: 10px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        > .confirm-head {
+            display: flex;
+            flex-direction: row;
+            line-height: 44px;
+            .confirm-head-title { flex: 1; padding-left: 10px; font-size: 18px; color: #000; font-weight: bold; }
+        }
+        > .confirm-main { position: relative; padding: 10px; font-size: 16px; color: #000; line-height: 1.4; }
+        > .confirm-foot {
+            position: relative; padding: 4px 10px; text-align: right;
+            .hint-btn {
+                position: relative; line-height: 28px; padding: 0 10px; border-radius: 3px; margin-left: 10px; cursor: pointer; display: inline-block; font-size: 14px;
+            }
+        }
+    }
+}
+// 上拉框提示
+.hint-pull-up {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.32);
+    .pull-up-mask {
+        flex: 1;
+    }
+    .pull-up-main {
+        position: relative;
+        bottom: -1000px;
+        left: 0;
+        background: #fff;
+        width: 100%;
+        //	    height: 50%;
+        box-shadow: 0px -4px 20px 0px rgba(0, 0, 0, 0.1);
+        .mask-main-head {
+            position: relative;
+            display: flex;
+            line-height: 46px;
+            border-bottom: 1px solid #ddd;
+            .mask-main-head-title {
+                position: relative;
+                flex: 1;
+                padding-left: 10px;
+                font-size: 15px;
+                text-align: left;
+                color: #000;
+            }
+            .mask-main-head-option {
+                position: absolute;
+                right: 0;
+                .mask-close {
+                    position: relative;
+                    width: 46px;
+                    line-height: 46px;
+                    font-size: 18px;
+                    color: #9a9a9a;
+                    cursor: pointer;
+                }
+            }
+        }
+        .mask-main-content {
+            position: relative;
+            min-height: 300px;
+            overflow-y: auto;
+            .mask-main-content-item {
+                position: relative;
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    }
+}

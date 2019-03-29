@@ -1,0 +1,601 @@
+@charset "utf-8";
+/* CSS Document */
+@import url("body.css");
+
+#house{
+	width:1210px;
+	height:auto;
+	overflow:hidden;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+	}
+
+/*房源图片浏览*/
+.house_left{
+	width:520px;
+	margin-top:15px;
+	float:left;
+	position: relative;
+	}
+.house_left .house_left_buttom{
+	height: 35px;
+	line-height: 35px;
+	position: absolute;
+	z-index: 300;
+	right: 3px;
+	font-size: 14px;
+	background: #404144;
+	color: #fff;
+	cursor: pointer;
+	padding: 5px 10px;
+	}
+.house_left .house_left_buttom span{
+	float: left;
+	width: auto;
+
+	}
+.preview{width:507px; height:465px;}
+/* smallImg */
+.smallImg{position:relative; height:60px; margin-top:1px; background-color:#FFFFFF; padding:6px 5px; width:507px; overflow:hidden;float:left;}
+.scrollbutton{width:20px; height:60px; overflow:hidden; position:relative; float:left; cursor:pointer; }
+.scrollbutton.smallImgUp , .scrollbutton.smallImgUp.disabled{background:url(../image/d_left.png) no-repeat;}
+.scrollbutton.smallImgDown , .scrollbutton.smallImgDown.disabled{background:url(../image/d_right.png) no-repeat; margin-top:-60px; float:right;}
+
+#imageMenu {height:60px; width:480px; overflow:hidden; margin-left:0; float:left;}
+#imageMenu li {height:60px; width:110px; margin-left:5px; overflow:hidden; float:left; text-align:center;}
+#imageMenu li img{width:106px; height:56px;cursor:pointer; border:2px solid #FFF;}
+#imageMenu li#onlickImg img, #imageMenu li:hover img{ width:106px; height:56px; border:2px solid #333;}
+/* bigImg */
+.bigImg{position:relative; float:left; width:517px; height:360px; overflow:hidden;}
+.bigImg #midimg{width:517px; height:360px;}
+.bigImg #winSelector{width:235px; height:210px;}
+#winSelector{position:absolute; cursor:crosshair; filter:alpha(opacity=15); -moz-opacity:0.15; opacity:0.15; background-color:#000; border:1px solid #fff;}
+/* bigView */
+#bigView{position:absolute;border: 1px solid #CCC; overflow: hidden; z-index:999;}
+#bigView img{position:absolute;}
+
+/*房源信息*/
+.house_center{
+	float:left;
+	width:396px;
+	height:427px;
+	margin-top:15px;
+	margin-left:20px;
+	position: relative;
+	}
+.house_center h3{
+	padding-bottom: .2em;
+	line-height: 25px;
+	font-size: 16px;
+	font-weight: 700;
+	text-indent:-6px;
+	color: #000;
+	font-family: "microsoft yahei";
+	}
+.house_center dl{
+	width:100%;
+	height:29px;
+	line-height:29px;
+	}
+.house_center dd{
+	float:left;
+	height: 30px;
+	line-height: 30px;
+	}
+.house_center dt{
+	float:left;
+	font-size:14px;
+	color: #838383;
+	width: 60px;
+	height:30px;
+	line-height:30px;
+	margin-top:5px;
+	font: 14px/1.5 tahoma,arial,'Hiragino Sans GB','\5FAE\8F6F\96C5\9ED1','\5b8b\4f53',sans-serif;
+	}
+.house_center dd{
+	float:left;
+	margin-left:10px;
+	font-size:14px;
+	font-family:"微软雅黑";
+	}
+.house_center .house_money{
+	font-family: Georgia;
+	font-size:20px;
+	color:#E74C3C;
+	letter-spacing: 0;
+	margin:0 0;
+	width: auto;
+	}
+.house_center .house_label{
+	margin-top:30px;
+	}
+.house_center .house_label dd{
+	padding: 0 10px;
+	color:#FFF;
+	text-align:center;
+	background-color:#1ABC9C;
+	font-family:"微软雅黑";
+	font-size:12px;
+	margin-left:0;
+	margin-right:10px;
+	margin-bottom: 10px;
+	}
+.house_center .house_phone{
+	width:268px;
+	background-color:#F3F3F3;
+	font-size:20px;
+	padding:10px 0 10px 15px;
+	margin-top:40px;
+	}
+.house_center .house_phone dt{
+	float:left;
+	font-size:20px;
+	letter-spacing: 0;
+	width:30px;
+	height:30px;
+	background:url(../image/phone.png) no-repeat;
+	margin-top: 0;
+	margin-left: 10px;
+	}
+.house_center .house_phone dd{
+	font-size:20px;
+	margin-left: 20px;
+	}
+.house_center #appointment{
+	width: 300px;
+	height: auto;
+	background: #FFF;
+	box-shadow: 0 0 14px #ccc;
+	position: absolute;
+	top:160px;
+	left:0;
+	z-index: 999;
+	display: none;
+	}
+.house_center #appointment #title{
+	width:100%;
+	height: 47px;
+	line-height: 47px;
+	background-color: #f7f7f7;
+	margin: 0;
+	padding: 0;
+	}
+.house_center #appointment #title dt{
+	width:100%;
+	text-align:left;
+	text-indent:20px;
+	height: 47px;
+	font-size:16px;
+	line-height: 47px;
+	color: #666;
+	}
+.house_center #appointment #title dd a{
+	display:block;
+	width:16px;
+	height: 16px;
+	position: absolute;
+	top:15px;
+	right:20px;
+	background: url(../image/close.png) no-repeat;
+	}
+.house_center #appointment #register{
+	margin: 0;
+	padding: 0;
+	}
+.house_center #appointment #register dd{
+	float: right;
+	margin-right: 15px;
+	}
+.house_center #appointment #register dd a{
+	color: #3498DB;
+	}
+.house_center #appointment #register dd a:hover{
+	color: #E74C3C;
+	}
+.house_center #appointment #code{
+	width: 70px;
+	float: left;
+	}
+.house_center #appointment #subCode{
+	display:block;
+	width: 75px;
+	height: 28px;
+	line-height: 28px;
+	float: left;
+	margin-left: 5px;
+	background-color: #E74C3C;
+	text-align: center;
+	color: #FFF;
+	}
+.house_center #appointment #subCodeSpan{
+	display:block;
+	width: 75px;
+	height: 28px;
+	line-height: 28px;
+	float: left;
+	margin-left: 5px;
+	background-color: #f7f7f7;
+	text-align: center;
+	color: #666;
+	}
+.house_center #appointment dl{
+	height: 26px;
+	line-height: 26px;
+	padding: 10px 0;
+	}
+.house_center #appointment dt{
+	width: 70px;
+	margin:0;
+	height: 25px;
+	line-height: 25px;
+	text-align: right;
+	}
+.house_center #appointment dd input{
+	height: 20px;
+	line-height: 20px;
+	}
+.house_center #appointment #appointmentSubmit{
+	display:block;
+	width: 280px;
+	height: 40px;
+	line-height:40px;
+	background: #c40000;
+	text-align:center;
+	color:#fff;
+	font-size: 16px;
+	}
+.house_center #appointment #error{
+	color:#E74C3C;
+	width:100%;
+	}
+
+.button{
+	margin-top:30px;
+	height:auto;
+	overflow:hidden;
+	}	
+.button .button_yuyue{
+	margin-right: 0;
+	float: left;
+	overflow: hidden;
+	position: relative;
+	width: 178px;
+	height: 38px;
+	line-height: 38px;
+	background-color: #ffeded;
+	border: 1px solid #c40000;
+	color: #c40000;
+	font-family: 'Microsoft Yahei';
+	font-size: 16px;
+	text-align: center;
+	}
+
+.button .button_money{
+	margin-right: 0;
+	float: right;
+	overflow: hidden;
+	position: relative;
+	width: 178px;
+	height: 38px;
+	line-height: 38px;
+	background-color: #c40000;
+	border: 1px solid #c40000;
+	color: #fff;
+	font-family: 'Microsoft Yahei';
+	font-size: 16px;
+	text-align: center;
+	}
+	
+/*地图查看/房屋分享/收藏房源*/
+.house_right{
+	float:right;
+	width:244px;
+	position: relative;
+	}
+	
+.house_right_button{
+	margin-top:48px;
+	height:auto;
+	overflow:hidden;
+	}	
+
+.house_right_button .button_yuyue{
+	margin-right: 0;
+	float: left;
+	overflow: hidden;
+	position: relative;
+	width: 108px;
+	height: 38px;
+	line-height: 38px;
+	background-color: #ffeded;
+	border: 1px solid #c40000;
+	color: #c40000;
+	font-family: 'Microsoft Yahei';
+	font-size: 16px;
+	text-align: center;
+	}
+
+.house_right_button .button_money{
+	margin-right: 0;
+	float: right;
+	overflow: hidden;
+	position: relative;
+	width: 108px;
+	height: 38px;
+	line-height: 38px;
+	background-color: #ffeded;
+	border: 1px solid #c40000;
+	color: #c40000;
+	font-family: 'Microsoft Yahei';
+	font-size: 16px;
+	text-align: center;
+	}
+
+/*房源详细/累计评价*/
+.house_reply{
+	width:936px;
+	height:auto;
+	overflow:hidden;
+	float:left;
+	margin-top:20px;
+	}
+.house_reply .house_reply_title{
+	width: 934px;
+  	border: 1px solid #dfdfdf;
+  	z-index: 9999;
+	}
+.house_reply .fixedNav{
+	position: fixed;
+	top: 0;
+	}
+.house_reply .house_reply_title .house_reply_title_ul{
+	width: 934px;
+  	background-color: #fff;
+  	height: 48px;
+	}
+.house_reply .house_reply_title .house_reply_title_ul li{
+	float: left;
+	margin-left: -1px;
+	height: 48px;
+	line-height: 48px;
+	display: block;
+	cursor: pointer;
+	}
+.house_reply .house_reply_title .house_reply_title_ul li a{
+	text-decoration: none;
+	border-right: 1px dotted #d2d2d2;
+	color: #333;
+	padding: 0 20px;
+	}
+	
+.house_reply .house_reply_title .house_reply_title_ul .tm_selected{
+	position: relative;
+	border-top: 2px solid #b00000;
+	height: 47px;
+	margin: -1px 0 0 -1px;
+	z-index: 1;
+	padding: 0;
+	}
+
+.house_reply .house_reply_title .house_reply_title_ul .tm_selected:after {
+  content: ' ';
+  display: block;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #b00000 transparent transparent;
+  width: 0;
+  height: 0;
+  font-family: arial;
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  margin-left: -5px;
+}
+.house_reply .house_reply_title .house_reply_title_ul .tm_selected a{
+	font-weight: 700;
+	display: block;
+	height: 100%;
+	line-height: 46px;
+	color: #b10000;
+	border-left: 1px solid #cfbfb1;
+	border-right: 1px solid #cfbfb1;
+	}
+	
+.house_reply .house_reply_can{
+	width: 934px;
+	height:auto;
+	min-height:100px;
+	overflow:hidden;
+	clear: both;
+	margin-bottom: 10px;
+	border: 1px solid #e6e6e6;
+	}
+
+.house_reply .house_reply_can .house_reply_can_title{
+	margin-left: 15px;
+	padding: 10px 10px;
+	}
+.house_reply .house_reply_can .house_reply_can_title h1{
+	font-size: 16px;
+	}
+.house_reply .house_reply_can .house_reply_can_title span{
+	display:block;
+	font-size: 14px;
+	}
+.house_reply .house_reply_can .house_reply_can_configure{
+	width: 870px;
+	height:auto;
+	overflow:hidden;
+	border: 1px solid #f0f0f0;
+	padding: 6px 9px;
+	margin: 15px auto;
+	font-size: 14px;
+	}
+
+.house_reply .house_reply_can .house_reply_can_configure span{
+	display: block;
+	height: 30px;
+	float: left;
+	background: url(../image/success.png) no-repeat;
+	display: inline-block;
+  	margin-right: 20px;
+  	padding-left: 20px;
+  	line-height: 30px;
+	}
+.house_reply .house_reply_can .house_reply_can_configure strong{
+	font-weight: 700;
+	float: left;
+	height: 30px;
+	line-height: 30px;
+	}
+
+#aroundMap{
+	width:716px;
+	height:328px;
+	float: left;
+	}
+#aroundBotton {
+	width:218px;
+	height:328px;
+	float: left;
+	}
+#aroundBotton h2{
+	width:100%;
+	height:20px;
+	float: left;
+	margin-left: 20px;
+	margin-top: 30px;
+	}
+#aroundBotton .aroundBotton_text{
+	width: 40px;
+	height: 62px;
+	float: left;
+	margin: 0 16px;
+	text-align: center;
+	margin-top: 20px;
+	cursor:pointer;
+}
+
+#aroundBotton #aroundBotton_text_1:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -42px;
+}
+#aroundBotton #aroundBotton_text_1:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_2:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -126px;
+}
+#aroundBotton #aroundBotton_text_2:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_3:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -210px;
+}
+#aroundBotton #aroundBotton_text_3:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_4:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -294px;
+}
+#aroundBotton #aroundBotton_text_4:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_5:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -378px;
+}
+#aroundBotton #aroundBotton_text_5:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_6:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -462px;
+}
+#aroundBotton #aroundBotton_text_6:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_7:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -546px;
+}
+#aroundBotton #aroundBotton_text_7:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_8:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -630px;
+}
+#aroundBotton #aroundBotton_text_8:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+#aroundBotton #aroundBotton_text_9:hover i{
+	background: url(../image/appbar.png) no-repeat 0 -714px;
+}
+#aroundBotton #aroundBotton_text_9:hover span{
+	color:#E74C3C;
+	font-weight:bold;
+}
+
+#aroundBotton .aroundBotton_text i{
+	display: block;
+	margin-bottom: 5px;
+}
+#aroundBotton .aroundBotton_text .i_1{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 0;
+}
+#aroundBotton .aroundBotton_text .i_2{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -84px;
+}
+#aroundBotton .aroundBotton_text .i_3{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -168px;
+}
+#aroundBotton .aroundBotton_text .i_4{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -252px;
+}
+#aroundBotton .aroundBotton_text .i_5{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -336px;
+}
+#aroundBotton .aroundBotton_text .i_6{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -420px;
+}
+#aroundBotton .aroundBotton_text .i_7{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -504px;
+}
+#aroundBotton .aroundBotton_text .i_8{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -588px;
+}
+#aroundBotton .aroundBotton_text .i_9{
+	width: 40px;
+	height: 40px;
+	background: url(../image/appbar.png) no-repeat 0 -672px;
+}
+
+#messageDiv{
+	position: absolute;
+	top: 450px;
+	left: 55%;
+	background: #E74C3C;
+	color: #FFF;
+	padding: 5px 10px;
+}

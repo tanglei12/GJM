@@ -1,0 +1,93 @@
+@charset "utf-8";
+/* CSS Document */
+
+.perfortImage{
+	width:80px;height:80px;position:absolute;right:0px;top:7px;
+	background-image: url("/resources/image/houseIntention/image_perfect.png");
+}
+
+.notPerfortImage{
+	width:80px;height:80px;position:absolute;right:0px;top:7px;
+	background-image: url("/resources/image/houseIntention/image_notPerfect.png");
+}
+
+#submitdiv1{
+	width: 100%;text-align: center;position: absolute;margin: auto;margin-top: -160px;display: none;
+}
+
+#submitdiv2{
+	width: 100%;text-align: center;position: absolute;margin: auto;margin-top: -150px;display: none;
+}
+#submitdiv3{
+	width: 100%;text-align: center;position: absolute;margin: auto;margin-top: -100px;display: none;
+}
+#submitdiv4{
+	width: 100%;text-align: center;position: absolute;margin: auto;margin-top: -100px;display: none;
+}
+dl{
+	float: left;width: 33%;margin-bottom: 10px;min-height: 45px;
+}
+dt{
+	float: left;font-size: 14px;line-height: 30px;width: 100px; text-align: right;height: 30px;
+}
+dd{
+	float: left;font-size: 14px;line-height: 30px;
+}
+
+
+textarea{
+	border: 1px solid #bbb;margin-left: 10px;padding-top: 2px;border-radius:4px;padding-left: 5px;
+}
+
+span{color: #000;}
+
+#countDivShow3  td{
+	color: #666;
+}
+
+#fieldset1 span label {color: #666;}
+#fieldset2 span label {color: #666;}
+#fieldset3 span label {color: #666;}
+#fieldset4 span label {color: #666;}
+
+.image_yes{width: 32px;height: 32px;margin: auto;margin-top: -50px;}
+
+#countDivShow3{z-index: 1;}
+
+.updateInput{
+	border: 1px solid #ccc;
+    height: 30px;
+    border-radius: 3px;
+    padding: 0 5px;
+    width: 175px;
+}
+.updateInput.min-short{
+	width: 35px;
+    text-align: center;
+}
+.updateInput.short{
+	width: 40px;
+    text-align: center;
+}
+.block{
+	padding: 0 2px;
+    color: inherit;
+}
+.houseDiv{margin-left: 3%;width: 96%;margin-top: 20px;}
+
+.ainput{
+	position: relative;
+    display: block;
+    background: #fff;
+    width: 132px;
+    border-radius: 50%;
+    height: 132px;
+    text-align: center;
+    line-height: 132px;
+    font-size: 20px;
+}
+.aimage{
+    background: url(/resources/image/houseIntention/image_blue.png) #fdfdfd;
+    background-repeat: no-repeat;
+    background-position: 50% 82%;
+}

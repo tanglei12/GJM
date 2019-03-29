@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 物品账单 -->
+<mapper namespace="com.gjp.dao.ItemsBillDAO">
+
+	<sql id="menberEcpId">
+		ib_code,
+		inv_code,
+		ib_repay,
+		ib_realPay,
+		bs_statementNum,
+		ib_operator,
+		ib_operatTime,
+		ib_remark,
+		ib_createTime
+	</sql>
+
+	<sql id="insert">
+		#{ib_code },
+		#{inv_code },
+		#{ib_repay },
+		#{ib_realPay },
+		#{bs_statementNum },
+		#{ib_operator },
+		#{ib_operatTime },
+		#{ib_remark },
+		#{ib_createTime }
+	</sql>
+
+	<sql id="update">
+		<if test="inv_code!=null and inv_code!=''">
+			inv_code=#{inv_code },
+		</if>
+		<if test="ib_repay!=null and ib_repay!=''">
+			ib_repay=#{ib_repay },
+		</if>
+		<if test="ib_realPay!=null and ib_realPay!=''">
+			ib_realPay=#{ib_realPay },
+		</if>
+		<if test="bs_statementNum!=null and bs_statementNum!=''">
+			bs_statementNum=#{bs_statementNum },
+		</if>
+		<if test="ib_operator!=null and ib_operator!=''">
+			ib_operator=#{ib_operator },
+		</if>
+		<if test="ib_operatTime!=null and ib_operatTime!=''">
+			ib_operatTime=#{ib_operatTime },
+		</if>
+		<if test="ib_remark!=null and ib_remark!=''">
+			ib_remark=#{ib_remark },
+		</if>
+		ib_code=#{ib_code}
+	</sql>
+
+
+	<!-- 物品账单添加 -->
+	<insert id="addItemsBillOne" useGeneratedKeys="true" keyProperty="ib_id">
+		insert into GJP_Items_Bill(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+
+	<!-- 根据业绩编码查询当月业绩 -->
+	<select id="selectItemsBillList" resultType="com.gjp.model.ItemsBill">
+		<!-- select * from GJP_Items_Bill where 1=1 LIMIT #{start},#{end} -->
+		<!-- select * from GJP_Items_Bill where 1=1 LIMIT #{start},#{end} -->
+		select ib.*,iv.inv_type as type_name,iv.inv_name as name_name
+		from GJP_Items_Bill as ib LEFT JOIN GJP_Items_Inventory as iv
+		on ib.inv_code = iv.inv_code LIMIT #{start},#{end}
+
+	</select>
+
+
+	<!-- 根据业绩编码查询当月业绩 -->
+	<select id="selectItemsBillCount" resultType="int">
+		select count(*) from GJP_Items_Bill where 1=1
+	</select>
+
+
+</mapper>

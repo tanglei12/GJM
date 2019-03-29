@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 服务订单 -->
+<mapper namespace="com.gjp.dao.HandleDao">
+
+    <!-- 查询服务订单列表 -->
+    <select id="selectServices" resultType="com.gjp.model.MaintenanceDeclaration">
+        <!--select * from (SELECT
+        IF (
+        pn.upn_code IS NULL
+        OR pn.upn_code = '',
+        CONCAT(
+        pn.upn_sname,
+        hi.hi_address
+        ),
+        CONCAT(
+        pn.upn_sname,
+        pn.upn_code,
+        '-',
+        hi.hi_address
+        )
+        ) AS house_address,
+        md.md_type,
+        md.md_problem,
+        md.md_agentApplyer,
+        st.st_name AS md_applyType,
+        md.md_state,
+        md.md_time,
+        md.md_id,
+        mdg.mdg_state,
+        mdg.mdg_time,
+        mdg.em_id,
+        mp.house_longlat,
+        mp.p_type,
+        mp.house_address AS houseaddress
+        FROM GJP_Maintenance_Declaration as md
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep as hi on md.hi_code = hi.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo as pi on hi.propertyInfo_Id = pi.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName as pn on pn.upn_id = pi.upn_id
+        LEFT JOIN GJP_Maintenance_Point as mp on mp.md_id = md.md_id /*AND mp.p_type = 1 OR mp.p_type = 2*/
+        LEFT JOIN GJP_Service_Type as st on st.st_id = md.md_applyType
+        LEFT JOIN (select * from GJP_Maintenance_Dispatching ) mdg ON mdg.md_id = md.md_id
+        ) service WHERE 1=1
+        <if test="em_id != null and type != 'my'">
+            and em_id=#{em_id}
+        </if>
+        <if test="em_id != null and type == 'my'">
+            and md_agentApplyer=#{em_id}
+        </if>
+        <if test="house_address != null">
+            and house_address like CONCAT('%',#{house_address},'%')
+        </if>
+        ORDER BY mdg_state asc
+        LIMIT #{pageNo},10-->
+        SELECT DISTINCT
+        sd.md_id,
+        (
+        CASE
+        WHEN sm.sm_id = 6 THEN
+        (
+        SELECT
+        p.house_address
+        FROM
+        GJP_business.GJP_Maintenance_Point p
+        WHERE
+        p.md_id = sd.md_id
+        AND p.p_type = 2
+        )
+        WHEN gmp.hi_code IS NOT NULL AND gmp.hi_code != '' THEN
+        (
+        SELECT
+        va.house_address
+        FROM
+        GJP_product.view_GJP_HouseAddress va
+        WHERE
+        va.hi_code = gmp.hi_code
+        )
+        ELSE gmp.house_address
+        END
+        ) AS house_address,
+        sd.md_problem,
+        sd.md_time,
+        sd.apply_time,
+        sd.md_state,
+        sd.user_id,
+        sd.hi_code,
+        sd.md_source,
+        sd.md_type,
+        sd.md_contactpeople,
+        sd.md_contactPhone,
+        sd.md_applyType,
+        sd.md_agentApplyer,
+        sd.typeOfApply_Name,
+        sd.mdg_state,
+        sd.accepter,
+        sm.sm_name,
+        st.st_name,
+        sd.em_id,
+        mt.mtk_state,
+        hi.ucc_name
+        FROM
+        view_GJP_Service_DeclarationList sd
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = sd.md_type
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = sd.md_applyType
+        JOIN GJP_business.GJP_Maintenance_Point gmp ON gmp.md_id = sd.md_id AND CASE WHEN sd.md_type = 6 THEN gmp.p_type = 2 ELSE gmp.p_type = 1 END
+        LEFT JOIN GJP_product.view_GJP_HouseHouseInformationKeep hi ON gmp.hi_code = hi.hi_code
+        LEFT JOIN GJP_business.GJP_Maintenance_Tracks mt ON sd.md_id = mt.md_id
+        WHERE 1=1
+        <if test="em_id != null and type == 'person'">
+            and sd.em_id=#{em_id}
+        </if>
+        <if test="em_id != null and type == 'my'">
+            and sd.md_agentApplyer=#{em_id}
+        </if>
+
+        <if test="mdg_state == '未接单'">
+            and mt.mtk_state='no'
+        </if>
+
+        <if test="mdg_state == '服务中'">
+            and (mt.mtk_state='get' or mt.mtk_state='start' or mt.mtk_state='stop' or mt.mtk_state='enter')
+        </if>
+
+        <if test="mdg_state == '已完成'">
+            and mt.mtk_state='yes'
+        </if>
+
+        <if test="apply_time != null">
+            and sd.apply_time > '2017-11-01 00:00:00'
+        </if>
+
+        <if test="house_address != null">
+            and gmp.house_address like CONCAT('%',#{house_address},'%')
+        </if>
+        ORDER BY sd.apply_time DESC
+        LIMIT #{pageNo},10
+    </select>
+
+    <!-- app查询服务订单列表 -->
+    <select id="selectServicesApp" resultType="com.gjp.model.MaintenanceDeclaration">
+        SELECT
+        IF
+        (
+        pn.upn_code IS NULL
+        OR pn.upn_code = '',
+        CONCAT( pn.upn_sname, hi.hi_address ),
+        CONCAT( pn.upn_sname, pn.upn_code, '-', hi.hi_address )
+        ) AS house_address,
+        sd.md_id,
+        sd.md_problem,
+        sd.md_time,
+        sd.apply_time,
+        sd.md_state,
+        sd.user_id,
+        sd.hi_code,
+        sd.md_source,
+        sd.md_type,
+        sd.md_contactpeople,
+        sd.md_contactPhone,
+        sd.md_applyType,
+        sd.md_agentApplyer,
+        sd.typeOfApply_Name,
+        sd.mdg_state,
+        sd.accepter,
+        sm.sm_name,
+        mt.mtk_state,
+        st.st_name,
+        sd.em_id,
+        uc.ucc_name
+        FROM
+        view_GJP_Service_DeclarationList sd
+        LEFT JOIN GJP_business.GJP_Service_Message sm ON sm.sm_id = sd.md_type
+        LEFT JOIN GJP_business.GJP_Service_Type st ON st.st_id = sd.md_applyType
+        LEFT JOIN GJP_business.GJP_Maintenance_Tracks mt ON sd.md_id = mt.md_id
+        LEFT JOIN GJP_product.GJP_House_HouseInformation_keep hi ON sd.hi_code = hi.hi_code
+        LEFT JOIN GJP_product.GJP_PropertyInfo pi ON pi.propertyInfo_Id = hi.propertyInfo_Id
+        LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName pn ON pn.upn_id = pi.upn_id
+        LEFT JOIN GJP_product.GJP_House_PositionRecord hp ON hp.hi_code = hi.hi_code
+        Left JOIN GJP_user.GJP_UserCenter_Company uc ON uc.ucc_id = hp.ucc_id
+        WHERE
+        1 = 1
+        <if test="em_id != null and type == 'person'">
+            and sd.em_id=#{em_id}
+        </if>
+        <if test="em_id != null and type == 'my'">
+            and sd.md_agentApplyer=#{em_id}
+        </if>
+        <if test="ucc_id != null">
+            and uc.ucc_id=#{ucc_id}
+        </if>
+        <if test="mdg_state == '未接单'">
+            and mt.mtk_state='no'
+        </if>
+
+        <if test="mdg_state == '服务中'">
+            and (mt.mtk_state='get' or mt.mtk_state='start' or mt.mtk_state='stop' or mt.mtk_state='enter')
+        </if>
+
+        <if test="mdg_state == '已完成'">
+            and mt.mtk_state='yes'
+        </if>
+
+        <if test="apply_time != null">
+            and sd.apply_time > '2017-11-01 00:00:00'
+        </if>
+        <if test="where != null and where != ''">
+            AND (gmp.house_address LIKE CONCAT('%' , #{where} , '%'))
+        </if>
+        ORDER BY md_id DESC
+        LIMIT #{pageNo},10
+    </select>
+
+    <!-- 最新服务状态 -->
+    <select id="selectServiceState" resultType="com.gjp.model.MaintenanceDispatching">
+		SELECT * FROM GJP_Maintenance_Dispatching where md_id=#{md_id} order by mdg_time desc limit 1
+	</select>
+
+    <!-- 根据ID查询分配表 -->
+    <select id="queryCompanyList" resultType="com.gjp.model.Company">
+        SELECT *
+        FROM GJP_user.GJP_UserCenter_Company
+        WHERE
+        1=1
+        <if test="t.whereList != null">AND ucc_name LIKE CONCAT('%' , #{t.whereList} , '%') OR ucc_phone LIKE CONCAT('%' , #{t.whereList} , '%')</if>
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryOrderById" resultType="com.gjp.model.ContractOrderVo">
+		SELECT
+			co.*
+		FROM GJP_Bill_ContractOrder co
+		RIGHT JOIN GJP_Maintenance_Declaration md ON co.bco_code = md.order_code
+		WHERE co.bco_state = 1
+		AND co.bco_optionState = 2
+		AND co.bco_orderType = 2
+		AND co.bco_payObject = 1
+		AND co.bco_id IS NOT NULL AND co.bco_id &lt;&gt; ''
+		AND md.md_id = #{md_id}
+	</select>
+
+    <insert id="saveServiceOutsource" useGeneratedKeys="true" keyProperty="so_id">
+		INSERT INTO GJP_Service_Outsource
+			(
+				md_id,
+				outsource_name,
+				outsource_price,
+				outsource_phone,
+				outsource_result,
+				end_time,
+				create_time
+			) VALUES (
+				#{md_id},
+				#{outsource_name},
+				#{outsource_price},
+				#{outsource_phone},
+				#{outsource_result},
+				#{end_time},
+				#{create_time}
+			)
+	</insert>
+
+    <select id="queryServiceChargeRecord" resultType="com.gjp.model.ServiceChargeRecord">
+		SELECT cr.*, md.md_number, so.so_code FROM GJP_Server_ChargeRecord cr
+		LEFT JOIN GJP_Contract_Object co ON co.ContractObject_Code = cr.con_code
+		LEFT JOIN GJP_Service_Order so ON so.so_id = cr.so_id
+		LEFT JOIN GJP_Maintenance_Declaration md ON md.md_id = cr.md_id
+		WHERE co.ContractObject_No = #{t.con_no}
+		ORDER BY cr.create_time DESC
+		LIMIT ${pageNo},${pageSize}
+	</select>
+
+    <select id="queryServiceChargeRecordCount" resultType="java.lang.Integer">
+		SELECT COUNT(cr.re_id) FROM GJP_Server_ChargeRecord cr
+		LEFT JOIN GJP_Contract_Object co ON co.ContractObject_Code = cr.con_code
+		LEFT JOIN GJP_Service_Order so ON so.so_id = cr.so_id
+		LEFT JOIN GJP_Maintenance_Declaration md ON md.md_id = cr.md_id
+		WHERE co.ContractObject_No = #{t.con_no}
+	</select>
+
+</mapper>

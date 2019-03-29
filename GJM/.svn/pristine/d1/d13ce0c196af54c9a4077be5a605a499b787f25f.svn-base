@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 组织权限 -->
+<mapper namespace="com.gjp.dao.CustomerBankDAO">
+
+	<sql id="menberEcpId">
+		cbc_type,
+		cbc_cardNum,
+		cbc_path,
+		cbc_time,
+		cc_id,
+		cbc_state,
+		cbc_grade,
+		cbc_name,
+		cbc_bankName,
+		cbc_address
+	</sql>
+
+	<sql id="insert">
+		#{cbc_type },
+		#{cbc_cardNum },
+		#{cbc_path },
+		#{cbc_time },
+		#{cc_id },
+		#{cbc_state },
+		#{cbc_grade },
+		#{cbc_name },
+		#{cbc_bankName},
+		#{cbc_address } 
+	</sql>
+	
+	<sql id="update">
+		<if test="cbc_type != null and cbc_type != ''">
+			cbc_type=#{cbc_type },
+		</if>
+		<if test="cbc_path != null and cbc_path != ''">
+			cbc_path=#{cbc_path },
+		</if>
+		<if test="cbc_time != null and cbc_time != ''">
+			cbc_time=#{cbc_time },
+		</if>
+		<if test="cbc_state != null and cbc_state != ''">
+			cbc_state=#{cbc_state },
+		</if>
+		<if test="cbc_grade != null and cbc_grade != ''">
+			cbc_grade=#{cbc_grade },
+		</if>
+		<if test="cbc_name != null and cbc_name != ''">
+			cbc_name=#{cbc_name },
+		</if>
+		<if test="cbc_bankName != null and cbc_bankName != ''">
+			cbc_bankName=#{cbc_bankName },
+		</if>
+		<if test="cbc_address != null and cbc_address != ''">
+			cbc_address=#{cbc_address },
+		</if>
+		cbc_cardNum=#{cbc_cardNum }
+	</sql>
+	
+	<!-- 添加银行卡 -->
+	<insert id="insertCustomerBank" useGeneratedKeys="true" parameterType="com.gjp.model.UserCustomerBank" keyProperty="cbc_id">
+		insert into GJP_UserCenter_CustomerBank(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+	
+	<!-- 根据客户编号查询银行卡信息 -->
+	<select id="selectCustomerBank" resultType="com.gjp.model.UserCustomerBank">
+		select * from GJP_UserCenter_CustomerBank cbk
+		LEFT JOIN
+		(SELECT * FROM (
+		select bl_path, bank_Name from GJP_Bank bk 
+		LEFT JOIN
+		GJP_Bank_Logo bkL ON bkL.bank_Code = bk.bank_Code
+		GROUP BY bank_Name
+		) bank) bk ON cbk.cbc_bankName = bk.bank_Name
+		where 1=1
+		<if test="cc_id != null and cc_id != ''">
+		and cc_id=#{cc_id}
+		</if>
+	</select>
+	
+	<!-- 修改客户银行卡信息  -->
+	<update id="updateCustomerBanke" parameterType="com.gjp.model.UserCustomerBank">
+		update GJP_UserCenter_CustomerBank set
+		<include refid="update"></include>
+		where cc_id = #{cc_id}
+	</update>
+	
+	<!-- 删除银行卡 -->
+	<delete id="deleteCustomerBanke" parameterType="com.gjp.model.UserCustomerBank">
+		DELETE FROM 
+		GJP_UserCenter_CustomerBank 
+		WHERE 
+		cc_id=#{cc_id}
+	</delete>
+	
+</mapper>

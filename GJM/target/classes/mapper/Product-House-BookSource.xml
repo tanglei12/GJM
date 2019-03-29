@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预约 GJP_House_BookSource -->
+<mapper namespace="com.gjp.dao.HouseBookSourceDao">
+	
+	<!-- 增加预约来源信息 -->
+	<insert id="addHouseBookSource"  useGeneratedKeys="true" keyProperty="bs_id" parameterType="com.gjp.model.HouseBookSourceInfo">
+		insert into GJP_business.GJP_House_BookSource
+		(
+		source_id,
+		source_name
+		) values (
+		#{sourceId},
+		#{sourceName}
+		)
+	</insert>
+	
+	<!-- 更新预约来源数据 -->
+	<update id="updateHouseBookSource" parameterType="com.gjp.model.HouseBookSourceInfo">
+		update GJP_business.GJP_House_BookSource 
+			set
+				bs_id = #{bs_id} 
+				<if test="sourceId !=null and sourceId != ''">
+			 		,source_id = #{sourceId}
+			 	</if>
+			 	<if test="sourceName !=null and sourceName != ''">
+			 		,source_name = #{sourceName}
+			 	</if>
+			where bs_id = #{bs_id} 
+	</update>
+	
+	<!-- 查询所有 -->
+	<select id="queryBookSource" resultType="com.gjp.model.HouseBookSourceInfo">
+		select 
+			bs_id as bs_id,
+			source_id as sourceId,
+			source_name as sourceName
+		from 
+		 	GJP_business.GJP_House_BookSource
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="queryHouseBookSourceForList" resultType="com.gjp.model.HouseBookSourceInfo">
+		select 
+			bs_id as bs_id,
+			source_id as sourceId,
+			source_name as sourceName
+		from 
+		 	GJP_business.GJP_House_BookSource
+		limit #{pageNo}, #{pageSize}
+	</select>
+	
+	<!-- 查询总条数 -->
+	<select id="queryHouseBookSourceForCount" resultType = "int">
+		select
+			count(bs_id)
+		from 
+			GJP_business.GJP_House_BookSource
+	</select>
+	
+	<!-- 查询单条预约配置信息 -->
+	<select id="queryHouseBookSourceById" resultType = "com.gjp.model.HouseBookSourceInfo">
+		select 
+			bs_id as bs_id,
+			source_id as sourceId,
+			source_name as sourceName
+		from 
+		 	GJP_business.GJP_House_BookSource
+		 where bs_id = #{bs_id}
+	</select>
+	
+	<!-- 删除数据 -->
+	<delete id="delHouseBookSource" parameterType="java.lang.Integer">
+		delete from GJP_business.GJP_House_BookSource where bs_id = #{bs_id}
+	</delete>
+
+</mapper>

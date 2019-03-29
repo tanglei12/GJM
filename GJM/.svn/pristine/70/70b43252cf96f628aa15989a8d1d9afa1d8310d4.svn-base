@@ -1,0 +1,1956 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 财务管理 -->
+<mapper namespace="com.gjp.dao.FinanceManageDao">
+
+    <!-- 添加支付流水 -->
+    <insert id="addPayFlowStatement" useGeneratedKeys="true" keyProperty="bs_id">
+        INSERT INTO GJP_Finance_PayFlowStatement(bs_serialNumber,
+                                                 bs_orderNumber,
+                                                 bs_payTransNumber,
+                                                 hi_code,
+                                                 bco_code,
+                                                 bs_type,
+                                                 bs_title,
+                                                 bs_subtitle,
+                                                 bs_source,
+                                                 bs_balPay,
+                                                 bs_money,
+                                                 bs_refund,
+                                                 bs_discount,
+                                                 bs_state,
+                                                 bs_flowState,
+                                                 bs_verifyState,
+                                                 bs_payType,
+                                                 bs_payTime,
+                                                 bs_payeeCode,
+                                                 bs_payeeName,
+                                                 bs_payeeAccount,
+                                                 bs_payerCode,
+                                                 bs_payerName,
+                                                 bs_payerAccount,
+                                                 bs_handler,
+                                                 bs_remark,
+                                                 bs_verifier,
+                                                 bs_verifyTime,
+                                                 bs_invalidTime,
+                                                 bs_createTime)
+        VALUES(#{bs_serialNumber},
+               #{bs_orderNumber},
+               #{bs_payTransNumber},
+               #{hi_code},
+               #{bco_code},
+               #{bs_type},
+               #{bs_title},
+               #{bs_subtitle},
+               #{bs_source},
+               #{bs_balPay},
+               #{bs_money},
+               #{bs_refund},
+               #{bs_discount},
+               #{bs_state},
+               #{bs_flowState},
+               #{bs_verifyState},
+               #{bs_payType},
+               #{bs_payTime},
+               #{bs_payeeCode},
+               #{bs_payeeName},
+               #{bs_payeeAccount},
+               #{bs_payerCode},
+               #{bs_payerName},
+               #{bs_payerAccount},
+               #{bs_handler},
+               #{bs_remark},
+               #{bs_verifier},
+               #{bs_verifyTime},
+               #{bs_invalidTime},
+               #{bs_createTime})
+    </insert>
+
+    <!-- 更新支付流水 -->
+    <update id="updatePayFlowStatement">
+        UPDATE GJP_Finance_PayFlowStatement
+        <set>
+            <if test="bs_payTransNumber !=null">bs_payTransNumber = #{bs_payTransNumber},</if>
+            <if test="hi_code !=null">hi_code = #{hi_code},</if>
+            <if test="bco_code !=null">bco_code = #{bco_code},</if>
+            <if test="bs_type !=null">bs_type = #{bs_type},</if>
+            <if test="bs_title !=null">bs_title = #{bs_title},</if>
+            <if test="bs_subtitle !=null">bs_subtitle = #{bs_subtitle},</if>
+            <if test="bs_source !=null">bs_source = #{bs_source},</if>
+            <if test="bs_balPay !=null">bs_balPay = #{bs_balPay},</if>
+            <if test="bs_money !=null">bs_money = #{bs_money},</if>
+            <if test="bs_refund !=null">bs_refund = #{bs_refund},</if>
+            <if test="bs_discount !=null">bs_discount = #{bs_discount},</if>
+            <if test="bs_state !=null">bs_state = #{bs_state},</if>
+            <if test="bs_flowState !=null">bs_flowState = #{bs_flowState},</if>
+            <if test="bs_verifyState !=null">bs_verifyState = #{bs_verifyState},</if>
+            <if test="bs_payType !=null">bs_payType = #{bs_payType},</if>
+            <if test="bs_payTime !=null">bs_payTime = #{bs_payTime},</if>
+            <if test="bs_payeeCode !=null">bs_payeeCode = #{bs_payeeCode},</if>
+            <if test="bs_payeeName !=null">bs_payeeName = #{bs_payeeName},</if>
+            <if test="bs_payeeAccount !=null">bs_payeeAccount = #{bs_payeeAccount},</if>
+            <if test="bs_payerCode !=null">bs_payerCode = #{bs_payerCode},</if>
+            <if test="bs_payerName !=null">bs_payerName = #{bs_payerName},</if>
+            <if test="bs_payerAccount !=null">bs_payerAccount = #{bs_payerAccount},</if>
+            <if test="bs_handler !=null">bs_handler = #{bs_handler},</if>
+            <if test="bs_remark !=null">bs_remark = #{bs_remark},</if>
+            <if test="bs_verifier !=null">bs_verifier = #{bs_verifier},</if>
+            <if test="bs_verifyTime !=null">bs_verifyTime = #{bs_verifyTime},</if>
+            <if test="bs_invalidTime !=null">bs_invalidTime = #{bs_invalidTime},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="bs_id !=null">bs_id=#{bs_id}</when>
+            <when test="bs_serialNumber !=null">bs_serialNumber=#{bs_serialNumber}</when>
+            <when test="bs_orderNumber !=null">bs_orderNumber=#{bs_orderNumber}</when>
+        </choose>
+        <if test="bs_state_where != null">AND bs_state=#{bs_state_where}</if>
+    </update>
+
+    <!-- 更新支付流水 -->
+    <update id="updateContractBillInstalment">
+        UPDATE GJP_Bill_ContractBill_Instalment
+        <set>
+            <if test="cbs_code !=null">cbs_code = #{cbs_code},</if>
+            <if test="bco_code !=null">bco_code = #{bco_code},</if>
+            <if test="bcb_cycle !=null">bcb_cycle = #{bcb_cycle},</if>
+            <if test="cbs_cycle !=null">cbs_cycle = #{cbs_cycle},</if>
+            <if test="cbs_cycle_total !=null">cbs_cycle_total = #{cbs_cycle_total},</if>
+            <if test="cbs_balPay !=null">cbs_balPay = #{cbs_balPay},</if>
+            <if test="cbs_status !=null">cbs_status = #{cbs_status},</if>
+            <if test="cbs_repayment !=null">cbs_repayment = #{cbs_repayment},</if>
+            <if test="cbs_realPayment !=null">cbs_realPayment = #{cbs_realPayment},</if>
+            <if test="cbs_repaymentDate !=null">cbs_repaymentDate = #{cbs_repaymentDate},</if>
+            <if test="cbs_realPaymentDate !=null">cbs_realPaymentDate = #{cbs_realPaymentDate},</if>
+            <if test="cbs_late_fee !=null">cbs_late_fee = #{cbs_late_fee},</if>
+            <if test="cbs_account_out !=null">cbs_account_out = #{cbs_account_out},</if>
+            <if test="cbs_pay_way !=null">cbs_pay_way = #{cbs_pay_way},</if>
+            <if test="cbs_overdue_day !=null">cbs_overdue_day = #{cbs_overdue_day},</if>
+            <if test="cbs_creator !=null">cbs_creator = #{cbs_creator},</if>
+            <if test="cbs_operater !=null">cbs_operater = #{cbs_operater},</if>
+            <if test="cbs_remarks !=null">cbs_remarks = #{cbs_remarks},</if>
+            <if test="cbs_create_time !=null">cbs_create_time = #{cbs_create_time},</if>
+        </set>
+        WHERE
+        cbs_id = #{cbs_id}
+    </update>
+
+    <delete id="deleteContractBillInstalment">
+        DELETE
+        FROM GJP_Bill_ContractBill_Instalment
+        WHERE cbs_id = #{cbs_id}
+    </delete>
+
+    <!-- 添加账单流水关联数据 -->
+    <insert id="addStatementBillRelation" useGeneratedKeys="true" keyProperty="sbr_id">
+        INSERT INTO GJP_Finance_StatementBillRelation(bs_serialNumber, bcb_code, sbr_money, sbr_createTime)
+        VALUES(#{bs_serialNumber}, #{bcb_code}, #{sbr_money}, #{sbr_createTime})
+    </insert>
+
+    <!-- 添加预算订单 -->
+    <insert id="addBudgetOrder" useGeneratedKeys="true" keyProperty="bbo_id">
+        INSERT INTO GJP_Bili_BudgetOrder(bbo_code, bbo_name, bbo_type, bbo_desc, bbo_state, bbo_budgetDate, bbo_creator, bbo_createTime)
+        VALUES(#{bbo_code}, #{bbo_name}, #{bbo_type}, #{bbo_desc}, #{bbo_state}, #{bbo_budgetDate}, #{bbo_creator}, #{bbo_createTime})
+    </insert>
+
+    <!-- 添加预算清单 -->
+    <insert id="addBudgetBill" useGeneratedKeys="true" keyProperty="bbb_id">
+        INSERT INTO GJP_Bill_BudgetBill(bbo_code, bill_id, bbb_paymentWay, bbb_cycleSegment, bbb_remarks, bbb_applicant, bbb_manager, bbb_createTime)
+        VALUES(#{bbo_code}, #{bill_id}, #{bbb_paymentWay}, #{bbb_cycleSegment}, #{bbb_remarks}, #{bbb_applicant}, #{bbb_manager}, #{bbb_createTime})
+    </insert>
+
+    <!-- 添加账单流水 -->
+    <insert id="addBillStatement" useGeneratedKeys="true" keyProperty="bs_id">
+        INSERT INTO GJP_Bill_Statement(bs_statementNum, bs_payNo, bs_payPersion, bs_payPhone, bs_state, bs_payNum, bs_money, bs_payType, bs_payDate, bs_arrivalDate, bs_payAccount, bs_alipayNum, bs_trade_none)
+        VALUES(#{bs_statementNum}, #{bs_payNo}, #{bs_payPersion}, #{bs_payPhone}, #{bs_state}, #{bs_payNum}, #{bs_money}, #{bs_payType}, #{bs_payDate}, #{bs_arrivalDate}, #{bs_payAccount}, #{bs_alipayNum}, #{bs_trade_none})
+    </insert>
+
+    <!-- 插入审核记录表 -->
+    <insert id="addContractBillLogs" useGeneratedKeys="true" keyProperty="cbl_id">
+        INSERT INTO GJP_journal.GJP_Bill_ContractBillLogs(em_id, cbl_text, cbl_time)
+        VALUES(#{em_id}, #{cbl_text}, #{cbl_time})
+    </insert>
+
+    <!-- 插入账单日志 -->
+    <insert id="addContractPrintLogs" useGeneratedKeys="true" keyProperty="cpl_id">
+        INSERT INTO GJP_journal.GJP_Bill_ContractPrintLogs(bco_code, cpl_text, cpl_num, cpl_date, bco_num)
+        VALUES(#{bco_code}, #{cpl_text}, #{cpl_num }, NOW(), #{bco_num })
+    </insert>
+
+    <!-- 根据第三方交易号查询流水 -->
+    <select id="selectBusinessStatement" resultType="com.gjp.model.BillStatementVo">
+        select *
+        from GJP_Bill_Statement
+        where bs_payNo = #{bs_payNo}
+    </select>
+
+    <!-- 根据第三方交易号查询流水 -->
+    <select id="queryBillStatement" resultType="com.gjp.model.BillStatementVo">
+        SELECT * FROM
+        GJP_Bill_Statement
+        <where>
+            <if test="bs_payNo != null">bs_payNo = #{bs_payNo}</if>
+            <if test="bs_trade_none != null">AND bs_trade_none = #{bs_trade_none}</if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- TODO 查询支付流水 -->
+    <select id="queryPayFlowStatement" resultType="com.gjp.model.FinancePayFlowStatementVo">
+        SELECT
+        *
+        FROM (
+        SELECT
+        bs.*,
+        ccp1.ccp_phone AS payee_phone,
+        ccp2.ccp_phone AS payer_phone,
+        em1.em_name AS bs_handler_name,
+        em1.em_phone AS bs_handler_phone,
+        em2.em_name AS bs_verifier_name,
+        em2.em_phone AS bs_verifier_phone,
+        bco.contractObject_code,
+        house.house_address
+        FROM GJP_business.GJP_Finance_PayFlowStatement AS bs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bs.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc1 ON bs.bs_payeeCode = cc1.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp1 ON cc1.cc_id = ccp1.cc_id AND ccp1.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc2 ON bs.bs_payerCode = cc2.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp2 ON cc2.cc_id = ccp2.cc_id AND ccp2.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em1 ON em1.em_id = bs.bs_handler
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em2 ON em2.em_id = bs.bs_verifier
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bco.bco_code = bs.bco_code
+        ) TMP
+        WHERE 1=1
+        <if test="bs_serialNumber != null">AND bs_serialNumber = #{bs_serialNumber}</if>
+        <if test="bs_orderNumber != null">AND bs_orderNumber = #{bs_orderNumber}</if>
+        <if test="bs_payTransNumber != null">AND bs_payTransNumber = #{bs_payTransNumber}</if>
+        <if test="bco_code != null">AND bco_code=#{bco_code}</if>
+        <if test="bs_type != null">AND bs_type=#{bs_type}</if>
+        <if test="bs_state != null">AND bs_state=#{bs_state}</if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询支付流水 -->
+    <select id="queryStatementBillRelationList" resultType="com.gjp.model.FinanceStatementBillRelationVo">
+        SELECT * FROM
+        GJP_Finance_StatementBillRelation
+        <where>
+            <if test="bs_serialNumber != null">AND bs_serialNumber = #{bs_serialNumber}</if>
+            <if test="bcb_code != null">AND bcb_code = #{bcb_code}</if>
+            <if test="sbr_state != null">AND sbr_state = #{sbr_state}</if>
+        </where>
+    </select>
+
+    <!-- 根据流水号修改第三方交易号和商户订单号 -->
+    <update id="updateBusinessStatementPay" parameterType="com.gjp.model.BillStatementVo">
+        update GJP_Bill_Statement
+        set bs_payNo       = #{bs_payNo},
+            bs_state       = #{bs_state},
+            bs_arrivalDate = #{bs_arrivalDate}
+        where bs_statementNum = #{bs_statementNum}
+    </update>
+
+    <!-- 根据流水号修改期数 -->
+    <update id="updateBusinessStatement" parameterType="com.gjp.model.BillStatementVo">
+        update GJP_Bill_Statement
+        set bs_payNum = #{bs_payNum}
+        where bs_payNo = #{bs_payNo}
+    </update>
+
+    <!-- 根据流水号修改期数 -->
+    <update id="updateStatementBillRelation" parameterType="com.gjp.model.FinanceStatementBillRelationVo">
+        UPDATE GJP_Finance_StatementBillRelation
+        <set>
+            <if test="sbr_state != null">sbr_state = #{sbr_state}</if>
+        </set>
+        WHERE
+        bs_serialNumber=#{bs_serialNumber}
+    </update>
+
+    <update id="updateFinanceDownPayment">
+        UPDATE GJP_Finance_DownPayment
+        <set>
+            <if test="fdp_status != null">fdp_status = #{fdp_status},</if>
+            <if test="fdp_remarks != null">fdp_remarks = #{fdp_remarks},</if>
+        </set>
+        WHERE
+        fdp_id = #{fdp_id}
+    </update>
+
+    <!-- 添加合同账单 -->
+    <insert id="addContractOrder" useGeneratedKeys="true" keyProperty="bco_id">
+        INSERT INTO GJP_Bill_ContractOrder(bco_code,
+                                           bco_title,
+                                           bco_description,
+                                           hi_code,
+                                           contractObject_code,
+                                           bco_orderType,
+                                           bco_type,
+                                           bco_cooperater,
+                                           bco_payObject,
+                                           bco_userId,
+                                           bco_customer,
+                                           ucc_id,
+                                           em_id,
+                                           bco_currentCycle,
+                                           bco_currentBalPay,
+                                           bco_currentPayment,
+                                           bco_currentDate,
+                                           bco_currentOverDay,
+                                           bco_currentOverCycle,
+                                           bco_totalCycle,
+                                           bco_totalPayment,
+                                           bco_state,
+                                           bco_optionState,
+                                           bco_butler,
+                                           bco_invalidTime,
+                                           bco_createTime,
+                                           bco_uccId)
+        VALUES(#{bco_code},
+               #{bco_title},
+               #{bco_description},
+               #{hi_code},
+               #{contractObject_code},
+               #{bco_orderType},
+               #{bco_type},
+               #{bco_cooperater},
+               #{bco_payObject},
+               #{bco_userId},
+               #{bco_customer},
+               #{ucc_id},
+               #{em_id},
+               #{bco_currentCycle},
+               #{bco_currentBalPay},
+               #{bco_currentPayment},
+               #{bco_currentDate},
+               #{bco_currentOverDay},
+               #{bco_currentOverCycle},
+               #{bco_totalCycle},
+               #{bco_totalPayment},
+               #{bco_state},
+               #{bco_optionState},
+               #{bco_butler},
+               #{bco_invalidTime},
+               #{bco_createTime},
+               #{bco_uccId})
+    </insert>
+
+    <!-- 添加合同账单 -->
+    <insert id="addContractBill" useGeneratedKeys="true" keyProperty="bcb_id">
+        INSERT INTO GJP_Bill_ContractBill(bcb_code,
+                                          bco_code,
+                                          bcb_cycle,
+                                          bcb_type,
+                                          bcb_balPay,
+                                          bcb_repayment,
+                                          bcb_realPayment,
+                                          bcb_balance,
+                                          bcb_repaymentDate,
+                                          bcb_startDate,
+                                          bcb_endDate,
+                                          bcb_realPaymentDate,
+                                          bcb_agreedDate,
+                                          bcb_state,
+                                          bcb_budgetState,
+                                          bcb_payWay,
+                                          bcb_overdueDay,
+                                          bcb_creator,
+                                          bcb_operater,
+                                          bcb_remarks,
+                                          bcb_createTime,
+                                          bcb_uccId)
+        VALUES(#{bcb_code},
+               #{bco_code},
+               #{bcb_cycle},
+               #{bcb_type},
+               #{bcb_balPay},
+               #{bcb_repayment},
+               #{bcb_realPayment},
+               #{bcb_balance},
+               #{bcb_repaymentDate},
+               #{bcb_startDate},
+               #{bcb_endDate},
+               #{bcb_realPaymentDate},
+               #{bcb_agreedDate},
+               #{bcb_state},
+               #{bcb_budgetState},
+               #{bcb_payWay},
+               #{bcb_overdueDay},
+               #{bcb_creator},
+               #{bcb_operater},
+               #{bcb_remarks},
+               #{bcb_createTime},
+               #{bcb_uccId})
+    </insert>
+
+    <!-- 添加流水关联 -->
+    <insert id="addStatementFiliation" useGeneratedKeys="true" keyProperty="sf_id">
+        INSERT INTO GJP_Bill_StatementFiliation(sf_type, sf_num, sf_date, sf_statement)
+        VALUES(#{sf_type}, #{sf_num}, #{sf_date}, #{sf_statement})
+    </insert>
+
+    <!-- 添加关联订单 -->
+    <insert id="addRelatedOrder" useGeneratedKeys="true" keyProperty="ro_id">
+        INSERT INTO GJP_Bill_RelatedOrder(ro_code, bco_code, hi_code, house_address, ro_customerType, ro_customerName, ro_customerPhone, ro_totalMoney, ro_payState, ro_state, ro_creator, ro_createTime)
+        VALUES(#{ro_code}, #{bco_code}, #{hi_code}, #{house_address}, #{ro_customerType}, #{ro_customerName}, #{ro_customerPhone}, #{ro_totalMoney}, #{ro_payState}, #{ro_state}, #{ro_creator}, #{ro_createTime})
+    </insert>
+
+    <!-- 添加流水关联 -->
+    <insert id="addRelatedBill" useGeneratedKeys="true" keyProperty="rb_id">
+        INSERT INTO GJP_Bill_RelatedBill(rb_code, ro_code, rb_type, rb_balPay, rb_paymentMoney, rb_paymentDate, rb_state, rb_payWay, rb_creator, rb_remarks, rb_createTime)
+        VALUES(#{rb_code}, #{ro_code}, #{rb_type}, #{rb_balPay}, #{rb_paymentMoney}, #{rb_paymentDate}, #{rb_state}, #{rb_payWay}, #{rb_creator}, #{rb_remarks}, #{rb_createTime})
+    </insert>
+
+    <!-- 查询流水关系表数据 -->
+    <select id="queryStatementFiliationList" resultType="com.gjp.model.BillStatementFiliation">
+        SELECT
+        *
+        FROM
+        GJP_Bill_StatementFiliation AS sf
+        LEFT JOIN GJP_Bill_Statement AS bs ON sf.sf_statement = bs.bs_statementNum
+        WHERE
+        1=1
+        <if test="sf_num != null">
+            and sf_num = #{sf_num}
+        </if>
+        <if test="bs_trade_none != null">
+            and bs_trade_none = #{bs_trade_none}
+        </if>
+    </select>
+
+    <!-- 查询预算订单分页数据 -->
+    <select id="queryBudgetOrderPageList" resultType="com.gjp.model.BudgetOrderVo">
+        SELECT * FROM (SELECT
+        bbo.*,
+        bbb.bill_count,
+        bbb.bill_sum,
+        emp.em_name AS bbo_creatorName
+        FROM
+        GJP_Bili_BudgetOrder bbo
+        LEFT JOIN (
+        SELECT bbo_code, COUNT(*) AS bill_count, SUM(bcb.bcb_repayment) AS bill_sum FROM GJP_Bill_BudgetBill bbb
+        LEFT JOIN GJP_Bill_ContractBill AS bcb ON bbb.bill_id = bcb.bcb_id GROUP BY bbb.bbo_code
+        ) bbb ON bbo.bbo_code = bbb.bbo_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bbo.bbo_creator = emp.em_id
+        ) tmp
+        WHERE
+        1=1
+        <if test="t.bbo_type != null">AND bbo_type =#{t.bbo_type}</if>
+        <if test="t.bbo_state != null">AND bbo_state =#{t.bbo_state}</if>
+        <if test="t.bbo_code != null">
+            AND (
+            bbo_code LIKE CONCAT('%',#{t.bbo_code},'%')
+            OR bbo_name LIKE CONCAT('%',#{t.bbo_name},'%')
+            OR bbo_desc LIKE CONCAT('%',#{t.bbo_desc},'%')
+            )
+        </if>
+        ORDER BY
+        bbo_budgetDate DESC,
+        bbo_createTime DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询预算订单分页数据 -->
+    <select id="queryBudgetOrderPageTotalRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM (SELECT
+        bbo.*,
+        bbb.bill_count,
+        bbb.bill_sum,
+        emp.em_name AS bbo_creatorName
+        FROM
+        GJP_Bili_BudgetOrder bbo
+        LEFT JOIN (
+        SELECT bbo_code, COUNT(*) AS bill_count, SUM(bcb.bcb_repayment) AS bill_sum FROM GJP_Bill_BudgetBill bbb
+        LEFT JOIN GJP_Bill_ContractBill AS bcb ON bbb.bill_id = bcb.bcb_id GROUP BY bbb.bbo_code
+        ) bbb ON bbo.bbo_code = bbb.bbo_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bbo.bbo_creator = emp.em_id
+        ) tmp
+        WHERE
+        1=1
+        <if test="t.bbo_type != null">AND bbo_type =#{t.bbo_type}</if>
+        <if test="t.bbo_state != null">AND bbo_state =#{t.bbo_state}</if>
+        <if test="t.bbo_code != null">
+            AND (
+            bbo_code LIKE CONCAT('%',#{t.bbo_code},'%')
+            OR bbo_name LIKE CONCAT('%',#{t.bbo_name},'%')
+            OR bbo_desc LIKE CONCAT('%',#{t.bbo_desc},'%')
+            )
+        </if>
+    </select>
+
+    <!-- 查询预算订单数据 -->
+    <select id="queryBudgetOrder" resultType="com.gjp.model.BudgetOrderVo">
+        SELECT * FROM
+        GJP_Bili_BudgetOrder
+        WHERE
+        <choose>
+            <when test="bbo_code != null">bbo_code =#{bbo_code}</when>
+            <when test="bbo_id != null">bbo_id =#{bbo_id}</when>
+        </choose>
+        LIMIT 1
+    </select>
+
+    <!-- 查询预算账单数据 -->
+    <select id="queryBudgetBill" resultType="com.gjp.model.BudgetBillVo">
+        SELECT
+        house.house_address,
+        house.hi_code AS house_code,
+        co.ContractObject_No,
+        co.ContractObject_Type,
+        bbb.*,
+        bcb.bco_code AS bill_code,
+        bcb.bcb_type AS bill_type,
+        bcb.bcb_cycle AS bill_cycle,
+        bcb.bcb_balPay AS bill_balPay,
+        bcb.bcb_state AS bill_state,
+        bcb.bcb_budgetState AS bill_budgetState,
+        bcb.bcb_repayment AS bill_repayment,
+        bcb.bcb_repaymentDate AS bill_repaymentDate,
+        bcb.bcb_realPayment AS bill_realpayment,
+        bcb.bcb_realPaymentDate AS bill_realpaymentDate,
+        bcb.bcb_balance AS bill_balance
+        FROM
+        GJP_business.GJP_Bill_BudgetBill AS bbb
+        INNER JOIN GJP_business.GJP_Bill_ContractBill AS bcb ON bbb.bill_id = bcb.bcb_id
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code = bco.bco_code
+        LEFT JOIN GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        WHERE
+        <choose>
+            <when test="bbb_id !=null">bbb.bbb_id =#{bbb_id}</when>
+            <when test="bill_id !=null">bbb.bill_id =#{bill_id}</when>
+        </choose>
+        LIMIT 1
+    </select>
+
+    <!-- 查询预算订单分页数据 -->
+    <select id="queryBudgetBillPageList" resultType="com.gjp.model.BudgetBillVo">
+        SELECT
+        bbb.bbb_budgetDate,
+        bbb.bbb_type,
+        Sum(bbb.bbb_repayment) AS bbb_repayment,
+        Sum(bbb.bbb_realPayment) AS bbb_realPayment,
+        Sum(bbb.bbb_balance) AS bbb_balance,
+        Count(*) AS budgetTotalCount,
+        tmp1.budgetWillCount,
+        tmp2.budgetIngCount,
+        tmp3.budgetEdCount,
+        IF(COUNT(*) = tmp3.budgetEdCount,'完成','未完成') AS budgetState
+        FROM
+        GJP_Bill_BudgetBill AS bbb
+        LEFT JOIN (SELECT bbb_budgetDate,COUNT(*) AS budgetWillCount FROM GJP_Bill_BudgetBill bbb WHERE bbb.bbb_state = 0 GROUP BY bbb.bbb_budgetDate) tmp1 ON tmp1.bbb_budgetDate = bbb.bbb_budgetDate
+        LEFT JOIN (SELECT bbb_budgetDate,COUNT(*) AS budgetIngCount FROM GJP_Bill_BudgetBill bbb WHERE bbb.bbb_state = 1 GROUP BY bbb.bbb_budgetDate) tmp2 ON tmp2.bbb_budgetDate = bbb.bbb_budgetDate
+        LEFT JOIN (SELECT bbb_budgetDate,COUNT(*) AS budgetEdCount FROM GJP_Bill_BudgetBill bbb WHERE bbb.bbb_state = 2 GROUP BY bbb.bbb_budgetDate) tmp3 ON tmp3.bbb_budgetDate = bbb.bbb_budgetDate
+        WHERE
+        1=1
+        <if test="t.bbb_type != null">AND bbb.bbb_type = #{t.bbb_type}</if>
+        <if test="t.bbb_budgetDate != null">AND bbb.bbb_budgetDate = #{t.bbb_budgetDate}</if>
+        GROUP BY bbb.bbb_budgetDate
+        ORDER BY bbb.bbb_budgetDate DESC
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询预算订单分页数据 -->
+    <select id="queryBudgetBillPageTotalRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        GJP_Bill_BudgetBill AS bbb
+        WHERE
+        1=1
+        <if test="t.bbb_budgetDate != null">AND bbb.bbb_budgetDate = #{t.bbb_budgetDate}</if>
+    </select>
+
+    <!-- 查询产品库类型字典 -->
+    <select id="queryBillTypeList" resultType="com.gjp.model.BillTypeVo">
+        SELECT
+        *
+        FROM
+        GJP_Bill_Type
+        WHERE
+        1=1
+        <if test="bt_parentCode != null">
+            and bt_parentCode = #{bt_parentCode}
+        </if>
+        <choose>
+            <when test="type == 'NOT' and types != null">
+                AND bt_code NOT IN
+                <foreach item="item" index="index" collection="types" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+            <when test="type != 'NOT' and types != null">
+                AND bt_code IN
+                <foreach item="item" index="index" collection="types" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+        </choose>
+        <if test="bt_name != null and bt_name != ''">
+            and bt_name=#{bt_name}
+        </if>
+        ORDER BY bt_order DESC
+    </select>
+
+    <!-- 查询租赁账单最后还款记录 -->
+    <select id="queryContractBillFirstOne" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        *
+        FROM GJP_Bill_ContractBill
+        WHERE
+        bco_code = #{bco_code}
+        <if test="bcb_state_no !=null">AND bcb_state != #{bcb_state_no}</if>
+        ORDER BY bcb_cycle ASC LIMIT 1
+    </select>
+
+    <!-- 查询预算账单列表 -->
+    <select id="queryBudgetBillMoreList" resultType="com.gjp.model.BudgetBillVo">
+        SELECT * FROM (SELECT
+        house.house_address,
+        house.hi_code AS house_code,
+        co.ContractObject_No,
+        co.ContractObject_Type,
+        bbb.*,
+        bcb.bco_code AS bill_code,
+        bcb.bcb_type AS bill_type,
+        bcb.bcb_cycle AS bill_cycle,
+        bcb.bcb_balPay AS bill_balPay,
+        bcb.bcb_state AS bill_state,
+        bcb.bcb_budgetState AS bill_budgetState,
+        bcb.bcb_repayment AS bill_repayment,
+        bcb.bcb_repaymentDate AS bill_repaymentDate,
+        bcb.bcb_realPayment AS bill_realpayment,
+        bcb.bcb_realPaymentDate AS bill_realpaymentDate,
+        bcb.bcb_balance AS bill_balance
+        FROM
+        GJP_business.GJP_Bill_BudgetBill AS bbb
+        INNER JOIN GJP_business.GJP_Bili_BudgetOrder AS bbo ON bbb.bbo_code = bbo.bbo_code
+        INNER JOIN GJP_business.GJP_Bill_ContractBill AS bcb ON bbb.bill_id = bcb.bcb_id
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code = bco.bco_code
+        INNER JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        INNER JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        ) tmp
+        WHERE
+        1 = 1
+        <if test="bill_type != null and bill_type != ''">AND bill_type = #{bill_type}</if>
+        <if test="bbo_code != null">AND bbo_code = #{bbo_code}</if>
+        ORDER BY
+        house_code ASC,
+        bill_cycle ASC,
+        bill_type ASC
+    </select>
+
+    <!-- 查询预算账单列表 -->
+    <select id="queryBudgetBillList" resultType="com.gjp.model.BudgetBillVo">
+        SELECT
+        *
+        FROM
+        GJP_business.GJP_Bill_BudgetBill
+        WHERE
+        1=1
+        <if test="bbo_code != null">AND bbo_code = #{bbo_code}</if>
+    </select>
+
+    <!-- 查询合同订单 -->
+    <select id="queryFinanceOrder" resultType="com.gjp.model.ContractOrderVo">
+        SELECT
+        bco.*,
+        em.em_name AS bco_empName,
+        em.em_phone AS bco_empPhone,
+        cc.cc_name AS bco_customerName,
+        ccp.ccp_phone AS bco_customerPhone
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON bco.bco_butler = em.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        <where>
+            <if test="hi_code !=null">AND bco.hi_code=#{hi_code}</if>
+            <if test="contractObject_code !=null">AND bco.contractObject_code=#{contractObject_code}</if>
+            <if test="contractObject_code_where == 'isNull'">AND contractObject_code IS NULL</if>
+            <if test="bco_code !=null">AND bco.bco_code=#{bco_code}</if>
+            <if test="bco_orderType !=null">AND bco.bco_orderType=#{bco_orderType}</if>
+            <if test="bco_state !=null">AND bco_state=#{bco_state}</if>
+            <if test="bco_optionState !=null">
+                <if test="bco_optionState !=4">AND bco.bco_optionState = #{bco_optionState}</if>
+                <if test="bco_optionState ==4">AND bco.bco_optionState != #{bco_optionState}</if>
+            </if>
+            <if test="onContractCode !=null">
+                <choose>
+                    <when test="onContractCode">AND bco.contractObject_code IS NOT NULL</when>
+                    <when test="!onContractCode">AND bco.contractObject_code IS NULL</when>
+                </choose>
+            </if>
+        </where>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同账单列表数据 -->
+    <select id="queryFinanceBillList" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        bcb.*,
+        bbb.bbb_id,
+        bbb.bbb_remarks,
+        bbo.bbo_budgetDate
+        FROM GJP_Bill_ContractBill AS bcb
+        LEFT JOIN GJP_Bill_BudgetBill AS bbb ON bcb.bcb_id = bbb.bill_id
+        LEFT JOIN GJP_Bili_BudgetOrder AS bbo ON bbb.bbo_code = bbo.bbo_code
+        WHERE
+        bcb.bco_code =#{bco_code}
+        <if test="bcb_cycle !=null">AND bcb.bcb_cycle=#{bcb_cycle}</if>
+        <if test="bcb_cycle_in !=null">AND bcb.bcb_cycle IN(${bcb_cycle_in})</if>
+        <if test="bcb_state !=null">AND bcb.bcb_state=#{bcb_state}</if>
+        <if test="bcb_state_in !=null">AND bcb.bcb_state IN(${bcb_state_in})</if>
+        <if test="bcb_state_no !=null">AND bcb.bcb_state &lt;&gt; #{bcb_state_no}</if>
+        <if test="bco_optionState !=null">AND bcb.bco_optionState=#{bco_optionState}</if>
+        <!-- <if test="bcb_repaymentDate !=null">AND DATE_FORMAT(bcb.bcb_repaymentDate,'%Y-%m-%d') &lt;= DATE_FORMAT(#{bcb_repaymentDate},'%Y-%m-%d')</if> -->
+        ORDER BY
+        bcb.bcb_cycle ASC,
+        bcb.bcb_type ASC
+    </select>
+
+    <!-- 查询合同账单列表数据 -->
+    <select id="queryFinanceBillPaymentList" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        bcb.*,
+        Sum(IF(bcb.bcb_balPay = 1, -bcb.bcb_repayment, bcb.bcb_repayment)) AS totalRepayment,
+        Sum(IF(bcb.bcb_balPay = 1, -bcb.bcb_realpayment, bcb.bcb_realpayment)) AS totalRealpayment,
+        em1.em_name AS bcb_creatorName,
+        em2.em_name AS bcb_operaterName
+        FROM GJP_business.GJP_Bill_ContractBill AS bcb
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em1 ON bcb.bcb_creator = em1.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em2 ON bcb.bcb_operater = em2.em_id
+        WHERE
+        bcb.bco_code = #{bco_code}
+        <if test="bcb_state != null">
+            AND bcb_state = #{bcb_state}
+        </if>
+        GROUP BY bcb.bcb_cycle
+        ORDER BY bcb.bcb_cycle ASC
+    </select>
+
+    <select id="queryFinanceDownPayment" resultType="com.gjp.model.FinanceDownPaymentVo">
+        SELECT *
+        FROM GJP_Finance_DownPayment
+        <where>
+            <if test="hi_code !=null">AND hi_code=#{hi_code}</if>
+            <if test="order_sn !=null">AND order_sn=#{order_sn}</if>
+            <if test="fdp_id != null">AND fdp_id = #{fdp_id}</if>
+            <trim prefix="AND (" suffix=")" prefixOverrides="OR">
+                <if test="cc_code !=null">OR cc_code=#{cc_code}</if>
+                <if test="user_id !=null">OR user_id=#{user_id}</if>
+            </trim>
+            <if test="fdp_status !=null">AND fdp_status=#{fdp_status}</if>
+        </where>
+    </select>
+
+    <select id="queryContractBillInstalmentList" resultType="com.gjp.model.ContractBillInstalmentVo">
+        SELECT
+        *
+        FROM GJP_Bill_ContractBill_Instalment
+        WHERE
+        bco_code = #{bco_code}
+        <if test="bcb_cycle != null">AND bcb_cycle = #{bcb_cycle}</if>
+        <if test="cbs_repaymentDate_lt != null">AND cbs_repaymentDate &lt;= DATE_FORMAT(#{cbs_repaymentDate_lt},'%Y-%m-%d')</if>
+    </select>
+
+    <select id="queryContractBillInstalment" resultType="com.gjp.model.ContractBillInstalmentVo">
+        SELECT *
+        FROM GJP_Bill_ContractBill_Instalment
+        WHERE cbs_code = #{cbs_code}
+    </select>
+
+    <!-- 查询账单列表综合数据 -->
+    <select id="queryContractBillListByTotal" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        bcb_id,
+        bcb_code,
+        bco_code,
+        bcb_cycle,
+        bcb_type,
+        bcb_balPay,
+        ABS(SUM(IF(bcb_balPay = 0,bcb_repayment,-bcb_repayment))) AS bcb_repayment,
+        ABS(SUM(IF(bcb_balPay = 0,bcb_realPayment,-bcb_realPayment))) AS bcb_realPayment,
+        ABS(SUM(IF(bcb_balPay = 0,bcb_balance,-bcb_balance))) AS bcb_balance,
+        bcb_state,
+        bcb_budgetState,
+        bcb_repaymentDate,
+        bcb_realPaymentDate,
+        bcb_payWay,
+        bcb_overdueDay,
+        bcb_creator,
+        bcb_operater,
+        bcb_remarks,
+        bcb_createTime,
+        bcb_isRepay,
+        bcb_account_out,
+        COUNT(*) AS totalCycle
+        FROM GJP_Bill_ContractBill
+        WHERE
+        bco_code = #{bco_code}
+        <if test="bcb_state !=null and bcb_state !='' ">AND bcb_state = #{bcb_state}</if>
+        GROUP BY bcb_cycle
+        ORDER BY bcb_repaymentDate,bcb_cycle ASC
+    </select>
+
+    <!-- 查询合同账单 -->
+    <select id="queryFinanceBill" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        *
+        FROM GJP_Bill_ContractBill
+        WHERE
+        <choose>
+            <when test="bcb_id != null">bcb_id=#{bcb_id}</when>
+            <when test="bco_code != null">bco_code=#{bco_code}</when>
+            <when test="bcb_code != null">bcb_code=#{bcb_code}</when>
+        </choose>
+        <if test="bcb_cycle != null">AND bcb_cycle=#{bcb_cycle}</if>
+        <if test="bcb_state != null">AND bcb_state=#{bcb_state}</if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询合同订单分页数据 -->
+    <select id="queryFinanceOrderPageList" resultType="com.gjp.model.FinanceOrderPageListBo">
+        SELECT * FROM (
+        SELECT
+        bco.bco_orderType,
+        bco.bco_type,
+        bco.hi_code,
+        house.house_address,
+        bco.bco_code,
+        bco.bco_customer,
+        cc.cc_name AS bco_customerName,
+        ccp.ccp_phone AS bco_customerPhone,
+        cb.ContractBody_PayStyle,
+        cb.ContractBody_PayType,
+        co.contractObject_No,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        bco.bco_currentBalPay,
+        bco.bco_currentCycle,
+        bco.bco_currentPayment,
+        bco.bco_currentOverCycle,
+        bco.bco_currentOverDay,
+        bco.bco_currentDate,
+        bco.bco_optionState,
+        bco.bco_butler,
+        emp.em_name AS bco_empName,
+        emp.em_phone AS bco_empPhone,
+        bco.bco_invalidTime,
+        bco.bco_createTime,
+        ucc.ucc_name
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bco.hi_code = house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON ccp.cc_id = cc.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bco.bco_butler = emp.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS cp ON emp.em_id = cp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON cp.ucc_id = ucc.ucc_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.hi_code !=null">AND hi_code = #{t.hi_code}</if>
+                    <if test="t.bco_optionState !=null">AND bco_optionState = #{t.bco_optionState}</if>
+                    <if test="t.contractObject_Type !=null">AND contractObject_Type = #{t.contractObject_Type}</if>
+                    <if test="t.bco_type !=null">AND bco_type = #{t.bco_type}</if>
+                    AND (
+                    house_address LIKE CONCAT('%',#{t.house_address},'%')
+                    OR bco_customerName LIKE CONCAT('%',#{t.bco_customerName},'%')
+                    OR bco_customerPhone LIKE CONCAT('%',#{t.bco_customerPhone},'%')
+                    )
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bco_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryFinanceOrderPageTotalRecord" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        bco.bco_orderType,
+        bco.bco_type,
+        bco.hi_code,
+        house.house_address,
+        bco.bco_code,
+        bco.bco_customer,
+        cc.cc_name AS bco_customerName,
+        ccp.ccp_phone AS bco_customerPhone,
+        cb.ContractBody_PayStyle,
+        cb.ContractBody_PayType,
+        co.contractObject_No,
+        co.ContractObject_Type,
+        co.ContractObject_State,
+        co.ContractObject_OptionState,
+        bco.bco_currentBalPay,
+        bco.bco_currentCycle,
+        bco.bco_currentPayment,
+        bco.bco_currentOverCycle,
+        bco.bco_currentOverDay,
+        bco.bco_currentDate,
+        bco.bco_optionState,
+        bco.bco_butler,
+        emp.em_name AS bco_empName,
+        emp.em_phone AS bco_empPhone,
+        bco.bco_invalidTime,
+        bco.bco_createTime,
+        ucc.ucc_name
+        FROM GJP_business.GJP_Bill_ContractOrder AS bco
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bco.hi_code = house.hi_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON ccp.cc_id = cc.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bco.bco_butler = emp.em_id
+        LEFT JOIN (SELECT * FROM GJP_user.GJP_UserCenter_CompanyPserson GROUP BY em_id) AS cp ON emp.em_id = cp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON cp.ucc_id = ucc.ucc_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.hi_code !=null">AND hi_code = #{t.hi_code}</if>
+                    <if test="t.bco_optionState !=null">AND bco_optionState = #{t.bco_optionState}</if>
+                    <if test="t.contractObject_Type !=null">AND contractObject_Type = #{t.contractObject_Type}</if>
+                    <if test="t.bco_type !=null">AND bco_type = #{t.bco_type}</if>
+                    AND (
+                    house_address LIKE CONCAT('%',#{t.house_address},'%')
+                    OR
+                    bco_customerName LIKE CONCAT('%',#{t.bco_customerName},'%')
+                    OR
+                    bco_customerPhone LIKE CONCAT('%',#{t.bco_customerPhone},'%')
+                    )
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryRelatedOrderPageList" resultType="com.gjp.model.BillRelatedOrderVo">
+        SELECT * FROM (SELECT
+        bro.*,
+        emp.em_name AS ro_create_name
+        FROM
+        GJP_Bill_RelatedOrder AS bro
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bro.ro_creator = emp.em_id) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bro.ro_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryDepositOrderPageList" resultType="com.gjp.model.BillRelatedBillVo">
+        SELECT * FROM (SELECT
+        rb.*,
+        house.house_address,
+        ro.ro_payState,
+        ro.ro_state,
+        ro.ro_customerName,
+        ro.ro_customerPhone
+        FROM
+        GJP_business.GJP_Bill_RelatedBill AS rb
+        INNER JOIN GJP_business.GJP_Bill_RelatedOrder AS ro ON rb.ro_code = ro.ro_code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON ro.hi_code = house.hi_code
+        WHERE
+        rb.rb_type = 18 AND rb.rb_state = 1) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY rb_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryDepositOrderPageRecords" resultType="int">
+        SELECT COUNT(*) FROM (SELECT
+        rb.*,
+        house.house_address,
+        ro.ro_customerName,
+        ro.ro_customerPhone
+        FROM
+        GJP_business.GJP_Bill_RelatedBill AS rb
+        INNER JOIN GJP_business.GJP_Bill_RelatedOrder AS ro ON rb.ro_code = ro.ro_code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON ro.hi_code = house.hi_code
+        WHERE
+        rb.rb_type = 18 AND rb.rb_state = 1) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY rb_createTime DESC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询我的收款情况分页 -->
+    <select id="queryMyselfRelatedOrderPageList" resultType="com.gjp.model.BillRelatedOrderVo">
+        SELECT * FROM (SELECT
+        bro.*,
+        emp.em_name AS ro_create_name,
+        brb.rb_type,
+        brb.rb_paymentMoney,
+        brb.rb_payWay
+        FROM
+        GJP_Bill_RelatedOrder AS bro
+        LEFT JOIN GJP_Bill_RelatedBill AS brb ON bro.ro_code = brb.ro_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bro.ro_creator = emp.em_id
+        ) tmp
+        where 1=1
+        <if test="where != null and where != ''">
+            and (
+            house_address LIKE CONCAT('%',#{where},'%')
+            or ro_customerName LIKE CONCAT('%',#{where},'%')
+            or ro_customerPhone LIKE CONCAT('%',#{where},'%')
+            or rb_paymentMoney LIKE CONCAT('%',#{where},'%')
+            )
+        </if>
+        <if test="ro_creator != null">
+            and ro_creator = #{ro_creator}
+        </if>
+        order by ro_createTime desc, house_address asc
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryRelatedOrderPageRecords" resultType="int">
+        SELECT COUNT(*) FROM (SELECT
+        bro.*,
+        emp.em_name AS ro_create_name
+        FROM
+        GJP_Bill_RelatedOrder AS bro
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON bro.ro_creator = emp.em_id) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bro.ro_createTime DESC</otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询关联订单 -->
+    <select id="queryRelatedOrder" resultType="com.gjp.model.BillRelatedOrderVo">
+        SELECT
+        *
+        FROM
+        GJP_Bill_RelatedOrder
+        <where>
+            <if test="ro_id != null">ro_id =#{ro_id}</if>
+            <if test="ro_code != null">AND ro_code =#{ro_code}</if>
+        </where>
+    </select>
+
+    <!-- 查询最新待交费的合同账单 -->
+    <select id="queryContractBillForCurrentCycle" resultType="com.gjp.model.ContractBillVo">
+        SELECT bcb.bcb_cycle, ABS(SUM(IF(bcb.bcb_balPay = 0, bcb.bcb_repayment, 0)) - SUM(IF(bcb.bcb_balPay = 1, bcb.bcb_repayment, 0))) AS bcb_repayment, ABS(SUM(IF(bcb.bcb_balPay = 0, bcb.bcb_realPayment, 0)) - SUM(IF(bcb.bcb_balPay = 1, bcb.bcb_realPayment, 0))) AS bcb_realPayment, ABS(
+                SUM(IF(bcb.bcb_balPay = 0, bcb.bcb_balance, 0)) - SUM(IF(bcb.bcb_balPay = 1, bcb.bcb_balance, 0)))                       AS bcb_balance, bcb.bcb_repaymentDate
+        FROM GJP_Bill_ContractBill bcb
+                 INNER JOIN (SELECT bco_code,MIN(bcb_cycle) AS bcb_cycle FROM GJP_Bill_ContractBill WHERE bcb_state = #{bcb_state} GROUP BY bco_code) tmp ON tmp.bco_code = bcb.bco_code AND bcb.bcb_cycle = tmp.bcb_cycle
+        WHERE bcb.bco_code = #{bco_code}
+        GROUP BY bcb.bco_code
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryRelatedBillPageList" resultType="com.gjp.model.BillRelatedBillVo">
+        SELECT brb.*, co.ContractObject_No, emp.em_name AS rb_create_name
+        FROM GJP_Bill_RelatedBill AS brb
+                 LEFT JOIN GJP_Contract_Object AS co ON brb.contractObject_code = co.ContractObject_Code
+                 LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON brb.rb_creator = emp.em_id
+        LIMIT #{pageNo}, #{pageSize}
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryRelatedBillPageRecords" resultType="int">
+        SELECT COUNT(*)
+        FROM GJP_Bill_RelatedBill AS brb
+                 LEFT JOIN GJP_Contract_Object AS co ON brb.contractObject_code = co.ContractObject_Code
+                 LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON brb.rb_creator = emp.em_id
+    </select>
+
+    <!-- 查询关联账单 -->
+    <select id="queryRelatedBillList" resultType="com.gjp.model.BillRelatedBillVo">
+        SELECT rb.*, em.em_name AS rb_create_name
+        FROM GJP_business.GJP_Bill_RelatedBill AS rb
+                 LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON rb.rb_creator = em.em_id
+        WHERE rb.ro_code = #{ro_code}
+    </select>
+
+    <!-- 查询合同订单分页数据 -->
+    <select id="queryContractBillPageList" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+        *
+        FROM (
+        SELECT
+        house.house_address,
+        co.ContractObject_No,
+        co.ContractObject_Code,
+        co.ContractObject_Type,
+        co.hi_code,
+        cb.ContractBody_PayStyle,
+        cc.cc_name AS bco_customerName,
+        ccp.ccp_phone AS bco_customerPhone,
+        bco.bco_customer,
+        bcb.*,
+        (Sum(bcb_repayment) - IFNULL(Sum(bcb_realPayment),0)) AS totalRePayment,
+        (Sum(IF(bcb_repaymentDate &lt;= CURDATE(),bcb_repayment,0)) - IF(bcb_repaymentDate &lt;= CURDATE(),IFNULL(Sum(bcb_realPayment),0),0)) AS totalRealPayment,
+        Count(*) AS totalCycle
+        FROM GJP_business.GJP_Bill_ContractBill AS bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code= bco.bco_code
+        INNER JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        INNER JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        INNER JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        WHERE
+        bcb.bcb_state = 2
+        GROUP BY bcb.bco_code
+        ) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bcb_repaymentDate DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询合同订单分页条数 -->
+    <select id="queryContractBillPageRecord" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM (
+        SELECT
+        house.house_address,
+        co.ContractObject_No,
+        co.ContractObject_Type,
+        co.hi_code,
+        cb.ContractBody_PayStyle,
+        cc.cc_name AS bco_customerName,
+        ccp.ccp_phone AS bco_customerPhone,
+        bco.bco_customer,
+        bcb.*,
+        (Sum(bcb_repayment) - IFNULL(Sum(bcb_realPayment),0)) AS totalRePayment,
+        Count(*) AS totalCycle
+        FROM GJP_business.GJP_Bill_ContractBill AS bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code= bco.bco_code
+        INNER JOIN GJP_business.GJP_Contract_Object AS co ON bco.contractObject_code = co.ContractObject_Code
+        INNER JOIN GJP_business.GJP_Contract_Body AS cb ON co.ContractObject_Code = cb.ContractObject_Code
+        INNER JOIN GJP_product.view_GJP_HouseAddress AS house ON co.hi_code =
+        house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        WHERE
+        bcb.bcb_state = 2
+        GROUP BY bcb.bco_code
+        ) tmp
+        <where>
+            <if test="where != null">${where}</if>
+        </where>
+    </select>
+
+    <!-- 执行同步合同账单订单数据 -->
+    <select id="updateFinanceOrderBillData" statementType="CALLABLE" resultType="java.lang.String">
+        CALL proc_updateContractOrderBillOne(#{bco_code})
+    </select>
+
+    <!-- 更新合同账单==撤销数据 -->
+    <update id="updateContractBillForRevoke">
+        UPDATE GJP_Bill_ContractBill
+        SET bcb_state           = #{bcb_state},
+            bcb_realPayment     = #{bcb_realPayment},
+            bcb_realPaymentDate = #{bcb_realPaymentDate},
+            bcb_balance         = #{bcb_balance},
+            bcb_payWay          = #{bcb_payWay},
+            bcb_budgetState     = #{bcb_budgetState},
+            bcb_operater        = #{bcb_operater}
+        WHERE bcb_id = #{bcb_id}
+    </update>
+
+    <!-- 更新合同订单 -->
+    <update id="updateFinanceOrder">
+        UPDATE GJP_Bill_ContractOrder
+        <set>
+            <if test="contractObject_code !=null">contractObject_code=#{contractObject_code},</if>
+            <if test="hi_code !=null">hi_code=#{hi_code},</if>
+            <if test="bco_title !=null">bco_title=#{bco_title},</if>
+            <if test="bco_description !=null">bco_description=#{bco_description},</if>
+            <if test="bco_orderType !=null">bco_orderType=#{bco_orderType},</if>
+            <if test="bco_type !=null">bco_type=#{bco_type},</if>
+            <if test="bco_cooperater !=null">bco_cooperater=#{bco_cooperater},</if>
+            <if test="bco_userId !=null">bco_userId=#{bco_userId},</if>
+            <if test="bco_customer !=null">bco_customer=#{bco_customer},</if>
+            <if test="bco_currentBalPay !=null">bco_currentBalPay=#{bco_currentBalPay},</if>
+            <if test="bco_currentCycle !=null">bco_currentCycle=#{bco_currentCycle},</if>
+            <if test="bco_currentPayment !=null">bco_currentPayment=#{bco_currentPayment},</if>
+            <if test="bco_currentDate !=null">bco_currentDate=#{bco_currentDate},</if>
+            <if test="bco_currentOverCycle !=null">bco_currentOverCycle=#{bco_currentOverCycle},</if>
+            <if test="bco_totalCycle !=null">bco_totalCycle=#{bco_totalCycle},</if>
+            <if test="bco_totalPayment !=null">bco_totalPayment=#{bco_totalPayment},</if>
+            <if test="bco_state !=null">bco_state=#{bco_state},</if>
+            <if test="bco_optionState !=null">bco_optionState=#{bco_optionState},</if>
+            <if test="bco_butler !=null">bco_butler=#{bco_butler},</if>
+            <if test="bco_invalidTime !=null">bco_invalidTime=#{bco_invalidTime},</if>
+        </set>
+        <where>
+            <if test="bco_id !=null">bco_id=#{bco_id}</if>
+            <if test="bco_code !=null">AND bco_code=#{bco_code}</if>
+            <if test="bco_orderType != null">AND bco_orderType=#{bco_orderType}</if>
+            <if test="contractObject_code_where !=null">AND contractObject_code=#{contractObject_code_where}</if>
+            <if test="bco_optionState_in != null">AND bco_optionState IN(${bco_optionState_in})</if>
+        </where>
+    </update>
+
+    <!-- 更新合同订单 -->
+    <update id="updateContractOrderForState">
+        UPDATE GJP_Bill_ContractOrder
+        SET
+        bco_currentCycle = #{bco_currentCycle},
+        bco_currentPayment = #{bco_currentPayment},
+        bco_currentDate = #{bco_currentDate},
+        bco_currentOverDay = #{bco_currentOverDay},
+        bco_currentOverCycle = #{bco_currentOverCycle},
+        bco_state = #{bco_state},
+        bco_optionState = #{bco_optionState}
+        WHERE
+        <choose>
+            <when test="contractObject_code !=null">contractObject_code=#{contractObject_code}</when>
+            <when test="bco_code !=null">bco_code=#{bco_code}</when>
+            <when test="bco_id !=null">bco_id=#{bco_id}</when>
+        </choose>
+    </update>
+
+    <!-- 更新合同账单 -->
+    <update id="updateFinanceBill">
+        UPDATE GJP_Bill_ContractBill
+        <set>
+            <if test="bcb_cycle !=null">bcb_cycle = #{bcb_cycle},</if>
+            <if test="bcb_type !=null">bcb_type = #{bcb_type},</if>
+            <if test="bcb_balPay !=null">bcb_balPay = #{bcb_balPay},</if>
+            <if test="bcb_repayment !=null">bcb_repayment = #{bcb_repayment},</if>
+            <if test="bcb_realPayment !=null">bcb_realPayment = #{bcb_realPayment},</if>
+            <if test="bcb_balance !=null">bcb_balance = #{bcb_balance},</if>
+            <if test="bcb_repaymentDate !=null">bcb_repaymentDate = #{bcb_repaymentDate},</if>
+            <if test="bcb_realPaymentDate !=null">bcb_realPaymentDate = #{bcb_realPaymentDate},</if>
+            <if test="bcb_state !=null">bcb_state = #{bcb_state},</if>
+            <if test="bcb_instalment_state !=null">bcb_instalment_state = #{bcb_instalment_state},</if>
+            <if test="bcb_budgetState !=null">bcb_budgetState = #{bcb_budgetState},</if>
+            <if test="bcb_account_out !=null">bcb_account_out = #{bcb_account_out},</if>
+            <if test="bcb_payWay !=null">bcb_payWay = #{bcb_payWay},</if>
+            <if test="bcb_late_fee !=null">bcb_late_fee = #{bcb_late_fee},</if>
+            <if test="bcb_isRepay !=null">bcb_isRepay = #{bcb_isRepay},</if>
+            <if test="bcb_overdueDay !=null">bcb_overdueDay = #{bcb_overdueDay},</if>
+            <if test="bcb_creator !=null">bcb_creator = #{bcb_creator},</if>
+            <if test="bcb_operater !=null">bcb_operater = #{bcb_operater},</if>
+            <if test="bcb_remarks !=null">bcb_remarks = #{bcb_remarks},</if>
+        </set>
+        WHERE
+        <choose>
+            <when test="bcb_id != null">bcb_id = #{bcb_id}</when>
+            <when test="bco_code != null">bco_code = #{bco_code}</when>
+            <when test="bcb_code != null">bcb_code = #{bcb_code}</when>
+        </choose>
+        <if test="bcb_cycle !=null">AND bcb_cycle = #{bcb_cycle}</if>
+        <if test="bcb_cycle_where !=null">AND bcb_cycle = #{bcb_cycle_where}</if>
+        <if test="bcb_state_in !=null">AND bcb_state IN (${bcb_state_in})</if>
+        <if test="bcb_state_where !=null">AND bcb_state = #{bcb_state_where}</if>
+        <if test="bcb_repaymentDate_gt !=null">AND bcb_repaymentDate &gt;= DATE_FORMAT(#{bcb_repaymentDate_gt},'%Y-%m-%d')</if>
+    </update>
+
+    <!-- 更新预算订单 -->
+    <update id="updateBudgetOrder">
+        UPDATE
+        GJP_Bili_BudgetOrder
+        <set>
+            <if test="bbo_code !=null">bbo_code=#{bbo_code},</if>
+            <if test="bbo_name !=null">bbo_name=#{bbo_name},</if>
+            <if test="bbo_type !=null">bbo_type=#{bbo_type},</if>
+            <if test="bbo_desc !=null">bbo_desc=#{bbo_desc},</if>
+            <if test="bbo_state !=null">bbo_state=#{bbo_state},</if>
+            <if test="bbo_budgetDate !=null">bbo_budgetDate=#{bbo_budgetDate},</if>
+        </set>
+        WHERE
+        bbo_id=#{bbo_id}
+    </update>
+
+    <!-- 更新预算账单 -->
+    <update id="updateBudgetBill">
+        UPDATE
+        GJP_Bill_BudgetBill
+        <set>
+            <if test="bbo_code !=null">bbo_code =#{bbo_code},</if>
+            <if test="bill_id !=null">bill_id =#{bill_id},</if>
+            <if test="bbb_paymentWay !=null">bbb_paymentWay =#{bbb_paymentWay},</if>
+            <if test="bbb_cycleSegment !=null">bbb_cycleSegment =#{bbb_cycleSegment},</if>
+            <if test="bbb_remarks !=null">bbb_remarks =#{bbb_remarks},</if>
+            <if test="bbb_applicant !=null">bbb_applicant =#{bbb_applicant},</if>
+            <if test="bbb_manager !=null">bbb_manager =#{bbb_manager},</if>
+        </set>
+        WHERE
+        bbb_id=#{bbb_id}
+    </update>
+
+    <!-- 更新关联订单 -->
+    <update id="updateRelatedOrder">
+        UPDATE
+        GJP_Bill_RelatedOrder
+        <set>
+            <if test="ro_code !=null">ro_code =#{ro_code},</if>
+            <if test="hi_code !=null">hi_code =#{hi_code},</if>
+            <if test="bco_code !=null">bco_code =#{bco_code},</if>
+            <if test="house_address !=null">house_address =#{house_address},</if>
+            <if test="ro_customerType !=null">ro_customerType =#{ro_customerType},</if>
+            <if test="ro_customerName !=null">ro_customerName =#{ro_customerName},</if>
+            <if test="ro_customerPhone !=null">ro_customerPhone =#{ro_customerPhone},</if>
+            <if test="ro_totalMoney !=null">ro_totalMoney =#{ro_totalMoney},</if>
+            <if test="ro_payState !=null">ro_payState =#{ro_payState},</if>
+            <if test="ro_state !=null">ro_state =#{ro_state},</if>
+            <if test="ro_creator !=null">ro_creator =#{ro_creator},</if>
+            <if test="ro_createTime !=null">ro_createTime =#{ro_createTime},</if>
+        </set>
+        WHERE
+        ro_id=#{ro_id}
+    </update>
+
+    <!-- 根据房屋hi_code 更新把未支付的关联订单失效 -->
+    <update id="updateRelatedOrderState">
+        UPDATE
+        GJP_Bill_RelatedOrder
+        <set>
+            <if test="ro_code !=null">ro_code =#{ro_code},</if>
+            <if test="hi_code !=null">hi_code =#{hi_code},</if>
+            <if test="bco_code !=null">bco_code =#{bco_code},</if>
+            <if test="house_address !=null">house_address =#{house_address},</if>
+            <if test="ro_customerType !=null">ro_customerType =#{ro_customerType},</if>
+            <if test="ro_customerName !=null">ro_customerName =#{ro_customerName},</if>
+            <if test="ro_customerPhone !=null">ro_customerPhone =#{ro_customerPhone},</if>
+            <if test="ro_totalMoney !=null">ro_totalMoney =#{ro_totalMoney},</if>
+            <if test="ro_payState !=null">ro_payState =#{ro_payState},</if>
+            <if test="ro_state !=null">ro_state =#{ro_state},</if>
+            <if test="ro_creator !=null">ro_creator =#{ro_creator},</if>
+            <if test="ro_createTime !=null">ro_createTime =#{ro_createTime},</if>
+        </set>
+        WHERE
+        hi_code=#{hi_code} and ro_payState != 2
+    </update>
+
+    <!-- 更新关联账单 -->
+    <update id="updateRelatedBill">
+        UPDATE
+        GJP_Bill_RelatedBill
+        <set>
+            <if test="ro_code !=null">ro_code =#{ro_code},</if>
+            <if test="rb_type !=null">rb_type =#{rb_type},</if>
+            <if test="rb_balPay !=null">rb_balPay =#{rb_balPay},</if>
+            <if test="rb_paymentMoney !=null">rb_paymentMoney =#{rb_paymentMoney},</if>
+            <if test="rb_paymentDate !=null">rb_paymentDate =#{rb_paymentDate},</if>
+            <if test="rb_state !=null">rb_state =#{rb_state},</if>
+            <if test="rb_payWay !=null">rb_payWay =#{rb_payWay},</if>
+            <if test="rb_creator !=null">rb_creator =#{rb_creator},</if>
+            <if test="rb_remarks !=null">rb_remarks =#{rb_remarks},</if>
+            <if test="rb_createTime !=null">rb_createTime =#{rb_createTime},</if>
+        </set>
+        WHERE
+        rb_id=#{rb_id}
+    </update>
+
+    <!-- 删除合同订单 -->
+    <delete id="deleteFinanceOrder">
+        DELETE
+        FROM GJP_Bill_ContractOrder
+        WHERE bco_code = #{bco_code}
+    </delete>
+
+    <!-- 删除合同账单 -->
+    <delete id="deleteContractBill">
+        DELETE FROM GJP_Bill_ContractBill
+        WHERE
+        <choose>
+            <when test="bco_code != null">bco_code =#{bco_code}</when>
+            <when test="bcb_id != null">bcb_id =#{bcb_id}</when>
+        </choose>
+    </delete>
+
+    <!-- 删除预算清单数据 -->
+    <delete id="deleteBudgetBill">
+        DELETE
+        FROM GJP_Bill_BudgetBill
+        WHERE bbb_id = #{bbb_id}
+    </delete>
+
+    <!-- 删除预算清单数据 -->
+    <delete id="deleteBillStatement">
+        DELETE
+        FROM GJP_Bill_Statement
+        WHERE bs_statementNum = #{bs_statementNum}
+    </delete>
+
+    <!-- 删除预算清单数据 -->
+    <delete id="delectStatementFiliation">
+        DELETE
+        FROM GJP_Bill_StatementFiliation
+        WHERE sf_id = #{sf_id}
+    </delete>
+
+    <!-- 删除预算清单数据 -->
+    <delete id="deleteRelatedBill">
+        DELETE
+        FROM GJP_Bill_RelatedBill
+        WHERE rb_id = #{rb_id}
+    </delete>
+
+    <!-- 根据合同编码查询账单订单 -->
+    <select id="queryContractCodeBill" resultType="com.gjp.model.ContractBillVo">
+        SELECT * FROM GJP_Bill_ContractOrder as bco
+        LEFT JOIN GJP_Bill_ContractBill as bcb on bco.bco_code = bcb.bco_code
+        WHERE 1=1
+        <if test="contractObject_Code != null">
+            and bco.contractObject_Code = #{contractObject_Code}
+        </if>
+    </select>
+
+    <!-- TODO 查询订金分页数据 -->
+    <select id="queryPayFlowStatementPageList" resultType="com.gjp.model.BillPayFlowStatementBo">
+        SELECT *
+        FROM (
+        SELECT
+        bs.*,
+        ccp1.ccp_phone AS payee_phone,
+        ccp2.ccp_phone AS payer_phone,
+        em.em_name AS bs_handler_name,
+        em.em_phone AS bs_handler_phone,
+        house.house_address,
+        bco.contractObject_code,
+        bco.bco_invalidTime AS bco_invalidTime,
+        bco.bco_createTime AS bco_createTime
+        FROM GJP_business.GJP_Finance_PayFlowStatement AS bs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bs.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc1 ON bs.bs_payeeCode = cc1.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp1 ON cc1.cc_id = ccp1.cc_id AND ccp1.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc2 ON bs.bs_payerCode = cc2.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp2 ON cc2.cc_id = ccp2.cc_id AND ccp2.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bco.bco_code = bs.bco_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON em.em_id = bs.bs_handler
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.bco_optionState !=null">AND bco_optionState = #{t.bco_optionState}</if>
+                    <if test="t.contractObject_Type !=null">AND contractObject_Type = #{t.contractObject_Type}</if>
+                    <if test="t.bco_type !=null">AND bco_type = #{t.bco_type}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bs_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 查询订金分页条数-->
+    <select id="queryPayFlowStatementPageRecord" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+        SELECT
+        bs.*,
+        ccp1.ccp_phone AS payee_phone,
+        ccp2.ccp_phone AS payer_phone,
+        em.em_name AS bs_handler_name,
+        em.em_phone AS bs_handler_phone,
+        house.house_address,
+        bco.contractObject_code,
+        bco.bco_invalidTime AS bco_invalidTime
+        FROM GJP_business.GJP_Finance_PayFlowStatement AS bs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bs.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc1 ON bs.bs_payeeCode = cc1.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp1 ON cc1.cc_id = ccp1.cc_id AND ccp1.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc2 ON bs.bs_payerCode = cc2.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp2 ON cc2.cc_id = ccp2.cc_id AND ccp2.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bco.bco_code = bs.bco_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON em.em_id = bs.bs_handler
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.hi_code !=null">AND hi_code = #{t.hi_code}</if>
+                    <if test="t.bco_optionState !=null">AND bco_optionState = #{t.bco_optionState}</if>
+                    <if test="t.contractObject_Type !=null">AND contractObject_Type = #{t.contractObject_Type}</if>
+                    <if test="t.bco_type !=null">AND bco_type = #{t.bco_type}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 查询 合同订金侧滑框数据-->
+    <select id="selectDepositManage" resultType="com.gjp.model.BillPayFlowStatementBo">
+        SELECT
+        *
+        FROM (
+        SELECT
+        bs.*,
+        ccp1.ccp_phone AS payee_phone,
+        ccp2.ccp_phone AS payer_phone,
+        house.house_address,
+        t3.contractObject_code,
+        t3.bco_invalidTime
+        FROM GJP_business.GJP_Finance_PayFlowStatement AS bs
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON bs.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc1 ON bs.bs_payeeCode = cc1.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp1 ON cc1.cc_id = ccp1.cc_id AND ccp1.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc2 ON bs.bs_payerCode = cc2.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp2 ON cc2.cc_id = ccp2.cc_id AND ccp2.ccp_state = 1
+        LEFT JOIN GJP_Finance_StatementBillRelation t1 ON t1.bs_serialNumber=bs.bs_serialNumber
+        LEFT JOIN GJP_Bill_ContractBill t2 ON t2.bcb_code=t1.bcb_code
+        LEFT JOIN GJP_Bill_ContractOrder t3 ON t3.bco_code=t2.bco_code
+        ) T
+        WHERE 1=1
+        <if test="bs_id != '' and bs_id != null">
+            AND bs_id =#{bs_id}
+        </if>
+    </select>
+
+    <!-- 查询订金处理结果 -->
+    <select id="selectFinanceResult" resultType="com.gjp.model.BillFinanceResult">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        GJP_Finance_result t1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.fr_em_id = t2.em_id
+        ) T
+        WHERE 1=1
+        <if test="fr_bsId !='' and fr_bsId != null">
+            AND fr_bsId = #{fr_bsId}
+        </if>
+        ORDER BY fr_time DESC
+    </select>
+
+    <!-- 添加定金违约信息 -->
+    <insert id="submitFinanceResult" useGeneratedKeys="true" keyProperty="fr_id">
+        INSERT INTO GJP_Finance_result(fr_bsId, fr_em_id, fr_content, fr_money, fr_state, fr_time)
+        VALUES(#{fr_bsId}, #{fr_em_id}, #{fr_content}, #{fr_money}, #{fr_state}, #{fr_time})
+    </insert>
+
+    <!-- 订金根据流水号通过中间表查询账单 -->
+    <select id="statementBillRelation" resultType="com.gjp.model.FinanceStatementBillRelationVo">
+        SELECT
+        *
+        FROM
+        GJP_Finance_StatementBillRelation
+        WHERE 1=1
+        <if test="bs_serialNumber !='' and bs_serialNumber != null">
+            AND bs_serialNumber = #{bs_serialNumber}
+        </if>
+    </select>
+
+    <!-- 添加退款流水账单信息 -->
+    <insert id="insertRefundFlowStatement" useGeneratedKeys="true" keyProperty="rf_id">
+        INSERT INTO GJP_Finance_RefundFlowStatement(rf_refundNumber,
+                                                    rf_serialNumber,
+                                                    rf_orderNumber,
+                                                    rf_payTransNumber,
+                                                    hi_code,
+                                                    rf_type,
+                                                    rf_title,
+                                                    rf_subtitle,
+                                                    rf_balPay,
+                                                    rf_money,
+                                                    rf_state,
+                                                    rf_payType,
+                                                    rf_payTime,
+                                                    rf_payeeCode,
+                                                    rf_payeeName,
+                                                    rf_payeeAccount,
+                                                    rf_payerCode,
+                                                    rf_payerName,
+                                                    rf_payerAccount,
+                                                    rf_remark,
+                                                    rf_createTime)
+        VALUES(#{rf_refundNumber},
+               #{rf_serialNumber},
+               #{rf_orderNumber},
+               #{rf_payTransNumber},
+               #{hi_code},
+               #{rf_type},
+               #{rf_title},
+               #{rf_subtitle},
+               #{rf_balPay},
+               #{rf_money},
+               #{rf_state},
+               #{rf_payType},
+               #{rf_payTime},
+               #{rf_payeeCode},
+               #{rf_payeeName},
+               #{rf_payeeAccount},
+               #{rf_payerCode},
+               #{rf_payerName},
+               #{rf_payerAccount},
+               #{rf_remark},
+               #{rf_createTime})
+    </insert>
+
+    <select id="queryFrontMoneyBillPageList" resultType="com.gjp.model.FinanceFrontMoneyBillBo">
+        SELECT * FROM (
+        SELECT
+        bcb.*,
+        cc.cc_name,
+        ccp.ccp_phone,
+        house.house_address
+        FROM GJP_business.GJP_Bill_ContractBill AS bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code = bco.bco_code AND bco.bco_orderType = 4 AND bco.contractObject_code IS NULL AND bco.bco_optionState = 3
+        INNER JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        INNER JOIN GJP_product.view_GJP_HouseAddress AS house ON bco.hi_code = house.hi_code
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.bcb_state !=null">AND bcb_state = #{t.bcb_state}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bcb_createTime ASC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryFrontMoneyBillPageRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        bcb.*,
+        cc.cc_name,
+        ccp.ccp_phone,
+        house.house_address
+        FROM GJP_business.GJP_Bill_ContractBill AS bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder AS bco ON bcb.bco_code = bco.bco_code AND bco.bco_orderType = 4 AND bco.contractObject_code IS NULL AND bco.bco_optionState = 3
+        INNER JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bco.bco_customer = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        INNER JOIN GJP_product.view_GJP_HouseAddress AS house ON bco.hi_code = house.hi_code
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.bcb_state !=null">AND bcb_state = #{t.bcb_state}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryOrderBillPageList" resultType="com.gjp.model.OrderBillVo">
+        SELECT * FROM (
+        SELECT
+        bill.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM GJP_business.GJP_Order_Bill AS bill
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bill.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = bill.user_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.bill_status !=null">AND bill_status = #{t.bill_status}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY bill_create_time DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryOrderBillTotalRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        bill.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM GJP_business.GJP_Order_Bill AS bill
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON bill.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = bill.user_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.bill_status !=null">AND bill_status = #{t.bill_status}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryOrderPageList" resultType="com.gjp.model.OrderVo">
+        SELECT * FROM (
+        SELECT
+        o.*,
+        IFNULL(cc.cc_name, IFNULL(u.user_realName, IFNULL(em.em_name, ucc.ucc_person))) AS user_name,
+        IFNULL(ccp.ccp_phone, IFNULL(u.user_phone, IFNULL(em.em_phone, ucc.ucc_phone))) AS user_phone
+        FROM
+        GJP_business.GJP_Order AS o
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON o.trade_cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = o.trade_user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON o.trade_em_id = em.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON o.trade_ucc_id = ucc.ucc_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.order_status !=null">AND order_status = #{t.order_status}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY order_create_time DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryOrderTotalRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        o.*,
+        IFNULL(cc.cc_name, IFNULL(u.user_realName, IFNULL(em.em_name, ucc.ucc_person))) AS user_name,
+        IFNULL(ccp.ccp_phone, IFNULL(u.user_phone, IFNULL(em.em_phone, ucc.ucc_phone))) AS user_phone
+        FROM
+        GJP_business.GJP_Order AS o
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON o.trade_cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = o.trade_user_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON o.trade_em_id = em.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS ucc ON o.trade_ucc_id = ucc.ucc_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.order_status !=null">AND order_status = #{t.order_status}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryDownPaymentPageList" resultType="com.gjp.model.FinanceDownPaymentVo">
+        SELECT * FROM (
+        SELECT
+        house.house_address,
+        fdp.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM
+        GJP_business.GJP_Finance_DownPayment AS fdp
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON fdp.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON fdp.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = fdp.user_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.fdp_status_in !=null">AND fdp_status IN(${t.fdp_status_in})</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY fdp_create_time DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryDownPaymentTotalRecords" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT
+        house.house_address,
+        fdp.*,
+        IFNULL(cc.cc_name, u.user_realName) AS user_name,
+        IFNULL(ccp.ccp_phone, u.user_phone) AS user_phone
+        FROM
+        GJP_business.GJP_Finance_DownPayment AS fdp
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS house ON fdp.hi_code = house.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS cc ON fdp.cc_code = cc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ccp ON cc.cc_id = ccp.cc_id AND ccp.ccp_state = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_User AS u ON u.user_id = fdp.user_id
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+                <when test="t !=null">
+                    <if test="t.order_status !=null">AND order_status = #{t.order_status}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryPayFlowStatementPayerList" resultType="com.gjp.model.FinancePayFlowStatementVo">
+        SELECT
+        *
+        FROM GJP_Finance_PayFlowStatement
+        WHERE
+        bs_payerCode = #{bs_payerCode}
+        <if test="hi_code != null">AND hi_code = #{hi_code}</if>
+        <if test="bs_type !=null">AND bs_type = #{bs_type}</if>
+        <if test="bs_state != null">AND bs_state = #{bs_state}</if>
+    </select>
+
+    <!-- 查询定金审核最近的一条记录 -->
+    <select id="selectNewFinanceResult" resultType="com.gjp.model.BillFinanceResult">
+        SELECT
+        *
+        FROM GJP_Finance_result t1
+        WHERE
+        1 = 1
+        <if test="fr_bsId != '' and fr_bsId != null">
+            AND fr_bsId = #{fr_bsId}
+        </if>
+        ORDER BY fr_time DESC
+        LIMIT 1
+    </select>
+
+    <!-- 查询定金审核最近的一条记录 -->
+    <select id="queryFinanceOrderList" resultType="com.gjp.model.ContractOrderVo">
+        SELECT
+        *
+        FROM GJP_Bill_ContractOrder
+        <where>
+            <if test="hi_code != null">AND hi_code = #{hi_code}</if>
+            <if test="bco_customer != null">AND bco_customer = #{bco_customer}</if>
+            <if test="bco_type != null">AND bco_type = #{bco_type}</if>
+            <if test="bco_orderType != null">AND bco_orderType = #{bco_orderType}</if>
+            <if test="bco_currentDate_lt != null">AND bco_currentDate &lt;= DATE_FORMAT(#{bco_currentDate_lt},'%Y-%m-%d')</if>
+            <if test="bco_state != null">AND bco_state = #{bco_state}</if>
+            <if test="bco_optionState != null">AND bco_optionState = #{bco_optionState}</if>
+            <if test="bco_optionState_in != null">AND bco_optionState IN(${bco_optionState_in})</if>
+            <if test="contractObject_code_where == 'isNull'">AND (contractObject_code IS NULL OR contractObject_code = '')</if>
+        </where>
+    </select>
+
+    <!-- 查询定金审核最近的一条记录 -->
+    <select id="queryRefundFlowStatement" resultType="com.gjp.model.FinanceRefundFlowStatement">
+        SELECT *
+        FROM GJP_Finance_RefundFlowStatement
+        WHERE rf_serialNumber = #{rf_serialNumber}
+        LIMIT 1
+    </select>
+
+    <insert id="addContractBillInstalment" useGeneratedKeys="true" keyProperty="cbs_id">
+        INSERT INTO GJP_Bill_ContractBill_Instalment(cbs_code,
+                                                     bco_code,
+                                                     bcb_cycle,
+                                                     cbs_cycle,
+                                                     cbs_cycle_total,
+                                                     cbs_balPay,
+                                                     cbs_status,
+                                                     cbs_repayment,
+                                                     cbs_realPayment,
+                                                     cbs_repaymentDate,
+                                                     cbs_realPaymentDate,
+                                                     cbs_late_fee,
+                                                     cbs_account_out,
+                                                     cbs_pay_way,
+                                                     cbs_overdue_day,
+                                                     cbs_creator,
+                                                     cbs_operater,
+                                                     cbs_remarks,
+                                                     cbs_create_time)
+        VALUES(#{cbs_code},
+               #{bco_code},
+               #{bcb_cycle},
+               #{cbs_cycle},
+               #{cbs_cycle_total},
+               #{cbs_balPay},
+               #{cbs_status},
+               #{cbs_repayment},
+               #{cbs_realPayment},
+               #{cbs_repaymentDate},
+               #{cbs_realPaymentDate},
+               #{cbs_late_fee},
+               #{cbs_account_out},
+               #{cbs_pay_way},
+               #{cbs_overdue_day},
+               #{cbs_creator},
+               #{cbs_operater},
+               #{cbs_remarks},
+               #{cbs_create_time})
+    </insert>
+
+    <insert id="addOrderReturns" useGeneratedKeys="true" keyProperty="returns_id">
+        INSERT INTO GJP_Order_Returns(returns_no, order_id, returns_desc, returns_type, returns_way, returns_status, returns_amount, returns_handler, returns_handle_date, returns_create_time)
+        VALUES(#{returns_no}, #{order_id}, #{returns_desc}, #{returns_type}, #{returns_way}, #{returns_status}, #{returns_amount}, #{returns_handler}, #{returns_handle_date}, #{returns_create_time})
+    </insert>
+
+    <select id="financeOrderListapp" resultType="com.gjp.model.FinancePayFlowStatementVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t2.house_address AS house_address,
+        t4.user_phone AS payer_phone,
+        t1.*
+        FROM GJP_Finance_PayFlowStatement t1
+        LEFT JOIN GJP_product.view_GJP_HouseAddress t2 ON t2.hi_code = t1.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer t3 ON t3.cc_code=t1.bs_payerCode
+        LEFT JOIN GJP_user.GJP_UserCenter_User t4 ON t4.user_cardNumber=t3.cc_cardNum
+        ) T
+        WHERE 1 = 1
+        <if test="bs_handler !=null">AND bs_handler = #{bs_handler}</if>
+        <if test="bs_balPay !=null">AND bs_balPay = #{bs_balPay}</if>
+        <if test="bs_type !=null">AND bs_type = #{bs_type}</if>
+        <if test="bs_state != null">AND bs_state &lt;&gt; #{bs_state}</if>
+        <if test="where != null and where != ''">
+            and (
+            house_address LIKE CONCAT('%',#{where},'%')
+            or bs_payerName LIKE CONCAT('%',#{where},'%')
+            or payer_phone LIKE CONCAT('%',#{where},'%')
+            or bs_money LIKE CONCAT('%',#{where},'%')
+            )
+        </if>
+        order by bs_createTime desc
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryOrderReturns" resultType="com.gjp.model.OrderReturnsVo">
+        SELECT ors.*, em.em_name AS returns_handler_name
+        FROM GJP_business.GJP_Order_Returns AS ors
+        INNER JOIN GJP_user.GJP_UserCenter_Employee AS em ON ors.returns_handler = em.em_id
+        WHERE order_id = #{order_id}
+    </select>
+
+</mapper>

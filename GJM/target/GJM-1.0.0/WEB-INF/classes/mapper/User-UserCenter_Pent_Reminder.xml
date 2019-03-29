@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PentReminderDao">
+    <insert id="insertPentReminder" useGeneratedKeys="true" keyProperty="pr_id">
+        INSERT INTO GJP_UserCenter_pent_Reminder (
+            contractObject_code,
+            hi_code,
+            em_id,
+            Rent_cc_code,
+            pr_content,
+            pr_time
+        ) VALUES (
+            #{contractObject_code},
+            #{hi_code},
+            #{em_id},
+            #{Rent_cc_code},
+            #{pr_content},
+            #{pr_time}
+        )
+    </insert>
+
+    <!--查询催收记录-->
+    <select id="queryPentReminder" resultType="com.gjp.model.UserCenterPentReminder">
+          SELECT
+            *
+            FROM
+            (
+                SELECT
+                ce.em_name,
+                uc.cc_name,
+                pr.*
+                FROM
+                GJP_user.GJP_UserCenter_pent_Reminder pr
+                LEFT JOIN GJP_user.GJP_UserCenter_Employee ce ON ce.em_id = pr.em_id
+                LEFT JOIN GJP_user.GJP_UserCenter_Customer uc ON uc.cc_code = pr.Rent_cc_code
+            ) T
+            WHERE
+            1 = 1
+            <if test="contractObject_code != null">
+                AND contractObject_code =#{contractObject_code}
+            </if>
+        ORDER BY pr_time DESC
+    </select>
+
+    <!--催租天数-->
+    <select id="collectionDayList" resultType="com.gjp.model.ViewBusinessContractVo">
+        SELECT  * FROM (
+          SELECT
+        ucc.cc_code,
+        ucc.cc_name AS cc_name,
+        ucp.ccp_phone AS ccp_phone,
+        em.em_id AS em_id,
+        em.em_name AS em_name,
+        em.em_phone AS em_phone,
+        uc.ucc_name,
+        uc.ucc_pid,
+        uc.ucc_id,
+        T.*
+        FROM
+        (
+            SELECT
+                bco.hi_code,
+                co.ContractObject_Id,
+                co.ContractObject_No,
+                co.ContractObject_State,
+                co.contractObject_FillTime,
+                cb.ContractBody_StartTOEnd,
+                cb.ContractBody_Rent,
+                cb.contractBody_PayStyle,
+                cb.ContractBody_PayType,
+                house.house_address,
+                bco.contractObject_code,
+                bco.bco_customer,
+                bcb.*
+            FROM GJP_business.GJP_Bill_ContractBill bcb
+            INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code AND bco.bco_type = 202
+            INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+            INNER JOIN GJP_business.GJP_Contract_Body cb ON cb.ContractObject_Code = bco.ContractObject_Code
+            INNER JOIN GJP_product.view_GJP_HouseAddress house ON house.hi_code = bco.hi_code
+	        LEFT JOIN GJP_product.GJP_House_PositionRecord hpr ON hpr.hi_code = bco.hi_code
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_type != null">
+                        AND bcb.bcb_type = #{t.bcb_type}
+                    </if>
+                    <if test="t.bcb_state != null">
+                        AND bcb.bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND co.contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.start !=null">
+                        AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y-%m-%d'), bcb.bcb_repaymentDate) = #{t.start}
+                    </if>
+                    <if test="t.end !=null">
+                        AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y-%m-%d'), bcb.bcb_repaymentDate) &lt;= #{t.end}
+                    </if>
+                </when>
+            </choose>
+        </where>
+        ) AS T
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON T.bco_customer= ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ucp ON ucp.cc_id = ucc.cc_id AND ucp.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON T.ContractObject_Id= cre.contractObject_Id AND cre.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON cre.em_id = em.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON em.em_id =uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS uc ON uc.ucc_id =uccp.ucc_id
+        )T
+        <where>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.ucc_pid !=null">AND ucc_pid = #{t.ucc_pid}</if>
+                    <if test="t.ucc_name !=null">AND ucc_name = #{t.ucc_name}</if>
+                    <if test="t.ucc_id !=null">AND ucc_id = #{t.ucc_id}</if>
+                </when>
+            </choose>
+        </where>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="collectionDayListRows" resultType="int">
+        SELECT  COUNT(*) FROM (
+        SELECT
+        ucc.cc_code,
+        ucc.cc_name AS cc_name,
+        ucp.ccp_phone AS ccp_phone,
+        em.em_id AS em_id,
+        em.em_name AS em_name,
+        em.em_phone AS em_phone,
+        uc.ucc_name,
+        uc.ucc_pid,
+        uc.ucc_id,
+        T.*
+        FROM
+        (
+        SELECT
+        bco.hi_code,
+        co.ContractObject_Id,
+        co.ContractObject_No,
+        co.ContractObject_State,
+        co.contractObject_FillTime,
+        cb.ContractBody_StartTOEnd,
+        cb.ContractBody_Rent,
+        cb.contractBody_PayStyle,
+        cb.ContractBody_PayType,
+        house.house_address,
+        bco.contractObject_code,
+        bco.bco_customer,
+        bcb.*
+        FROM GJP_business.GJP_Bill_ContractBill bcb
+        INNER JOIN GJP_business.GJP_Bill_ContractOrder bco ON bcb.bco_code = bco.bco_code AND bco.bco_type = 202
+        INNER JOIN GJP_business.GJP_Contract_Object co ON bco.contractObject_code = co.ContractObject_Code
+        INNER JOIN GJP_business.GJP_Contract_Body cb ON cb.ContractObject_Code = bco.ContractObject_Code
+        INNER JOIN GJP_product.view_GJP_HouseAddress house ON house.hi_code = bco.hi_code
+        LEFT JOIN GJP_product.GJP_House_PositionRecord hpr ON hpr.hi_code = bco.hi_code
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_type != null">
+                        AND bcb.bcb_type = #{t.bcb_type}
+                    </if>
+                    <if test="t.bcb_state != null">
+                        AND bcb.bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND co.contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.start !=null">
+                        AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y-%m-%d'), bcb.bcb_repaymentDate) = #{t.start}
+                    </if>
+                    <if test="t.end !=null">
+                        AND TIMESTAMPDIFF(DAY, DATE_FORMAT(NOW(), '%Y-%m-%d'), bcb.bcb_repaymentDate) &lt;= #{t.end}
+                    </if>
+                </when>
+            </choose>
+        </where>
+        ) AS T
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS ucc ON T.bco_customer= ucc.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS ucp ON ucp.cc_id = ucc.cc_id AND ucp.ccp_state = 1
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS cre ON T.ContractObject_Id= cre.contractObject_Id AND cre.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON cre.em_id = em.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS uccp ON em.em_id =uccp.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS uc ON uc.ucc_id =uccp.ucc_id
+        )T
+        <where>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.ucc_pid !=null">AND ucc_pid = #{t.ucc_pid}</if>
+                    <if test="t.ucc_name !=null">AND ucc_name = #{t.ucc_name}</if>
+                    <if test="t.ucc_id !=null">AND ucc_id = #{t.ucc_id}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋定价、活动 -->
+<mapper namespace="com.gjp.dao.PriceSettingDAO">
+
+	<!-- 插入定价策略设置 -->
+	<insert id="insertSetting" useGeneratedKeys="true" parameterType="com.gjp.model.PriceSetting" keyProperty="ps_id">
+		insert into GJP_Price_Setting (
+		ps_id,
+		ps_name,
+		ps_day,
+		ps_jurisdiction,
+		ps_date
+		) values (
+		#{ps_id},
+		#{ps_name},
+		#{ps_day},
+		#{ps_jurisdiction},
+		#{ps_date}
+		)
+	</insert>
+
+	<!-- 查询所有策略设置 -->
+	<select id="selectSettingAll" resultType="com.gjp.model.PriceSetting">
+		select * from GJP_Price_Setting
+	</select>
+
+	<!-- 查询空置天数 -->
+	<select id="selectSettingWhereDay" resultType="com.gjp.model.PriceSetting">
+		select * from GJP_Price_Setting where ps_day=#{ps_day}
+	</select>
+
+	<!-- 根据定价策略编码删除定价策略 -->
+	<delete id="deleteSetting">
+		delete from GJP_Price_Setting where ps_id=#{ps_id}
+	</delete>
+
+	<!-- 插入定价类型 -->
+	<insert id="insertPriceSettingType" useGeneratedKeys="true" parameterType="com.gjp.model.PriceSettingType" keyProperty="pst_id">
+		insert into GJP_Price_SettingType (
+		pst_id,
+		pst_name,
+		pst_money,
+		pst_houseMinYear,
+		pst_contractMinYear,
+		pst_clause,
+		pst_bool,
+		pst_remark,
+		pst_date
+		) values (
+		#{pst_id},
+		#{pst_name},
+		#{pst_money},
+		#{pst_houseMinYear},
+		#{pst_contractMinYear},
+		#{pst_clause},
+		#{pst_bool},
+		#{pst_remark},
+		#{pst_date}
+		)
+	</insert>
+
+	<!-- 修改定价类型 -->
+	<update id="updatePriceSettingType">
+		update GJP_Price_SettingType set
+		pst_name=#{pst_name},
+		pst_money=#{pst_money},
+		pst_houseMinYear=#{pst_houseMinYear},
+		pst_contractMinYear=#{pst_contractMinYear},
+		pst_clause=#{pst_clause},
+		pst_bool=#{pst_bool},
+		pst_remark=#{pst_remark}
+		where
+		pst_id=#{pst_id}
+	</update>
+
+	<!-- 根据编码修改房源活动状态 -->
+	<update id="updatePriceSettingTypeBool">
+		update GJP_Price_SettingType set
+		pst_bool=#{pst_bool}
+		where
+		pst_id=#{pst_id}
+	</update>
+
+	<!-- 查询所有定价类型 -->
+	<select id="selectPriceSettingTypeAll" resultType="com.gjp.model.PriceSettingType">
+		SELECT * FROM GJP_Price_SettingType WHERE pst_bool != 0
+	</select>
+
+	<!-- 查询所有定价类型 -->
+	<select id="selectPriceMoney" resultType="com.gjp.model.PriceMoney">
+		SELECT * FROM GJP_Price_Money WHERE hi_code = #{hi_code}
+	</select>
+
+	<!-- 根据条件查询定价类型 -->
+	<select id="selectPriceSettingTypeWhere" resultType="com.gjp.model.PriceSettingType">
+		select * from GJP_Price_SettingType where 1=1
+		<if test="pst_id != null">
+			and pst_id=#{pst_id}
+		</if>
+	</select>
+
+	<!-- 根据编码删除定价类型 -->
+	<delete id="deletePriceSettingType">
+		delete from GJP_Price_SettingType where pst_id=#{pst_id}
+	</delete>
+
+	<!-- 插入定价参数 -->
+	<insert id="insertPriceSettingContent" useGeneratedKeys="true" parameterType="com.gjp.model.PriceSettingContent" keyProperty="psc_id">
+		insert into GJP_Price_SettingContent (
+		psc_id,
+		psc_upCycle,
+		psc_unit,
+		psc_remark,
+		psc_date,
+		pst_id
+		) values (
+		#{psc_id},
+		#{psc_upCycle},
+		#{psc_unit},
+		#{psc_remark},
+		#{psc_date},
+		#{pst_id}
+		)
+	</insert>
+
+	<!-- 查询根据条件查询定价参数 -->
+	<select id="selectPriceSettingContentWhere" resultType="com.gjp.model.PriceSettingContent">
+		select * from GJP_Price_SettingContent where pst_id=#{pst_id} order by psc_upCycle asc
+	</select>
+
+	<!-- 根据编码删除定价类型 -->
+	<delete id="deletePriceSettingContent">
+		delete from GJP_Price_SettingContent where psc_id=#{psc_id}
+	</delete>
+
+	<!-- 修改房源定价信息 -->
+	<update id="updatehouseKeep">
+		update GJP_House_HouseInformation_keep
+		<set>
+			<if test="hi_leaseDay != null">
+				hi_leaseDay=#{hi_leaseDay},
+			</if>
+			<if test="hi_moneyTopFloat != null">
+				hi_moneyTopFloat=#{hi_moneyTopFloat},
+			</if>
+			<if test="hi_boolActive != null">
+				hi_boolActive=#{hi_boolActive},
+			</if>
+			<if test="hi_houseActive != null">
+				hi_houseActive=#{hi_houseActive},
+			</if>
+			<if test="contract_expiryDate != null">
+				contract_expiryDate=#{contract_expiryDate},
+			</if>
+			<if test="contract_beginDate != null">
+				contract_beginDate=#{contract_beginDate},
+			</if>
+			<if test="hi_price != null">
+				hi_price=#{hi_price},
+			</if>
+		</set>
+		where hi_id=#{hi_id}
+	</update>
+
+	<!-- 修改房屋状态 -->
+	<update id="updatehouseKeepActive">
+		update GJP_House_HouseInformation_keep
+		<set>
+			<if test="hi_houseActive !=null">hi_houseActive=#{hi_houseActive},</if>
+			<if test="hi_boolActive !=null">hi_boolActive=#{hi_boolActive},</if>
+		</set>
+		where
+		hi_code=#{hi_code}
+	</update>
+
+	<!-- 插入房源定价表 -->
+	<insert id="insertPriceMoney" useGeneratedKeys="true" parameterType="com.gjp.model.PriceMoney" keyProperty="pm_id">
+		insert into GJP_Price_Money (
+		pm_id,
+		pm_outMoney,
+		hi_code,
+		pm_date,
+		em_id
+		) values (
+		#{pm_id},
+		#{pm_outMoney},
+		#{hi_code},
+		#{pm_date},
+		#{em_id}
+		)
+	</insert>
+
+	<!-- 修改房源定价表 -->
+	<update id="updatePriceMoney">
+		update GJP_Price_Money
+		<set>
+			<if test="pm_outMoney !=null">pm_outMoney=#{pm_outMoney},</if>
+			<if test="pst_id !=null">pst_id=#{pst_id},</if>
+			<if test="em_id !=null">em_id=#{em_id},</if>
+		</set>
+		where
+		<if test="pm_id != null">pm_id=#{pm_id}</if>
+		<if test="pm_id == null and hi_code != null">hi_code=#{hi_code}</if>
+	</update>
+
+</mapper>

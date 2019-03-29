@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PowersDao">
+    <sql id="columns">
+        ucps_name,
+        ucps_url,
+        ucps_icon,
+        ucps_pid,
+        ucps_asc,
+        ucps_date,
+        ucps_state,
+        ucps_type,
+        ucps_level
+    </sql>
+
+    <sql id="insert">
+        #{ucps_name},
+        #{ucps_url},
+        #{ucps_icon},
+        #{ucps_pid},
+        #{ucps_asc},
+        #{ucps_date},
+        #{ucps_state},
+        #{ucps_type},
+        #{ucps_level}
+    </sql>
+    <!-- 查询所有菜单权限 -->
+    <select id="selectAllPowers" resultType="com.gjp.model.Powers">
+        select *
+        from GJP_UserCenter_Powers
+    </select>
+
+    <!-- 根据父Pid查子权限 -->
+    <select id="getChildsByPid" resultType="com.gjp.model.Powers">
+        select *
+        from GJP_UserCenter_Powers
+        where ucps_pid = #{pid}
+        order by ucps_asc asc
+    </select>
+
+    <!-- 根据父Pid查可用子权限 -->
+    <select id="getLiveChildsByPid" resultType="com.gjp.model.Powers">
+        select *
+        from GJP_UserCenter_Powers
+        where ucps_pid = #{pid} and ucps_state = 1
+        order by ucps_asc asc
+    </select>
+
+    <!-- 根据id查询权限 -->
+    <select id="getPowersById" resultType="com.gjp.model.Powers">
+        select *
+        from GJP_UserCenter_Powers
+        where ucps_id = #{id}
+    </select>
+
+    <!-- 新增 -->
+    <insert id="addPowers" useGeneratedKeys="true" parameterType="com.gjp.model.Powers" keyProperty="ucps_id">
+        insert into GJP_UserCenter_Powers(<include refid="columns"></include>) values (<include refid="insert"></include>)
+    </insert>
+
+    <!-- 删除 -->
+    <delete id="deletePowers" parameterType="int">
+        delete
+        from GJP_UserCenter_Powers
+        where ucps_id = #{id}
+    </delete>
+
+    <!-- 修改 -->
+    <update id="updatePowers">
+        update GJP_UserCenter_Powers
+        <set>
+            <if test="ucps_name !=null and ucps_name != ''">ucps_name =#{ucps_name},</if>
+            <if test="ucps_url !=null">ucps_url =#{ucps_url},</if>
+            <if test="ucps_icon !=null">ucps_icon =#{ucps_icon},</if>
+            <if test="ucps_pid !=null">ucps_pid =#{ucps_pid},</if>
+            <if test="ucps_asc !=null">ucps_asc =#{ucps_asc},</if>
+            <if test="ucps_date !=null">ucps_date =#{ucps_date},</if>
+            <if test="ucps_state !=null">ucps_state =#{ucps_state},</if>
+            <if test="ucps_type !=null">ucps_type =#{ucps_type}</if>
+        </set>
+        where ucps_id = #{ucps_id}
+    </update>
+
+    <!-- 删除部门权限关联 -->
+    <delete id="deleteFromCompanyPowers" parameterType="int">
+        delete
+        from GJP_UserCenter_CompanyPowers
+        where ucps_id = #{id}
+    </delete>
+    <!-- 删除用户权限关联 -->
+    <delete id="deleteFromPersonPowers" parameterType="int">
+        delete
+        from GJP_UserCenter_PersonPowers
+        where ucps_id = #{id}
+    </delete>
+    <!-- 删除职位权限关联 -->
+    <delete id="deleteFromPositionPowers" parameterType="int">
+        delete
+        from GJP_UserCenter_PositionPowers
+        where ucps_id = #{id}
+    </delete>
+    <!-- 删除角色权限关联 -->
+    <delete id="deleteFromRolePowers" parameterType="int">
+        delete
+        from GJP_UserCenter_RolePowers
+        where ucps_id = #{id}
+    </delete>
+
+    <!-- 查询最大排序号-->
+    <select id="selectMaxOrder" resultType="int">
+        SELECT max(ucps_asc)
+        FROM GJP_UserCenter_Powers
+        WHERE ucps_pid = #{pid}
+    </select>
+
+    <!-- 禁用权限 -->
+    <update id="closePowers">
+        UPDATE GJP_UserCenter_Powers
+        SET ucps_state = 0
+        WHERE ucps_id = #{id}
+    </update>
+
+    <!-- 启用权限 -->
+    <update id="openPowers">
+        UPDATE GJP_UserCenter_Powers
+        SET ucps_state = 1
+        WHERE ucps_id = #{id}
+    </update>
+
+    <!-- 获取权限的排序号 -->
+    <select id="findPowersAsc" resultType="int">
+        select ucps_asc
+        from GJP_UserCenter_Powers
+        where ucps_id = #{id}
+    </select>
+
+    <!-- 修改权限的排序号-->
+    <update id="updatePowersAsc" parameterType="com.gjp.model.Powers">
+        UPDATE GJP_UserCenter_Powers
+        SET ucps_asc = #{ucps_asc}
+        WHERE ucps_id = #{ucps_id}
+    </update>
+
+    <!-- 根据权限属性查权限 -->
+    <select id="selectPowersByProperty" resultType="com.gjp.model.Powers">
+        select * from GJP_UserCenter_Powers where 1=1
+        <if test="ucps_pid !=null ">
+            and ucps_pid = #{ucps_pid}
+        </if>
+        <if test="ucps_name !=null and ucps_name !='' ">
+            and ucps_name = #{ucps_name}
+        </if>
+        <if test="ucps_url !=null and ucps_url !='' ">
+            and ucps_url = #{ucps_url}
+        </if>
+        <if test="ucps_level !=null ">
+            and ucps_level = #{ucps_level}
+        </if>
+        <if test="ucps_id !=null ">
+            and ucps_id != #{ucps_id}
+        </if>
+    </select>
+    <!-- 将排序号大于ucps_asc的权限向后移动1位 -->
+    <update id="moveDownOneStep">
+        UPDATE GJP_UserCenter_Powers
+        SET ucps_asc = ucps_asc + 1
+        WHERE ucps_pid = #{ucps_pid} AND ucps_asc >= #{ucps_asc}
+    </update>
+    <!-- 将排序号大于ucps_asc的权限向前移动1位 -->
+    <update id="moveUpOneStep">
+        UPDATE GJP_UserCenter_Powers
+        SET ucps_asc = ucps_asc - 1
+        WHERE ucps_pid = #{ucps_pid} AND ucps_asc >= #{ucps_asc}
+    </update>
+</mapper>

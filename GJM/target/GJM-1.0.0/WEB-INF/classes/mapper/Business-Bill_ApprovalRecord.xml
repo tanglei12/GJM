@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillApprovalRecordDao">
+
+    <select id="selectApprovalList" resultType="java.util.Map">
+        SELECT
+        *
+        FROM
+        GJP_Bill_ApprovalRecord t1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee t2 ON t1.ar_em_id = t2.em_id
+        WHERE 1=1
+        <if test="ar_number !=null and ar_number !=''">
+            and ar_number = #{ar_number}
+        </if>
+    </select>
+
+    <!-- 添加 -->
+    <insert id="addApprovalRecord" useGeneratedKeys="true" keyProperty="ar_id">
+		INSERT INTO GJP_Bill_ApprovalRecord(
+			ar_id,
+			ar_ex_id,
+			ar_em_id,
+			ar_text,
+			ar_number,
+			ar_state,
+			ar_time
+		) VALUES (
+			#{ar_id},
+			#{ar_ex_id},
+			#{ar_em_id},
+			#{ar_text},
+			#{ar_number},
+			#{ar_state},
+			#{ar_time}
+		)
+	</insert>
+
+</mapper>

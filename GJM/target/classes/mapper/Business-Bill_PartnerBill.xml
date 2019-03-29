@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BillPartnerBillDao">
+	<!-- 新增金融账单 -->
+	<insert id="addBillPartnerBill" useGeneratedKeys="true" keyProperty="bpb_id">
+		insert into GJP_Bill_PartnerBill(
+			bco_code,
+			bpb_cycle,
+			bpb_title,
+			bpb_type,
+			bpb_status,
+			bpb_state,
+			bpb_balPay,
+			bpb_repayment,
+			bpb_realPayment,
+			bpb_repaymentDate,
+			bpb_realPaymentDate,
+			bpb_remarks,
+			bpb_payee,
+			bpb_operatorId,
+			bpb_operatorName,
+			bpb_creatorId,
+			bpb_creatorName,
+			bpb_createTime,
+			bcb_code,
+			bcb_cycle
+		) values(
+			#{bco_code},
+			#{bpb_cycle},
+			#{bpb_title},
+			#{bpb_type},
+			#{bpb_status},
+			#{bpb_state},
+			#{bpb_balPay},
+			#{bpb_repayment},
+			#{bpb_realPayment},
+			#{bpb_repaymentDate},
+			#{bpb_realPaymentDate},
+			#{bpb_remarks},
+			#{bpb_payee},
+			#{bpb_operatorId},
+			#{bpb_operatorName},
+			#{bpb_creatorId},
+			#{bpb_creatorName},
+			#{bpb_createTime},
+			#{bcb_code},
+			#{bcb_cycle}
+		)
+	</insert>
+
+	<!-- 修改代偿订单 -->
+	<update id="updateBillPartnerBill">
+		update GJP_Bill_PartnerBill
+		<set>
+			<if test="bco_code != null and bco_code !='' ">bco_code = #{bco_code},</if>
+			<if test="bpb_cycle != null ">bpb_cycle = #{bpb_cycle},</if>
+			<if test="bpb_title != null and bpb_title !='' ">bpb_title = #{bpb_title},</if>
+			<if test="bpb_type != null ">bpb_type = #{bpb_type},</if>
+			<if test="bpb_status != null ">bpb_status = #{bpb_status},</if>
+			<if test="bpb_state != null ">bpb_state = #{bpb_state},</if>
+			<if test="bpb_balPay != null ">bpb_balPay = #{bpb_balPay},</if>
+			<if test="bpb_repayment != null ">bpb_repayment = #{bpb_repayment},</if>
+			<if test="bpb_realPayment != null ">bpb_realPayment = #{bpb_realPayment},</if>
+			<if test="bpb_repaymentDate != null ">bpb_repaymentDate = #{bpb_repaymentDate},</if>
+			<if test="bpb_realPaymentDate != null ">bpb_realPaymentDate = #{bpb_realPaymentDate},</if>
+			<if test="bpb_remarks != null and bpb_remarks !='' ">bpb_remarks = #{bpb_remarks},</if>
+			<if test="bpb_payee != null and bpb_payee !='' ">bpb_payee = #{bpb_payee},</if>
+			<if test="bpb_operatorId != null ">bpb_operatorId = #{bpb_operatorId},</if>
+			<if test="bpb_operatorName != null and bpb_operatorName !='' ">bpb_operatorName = #{bpb_operatorName},</if>
+			<if test="bpb_creatorId != null ">bpb_creatorId = #{bpb_creatorId},</if>
+			<if test="bpb_creatorName != null and bpb_creatorName !='' ">bpb_creatorName = #{bpb_creatorName},</if>
+			<if test="bpb_createTime != null ">bpb_createTime = #{bpb_createTime},</if>
+			<if test="bcb_code != null and bcb_code != '' ">bcb_code = #{bcb_code},</if>
+			<if test="bcb_cycle != null ">bcb_cycle = #{bcb_cycle},</if>
+		</set>
+		where bpb_id = #{bpb_id}
+	</update>
+
+	<!-- 根据id查询金融账单 -->
+	<select id="queryBillPartnerBillById" resultType="com.gjp.model.BillPartnerBill">
+		select bpb.* from GJP_Bill_PartnerBill as bpb where bpb.bpb_id = #{bpb_id}
+	</select>
+
+	<!-- 删除金融账单 -->
+	<delete id="deleteBillPartnerBill">
+		DELETE FROM GJP_Bill_PartnerBill WHERE bpb_id = #{bpb_id}
+	</delete>
+	
+	<!-- 删除金融账单 -->
+	<delete id="deleteBillPartnerBillByOrderCode">
+		DELETE FROM GJP_Bill_PartnerBill WHERE bco_code = #{bco_code}
+	</delete>
+
+	<!-- 根据订单编号查询金融账单 -->
+	<select id="queryPartnerBillsByOrderCode" resultType="com.gjp.model.BillPartnerBill">
+		SELECT
+			bpb.bpb_id,
+			bpb.bco_code,
+			bpb.bpb_cycle,
+			bpb.bpb_title,
+			bpb.bpb_type,
+			bpb.bpb_status,
+			bpb.bpb_state,
+			bpb.bpb_balPay,
+		
+		IF (
+			bpb.bpb_balPay = 0,
+			bpb.bpb_repayment ,- bpb.bpb_repayment
+		) AS bpb_repayment,
+		
+		IF (
+			bpb.bpb_balPay = 0,
+			bpb.bpb_realPayment ,- bpb.bpb_realPayment
+		) AS bpb_realPayment,
+		 bpb.bpb_repaymentDate,
+		 bpb.bpb_realPaymentDate,
+		 bpb.bpb_remarks
+		FROM
+			GJP_Bill_PartnerBill AS bpb
+		WHERE
+			bpb.bco_code = #{bco_code}
+		ORDER BY
+			bpb.bpb_cycle,
+			bpb.bpb_type
+	</select>
+	
+	<!-- 根据订单编号查询金融账单 -->
+	<select id="queryMaxCycleByOrderCode" resultType="int">
+		select MAX(bpb.bpb_cycle) as bpb_cycle from GJP_Bill_PartnerBill as bpb where bpb.bco_code = #{bco_code}
+	</select>
+</mapper>

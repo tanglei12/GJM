@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.UserCenterEmployeeDao">
+    <sql id="menberEcpId">
+		em_name,
+		em_sex,
+		em_position,
+		em_phone,
+		em_address,
+		em_code,
+		em_account,
+		em_password,
+		em_createTime,
+		em_documentID,
+		em_chiefPos,
+		em_jobState,
+		em_image,
+		em_post,
+		em_cardImage
+	</sql>
+
+    <sql id="insert">
+		#{em_name},
+		#{em_sex},
+		#{em_position},
+		#{em_phone},
+		#{em_address},
+		#{em_code},
+		#{em_account},
+		#{em_password},
+		NOW(),
+		#{em_documentID},
+		#{em_chiefPos},
+		#{em_jobState},
+		#{em_image},
+		#{em_post},
+		#{em_cardImage}
+	</sql>
+
+    <sql id="update">
+        em_name=#{em_name},
+        em_sex=#{em_sex},
+        em_phone=#{em_phone},
+        em_address=#{em_address},
+        em_documentID=#{em_documentID},
+        <if test="em_password != null and em_password !=''">
+            em_password=#{em_password},
+        </if>
+        <if test="em_cardImage != null and em_cardImage !=''">
+            em_cardImage=#{em_cardImage},
+        </if>
+        em_state=#{em_state}
+    </sql>
+
+    <insert id="insertUserCenterEmployee" useGeneratedKeys="true" parameterType="com.gjp.model.UserCenterEmployee" keyProperty="em_id">
+        insert into GJP_UserCenter_Employee(
+        <include refid="menberEcpId"></include>
+        ) values (
+        <include refid="insert"></include>
+        )
+    </insert>
+
+    <insert id="addRole" useGeneratedKeys="true" parameterType="com.gjp.model.Role" keyProperty="ucr_id">
+		insert into GJP_UserCenter_role(
+		ucr_name,
+		ucr_date,
+		ucr_text,
+		ucr_state
+		) values (
+		#{ucr_name},
+		#{ucr_date},
+		#{ucr_text},
+		#{ucr_state}
+		)
+	</insert>
+
+    <update id="updatetUserCenterEmployee" parameterType="com.gjp.model.UserCenterEmployee">
+        update GJP_UserCenter_Employee set
+        <include refid="update"></include>
+        where em_id=#{em_id}
+    </update>
+
+    <!-- ajax修改密码 -->
+    <update id="updatePs" parameterType="com.gjp.model.UserCenterEmployee">
+		update
+		GJP_UserCenter_Employee set
+		em_password=#{em_password}
+		where
+		em_id=#{em_id}
+	</update>
+
+    <!-- 修改人员信息 -->
+    <update id="updateEmployeeById" parameterType="com.gjp.model.UserCenterEmployee">
+        update GJP_UserCenter_Employee set
+        em_name=#{em_name},
+        em_sex=#{em_sex},
+        em_phone=#{em_phone},
+        em_address=#{em_address},
+        em_documentID=#{em_documentID},
+        <if test="em_chiefPos != null and em_chiefPos !=''">
+            em_chiefPos=#{em_chiefPos},
+        </if>
+        em_jobState=#{em_jobState},
+        em_state=#{em_state}
+        where em_id=#{em_id}
+    </update>
+
+    <!-- 修改人员信息 -->
+    <update id="updateUser" parameterType="com.gjp.model.UserCenterEmployee">
+		update
+		GJP_UserCenter_Employee set
+		em_name=#{em_name},
+		em_sex=#{em_sex},
+		em_phone=#{em_phone},
+		em_phone1=#{em_phone1},
+		em_phone2=#{em_phone2},
+		em_address=#{em_address},
+		em_documentID=#{em_documentID}
+		where
+		em_id=#{em_id}
+	</update>
+
+    <!-- 修改头像 -->
+    <update id="updateImage" parameterType="com.gjp.model.UserCenterEmployee">
+		UPDATE GJP_UserCenter_Employee
+		<set>
+            <if test="em_image != null and em_image != ''">em_image=#{em_image},</if>
+            <if test="em_cardImage != null and em_cardImage != ''">em_cardImage=#{em_cardImage},</if>
+        </set>
+		WHERE
+		em_id=#{em_id}
+	</update>
+
+    <!-- 修改人员状态 -->
+    <update id="updateState" parameterType="com.gjp.model.UserCenterEmployee">
+		update GJP_UserCenter_Employee set
+		em_state=#{em_state}
+		where em_id=#{em_id}
+	</update>
+
+    <!-- ajax根据id查询职工信息 -->
+    <select id="selectUserCenterEmployeeById" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+		*
+		FROM 
+		GJP_UserCenter_Employee 
+		WHERE 
+		em_id = #{id}
+	</select>
+
+    <!-- ajax根据id查询职工信息 -->
+    <select id="selectDepartmentById" resultType="Integer">
+		SELECT 
+		up.ucc_id
+		FROM GJP_UserCenter_Employee ue,
+		GJP_UserCenter_EmployeePosition ep,
+		GJP_UserCenter_Position up 
+		WHERE 
+		ue.em_id = ep.em_id 
+		AND ep.ucr_id = up.ucr_id 
+		AND ue.em_id = #{em_id}
+	</select>
+    <!-- 查询所有部门 -->
+    <select id="selectAllCompany" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company;
+	</select>
+    <!-- 根据部门编号查询所有下属人员 -->
+    <select id="selectUserCenterEmployeeByDepartment" resultType="com.gjp.model.UserCenterEmployee">
+		select ue.* from GJP_UserCenter_Employee
+		ue,GJP_UserCenter_EmployeePosition ep,GJP_UserCenter_Position up where
+		ue.em_id = ep.em_id and ep.ucr_id = up.ucr_id and up.ucc_id =
+		#{ucc_id}
+	</select>
+
+    <!-- 查询所有在职人员账号 -->
+    <select id="selectALLAccount" resultType="com.gjp.model.UserCenterEmployee">
+		select
+		em_account
+		from
+		GJP_UserCenter_Employee where em_state = 1
+	</select>
+
+    <!-- 根据部门编码查询人员 -->
+    <select id="selectCompanyID" resultType="com.gjp.model.UserCenterEmployee">
+        select * from view_GJP_EmployeePositionList where 1=1
+        <if test="ucc_id != null and ucc_id != ''">
+            and ucc_id = #{ucc_id}
+        </if>
+        <if test="ucp_name != null and ucp_name != ''">
+            and ucp_name = #{ucp_name}
+        </if>
+        <if test="em_id != null and em_id != ''">
+            and em_id = #{em_id}
+        </if>
+        <if test="em_name != null and em_name != ''">
+            and em_name = #{em_name}
+        </if>
+        <if test="em_id != null and em_id != ''">
+            and em_id = #{em_id}
+        </if>
+        <if test="em_phone != null and em_phone != ''">
+            and em_phone = #{em_phone}
+        </if>
+    </select>
+
+    <!-- 查询所有在职人员聊天数据 -->
+    <select id="selectALLMessage" resultType="com.gjp.model.UserCenterEmployee">
+		select
+		em_id,em_name,em_account,em_image
+		from GJP_UserCenter_Employee where
+		em_state = 1
+	</select>
+
+    <!-- ajax根据id查询职工信息 -->
+    <select id="selectUserCenter" resultType="com.gjp.model.UserCenter">
+		SELECT
+		*
+		FROM GJP_UserCenter_User where user_id = #{user_id}
+	</select>
+
+    <!-- 查询维修员工 -->
+    <select id="selectUserCenterEmployee" resultType="com.gjp.model.UserCenterEmployee">
+		select
+		em_id,
+		em_name,
+		em_sex,
+		em_position,
+		em_phone,
+		em_address,
+		em_code,
+		em_account,
+		em_password,
+		em_createTime,
+		em_state,
+		em_documentID,
+		em_chiefPos,
+		em_jobState,
+		em_image,
+		em_post,
+		em_cardImage
+		from GJP_UserCenter_Employee where em_post = '维修工'
+	</select>
+
+    <!-- 根据人员编码查询部门主管 -->
+    <select id="selectUserCenterEmployeeZG" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT * FROM
+        view_GJP_EmployeePositionList
+        WHERE
+        em_state = 1
+        AND em_phone IN (SELECT ucc_phone FROM GJP_UserCenter_Company)
+        <if test="ucp_name != null and ucp_name != ''">
+            and ucp_name like CONCAT('%',#{ucp_name},'%')
+        </if>
+        <if test="ucc_phone != null and ucc_phone != ''">
+            and ucc_phone=#{ucc_phone}
+        </if>
+    </select>
+
+    <!-- 根据人员编码查询公司 -->
+
+    <!-- 根据人员编码查询营销部 -->
+    <select id="selectUserCenterEmployeeCompany" resultType="com.gjp.model.UserCenterEmployee">
+		select *
+		from view_GJP_EmployeePositionList where em_state = 1
+		and em_phone in
+		(select ucc_phone from GJP_UserCenter_Company where ucc_id=27)
+	</select>
+
+    <!-- 查询销售部门 -->
+    <select id="selectSaleCompany" resultType="com.gjp.model.Company">
+		select * from
+		GJP_UserCenter_Company where ucc_pid=43 or ucc_pid=44 OR ucc_pid=35 OR ucc_pid=47
+	</select>
+
+    <!-- 查询销售部门人员职位 -->
+    <select id="selectSaleCompanyPersion" resultType="com.gjp.model.PersionVo">
+		select * from GJP_UserCenter_Company AS ucc
+        LEFT JOIN GJP_UserCenter_CompanyPserson AS ccp ON ucc.ucc_id = ccp.ucc_id
+        LEFT JOIN GJP_UserCenter_Employee AS em ON ccp.em_id = em.em_id
+        LEFT JOIN GJP_UserCenter_PersonPosition AS ucp ON em.em_id = ucp.em_id
+        LEFT JOIN GJP_UserCenter_Position AS cp ON ucp.ucp_id = cp.ucp_id
+        where 1=1
+        <if test="em_id != null and em_id != ''">
+            AND em.em_id=#{em_id}
+        </if>
+	</select>
+
+    <!-- 根据人员编码查询管家婆 -->
+    <select id="selectUserCenterEmployeeCompanyGjp" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT * FROM view_GJP_EmployeePositionList WHERE em_name='管家婆' AND
+        em_state = 1
+        <if test="ucc_phone != null and ucc_phone != ''">
+            and ucc_phone=#{ucc_phone}
+        </if>
+    </select>
+
+    <!-- 查询人员信息 -->
+    <select id="selectEmployeePositionCompanyWhere" resultType="com.gjp.model.ViewEmployeePositionCompanyVo">
+        SELECT
+        *
+        FROM
+        view_GJP_EmployeePositionCompanyList
+        WHERE
+        1=1
+        <if test="em_state !=null and em_state !='' ">AND em_state = #{em_state}</if>
+        <if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+        <if test="em_account !=null and em_account !='' ">AND em_account = #{em_account}</if>
+        LIMIT 1
+    </select>
+
+    <!-- 查询人员信息列表 -->
+    <select id="selectEmployeePositionCompanyList" resultType="com.gjp.model.ViewEmployeePositionCompanyVo">
+        SELECT
+        em_id,
+        em_name,
+        em_position,
+        em_phone,
+        em_code,
+        em_account,
+        em_state,
+        em_jobState,
+        em_chiefPos,
+        em_image,
+        ucr_name,
+        ucc_id,
+        ucc_name,
+        ucc_short,
+        ucc_type,
+        ucc_pid,
+        ucc_corporation
+        FROM
+        view_GJP_EmployeePositionCompanyList
+        WHERE
+        1 = 1
+        <if test="ucc_id !=null and ucc_id !='' ">AND ucc_id=#{ucc_id}</if>
+    </select>
+
+    <!-- 查询服务部门主管 -->
+
+    <!-- 根据人员编码查询部门编码 -->
+    <select id="selectUserCenterEmployeeUCC" resultType="com.gjp.model.UserCenterEmployee">
+        select * from view_GJP_EmployeePositionList where 1=1
+        <if test="em_id != null and em_id != ''">
+            and em_id=#{em_id}
+        </if>
+    </select>
+
+    <!-- 查询服务部门主管 -->
+    <select id="selectUserCenterEmployeeService" resultType="com.gjp.model.UserCenterEmployee">
+		select *
+		from view_GJP_EmployeePositionList where ucc_short = '客户服务部' and
+		em_post like CONCAT('%主管%') and em_state = 1
+	</select>
+
+    <!-- 根据人员编码查询经理 -->
+    <select id="selectUserCenterEmployeeJL" resultType="com.gjp.model.UserCenterEmployee">
+		select * from
+		view_GJP_EmployeePositionList where em_post like CONCAT('%经理%') and
+		em_state = 1
+	</select>
+
+    <!-- 查询收录人 -->
+    <select id="selectIdByName" resultType="int">
+		select
+		em_id
+		from
+		GJP_UserCenter_Employee where em_name like CONCAT('%',#{em_name},'%')
+	</select>
+
+    <!-- ajax根据id查询职工信息 -->
+    <select id="selectAccount" resultType="com.gjp.model.UserCenterEmployee">
+        select em_account,em_id,em_name,em_phone,em_state from
+        GJP_UserCenter_Employee
+        where 1=1
+        <if test="em_account != null and em_account !=''">
+            and em_account = #{em_account}
+        </if>
+        <if test="em_phone != null and em_phone !=''">
+            and em_phone = #{em_phone}
+        </if>
+        <if test="em_id != null and em_id !=''">
+            and em_id = #{em_id}
+        </if>
+    </select>
+
+    <!-- 根据部门查询职工信息 -->
+    <select id="selectEmployeeByPosition" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+		em.em_id,
+		em_name,
+		em_sex,
+		em_position,
+		em_phone,
+		em_address,
+		em_code,
+		em_account,
+		em_password,
+		em_createTime,
+		em_state,
+		em_documentID,
+		em_chiefPos,
+		em_jobState,
+		em_image,
+		em_post,
+		em_cardImage
+		FROM GJP_UserCenter_Employee as em
+		left join GJP_UserCenter_CompanyPserson as cp on em.em_id = cp.em_id
+		left join GJP_UserCenter_Company as uc on cp.ucc_id = uc.ucc_id
+		WHERE
+		em_state =1 AND
+		uc.ucc_id = 26
+	</select>
+
+    <!-- 根据编号查询职工信息 -->
+    <select id="selectEmployeeById" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+		*
+		FROM GJP_UserCenter_Employee
+		WHERE
+		em_id = #{em_id}
+	</select>
+
+    <!-- 根据编号查询职工信息 -->
+    <select id="queryEmployeeHead" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+		emp.*
+		FROM
+		GJP_UserCenter_CompanyPserson AS cp
+		INNER JOIN GJP_UserCenter_Company AS com ON cp.ucc_id = com.ucc_id
+		INNER JOIN GJP_UserCenter_Employee AS emp ON com.em_id = emp.em_id
+		WHERE
+		emp.em_id =#{em_id}
+		LIMIT 1
+	</select>
+
+    <!-- 根据用户账号查询权限 -->
+    <select id="selectAccountType" resultType="com.gjp.model.UserCenterEmployee">
+		select * from
+		GJP_UserCenter_Employee as em,GJP_UserCenter_EmployeeType as et where
+		em.em_id=et.em_id and em.em_account = #{em_account} order by et.et_num
+		asc
+	</select>
+
+    <!-- ajax判断账号是否存在 -->
+    <select id="selectUserCenterEmployeeByName" resultType="com.gjp.model.UserCenterEmployee">
+		select
+		*
+		from view_GJP_EmployeePositionListLogin where em_phone = #{em_phone} and
+		em_password = #{em_password} and em_state = 1 limit 1
+	</select>
+
+    <!-- 根据手机号查询用户 -->
+    <select id="selectUserCenterEmployeeByPhone" resultType="com.gjp.model.UserCenterEmployee">
+        select
+        <include refid="allmenbers"/>
+        from view_GJP_EmployeePositionListLogin where em_phone = #{em_phone}
+    </select>
+    <!-- 查询订单总数 -->
+    <select id="selectEmployeeSize" resultType="com.gjp.model.UserCenterEmployee">
+        select count(*) as size from GJP_UserCenter_Employee where 1=1
+        <if test="whereList != null and whereList !=''">
+            and (em_name like CONCAT('%',#{whereList},'%')
+            or
+            em_position like CONCAT('%',#{whereList},'%')
+            or em_phone like
+            CONCAT('%',#{whereList},'%')
+            or em_account like
+            CONCAT('%',#{whereList},'%')
+            )
+        </if>
+        order by em_name desc
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="selectEmployee" resultType="com.gjp.model.UserCenterEmployee">
+        select (select count(*) from GJP_UserCenter_Employee ) as size,
+        em_id,
+        em_name,
+        em_sex,
+        em_position,
+        em_phone,
+        em_address,
+        em_code,
+        em_account,
+        em_password,
+        em_createTime,
+        em_post,
+        em_state,
+        em_jobState,
+        em_image,
+        em_chiefPos
+        from GJP_UserCenter_Employee where 1=1
+        <if test="whereList != null and whereList !=''">
+            and (em_name like CONCAT('%',#{whereList},'%')
+            or
+            em_position like CONCAT('%',#{whereList},'%')
+            or em_phone like
+            CONCAT('%',#{whereList},'%')
+            or em_account like
+            CONCAT('%',#{whereList},'%')
+            )
+        </if>
+        order by em_name desc
+        <if test="start !=null and end !=null">
+            limit #{start},#{end}
+        </if>
+    </select>
+
+    <!-- 部门分页信息 -->
+    <select id="queryDepartmentList" resultType="com.gjp.model.Company">
+        SELECT * FROM(SELECT
+        ucc1.ucc_id,
+        ucc1.ucc_name,
+        ucc1.ucc_short,
+        ucc1.ucc_type,
+        ucc1.ucc_pid,
+        ucc1.ucc_person,
+        ucc1.ucc_phone,
+        ucc1.em_id,
+        ucc1.ucc_remarks,
+        ucc1.ucc_time,
+        ucc2.ucc_short as ucc_pname
+        FROM GJP_UserCenter_Company
+        AS ucc1
+        LEFT JOIN GJP_UserCenter_Company AS ucc2 ON ucc1.ucc_pid =
+        ucc2.ucc_id) com
+        where 1=1
+        <if test="t.ucc_name != null and t.ucc_name !='' ">
+            AND (ucc_name like CONCAT('%',#{t.ucc_name},'%') or ucc_person like
+            CONCAT('%',#{t.ucc_person},'%') or ucc_phone like
+            CONCAT('%',#{t.ucc_phone},'%'))
+        </if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 部门分页信息总数 -->
+    <select id="queryDepartmentListNum" resultType="int">
+        SELECT count(1) FROM(SELECT
+        ucc1.ucc_id,
+        ucc1.ucc_name,
+        ucc1.ucc_short,
+        ucc1.ucc_type,
+        ucc1.ucc_pid,
+        ucc1.ucc_person,
+        ucc1.ucc_phone,
+        ucc1.em_id,
+        ucc1.ucc_remarks,
+        ucc1.ucc_time,
+        ucc2.ucc_short as ucc_pname
+        FROM GJP_UserCenter_Company
+        AS ucc1
+        LEFT JOIN GJP_UserCenter_Company AS ucc2 ON ucc1.ucc_pid =
+        ucc2.ucc_id) com
+        where 1=1
+        <if test="t.ucc_name != null and t.ucc_name !='' ">
+            AND (ucc_name like CONCAT('%',#{t.ucc_name},'%') or ucc_person like
+            CONCAT('%',#{t.ucc_person},'%') or ucc_phone like
+            CONCAT('%',#{t.ucc_phone},'%'))
+        </if>
+    </select>
+
+    <!-- 查询内部人员分页信息 -->
+    <select id="queryUserCenterEmployeeList" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT * FROM
+        (SELECT
+        emp.em_id,
+        emp.em_name,
+        emp.em_phone,
+        emp.em_account,
+        emp.em_state,
+        emp.em_jobState,
+        ucp.ucp_name,
+        com.ucc_id,
+        com.ucc_name,
+        com.ucc_short
+        FROM
+        GJP_UserCenter_Employee AS emp
+        LEFT JOIN
+        GJP_UserCenter_PersonPosition AS ucpr ON ucpr.em_id = emp.em_id
+        LEFT
+        JOIN GJP_UserCenter_Position AS ucp ON ucp.ucp_id = ucpr.ucp_id
+        LEFT
+        JOIN GJP_UserCenter_Company AS com ON com.ucc_id = ucp.ucc_id
+        ) emp
+        WHERE
+        em_state = #{t.em_state}
+        <if test="t.ucc_short != null and t.ucc_short !='' ">AND ucc_short =#{t.ucc_short}</if>
+        <if test="t.ucc_name != null and t.ucc_name !='' ">AND ucc_name =#{t.ucc_name}</if>
+        <if test="t.em_name != null">
+            AND CONCAT(em_name,em_phone) like
+            CONCAT('%',#{t.em_name},'%')
+        </if>
+        <if test="t.em_id != null">
+            AND em_id != #{t.em_id}
+        </if>
+        <if test="t.ucc_id != null">
+            AND ucc_id = #{t.ucc_id}
+        </if>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <!-- 查询内部人员记录数量 -->
+    <select id="queryUserCenterEmployeeTotalRecords" resultType="int">
+        SELECT COUNT(*) FROM
+        (SELECT
+        emp.em_id,
+        emp.em_name,
+        emp.em_phone,
+        emp.em_account,
+        emp.em_state,
+        emp.em_jobState,
+        ucp.ucp_name,
+        com.ucc_id,
+        com.ucc_name,
+        com.ucc_short
+        FROM
+        GJP_UserCenter_Employee AS emp
+        LEFT JOIN
+        GJP_UserCenter_PersonPosition AS ucpr ON ucpr.em_id = emp.em_id
+        LEFT
+        JOIN GJP_UserCenter_Position AS ucp ON ucp.ucp_id = ucpr.ucp_id
+        LEFT
+        JOIN GJP_UserCenter_Company AS com ON com.ucc_id = ucp.ucc_id
+        ) emp
+        WHERE
+        em_state = #{t.em_state}
+        <if test="t.ucc_short != null and t.ucc_short !='' ">AND ucc_short =#{t.ucc_short}</if>
+        AND CONCAT(em_name,em_phone) like CONCAT('%',#{t.em_name},'%')
+    </select>
+
+    <sql id="allmenbers">
+		em_id,
+		em_name,
+		em_sex,
+		em_position,
+		em_phone,
+		em_address,
+		em_code,
+		em_account,
+		em_password,
+		em_createTime,
+		em_state,
+		em_documentID,
+		em_chiefPos,
+		em_jobState,
+		em_image,
+		em_post,
+		em_cardImage,
+		ucc_short,
+		ucc_name
+	</sql>
+
+    <!-- 删除人员权限关联 -->
+    <delete id="delFromPersonPowers" parameterType="int">
+		delete from GJP_UserCenter_PersonPowers where em_id = #{id}
+	</delete>
+
+    <!-- 查询人员拥有的权限 -->
+    <select id="selectPowersByPersonId" parameterType="int" resultType="com.gjp.model.Powers">
+		SELECT
+		p.*
+		FROM
+		GJP_UserCenter_Powers p
+		LEFT JOIN GJP_UserCenter_PersonPowers pp ON pp.ucps_id = p.ucps_id
+		WHERE
+		pp.em_id = #{id}
+		ORDER BY
+		p.ucps_asc
+	</select>
+
+    <!-- 设置人员权限 -->
+    <insert id="savePowersForPerson" useGeneratedKeys="true" parameterType="map" keyProperty="ucpps_id">
+        insert into GJP_UserCenter_PersonPowers(em_id, ucps_id) values
+        <foreach collection="powerIds" index="index" item="item" separator=",">
+            ( #{personId}, #{item} )
+        </foreach>
+    </insert>
+
+    <!-- 查询人员所在职位 -->
+    <select id="selectPositionByPersonId" parameterType="int" resultType="com.gjp.model.Position">
+		SELECT
+		p.*
+		FROM
+		GJP_UserCenter_Employee e
+		LEFT JOIN GJP_UserCenter_PersonPosition pp ON pp.em_id = e.em_id
+		LEFT JOIN GJP_UserCenter_Position p ON p.ucp_id = pp.ucp_id
+		WHERE
+		e.em_id = #{id}
+	</select>
+
+    <!-- 查询人员所在部门 -->
+    <select id="selectCompanyByPersonId" parameterType="int" resultType="com.gjp.model.Company">
+		SELECT
+		c.*
+		FROM
+		GJP_UserCenter_Employee e
+		LEFT JOIN GJP_UserCenter_CompanyPserson cp ON cp.em_id = e.em_id
+		LEFT JOIN GJP_UserCenter_Company c ON c.ucc_id = cp.ucc_id
+		WHERE
+		e.em_id = #{id}
+	</select>
+
+    <!-- 根据员工姓名和电话查询员工列表 -->
+    <select id="selectPersonsByNameOrPhone" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        em.em_id,em.em_name,em.em_phone
+        FROM
+        GJP_UserCenter_Employee em
+        WHERE 1 = 1
+        <if test="whereList != null and whereList !='' ">
+            AND (em.em_name LIKE CONCAT('%',#{whereList}, '%')
+            OR em.em_phone LIKE CONCAT('%',#{whereList}, '%'))
+        </if>
+        <if test="start != null and end != null">
+            LIMIT #{start},#{end}
+        </if>
+    </select>
+
+    <!-- 查询人员列表 -->
+    <select id="selectEmployeeList" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        em.*, GROUP_CONCAT(p.ucp_name) ucp_name,
+        GROUP_CONCAT(c.ucc_name) ucc_name
+        FROM
+        GJP_UserCenter_Employee em
+        LEFT JOIN GJP_UserCenter_PersonPosition pp ON em.em_id = pp.em_id
+        LEFT JOIN GJP_UserCenter_Position p ON pp.ucp_id = p.ucp_id
+        LEFT JOIN GJP_UserCenter_Company c ON c.ucc_id = p.ucc_id
+        WHERE 1=1
+        <if test="whereList != null and whereList !='' ">
+            AND (em.em_name LIKE CONCAT('%',#{whereList}, '%')
+            OR em.em_phone LIKE CONCAT('%',#{whereList}, '%')
+            OR em.em_account LIKE CONCAT('%',#{whereList}, '%'))
+        </if>
+        GROUP BY
+        em.em_id
+        ORDER BY em.em_createTime desc
+        <if test="start != null and end != null">
+            LIMIT #{start},#{end}
+        </if>
+    </select>
+
+    <!-- 查询人员列表总数(分页) -->
+    <select id="selectEmployeeListCount" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        GJP_UserCenter_Employee em
+        WHERE 1=1
+        <if test="whereList != null and whereList !='' ">
+            AND (em.em_name LIKE CONCAT('%',#{whereList}, '%')
+            OR em.em_phone LIKE CONCAT('%',#{whereList}, '%')
+            OR em.em_account LIKE CONCAT('%',#{whereList}, '%'))
+        </if>
+    </select>
+
+    <!-- 插入人员合同分配表  -->
+    <insert id="insertUserContract" useGeneratedKeys="true" parameterType="com.gjp.model.UserContract" keyProperty="em_id">
+		INSERT INTO GJP_UserCenter_UserContract(
+		uc_id,
+		em_id,
+		contractObject_Id,
+		contractObject_code,
+		uc_state,
+		uc_emType,
+		new_em,
+		contract_perforSplit,
+		main_em,
+        main_contract_perforSplit,
+        deputy_em,
+        deputy_contract_perforSplit
+
+		) VALUES (
+		#{uc_id},
+		#{em_id},
+		#{contractObject_Id},
+		#{contractObject_code},
+		#{uc_state},
+		#{uc_emType},
+		#{new_em},
+		#{contract_perforSplit},
+		#{main_em},
+        #{main_contract_perforSplit},
+        #{deputy_em},
+        #{deputy_contract_perforSplit}
+		)
+	</insert>
+
+    <!-- 根据用户ID删除人员合同  -->
+    <delete id="deleteUserContract" parameterType="com.gjp.model.UserContract">
+		delete from GJP_UserCenter_UserContract where em_id=#{em_id}
+	</delete>
+
+    <!-- 根据ID查询分配表 -->
+    <select id="selectUserContract" resultType="com.gjp.model.UserContract">
+        SELECT * FROM GJP_UserCenter_UserContract
+        WHERE
+        1=1
+        <if test="uc_state != null">
+            and uc_state=#{uc_state} and uc_emType=1
+        </if>
+        <if test="em_id != null">
+            and em_id = #{em_id}
+        </if>
+        <if test="contractObject_Id != null">
+            and contractObject_Id = #{contractObject_Id}
+        </if>
+    </select>
+
+    <!-- 根据ID查询分配表 -->
+    <select id="queryCompanyList" resultType="com.gjp.model.Company">
+        SELECT *
+        FROM GJP_UserCenter_Company
+        WHERE
+        1=1
+        <if test="ucc_id != null and ucc_id != '' ">AND ucc_id =#{ucc_id}</if>
+    </select>
+
+    <!-- 根据ID查询分配表 -->
+    <select id="queryEmployeePageList" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        *
+        FROM (
+        SELECT
+        emp.*,
+        ucp.ucp_name,
+        com.ucc_id,
+        com.ucc_name,
+        com.ucc_short
+        FROM
+        GJP_UserCenter_Employee AS emp
+        LEFT JOIN GJP_UserCenter_PersonPosition AS ucpr ON ucpr.em_id = emp.em_id
+        LEFT JOIN GJP_UserCenter_Position AS ucp ON ucp.ucp_id = ucpr.ucp_id
+        LEFT JOIN GJP_UserCenter_Company AS com ON com.ucc_id = ucp.ucc_id
+        ) emp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+                <when test="t != null">
+                    <if test="where != null">AND</if>
+                    1 = 1
+                    AND (
+                    em_name LIKE CONCAT('%',#{t.em_name},'%') OR
+                    em_phone LIKE CONCAT('%',#{t.em_phone},'%')
+                    )
+                    <if test="t.ucc_id != null and t.ucc_id != '' ">AND ucc_id =#{t.ucc_id}</if>
+                    <if test="t.ucc_short != null and t.ucc_short != '' ">AND ucc_short =#{t.ucc_short}</if>
+                    <if test="t.em_sex != null and t.em_sex != '' ">AND em_sex = #{t.em_sex}</if>
+                    <if test="t.em_state != null">AND em_state = #{t.em_state}</if>
+                </when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY em_name ASC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!-- 根据ID查询分配表 -->
+    <select id="queryEmployeePageRecords" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM (
+        SELECT
+        emp.*,
+        ucp.ucp_name,
+        com.ucc_id,
+        com.ucc_name,
+        com.ucc_short
+        FROM
+        GJP_UserCenter_Employee AS emp
+        LEFT JOIN GJP_UserCenter_PersonPosition AS ucpr ON ucpr.em_id = emp.em_id
+        LEFT JOIN GJP_UserCenter_Position AS ucp ON ucp.ucp_id = ucpr.ucp_id
+        LEFT JOIN GJP_UserCenter_Company AS com ON com.ucc_id = ucp.ucc_id
+        ) emp
+        <where>
+            <choose>
+                <when test="where != null">${where}</when>
+                <when test="t != null">
+                    <if test="where != null">AND</if>
+                    1 = 1
+                    AND (
+                    em_name LIKE CONCAT('%',#{t.em_name},'%') OR
+                    em_phone LIKE CONCAT('%',#{t.em_phone},'%')
+                    )
+                    <if test="t.ucc_id != null and t.ucc_id != '' ">AND ucc_id =#{t.ucc_id}</if>
+                    <if test="t.ucc_short != null and t.ucc_short != '' ">AND ucc_short =#{t.ucc_short}</if>
+                    <if test="t.em_sex != null and t.em_sex != ''">AND em_sex = #{t.em_sex}</if>
+                    <if test="t.em_state != null and t.em_state != ''">AND em_state = #{t.em_state}</if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+
+    <!-- 根据用户合同编码修改状态 -->
+    <update id="updatetUserContract" parameterType="com.gjp.model.UserContract">
+		update GJP_UserCenter_UserContract set
+		uc_state=#{uc_state},
+		new_em=#{new_em}
+		where contractObject_Id=#{contractObject_Id}
+	</update>
+
+    <!-- 离职申请 -->
+    <update id="updatetCloseCompany" parameterType="com.gjp.model.UserCenterEmployee">
+        update GJP_UserCenter_Employee set
+        <if test="em_quitRemark != null and em_quitRemark != ''">
+            em_quitRemark=#{em_quitRemark},
+        </if>
+        em_state=#{em_state}
+        where em_id=#{em_id}
+    </update>
+
+    <!-- 根据用户编码和合同状态查询人员合同信息 -->
+    <select id="selectHouseEmContract" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT * FROM view_GJP_HouseEmContract
+	    <where>
+            <if test="contractObject_No != null">and contractObject_No=#{contractObject_No}</if>
+            <if test="contractObject_Id != null">and contractObject_Id=#{contractObject_Id}</if>
+            <if test="em_id != null">and em_id=#{em_id}</if>
+            <if test="contractObject_Type != null">and contractObject_Type=#{contractObject_Type}</if>
+            and (ContractObject_State = 1 or ContractObject_State = 2)
+        </where>
+	</select>
+
+    <!-- 根据用户编码和合同类型查询信息 -->
+    <select id="selectHouseEmContractEm" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT * FROM view_GJP_HouseEmContract as hec
+		join GJP_UserCenter_UserContract uc on uc.contractObject_Id = hec.contractObject_Id
+		join GJP_UserCenter_Employee em on em.em_id = uc.new_em
+		WHERE
+		hec.em_id = #{em_id} and hec.ContractObject_Type=#{contractObject_Type} and uc.uc_emType = 1 and ( hec.ContractObject_State = 1 or hec.ContractObject_State = 2)
+		order by uc.uc_state asc 
+	</select>
+
+    <!-- 保存合同管家变更记录 -->
+    <insert id="insertHandoverRecord" useGeneratedKeys="true" parameterType="com.gjp.model.UserCenterHandoverContract" keyProperty="hc_id">
+		insert into 
+			GJP_UserCenter_HandoverContract
+				(em_id_old, em_id_new, contractObject_Id, handover_status, handover_time)
+		values 
+			(#{em_id_old}, #{em_id_new}, #{contractObject_Id}, #{handover_status}, #{handover_time})
+	</insert>
+
+    <!-- 根据合同ID查询管家变更记录 -->
+    <select id="queryHandoverRecordByConID" resultType="com.gjp.model.UserCenterHandoverContract">
+		SELECT
+		  	uu.hc_id,
+			uu.em_id_old,
+			(
+				SELECT
+					em_name
+				FROM
+					GJP_UserCenter_Employee ue1
+				WHERE
+					ue1.em_id = uu.em_id_old
+			) AS em_name_old,
+			uu.em_id_new,
+			(
+				SELECT
+					em_name
+				FROM
+					GJP_UserCenter_Employee ue2
+				WHERE
+					ue2.em_id = uu.em_id_new
+			) AS em_name_new,
+			uu.handover_status,
+			uu.handover_time
+		FROM
+			GJP_UserCenter_HandoverContract uu
+		WHERE
+			uu.contractObject_Id = #{contractObject_Id} ORDER BY uu.handover_time DESC
+	</select>
+
+    <!-- 根据合同ID查询管家变更记录 -->
+    <select id="queryHandoverRecordLastByConID" resultType="com.gjp.model.UserCenterHandoverContract">
+        SELECT
+        uu.hc_id,
+        uu.em_id_old,
+        uu.em_id_new,
+        uu.contractObject_Id,
+        uu.handover_status,
+        uu.handover_time
+        FROM
+        GJP_UserCenter_HandoverContract uu
+        WHERE
+        uu.contractObject_Id = #{contractObject_Id} ORDER BY uu.handover_time  DESC LIMIT 1
+    </select>
+
+    <!-- 根据用户编码和合同类型查询信息是否存在 -->
+    <select id="selectHouseEmContractEmBool" resultType="int">
+		SELECT count(*) FROM GJP_UserCenter_UserContract
+		WHERE
+		em_id = #{em_id} and uc_state = 0 and uc_emType = 1
+	</select>
+
+    <!-- 查询管家信息 -->
+    <select id="queryEmployeeInfo" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+		em.*,
+		ucc.ucc_id,
+		ucc.ucc_name
+		FROM
+		GJP_UserCenter_Employee AS em
+		LEFT JOIN GJP_UserCenter_CompanyPserson AS uccp ON uccp.em_id = em.em_id
+		LEFT JOIN GJP_UserCenter_Company AS ucc ON uccp.ucc_id = ucc.ucc_id
+		WHERE
+		em.em_id =#{em_id}
+		LIMIT 1
+	</select>
+
+    <!-- 查询所有在职人员分页 -->
+    <select id="queryEmployeeApp" resultType="com.gjp.model.UserCenterEmployee">
+        select * from view_GJP_EmployeePositionList where em_state = 1
+        <if test="whereList != null and whereList != ''">
+            and (ucc_name LIKE CONCAT('%',#{whereList},'%') or ucp_name LIKE CONCAT('%',#{whereList},'%') or em_name LIKE CONCAT('%',#{whereList},'%') or em_phone LIKE CONCAT('%',#{whereList},'%'))
+        </if>
+        <if test="ucc_id != null">
+            and ucc_id = #{ucc_id}
+        </if>
+        and em_state = 1
+        order by ucc_name asc
+    </select>
+
+    <select id="checkRoleJdjustPrice" resultType="java.lang.Integer">
+		SELECT
+			count(1) as size
+		FROM
+			GJP_UserCenter_Employee ue
+		LEFT JOIN GJP_UserCenter_CompanyPserson ucp ON ucp.em_id = ue.em_id
+		LEFT JOIN GJP_UserCenter_CompanyPowers ucps ON ucps.ucc_id = ucp.ucc_id
+		LEFT JOIN GJP_UserCenter_Powers up ON up.ucps_id = ucps.ucps_id
+		WHERE
+			ue.em_id = #{em_id}
+		AND up.ucps_url = #{ucps_url}
+		UNION
+			SELECT
+				count(1) as size
+			FROM
+				GJP_UserCenter_Employee ue2
+			LEFT JOIN GJP_UserCenter_PersonPosition upp ON upp.em_id = ue2.em_id
+			LEFT JOIN GJP_UserCenter_PositionPowers ucps2 ON ucps2.ucp_id = upp.ucp_id
+			LEFT JOIN GJP_UserCenter_Powers up2 ON up2.ucps_id = ucps2.ucps_id
+			WHERE
+				ue2.em_id = #{em_id}
+			AND up2.ucps_url = #{ucps_url}
+			UNION
+				SELECT
+					count(1) as size
+				FROM
+					GJP_UserCenter_Employee ue3
+				LEFT JOIN GJP_UserCenter_PersonPowers upp3 ON ue3.em_id = upp3.em_id
+				LEFT JOIN GJP_UserCenter_Powers up3 ON up3.ucps_id = upp3.ucps_id
+				WHERE
+					ue3.em_id = #{em_id}
+				AND up3.ucps_url = #{ucps_url}
+	</select>
+
+    <!-- 查询部门 -->
+    <select id="selectUserCenterEmployeeInfo" resultType="com.gjp.model.UserCenterEmployee">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					t1.*,t3.ucc_name,t3.ucc_id,t3.ucc_person
+				FROM
+					GJP_UserCenter_Employee t1
+				LEFT JOIN GJP_UserCenter_CompanyPserson t2 ON t1.em_id = t2.em_id
+				LEFT JOIN GJP_UserCenter_Company t3 ON t2.ucc_id = t3.ucc_id
+			)T
+		WHERE em_id = #{em_id}
+		LIMIT 1
+	</select>
+
+    <select id="selectdepartment" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company
+	</select>
+
+    <select id="queryAllCompany" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company where ucc_state = 1
+	</select>
+
+    <select id="appQueryAllCompany" resultType="com.gjp.model.Company">
+		SELECT * FROM GJP_UserCenter_Company where ucc_state = 1 and ucc_id > 1
+	</select>
+
+    <select id="queryCompanyInfo" resultType="com.gjp.model.Company">
+		SELECT
+		*
+		FROM GJP_UserCenter_Company
+		WHERE
+		ucc_id = #{ucc_id}
+	</select>
+
+    <!-- 根据房屋编号查询管家信息 -->
+    <select id="selectUserCenterManage" resultType="com.gjp.model.UserCenterEmployee">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t4.hi_code,t1.*
+        FROM
+        GJP_user.GJP_UserCenter_Employee t1
+        LEFT JOIN GJP_product.GJP_House_PositionRecord t4 ON t4.hpr_newEmp = t1.em_id
+        ) T
+        WHERE 1=1
+        <if test="hi_code != '' and hi_code != null">
+            and hi_code =#{hi_code}
+        </if>
+    </select>
+
+    <!-- 单点登陆 -->
+    <insert id="InsertOneLogin" useGeneratedKeys="true" parameterType="com.gjp.model.EmployeeOneLogin" keyProperty="eml_id">
+      insert into GJP_UserCenter_Employee_OneLogin(
+        eml_pcBool,
+        eml_pcIp,
+        eml_pcDate,
+        eml_phoneBool,
+        eml_phoneCode,
+        eml_phoneType,
+        eml_phoneDate,
+        em_id
+		) values (
+		#{eml_pcBool},
+        #{eml_pcIp},
+        #{eml_pcDate},
+        #{eml_phoneBool},
+        #{eml_phoneCode},
+        #{eml_phoneType},
+        #{eml_phoneDate},
+        #{em_id}
+		)
+    </insert>
+
+    <!-- 是否当前用户登陆(pc:ip or em_id查询 phone:手机唯一标识 or em_id查询) -->
+    <select id="queryEmployeeOneLogin" resultType="com.gjp.model.EmployeeOneLogin">
+      SELECT * FROM GJP_UserCenter_Employee_OneLogin
+      WHERE 1=1
+      <if test="em_id != null">
+          AND em_id = #{em_id}
+      </if>
+      <if test="eml_pcIp != null and eml_pcIp != ''">
+          AND eml_pcIp = #{eml_pcIp}
+      </if>
+      <if test="eml_phoneCode != null and eml_phoneCode != ''">
+          AND eml_phoneCode = #{eml_phoneCode}
+      </if>
+    </select>
+
+    <!-- 修改最后登陆人 -->
+    <update id="updateEmployeeOneLogin">
+        UPDATE
+        GJP_UserCenter_Employee_OneLogin
+		<set>
+            <if test="eml_pcBool != null">eml_pcBool = #{eml_pcBool},</if>
+            <if test="eml_pcIp != null and eml_pcIp != ''">eml_pcIp = #{eml_pcIp},</if>
+            <if test="eml_pcDate != null">eml_pcDate = #{eml_pcDate},</if>
+            <if test="eml_phoneBool != null">eml_phoneBool = #{eml_phoneBool},</if>
+            <if test="eml_phoneCode != null">eml_phoneCode = #{eml_phoneCode},</if>
+            <if test="eml_phoneType != null">eml_phoneType = #{eml_phoneType},</if>
+            <if test="eml_phoneDate != null">eml_phoneDate = #{eml_phoneDate},</if>
+        </set>
+		where
+		em_id=#{em_id}
+    </update>
+</mapper>

@@ -1,0 +1,1469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 业绩设置 -->
+<mapper namespace="com.gjp.dao.AchievementCompanyAchievementDAO">
+
+	<sql id="allmenbers">
+		ca_id,
+		ca_sum,
+		ca_sumCompany,
+		ca_new,
+		ca_newCompany,
+		ca_startDate,
+		ca_endDate,
+		ca_startEndDate
+	</sql>
+
+	<sql id="menberEcpId">
+		ca_sum,
+		ca_sumCompany,
+		ca_new,
+		ca_newCompany,
+		ca_startDate,
+		ca_endDate,
+		ca_startEndDate
+	</sql>
+
+	<sql id="insert">
+		#{ca_sum },
+		#{ca_sumCompany },
+		#{ca_new },
+		#{ca_newCompany },
+		#{ca_startDate },
+		#{ca_endDate },
+		#{ca_startEndDate}
+	</sql>
+
+	<sql id="update">
+		<if test="ca_sum!=null and ca_sum!=''">
+			ca_sum=#{ca_sum },
+		</if>
+		<if test="ca_sumCompany!=null and ca_sumCompany!=''">
+			ca_sumCompany=#{ca_sumCompany },
+		</if>
+		<if test="ca_new!=null and ca_new!=''">
+			ca_new=#{ca_new },
+		</if>
+		<if test="ca_newCompany!=null and ca_newCompany!=''">
+			ca_newCompany=#{ca_newCompany },
+		</if>
+		<if test="ca_newCompany!=null and ca_newCompany!=''">
+			ca_newCompany=#{ca_newCompany },
+		</if>
+		ca_startDate=#{ca_startDate},
+		ca_endDate=#{ca_endDate},
+		ca_startEndDate=#{ca_startEndDate}
+	</sql>
+
+	<!-- 根据业绩编码查询当月业绩 -->
+	<select id="selectCompanyAchievement" resultType="com.gjp.model.AchievementCompanyAchievement">
+		select * from view_GJP_Achievement where 1=1
+		<if test="ca_startEndDate != null and ca_startEndDate !=''">
+			and ca_startEndDate=#{ca_startEndDate}
+		</if>
+	</select>
+
+	<!-- 查询业绩时间段 -->
+	<select id="selectCompanyAchievementDate" resultType="com.gjp.model.AchievementCompanyAchievement">
+		select
+		ca_startEndDate from GJP_Achievement_CompanyAchievement order by
+		ca_startDate asc
+	</select>
+
+	<!-- 根据业绩账单ID查询业绩详情 -->
+	<select id="selectContractDateToDate" resultType="com.gjp.model.ViewBusinessContractVo">
+		select * from GJP_Contract_Object where ContractObject_Type='租赁合同' and
+		(ContractObject_OptionState = 106)
+		<if test="startDate != null and startDate !=''">
+			and ContractObject_Date >= #{startDate}
+		</if>
+		<if test="endDate != null and endDate !=''">
+			and #{endDate} >= ContractObject_Date
+		</if>
+		<if test="contractObject_Successor != null">
+			and ContractObject_Successor = #{contractObject_Successor}
+		</if>
+	</select>
+
+	<!-- 查询业绩设置 -->
+	<select id="selectAchievementSetting" resultType="com.gjp.model.AchievementSetting">
+		select * from
+		GJP_Achievement_AchievementSetting where 1=1
+	</select>
+
+	<!-- 根据业绩ID查询业绩设置详情 -->
+	<select id="selectAchievementSettingDetails" resultType="com.gjp.model.AchievementSettingDetails">
+		select * from
+		GJP_Achievement_AchievementSettingDetails where as_id=#{as_id}
+	</select>
+
+	<!-- 查询业绩账单list -->
+	<select id="queryAchievementBillList" resultType="com.gjp.model.ViewSumAchievement">
+		SELECT
+		sachi.sa_id,
+		sachi.contractObject_Id,
+		sachi.hi_code,
+		sachi.sa_type,
+		sachi.sa_oldMoney,
+		sachi.sa_newMoney,
+		sachi.sa_time,
+		sachi.sa_auditType,
+		sachi.sa_startEndTime,
+		sachi.sa_tStartEndTime,
+		sachi.sa_sumMoney,
+		sachi.sa_lossDay,
+		sachi.sa_lossMoney,
+		sachi.sa_uccID,
+		sachi.sa_startDate,
+		sachi.sa_endDate,
+		sachi.sa_forRentDay,
+		sachi.sa_freeDay,
+		sachi.sa_saveMoney,
+		sachi.sa_outMoney,
+		sachi.sa_saveMoney2,
+		sachi.sa_outMoney2,
+		sachi.sa_sumMoneyH,
+		sachi.sa_difference,
+		sachi.sa_turnRentMoney,
+		sachi.sa_tRepairMoney,
+		sachi.sa_zRepairMoney,
+		sachi.sa_zworkMoney,
+		sachi.sa_tworkMoney,
+		achi.ab_id,
+		achi.ab_type,
+		achi.ab_num,
+		achi.ab_acType,
+		SUM(achi.ab_oldMoney) AS ab_oldMoney,
+		SUM(achi.ab_newMoney) AS
+		ab_newMoney,
+		SUM(achic.abc_money) AS ab_subsidyMoney,
+		achi.ab_moneyPercentage,
+		achi.ab_moneyType,
+		achi.ab_payState,
+		achi.ab_payTime,
+		achi.ab_ctype,
+		achi.ab_lossDay,
+		achi.ab_lossMoney,
+		achi.ucc_id,
+		achi.ab_forRentDay,
+		achi.ab_freeDay,
+		achi.em_id,
+		em.em_name
+		FROM
+		GJP_Achievement_SumAchievement AS sachi
+		LEFT JOIN GJP_Achievement_achievementBill AS achi ON sachi.sa_id = achi.sa_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS em ON achi.em_id = em.em_id
+		LEFT JOIN GJP_Achievement_achievementBillContent AS achic ON achi.ab_id = achic.ab_id AND achic.abc_type = '业绩补贴'
+		WHERE
+		achi.sa_id = #{sa_id}
+		GROUP BY
+		achi.contractObject_Id,
+		achi.em_id
+		ORDER BY ab_id ASC
+	</select>
+
+	<!-- 根据总业绩ID查询总业绩 -->
+	<select id="selectSumAchievementID" resultType="com.gjp.model.AchievementSumAchievement">
+		select * from GJP_Achievement_SumAchievement where 1=1
+		<if test="sa_id != null and sa_id != ''">
+			and sa_id=#{sa_id}
+		</if>
+		<if test="contractObject_Id != null and contractObject_Id != ''">
+			and contractObject_Id=#{contractObject_Id}
+		</if>
+	</select>
+
+	<!-- 根据业绩账单ID查询业绩账单 -->
+	<select id="selectAchievementBilABID" resultType="com.gjp.model.AchievementBill">
+		select * from view_GJP_AchievementBill where 1=1
+		<if test="ab_id != null and ab_id != ''">
+			and ab_id=#{ab_id}
+		</if>
+	</select>
+
+	<!-- 根据业绩账单ID和内部人员ID查询业绩账单 -->
+	<select id="selectAchievementBilemID" resultType="com.gjp.model.AchievementBill">
+		select * from GJP_Achievement_achievementBill where sa_id=#{sa_id}
+		<if test="em_id != null and em_id != ''">
+			and em_id=#{em_id}
+		</if>
+		<if test="ab_acType != null and ab_acType != ''">
+			and ab_acType=#{ab_acType}
+		</if>
+	</select>
+
+	<!-- 根据总业绩ID查询业绩账单 -->
+	<select id="selectAchievementBilID" resultType="com.gjp.model.AchievementBill">
+		select * from
+		view_GJP_AchievementBill where sa_id=#{sa_id}
+	</select>
+
+	<!-- 根据业绩账单ID查询业绩详情 -->
+	<select id="selectAchievementBillContent" resultType="com.gjp.model.AchievementBillContent">
+		select *
+		from GJP_Achievement_achievementBillContent where ab_id=#{ab_id}
+	</select>
+
+	<!-- 根据部门ID查询房屋总业绩 -->
+	<select id="selectAchievementSumAchievement" resultType="com.gjp.model.AchievementSumAchievement">
+		select * from view_GJP_AchievementSum where 1=1
+		<if test="sa_uccID != null and sa_uccID != ''">
+			and sa_uccID like CONCAT('%',#{sa_uccID},'%')
+		</if>
+		<if test="startDate != null and startDate != ''">
+			and sa_time > #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and #{endDate} > sa_time
+		</if>
+		<if test="sa_id != null and sa_id != ''">
+			and sa_id=#{sa_id}
+		</if>
+		<if test="contractObject_Id !=null and contractObject_Id !='' ">
+			AND contractObject_Id=#{contractObject_Id}
+		</if>
+	</select>
+
+	<!-- 根据视图查询业绩账单 -->
+	<select id="selectAchievementSumMoney" resultType="com.gjp.model.ViewSumAchievement">
+		SELECT * FROM
+		(
+		SELECT
+		IF (
+		upn_code IS NULL
+		OR upn_code = '',
+		CONCAT(upn_sname,
+		hi_address),
+		CONCAT(
+		upn_sname,
+		upn_code,
+		'-',
+		hi_address
+		)
+		) AS
+		house_address,
+		sa_id,
+		hi_code,
+		sa_type,
+		sa_oldMoney,
+		sa_newMoney,
+		sa_time,
+		sa_auditType,
+		sa_startEndTime,
+		sa_tStartEndTime,
+		sa_sumMoney,
+		sa_lossDay,
+		sa_lossMoney,
+		hi_address,
+		sa_uccID,
+		sa_forRentDay,
+		sa_freeDay,
+		sa_saveMoney,
+		sa_outMoney,
+		sa_saveMoney2,
+		sa_outMoney2,
+		sa_sumMoneyH,
+		sa_difference,
+		sa_turnRentMoney,
+		ab_id,
+		ab_type,
+		ab_num,
+		ab_acType,
+		ab_oldMoney,
+		ab_newMoney,
+		ab_moneyPercentage,
+		ab_moneyType,
+		ab_payState,
+		ab_payTime,
+		ab_ctype,
+		contractObject_Id,
+		ab_lossDay,
+		ab_lossMoney,
+		ucc_name,
+		em_name,
+		ab_forRentDay,
+		ab_freeDay,
+		sa_startDate,
+		sa_tRepairMoney,
+		sa_zRepairMoney,
+		sa_zworkMoney,
+		sa_tworkMoney
+		FROM
+		view_GJP_AchievementSumMoney
+		) house_info where 1=1
+		<if test="startDate != null and startDate != ''">
+			and sa_startDate >= #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and #{endDate} >= sa_startDate
+		</if>
+		<if test="sa_id != null and sa_id != ''">
+			and sa_id=#{sa_id}
+		</if>
+	</select>
+
+	<!-- 根据账号查询个人业绩 -->
+	<select id="selectAchievementPerson" resultType="com.gjp.model.ViewSumAchievement">
+		SELECT * FROM
+		view_GJP_AchievementPerson 
+		WHERE 
+		em_account=#{em_account}
+	</select>
+
+	<!-- 根据账号查询个人业绩目标 -->
+	<select id="selectAchievementPersonTarget" resultType="com.gjp.model.AchievementPersonAchievement">
+		select *
+		from view_GJP_AchievementTarget where em_account=#{em_account}
+		and
+		#{ca_startDate}>ca_startDate and ca_endDate>#{ca_startDate}
+	</select>
+
+	<!-- 根据账号查询房源总数 -->
+	<select id="selectMyHouse" resultType="int">
+		SELECT
+		COUNT(*) AS count
+		FROM
+		GJP_Contract_Object
+		INNER JOIN GJP_Contract_RelaEmp ON
+		GJP_Contract_Object.ContractObject_Id =
+		GJP_Contract_RelaEmp.contractObject_Id
+		INNER JOIN
+		GJP_user.GJP_UserCenter_Employee ON
+		GJP_user.GJP_UserCenter_Employee.em_id = GJP_Contract_RelaEmp.em_id
+		WHERE
+		GJP_Contract_Object.ContractObject_Type = '托管合同'
+		AND
+		DATE_SUB(curdate(), INTERVAL 30 DAY) &lt;= date(ContractObject_Date)
+		and em_account=#{em_account}
+	</select>
+
+	<!-- 总业绩 -->
+	<select id="selectAchievementSumMoneys" resultType="com.gjp.model.ViewSumAchievement">
+		select
+		sum(sa_sumMoney) as sumMoney,count(hi_code) as size from
+		GJP_Achievement_SumAchievement where 1=1
+		<if test="startDate != null and startDate != ''">
+			and sa_startDate >= #{startDate}
+		</if>
+		<if test="endDate != null and endDate != ''">
+			and #{endDate} >= sa_startDate
+		</if>
+	</select>
+
+	<!-- 设置总业绩 -->
+	<insert id="addCompanyAchievement" useGeneratedKeys="true" keyProperty="ca_id">
+		insert into GJP_Achievement_CompanyAchievement(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 查询房屋利润数据根据合同显示 -->
+	<select id="selectAchievementHouseMoneyNo" resultType="com.gjp.model.AchievementHouseMoneyVo">
+		SELECT
+		hi_code,
+		contractObject_Code,
+		contractObject_No,
+		ucc_id,
+		ahm_date,
+		contractObject_DeadlineTime,
+		contractObject_Date,
+		house_address,
+		truncate(SUM(ahm_directRent),2) ahm_directRent,
+		truncate(SUM(ahm_synopsisRent),2) ahm_synopsisRent,
+		truncate(SUM(ahm_synopsisVacant),2) ahm_synopsisVacant,
+		truncate(SUM(ahm_directVacant),2) ahm_directVacant,
+		truncate(SUM(ahm_serviceMoney),2) ahm_serviceMoney,
+		truncate(SUM(ahm_clearServiceMoney),2) ahm_clearServiceMoney,
+		truncate(SUM(ahm_repairMoney),2) ahm_repairMoney,
+		truncate(SUM(ahm_penalty),2) ahm_penalty,
+		truncate(SUM(ahm_subletMoney),2) ahm_subletMoney,
+		truncate(SUM(ahm_wuguanMoney),2) ahm_wuguanMoney,
+		truncate(SUM(ahm_waterMoney),2) ahm_waterMoney,
+		truncate(SUM(ahm_electricMoney),2) ahm_electricMoney,
+		truncate(SUM(ahm_gasMoney),2) ahm_gasMoney,
+		truncate(SUM(ahm_directCooperateMoney),2) ahm_directCooperateMoney,
+		truncate(SUM(ahm_synosisCooperateMoney),2) ahm_synosisCooperateMoney,
+		truncate(SUM(ahm_manageMoney),2) ahm_manageMoney,
+		truncate(SUM(ahm_forRentMoney),2) ahm_forRentMoney,
+		truncate(SUM(ahm_directOutHouseMoney),2) ahm_directOutHouseMoney,
+		truncate(SUM(ahm_synopsisOutHouseMoney),2) ahm_synopsisOutHouseMoney,
+		truncate(SUM(ahm_insurance),2) ahm_insurance,
+		truncate(SUM(ahm_operateMoney),2) ahm_operateMoney,
+		truncate(SUM(ahm_julyOldMoney),2) ahm_julyOldMoney,
+		truncate(SUM(ahm_freeMoney),2) ahm_freeMoney,
+		truncate(SUM(ahm_gsmanageMoney),2) ahm_gsmanageMoney,
+		ucc_time,
+		ucc_name
+		FROM
+		(SELECT
+		co.ContractObject_No as contractObject_No,
+		IF (
+        pin.upn_code IS NULL
+        OR pin.upn_code = '',
+        CONCAT(
+        pin.upn_sname,
+        hik.hi_address
+        ),
+        CONCAT(
+        pin.upn_sname,
+        pin.upn_code,
+        '-',
+        hik.hi_address
+        )
+        ) AS house_address,
+        hm.*,
+		ucc.ucc_time,
+		ucc.ucc_name
+        FROM GJP_Achievement_HouseMoney AS hm
+		LEFT JOIN GJP_product.GJP_House_HouseInformation_keep AS hik ON hm.hi_code = hik.hi_code
+		LEFT JOIN GJP_product.GJP_PropertyInfo AS pi ON pi.propertyInfo_Id = hik.propertyInfo_Id
+		LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName AS pin ON pin.upn_id = pi.upn_id
+		LEFT JOIN GJP_Contract_Object AS co ON co.ContractObject_Code = hm.contractObject_Code
+		LEFT JOIN GJP_user.GJP_UserCenter_Company as ucc ON hm.ucc_id = ucc.ucc_id) houseMoney
+		where 1=1 AND extractBool = 0
+		<if test="ucc_id != null and ucc_id!= ''">
+			AND ucc_id = #{ucc_id}
+		</if>
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			AND ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			AND DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+		GROUP BY hi_code
+	</select>
+
+	<!-- 查询部门利润 -->
+	<select id="selectAchievementHouseMoneyUcc" resultType="com.gjp.model.AchievementHouseMoneyVo">
+		SELECT
+		hi_code,
+		contractObject_Code,
+		contractObject_No,
+		ucc_id,
+		ahm_date,
+		contractObject_DeadlineTime,
+		contractObject_Date,
+		house_address,
+		truncate(SUM(ahm_directRent),2) ahm_directRent,
+		truncate(SUM(ahm_synopsisRent),2) ahm_synopsisRent,
+		truncate(SUM(ahm_synopsisVacant),2) ahm_synopsisVacant,
+		truncate(SUM(ahm_directVacant),2) ahm_directVacant,
+		truncate(SUM(ahm_serviceMoney),2) ahm_serviceMoney,
+		truncate(SUM(ahm_clearServiceMoney),2) ahm_clearServiceMoney,
+		truncate(SUM(ahm_repairMoney),2) ahm_repairMoney,
+		truncate(SUM(ahm_penalty),2) ahm_penalty,
+		truncate(SUM(ahm_subletMoney),2) ahm_subletMoney,
+		truncate(SUM(ahm_wuguanMoney),2) ahm_wuguanMoney,
+		truncate(SUM(ahm_waterMoney),2) ahm_waterMoney,
+		truncate(SUM(ahm_electricMoney),2) ahm_electricMoney,
+		truncate(SUM(ahm_gasMoney),2) ahm_gasMoney,
+		truncate(SUM(ahm_directCooperateMoney),2) ahm_directCooperateMoney,
+		truncate(SUM(ahm_synosisCooperateMoney),2) ahm_synosisCooperateMoney,
+		truncate(SUM(ahm_manageMoney),2) ahm_manageMoney,
+		truncate(SUM(ahm_forRentMoney),2) ahm_forRentMoney,
+		truncate(SUM(ahm_directOutHouseMoney),2) ahm_directOutHouseMoney,
+		truncate(SUM(ahm_synopsisOutHouseMoney),2) ahm_synopsisOutHouseMoney,
+		truncate(SUM(ahm_insurance),2) ahm_insurance,
+		truncate(SUM(ahm_operateMoney),2) ahm_operateMoney,
+		truncate(SUM(ahm_julyOldMoney),2) ahm_julyOldMoney,
+		truncate(SUM(ahm_freeMoney),2) ahm_freeMoney,
+		truncate(SUM(ahm_gsmanageMoney),2) ahm_gsmanageMoney,
+		ucc_time,
+		ucc_name
+		FROM
+		(SELECT
+		co.ContractObject_No as contractObject_No,
+		ucc.ucc_name as house_address,
+		hm.*,
+		ucc.ucc_time,
+		ucc.ucc_name
+		FROM GJP_Achievement_HouseMoney AS hm
+		LEFT JOIN GJP_product.GJP_House_HouseInformation_keep AS hik ON hm.hi_code = hik.hi_code
+		LEFT JOIN GJP_product.GJP_PropertyInfo AS pi ON pi.propertyInfo_Id = hik.propertyInfo_Id
+		LEFT JOIN GJP_product.GJP_PropertyInfo_PropertyInfoName AS pin ON pin.upn_id = pi.upn_id
+		LEFT JOIN GJP_Contract_Object AS co ON co.ContractObject_Code = hm.contractObject_Code
+		LEFT JOIN GJP_user.GJP_UserCenter_Company as ucc ON hm.ucc_id = ucc.ucc_id) houseMoney
+		where 1=1 AND extractBool = 0
+		<if test="sqlWhere != null and sqlWhere!= ''">
+			${sqlWhere}
+		</if>
+		<if test="dateStart != null and dateStart != ''">
+			AND ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+		</if>
+		<if test="dateEnd != null and dateEnd != ''">
+			AND DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+		</if>
+		GROUP BY ucc_id
+	</select>
+
+	<!-- 跟进合同编码查询房屋业绩 -->
+	<select id="selectHouseMoney" resultType="com.gjp.model.AchievementHouseMoney">
+		select * from GJP_Achievement_HouseMoney where 1=1
+		<if test="contractObject_Code != null and contractObject_Code != ''">
+			and contractObject_Code >= #{contractObject_Code}
+		</if>
+		limit 1
+	</select>
+
+	<!-- 添加房源业绩 -->
+	<insert id="addHouseMoney" useGeneratedKeys="true" keyProperty="ahm_id">
+		insert into GJP_Achievement_HouseMoney(
+		ahm_directRent,
+		ahm_synopsisRent,
+		ahm_directVacant,
+		ahm_synopsisVacant,
+		ahm_serviceMoney,
+		ahm_clearServiceMoney,
+		ahm_repairMoney,
+		ahm_penalty,
+		ahm_subletMoney,
+		ahm_wuguanMoney,
+		ahm_waterMoney,
+		ahm_electricMoney,
+		ahm_gasMoney,
+		ahm_directCooperateMoney,
+		ahm_synosisCooperateMoney,
+		ahm_manageMoney,
+		ahm_gsmanageMoney,
+		ahm_forRentMoney,
+		ahm_freeMoney,
+		ahm_directOutHouseMoney,
+		ahm_synopsisOutHouseMoney,
+		ahm_insurance,
+		ahm_operateMoney,
+		ahm_julyOldMoney,
+		hi_code,
+		ucc_id,
+		ahm_date,
+		contractObject_Date,
+		contractObject_DeadlineTime,
+		contractObject_Code,
+		extractDate,
+		extractBool
+		)
+		values (
+		#{ahm_directRent },
+		#{ahm_synopsisRent },
+		#{ahm_directVacant },
+		#{ahm_synopsisVacant },
+		#{ahm_serviceMoney },
+		#{ahm_clearServiceMoney },
+		#{ahm_repairMoney },
+		#{ahm_penalty },
+		#{ahm_subletMoney },
+		#{ahm_wuguanMoney },
+		#{ahm_waterMoney },
+		#{ahm_electricMoney },
+		#{ahm_gasMoney },
+		#{ahm_directCooperateMoney },
+		#{ahm_synosisCooperateMoney },
+		#{ahm_manageMoney },
+		#{ahm_gsmanageMoney },
+		#{ahm_forRentMoney },
+		#{ahm_freeMoney },
+		#{ahm_directOutHouseMoney },
+		#{ahm_synopsisOutHouseMoney },
+		#{ahm_insurance },
+		#{ahm_operateMoney },
+		#{ahm_julyOldMoney },
+		#{hi_code },
+		#{ucc_id },
+		NOW(),
+		#{contractObject_Date },
+		#{contractObject_DeadlineTime },
+
+		#{contractObject_Code },
+		#{extractDate },
+		#{extractBool }
+		)
+	</insert>
+
+	<update id="updateHouseMoney">
+		UPDATE
+		GJP_Achievement_HouseMoney
+		<set>
+			<if test="ahm_clearServiceMoney !=null">ahm_clearServiceMoney=#{ahm_clearServiceMoney},</if>
+			<if test="ahm_repairMoney !=null">ahm_repairMoney=#{ahm_repairMoney},</if>
+		</set>
+		WHERE
+		contractObject_Code =#{contractObject_Code}
+	</update>
+
+	<!-- 设置团队业绩 -->
+	<insert id="addTeamAchievement" useGeneratedKeys="true" keyProperty="ta_id">
+		insert into GJP_Achievement_TeamAchievement(
+		ta_sum,
+		ta_sumCompany,
+		ta_new,
+		ta_newCompany,
+		ca_id,
+		ucc_id
+		)
+		values (
+		#{ta_sum },
+		#{ta_sumCompany
+		},
+		#{ta_new },
+		#{ta_newCompany },
+		#{ca_id },
+		#{ucc_id }
+		)
+	</insert>
+
+	<!-- 设置个人业绩 -->
+	<insert id="addAchievementPersonAchievement" useGeneratedKeys="true" keyProperty="pa_id">
+		insert into GJP_Achievement_PersonAchievement(
+		pa_sum,
+		pa_sumCompany,
+		pa_new,
+		pa_newCompany,
+		em_id,
+		ca_id
+		)
+		values (
+		#{pa_sum },
+		#{pa_sumCompany },
+		#{pa_new },
+		#{pa_newCompany },
+		#{em_id },
+		#{ca_id }
+		)
+	</insert>
+
+	<!-- 设置业绩选项 -->
+	<insert id="addAchievementSetting" useGeneratedKeys="true" keyProperty="as_id">
+		insert
+		into GJP_Achievement_AchievementSetting(
+		as_money,
+		as_moneyNum,
+		as_freeRentDate,
+		as_premium,
+		as_deposit,
+		as_depositNum,
+		as_turnRentMoney,
+		as_subsidy,
+		as_guarantee,
+		as_guaranteeOut,
+		as_guaranteeSave,
+		as_goodsMoney
+		)
+		values (
+		#{as_moneyNum },
+		#{as_freeRentDate },
+		#{as_premium },
+		#{as_deposit },
+		#{as_depositNum },
+		#{as_turnRentMoney},
+		#{as_subsidy },
+		#{as_guarantee },
+		#{as_guaranteeOut },
+		#{as_guaranteeSave},
+		#{as_goodsMoney}
+		)
+	</insert>
+
+	<!-- 业绩设置详情 -->
+	<insert id="addAchievementSettingDetails" useGeneratedKeys="true" keyProperty="asd_id">
+		insert
+		into GJP_Achievement_AchievementSettingDetails(
+		asd_type,
+		asd_Proportion,
+		as_id
+		)
+		values (
+		#{asd_type },
+		#{asd_Proportion },
+		#{as_id }
+		)
+	</insert>
+
+	<!-- 删除业绩设置详情 -->
+	<delete id="deleteAchievementSettingDetails">
+		delete
+		from
+		GJP_Achievement_AchievementSettingDetails
+		WHERE
+		as_id=#{as_id}
+	</delete>
+
+	<!-- 修改团队业绩 -->
+	<update id="updateAchievementSetting">
+		update
+		GJP_Achievement_AchievementSetting set
+		as_moneyNum=#{as_moneyNum },
+		as_freeRentDate=#{as_freeRentDate },
+		as_premium=#{as_premium },
+		as_deposit=#{as_deposit },
+		as_depositNum=#{as_depositNum },
+		as_turnRentMoney=#{as_turnRentMoney},
+		as_subsidy=#{as_subsidy },
+		as_guarantee=#{as_guarantee },
+		as_guaranteeOut=#{as_guaranteeOut },
+		as_guaranteeSave=#{as_guaranteeSave},
+		as_goodsMoney=#{as_goodsMoney}
+		where as_id=#{as_id}
+	</update>
+
+	<!-- 修改总业绩 -->
+	<update id="updateCompanyAchievement">
+		update GJP_Achievement_CompanyAchievement set
+		<include refid="update"></include>
+		where ca_id=#{ca_id}
+	</update>
+
+	<!-- 根据业绩编码修改合同编码 -->
+	<update id="updateCompanyAchievementContID">
+		update GJP_Achievement_SumAchievement set
+		contractObject_Id=#{contractObject_Id}
+		where sa_id=#{sa_id}
+	</update>
+
+	<!-- 修改团队业绩 -->
+	<update id="updateTeamAchievement">
+		update GJP_Achievement_TeamAchievement set
+		<if test="ta_sumCompany !=null and ta_sumCompany != ''">
+			ta_sumCompany=#{ta_sumCompany },
+		</if>
+		<if test="ta_new != null and ta_new != ''">
+			ta_new=#{ta_new },
+		</if>
+		<if test="ta_newCompany != null and ta_newCompany != ''">
+			ta_newCompany=#{ta_newCompany },
+		</if>
+		<if test="ucc_id != null and ucc_id != ''">
+			ucc_id=#{ucc_id },
+		</if>
+		ta_sum=#{ta_sum }
+		where ta_id=#{ta_id }
+	</update>
+
+	<!-- 删除总业绩 -->
+	<delete id="deleteCompanyAchievement">
+		delete
+		from
+		GJP_Achievement_CompanyAchievement
+		WHERE
+		ca_id=#{ca_id}
+	</delete>
+
+	<!-- 删除团队业绩 -->
+	<delete id="deleteTeamAchievement">
+		delete
+		from
+		GJP_Achievement_TeamAchievement
+		WHERE
+		ca_id=#{ca_id}
+	</delete>
+
+	<!-- 删除个人业绩 -->
+	<delete id="deletePersonAchievement">
+		delete
+		from
+		GJP_Achievement_PersonAchievement
+		WHERE
+		ca_id=#{ca_id}
+	</delete>
+
+	<!-- 查询业绩记录 -->
+	<select id="queryAchiRecord" resultType="com.gjp.model.AchievementRecord">
+		SELECT
+		ar.ar_id,
+		ar.ar_content,
+		ar.ar_date,
+		ar.em_id,
+		ar.ar_type,
+		ar.ar_money,
+		ar.contractObject_Id,
+		ar.sa_id,
+		emp.em_name
+		FROM
+		GJP_business.GJP_Achievement_AchievementRecord AS ar
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp ON ar.em_id = emp.em_id
+		WHERE
+		ar.contractObject_Id =#{contractObject_Id}
+		ORDER BY ar.ar_date DESC
+	</select>
+
+	<!-- 查询业绩记录 -->
+	<select id="queryAchiRecordLastOne" resultType="com.gjp.model.AchievementRecord">
+		SELECT *
+		FROM GJP_Achievement_AchievementRecord
+		WHERE
+		contractObject_Id =#{contractObject_Id}
+		AND
+		sa_id =#{sa_id}
+		AND
+		ar_money &lt;&gt; 0
+		ORDER BY ar_date DESC
+		LIMIT 1
+	</select>
+
+	<!-- 根据条件查询合同 -->
+	<select id="selectContractNo" resultType="com.gjp.model.ViewBusinessContractVo">
+		select * from view_GJP_AchievementContract where 1=1
+		<if test="hi_code != null and hi_code != ''">
+			and hi_code=#{hi_code}
+		</if>
+		<if test="contractObject_No != null and contractObject_No != ''">
+			and ContractObject_No=#{contractObject_No}
+		</if>
+		<if test="contractObject_Id != null and contractObject_Id != ''">
+			and ContractObject_Id=#{contractObject_Id}
+		</if>
+		<if test="contractObject_Type != null and contractObject_Type != ''">
+			and ContractObject_Type=#{contractObject_Type}
+		</if>
+		<if test="contractObject_Bool != null and contractObject_Bool != ''">
+			and ContractObject_Bool=#{contractObject_Bool}
+		</if>
+		<if test="contractObject_Bool != null and contractObject_Bool != ''">
+			and ContractObject_Bool=#{contractObject_Bool}
+		</if>
+		and ContractObject_OptionState != 403 AND ContractObject_OptionState != 107 AND ContractObject_OptionState != 202
+		order by ContractObject_CreateTime desc
+	</select>
+
+	<!-- 根据合同编码查询退租时间 -->
+	<select id="selectContractNoShutTime" resultType="com.gjp.model.ViewContractStatement">
+		SELECT 
+		* 
+		FROM 
+		view_GJP_ContractStatement 
+		WHERE 
+		1=1
+		<if test="cco_state != null and cco_state != ''">
+			AND cco_state NOT IN(#{cco_state})
+		</if>
+		<if test="contractObject_No != null and contractObject_No != ''">
+			AND contractObject_No=#{contractObject_No}
+		</if>
+		<if test="contractObject_Code != null and contractObject_Code != ''">
+			AND contractObject_Code=#{contractObject_Code}
+		</if>
+	</select>
+
+	<!-- 物业结算单费用明细 -->
+	<select id="selectPropertyMoney" resultType="com.gjp.model.PropertyMoney">
+		SELECT * FROM GJP_Contract_Statement as cs
+		LEFT JOIN GJP_Contract_StatementCostItems as csi ON cs.statement_code = csi.statement_code
+		WHERE 1=1
+		<if test="contractObject_code != null and contractObject_code !=''">
+			AND cs.contractObject_code = #{contractObject_code}
+		</if>
+	</select>
+
+	<!-- 根据hi_code查询部门 -->
+	<select id="selectPositionRecord" resultType="com.gjp.model.PositionRecordVo">
+		SELECT * FROM GJP_product.GJP_House_PositionRecord
+		WHERE 1=1
+		<if test="hi_code != null and hi_code != ''">
+			AND hi_code = #{hi_code}
+		</if>
+	</select>
+
+	<!-- 根据hi_code查询清洁维修费 -->
+	<select id="selectDeclaration" resultType="com.gjp.model.ServiceMoney">
+		SELECT * FROM GJP_Achievement_HouseMoney as ah
+		LEFT JOIN GJP_Maintenance_Declaration as md ON ah.hi_code=md.hi_code
+		LEFT JOIN GJP_Service_ServiceMoney AS sm ON md.mdg_moneyCode = sm.mdg_moneyCode
+		WHERE 1=1
+		<if test="ucc_id != null">
+			AND ah.ucc_id=#{ucc_id}
+		</if>
+		<if test="hi_code != null">
+			AND ah.hi_code=#{hi_code}
+		</if>
+		AND md.md_time >= #{startDate}
+		AND #{endDate} >= md.md_time
+		AND ah.extractDate >= #{startDate}
+		AND #{endDate} >= ah.extractDate
+	</select>
+
+	<!-- 查询公司业绩目标 -->
+	<select id="selectCompanyAchievementByWhere" resultType="com.gjp.model.AchievementCompanyAchievement">
+		SELECT
+		ca_id,
+		ca_sum,
+		ca_sumCompany,
+		ca_new,
+		ca_newCompany,
+		ca_startDate,
+		ca_endDate
+		FROM
+		GJP_Achievement_CompanyAchievement
+		WHERE
+		1=1
+		<if test="queryDate !=null and queryDate !='' ">AND #{queryDate} BETWEEN ca_startDate AND ca_endDate</if>
+		<if test="ca_startDate !=null and ca_startDate !='' ">AND ca_startDate = #{ca_startDate}</if>
+		<if test="ca_endDate !=null and ca_endDate !='' ">AND ca_endDate = #{ca_endDate}</if>
+		LIMIT 1
+	</select>
+
+	<!-- 查询所有总目标业绩 -->
+	<select id="selectCompanyAchievementList" resultType="com.gjp.model.AchievementCompanyAchievement">
+		SELECT
+		ca_id,
+		ca_sum,
+		ca_sumCompany,
+		ca_new,
+		ca_newCompany,
+		ca_startDate,
+		ca_endDate
+		FROM
+		GJP_Achievement_CompanyAchievement
+		GROUP BY
+		ca_startDate
+	</select>
+
+	<!-- 查询业绩亏损 -->
+	<select id="selectAchievementBillLossByWhere" resultType="com.gjp.model.AchievementBill">
+		SELECT
+		COUNT(*) AS lossHouseCount,
+		SUM(sumMoney) AS lossSumMoney
+		FROM
+		(
+		SELECT
+		SUM(ab_oldMoney) AS ab_oldMoney,
+		SUM(ab_newMoney) AS ab_newMoney,
+		SUM(ab_newMoney + ab_oldMoney) AS sumMoney
+		FROM
+		GJP_Achievement_achievementBill
+		WHERE
+		1=1
+		<if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+		AND ab_payTime BETWEEN #{sa_startDate} AND #{sa_endDate}
+		GROUP BY
+		hi_code
+		) AS achievement
+		WHERE
+		sumMoney &lt; 0
+	</select>
+
+	<select id="selectAchievementSumByWhere" resultType="com.gjp.model.AchievementSumAchievement">
+		SELECT
+		SUM(sa_oldMoney) AS sa_oldMoney,
+		SUM(IF(sa_newMoney>0,sa_newMoney,0))
+		AS sa_newMoney,
+		SUM(sa_sumMoney) AS sa_sumMoney,
+		SUM(sa_lossDay) AS
+		sa_lossDay,
+		SUM(sa_lossMoney) AS sa_lossMoney
+		FROM
+		GJP_Achievement_SumAchievement
+		WHERE
+		sa_startDate BETWEEN
+		#{sa_startDate} AND #{sa_endDate}
+	</select>
+
+	<!-- 查询当月总业绩 -->
+	<select id="selectAchievementBillTotalByWhere" resultType="com.gjp.model.AchievementBill">
+		SELECT
+		SUM(ab_oldMoney) AS ab_oldMoney,
+		SUM(ab_newMoney) AS ab_newMoney,
+		SUM(ab_oldMoney)+SUM(ab_newMoney) AS ab_sumMoney,
+		old.oldMoney,
+		new.newMoney,
+		(old.oldMoney + new.newMoney) AS sumMoney,
+		SUM(ab_lossDay) AS ab_lossDay,
+		SUM(ab_lossMoney) AS ab_lossMoney
+		FROM
+		GJP_Achievement_achievementBill,
+		(
+		SELECT SUM(ab_oldMoney) AS oldMoney
+		FROM GJP_Achievement_achievementBill
+		WHERE
+		ab_oldMoney>0
+		<if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+		AND ab_payTime BETWEEN #{sa_startDate} AND #{sa_endDate}
+		) AS old,
+		(
+		SELECT SUM(ab_newMoney) AS newMoney FROM
+		GJP_Achievement_achievementBill
+		WHERE
+		ab_newMoney>0
+		<if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+		AND ab_payTime BETWEEN #{sa_startDate} AND #{sa_endDate}
+		) AS new
+		WHERE
+		1=1
+		<if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+		AND ab_payTime BETWEEN #{sa_startDate} AND #{sa_endDate}
+	</select>
+
+	<!-- 查询当月总业绩2 -->
+	<select id="selectAchievementBillListByWhere" resultType="com.gjp.model.AchievementBill">
+		SELECT
+		ab.ab_id,
+		ab.sa_id,
+		ab.hi_code,
+		ab.em_id,
+		ab.ab_type,
+		ab.ab_num,
+		ab.ab_acType,
+		ab.ab_oldMoney,
+		ab.ab_newMoney,
+		(ab.ab_oldMoney+ab_newMoney) AS ab_sumMoney,
+		ab.ab_moneyPercentage,
+		ab.ab_moneyType,
+		ab.ab_payState,
+		ab.ab_payTime,
+		ab.ab_ctype,
+		ab.ab_lossDay,
+		ab.ab_lossMoney,
+		ab.contractObject_Id,
+		ab.ucc_id,
+		emp.em_name,
+		emp.em_phone,
+		pro.propertyInfo_Name,
+		house.hi_address,
+		sumachi.sa_startDate,
+		sumachi.sa_endDate,
+		cb.ContractBody_StartTOEnd as
+		contractBody_StartToEnd,
+		cb.ContractBody_Rent as contractBody_Rent
+		FROM
+		GJP_Achievement_achievementBill ab,
+		GJP_product.GJP_House_HouseInformation_keep house,
+		GJP_product.GJP_PropertyInfo pro,
+		GJP_user.GJP_UserCenter_Employee emp,
+		GJP_Achievement_SumAchievement sumachi,
+		GJP_business.GJP_Contract_Object AS co,
+		GJP_business.GJP_Contract_Body
+		AS cb
+		WHERE
+		ab.hi_code = house.hi_code
+		AND pro.propertyInfo_Id =
+		house.propertyInfo_Id
+		AND ab.em_id = emp.em_id
+		AND sumachi.sa_id =
+		ab.sa_id
+		AND ab.ContractObject_Id = co.ContractObject_Id
+		AND
+		co.ContractObject_Code = cb.ContractObject_Code
+		<if test="sa_startDate !=null and sa_startDate !='' ">AND ab.ab_payTime BETWEEN #{sa_startDate} AND
+			#{sa_endDate}
+		</if>
+		<if test="em_id !=null and em_id !='' ">AND ab.em_id = #{em_id}</if>
+		<if test="ucc_id !=null and ucc_id !='' ">AND ab.ucc_id = #{ucc_id}</if>
+		<if test="hi_code !=null and hi_code !='' ">AND ab.hi_code = #{hi_code}</if>
+		<if test="contractObject_Id !=null and contractObject_Id !='' ">AND ab.contractObject_Id = #{contractObject_Id}</if>
+	</select>
+
+	<!-- 查询当月总业绩3 -->
+	<select id="selectAchievementBillSimpleList" resultType="com.gjp.model.AchievementBill">
+		SELECT SQL_CALC_FOUND_ROWS
+		ab.ab_id,
+		ab.sa_id,
+		ab.hi_code,
+		ab.em_id,
+		ab.ab_type,
+		ab.ab_num,
+		ab.ab_acType,
+		SUM(ab_oldMoney) AS ab_oldMoney,
+		SUM(ab_newMoney) AS ab_newMoney,
+		SUM(ab_oldMoney) + SUM(ab_newMoney) AS
+		ab_sumMoney,
+		ab.ab_moneyPercentage,
+		ab.ab_moneyType,
+		ab.ab_payState,
+		ab.ab_payTime,
+		ab.ab_ctype,
+		ab.ab_lossDay,
+		ab.ab_lossMoney,
+		ab.contractObject_Id,
+		ab.ucc_id,
+		ab.ab_forRentDay,
+		ab.ab_freeDay,
+		pro.propertyInfo_Name,
+		house.hi_id,
+		house.hi_address
+		FROM
+		GJP_Achievement_achievementBill ab,
+		GJP_product.GJP_House_HouseInformation_keep house,
+		GJP_product.GJP_PropertyInfo pro
+		WHERE
+		ab.hi_code = house.hi_code
+		AND
+		pro.propertyInfo_Id = house.propertyInfo_Id
+		AND ab.ab_payTime BETWEEN
+		#{t.sa_startDate} AND #{t.sa_endDate}
+		<if test="t.em_id !=null and t.em_id !='' ">AND ab.em_id = #{t.em_id}</if>
+		<if test="t.ucc_id !=null and t.ucc_id !='' ">AND ab.ucc_id = #{t.ucc_id}</if>
+		GROUP BY ab.hi_code
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<!-- 查询业绩精简业绩数据总数 -->
+	<select id="selectAchievementBillSimpleListTotalRecords" resultType="int">
+		SELECT FOUND_ROWS()
+	</select>
+
+	<!-- 查询业绩人员列表数据 -->
+	<select id="selectAchievementEmployeeList" resultType="com.gjp.model.ViewAchievementEmployeeVo">
+		SELECT
+		pa_id,
+		pa_sum,
+		pa_new,
+		em_id,
+		ca_id,
+		em_name,
+		em_sex,
+		em_phone,
+		em_code,
+		em_state,
+		em_jobState,
+		em_chiefPos,
+		ucc_id,
+		ucc_name,
+		ucc_short,
+		ucc_type,
+		ucc_pid,
+		ucc_corporation,
+		ucc_phone
+		FROM
+		view_GJP_AchievementEmployeeList
+		WHERE
+		ca_id = #{ca_id}
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+		<if test="em_id !=null and em_id !='' ">AND em_id = #{em_id}</if>
+	</select>
+
+	<!-- 查询房屋总业绩 -->
+	<select id="selectAchievementSumListByWhere" resultType="com.gjp.model.ViewHouseAchievementVo">
+		SELECT
+		sa_id,
+		hi_code,
+		sa_type,
+		sa_oldMoney,
+		sa_newMoney,
+		sa_time,
+		sa_auditType,
+		sa_sumMoney,
+		sa_lossDay,
+		sa_lossMoney,
+		sa_uccID,
+		sa_startDate,
+		sa_endDate,
+		propertyInfo_Name,
+		hi_address
+		FROM
+		view_GJP_HouseAchievementList
+		WHERE
+		sa_startDate BETWEEN #{sa_startDate} AND #{sa_endDate}
+	</select>
+
+	<!-- 查询团队业绩视图列表 -->
+	<select id="selectTeamAchievementList" resultType="com.gjp.model.ViewTeamAchievementListVo">
+		SELECT
+		*
+		FROM
+		view_GJP_TeamAchievementList
+		WHERE
+		ca_id = #{ca_id}
+		<if test="ucc_id !=null and ucc_id !='' ">AND ucc_id = #{ucc_id}</if>
+	</select>
+
+	<!-- 插入总业绩 -->
+	<insert id="insertSumAchievement" useGeneratedKeys="true" keyProperty="sa_id">
+		insert into GJP_Achievement_SumAchievement(
+		hi_code,
+		sa_type,
+		sa_oldMoney,
+		sa_newMoney,
+		sa_time,
+		sa_auditType,
+		sa_startEndTime,
+		sa_tStartEndTime,
+		sa_sumMoney,
+		sa_lossDay,
+		sa_lossMoney,
+		sa_uccID,
+		sa_startDate,
+		sa_endDate,
+		sa_forRentDay,
+		sa_freeDay,
+		sa_freeMoney,
+		sa_saveMoney,
+		sa_outMoney,
+		sa_saveMoney2,
+		sa_outMoney2,
+		sa_sumMoneyH,
+		sa_difference,
+		sa_turnRentMoney,
+		contractObject_Id,
+		sa_tRepairMoney,
+		sa_zRepairMoney,
+		sa_zworkMoney,
+		sa_tworkMoney
+		)
+		values (
+		#{hi_code },
+		#{sa_type },
+		#{sa_oldMoney },
+		#{sa_newMoney },
+		#{sa_time },
+		#{sa_auditType },
+		#{sa_startEndTime },
+		#{sa_tStartEndTime },
+		#{sa_sumMoney },
+		#{sa_lossDay
+		},
+		#{sa_lossMoney },
+		#{sa_uccID },
+		#{sa_startDate },
+		#{sa_endDate
+		},
+		#{sa_forRentDay },
+		#{sa_freeDay },
+		#{sa_freeMoney },
+		#{sa_saveMoney },
+		#{sa_outMoney },
+		#{sa_saveMoney2 },
+		#{sa_outMoney2 },
+		#{sa_sumMoneyH },
+		#{sa_difference },
+		#{sa_turnRentMoney },
+		#{contractObject_Id},
+		#{sa_tRepairMoney },
+		#{sa_zRepairMoney },
+		#{sa_zworkMoney },
+		#{sa_tworkMoney }
+		)
+	</insert>
+
+	<!-- 修改总业绩表 -->
+	<update id="updateSumAchievement">
+		UPDATE
+		GJP_Achievement_SumAchievement
+		<set>
+			<if test="sa_oldMoney !=null">sa_oldMoney=#{sa_oldMoney},</if>
+			<if test="sa_newMoney !=null">sa_newMoney=#{sa_newMoney},</if>
+			<if test="sa_auditState !=null">sa_auditState=#{sa_auditState},</if>
+		</set>
+		WHERE
+		sa_id =#{sa_id}
+	</update>
+
+	<!-- 插入业绩账单 -->
+	<insert id="insertAchievementBill" useGeneratedKeys="true" keyProperty="ab_id">
+		insert into
+		GJP_Achievement_achievementBill(
+		sa_id,
+		hi_code,
+		em_id,
+		ab_type,
+		ab_num,
+		ab_acType,
+		ab_oldMoney,
+		ab_newMoney,
+		ab_moneyPercentage,
+		ab_moneyType,
+		ab_payState,
+		ab_payTime,
+		ab_ctype,
+		ab_lossDay,
+		ab_lossMoney,
+		contractObject_Id,
+		ucc_id,
+		ab_forRentDay,
+		ab_freeDay
+		)
+		values (
+		#{sa_id},
+		#{hi_code},
+		#{em_id},
+		#{ab_type},
+		#{ab_num},
+		#{ab_acType},
+		#{ab_oldMoney},
+		#{ab_newMoney},
+		#{ab_moneyPercentage},
+		#{ab_moneyType},
+		#{ab_payState},
+		#{ab_payTime},
+		#{ab_ctype},
+		#{ab_lossDay},
+		#{ab_lossMoney},
+		#{contractObject_Id},
+		#{ucc_id},
+		#{ab_forRentDay },
+		#{ab_freeDay }
+		)
+	</insert>
+
+	<!-- 修改业绩账单 -->
+	<update id="updateAchievementBill">
+		update GJP_Achievement_achievementBill set
+		<if test="em_id != null and em_id != ''">
+			em_id=#{em_id },
+		</if>
+		<if test="ucc_id != null and ucc_id != ''">
+			ucc_id=#{ucc_id },
+		</if>
+		ab_oldMoney=#{ab_oldMoney },
+		ab_newMoney=#{ab_newMoney }
+		where
+		ab_id=#{ab_id }
+		<if test="ab_num != null and ab_num != ''">
+			and ab_num=#{ab_num }
+		</if>
+	</update>
+
+	<!-- 是否计算管理费 -->
+	<update id="updateContractHouseAchievementBool">
+  		UPDATE GJP_Contract_Object SET
+		ContractObject_gsmanage =#{ContractObject_gsmanage}
+		WHERE
+		ContractObject_Code = #{ContractObject_Code}
+	</update>
+
+	<!-- 查看合同开始时间月日是否相同 -->
+	<select id="selectContractObjectMD" resultType="com.gjp.model.ContractObjectVo">
+		SELECT * FROM GJP_Contract_Object
+		WHERE 1=1
+		AND ContractObject_Type= '托管合同'
+		<if test="ContractObject_Date != null">
+		AND date_format(ContractObject_Date,'%m-%d')=date_format(ContractObject_Date,'%m-%d')
+		</if>
+	</select>
+
+	<!-- 插入业绩账单详情 -->
+	<insert id="insertAchievementBillContent" useGeneratedKeys="true" keyProperty="abc_id">
+		insert into GJP_Achievement_achievementBillContent(
+		abc_type,
+		abc_money,
+		ab_id
+		)
+		values (
+		#{abc_type},
+		#{abc_money},
+		#{ab_id}
+		)
+	</insert>
+
+	<!-- 修改业绩账单详情 -->
+	<update id="updateAchievementBillContentBT">
+		update GJP_Achievement_achievementBillContent set
+		abc_money=#{abc_money }
+		where
+		ab_id=#{ab_id } and abc_type='业绩补贴'
+	</update>
+
+	<!-- 修改是否计算业绩 -->
+	<update id="updateContractObjectServiceBool">
+		update
+		GJP_Contract_Object set
+		ContractObject_ServiceBool=#{contractObject_ServiceBool}
+		where
+		ContractObject_No = #{contractObject_No}
+	</update>
+
+	<!-- 删除业绩账单详情 -->
+	<delete id="deleteAchievementBillContent">
+		DELETE FROM GJP_Achievement_achievementBillContent where ab_id=#{ab_id}
+	</delete>
+
+	<!-- 删除业绩账单 -->
+	<delete id="deleteAchievementBill">
+		DELETE FROM GJP_Achievement_achievementBill where sa_id=#{sa_id}
+	</delete>
+
+	<!-- 删除总业绩 -->
+	<delete id="deleteAchievement">
+		DELETE FROM GJP_Achievement_SumAchievement where contractObject_Id=#{contractObject_Id}
+	</delete>
+
+	<!-- 插入业绩记录 -->
+	<insert id="addAchievementRecord" useGeneratedKeys="true" keyProperty="ar_id">
+		insert into GJP_Achievement_AchievementRecord(
+		ar_id,
+		ar_content,
+		ar_date,
+		em_id,
+		ar_type,
+		ar_money,
+		contractObject_Id,
+		sa_id
+		)
+		values (
+		#{ar_id},
+		#{ar_content},
+		#{ar_date},
+		#{em_id},
+		#{ar_type},
+		#{ar_money},
+		#{contractObject_Id},
+		#{sa_id}
+		)
+	</insert>
+
+	<!-- 查询招租房屋租赁合同 -->
+	<select id="queryHouseInfomationKeepContract" resultType="com.gjp.model.ViewBusinessContractVo">
+		SELECT * FROM GJP_product.GJP_House_HouseInformation_keep AS hi
+		LEFT JOIN (
+		SELECT * FROM GJP_Contract_Object WHERE ContractObject_Type = '租赁合同' GROUP BY hi_code ORDER BY ContractObject_Date DESC) AS co ON hi.hi_code=co.hi_code
+		LEFT JOIN GJP_product.GJP_House_PositionRecord AS hpr ON hi.hi_code = hpr.hi_code
+		WHERE 1=1
+		AND hi.hi_isForRent = 1
+	</select>
+
+	<!-- 合同管理费 -->
+	<select id="queryManageFees" resultType="com.gjp.model.ManageFees">
+		SELECT * FROM GJP_Platform_ManageFees
+		WHERE 1=1
+		AND date_format(#{pmf_cycleDate},'%Y-%m-%d') >= date_format(pmf_cycleDate,'%Y-%m-%d')
+		AND con_code = #{con_code}
+		AND pmf_deductState = 1
+	</select>
+
+	<!-- 合同管理费 -->
+	<select id="queryRentFree" resultType="com.gjp.model.RentFree">
+		SELECT * FROM GJP_Platform_RentFree
+		WHERE 1=1
+		AND date_format(#{prf_cycleDate},'%Y-%m-%d') >= date_format(prf_cycleDate,'%Y-%m-%d')
+		AND con_code = #{con_code}
+		AND prf_deductState = 1
+	</select>
+
+	<!-- 插入门店基金 -->
+	<insert id="insertCompanyFund" useGeneratedKeys="true" keyProperty="ccf_id">
+		insert into GJP_user.GJP_UserCenter_CompanyFund(
+		ccf_pay,
+		ccf_source,
+		ccf_money,
+		ccf_balanceMoney,
+		ccf_date,
+		ucc_id
+		) VALUES
+		(
+		#{ccf_pay},
+		#{ccf_source},
+		#{ccf_money},
+		#{ccf_balanceMoney},
+		NOW(),
+		#{ucc_id}
+		)
+	</insert>
+
+	<!-- 根据门店id查询门店基金 -->
+	<select id="selectCompanyFundUcc" resultType="com.gjp.model.CompanyFund">
+		SELECT * FROM GJP_user.GJP_UserCenter_CompanyFund WHERE 1=1
+		<if test="ucc_id != null">
+			AND ucc_id = #{ucc_id}
+		</if>
+		ORDER BY ccf_date DESC
+		LIMIT 1
+	</select>
+</mapper>

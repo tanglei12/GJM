@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 企业管理 GJB_enterprise_registration -->
+<mapper namespace="com.gjp.dao.CustomerAppealDAO">
+
+    <!--经纪人申诉列表-->
+    <select id="queryAppealExamineList" resultType="com.gjp.model.ZkdCustomerAppeal">
+        SELECT
+        gca.ap_id,
+        gca.ap_explain,
+        gca.ap_creatime,
+        gca.ap_state,
+        gc.cc_title,
+        gc.cc_name,
+        gc.cc_phone,
+        gc.cc_propertyInfo,
+        gc.cc_sex,
+        gc.cc_require,
+        gc.cc_createTime,
+        gc.cc_province,
+        gc.cc_area,
+        gc.cc_town,
+        gc.cc_room,
+        gc.cc_lease,
+        gc.cc_mode,
+        gc.cc_decoration,
+        gc.cc_minMoney,
+        gc.cc_maxMoney,
+        gc.cc_otherMoney,
+        cag.ca_name,
+        cag.ca_phone,
+        gce.ce_types,
+        gce.ce_type
+        FROM
+        GJB_customer_appeal gca
+        LEFT JOIN GJB_customer gc ON gc.cc_id = gca.cc_id
+        LEFT JOIN GJB_company_agent cag ON cag.ca_id = gca.ca_id
+        LEFT JOIN GJB_customer_earlywarn gce ON gce.ce_id = gca.ce_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY gca.ap_creatime DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--经纪人申诉列表数量-->
+    <select id="queryAppealExamineListCount" resultType="int">
+        SELECT
+        COUNT(gca.ca_id)
+        FROM
+        GJB_customer_appeal gca
+        LEFT JOIN GJB_customer gc ON gc.cc_id = gca.cc_id
+        LEFT JOIN GJB_company_agent cag ON cag.ca_id = gca.ca_id
+        LEFT JOIN GJB_customer_earlywarn gce ON gce.ce_id = gca.ce_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+
+    <!--经纪人申诉详情-->
+    <select id="queryAppealExamineDetail" resultType="com.gjp.model.ZkdCustomerAppeal">
+        SELECT
+        gca.ap_id,
+        gca.ap_explain,
+        gca.ap_creatime,
+        gca.ap_state,
+        gc.cc_title,
+        gc.cc_name,
+        gc.cc_phone,
+        gc.cc_propertyInfo,
+        gc.cc_sex,
+        gc.cc_require,
+        gc.cc_createTime,
+        gc.cc_province,
+        gc.cc_area,
+        gc.cc_town,
+        gc.cc_room,
+        gc.cc_lease,
+        gc.cc_mode,
+        gc.cc_decoration,
+        gc.cc_minMoney,
+        gc.cc_maxMoney,
+        gc.cc_otherMoney,
+        cag.ca_name,
+        cag.ca_phone,
+        gce.ce_types,
+        gce.ce_type,
+        (SELECT count(ce.ce_id) FROM GJB_customer_earlywarn ce WHERE ce.ce_id = gca.ce_id) as er_count
+        FROM
+        GJB_customer_appeal gca
+        LEFT JOIN GJB_customer gc ON gc.cc_id = gca.cc_id
+        LEFT JOIN GJB_company_agent cag ON cag.ca_id = gca.ca_id
+        LEFT JOIN GJB_customer_earlywarn gce ON gce.ce_id = gca.ce_id
+        <where>
+            <if test="ap_id != null">and ap_id=#{ap_id}</if>
+        </where>
+    </select>
+    <!--举报人(经纪人)-->
+    <select id="queryAppealExamineDetailUser" resultType="com.gjp.model.ZkdCustomerAppeal">
+        SELECT ca.ca_name,ca.ca_phone,ce.ce_createTime,ce.ce_explain
+        FROM
+        GJB_customer_earlywarn ce
+        LEFT JOIN GJB_company_agent ca ON ca.ca_id = ce.ce_correlation
+        <where>
+            ce.ce_type = 1
+            <if test="ce_id">AND ce_id=#{ce_id}</if>
+        </where>
+    </select>
+    <!--举报人(公司)-->
+    <select id="queryAppealExamineDetailCompany" resultType="com.gjp.model.ZkdCustomerAppeal">
+        SELECT gc.cy_name,ga.bca_account,ce.ce_createTime,ce.ce_explain
+        FROM
+        GJB_customer_earlywarn ce
+        LEFT JOIN GJB_company gc ON gc.cy_id = ce.ce_correlation
+        LEFT JOIN GJB_company_account ga ON ga.cy_id = ce.ce_correlation
+        <where>
+            ce.ce_type = 2
+            <if test="ce_id"> AND ce_id=#{ce_id}</if>
+        </where>
+    </select>
+
+    <!--处理经纪人申诉-->
+    <update id="submitAppealExamin">
+        UPDATE
+        GJB_customer_appeal
+        <set>
+            <if test="ap_state != null">ap_state=#{ap_state},</if>
+        </set>
+        <where>
+            <if test="ap_id != null">ap_id=#{ap_id}</if>
+        </where>
+    </update>
+</mapper>

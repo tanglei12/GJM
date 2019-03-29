@@ -1,0 +1,192 @@
+@charset "utf-8";
+/* CSS Document */
+
+.logo {
+    width: 98.6%;
+    max-width: 1116px;
+    height: 73px;
+    position: relative;
+    margin-left: 20px;
+    margin-top: 30px;
+    float: left;
+    background: url(../image/xs_logo.png) no-repeat;
+}
+.foot {
+    width: 270px;
+    height: 131px;
+    position: absolute;
+    top: -15px;
+    right: 0;
+    float: right;
+    background: url(../image/xs_foot.png) no-repeat;
+    z-index: -1;
+}
+/*表头*/
+.head {
+    padding: 0 0 5px 0;
+    margin-top: 70px;
+    margin-left: 4.1%;
+    width: 91%;
+    font-size: 20px;
+    position: relative;
+    color: #666;
+    float: left;
+    z-index: 2;
+    border-bottom: 3px solid #3498DB;
+}
+.head ul {
+    float: left;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+.head ul li {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+}
+.head ul .head_font {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+}
+.head ul li #bmText {
+    margin-left: 10px;
+    width: 120px;
+    height: 23px;
+}
+/*内容*/
+.center {
+    float: left;
+    position: relative;
+    margin-left: 4.1%;
+    width: 91%;
+    font-size: 18px;
+    color: #666;
+}
+.center ul {
+    margin-top: 20px;
+    width: 30%;
+    height: 25px;
+    line-height: 25px;
+    float: left;
+    margin-left: 20px;
+}
+.center ul li {
+    float: left;
+    font-size: 18px;
+}
+.center ul .time {
+    margin-left: 10px;
+    margin-top: 3px;
+    font-size: 15px;
+    color: #999;
+}
+.center .gzbz {
+    width: 50%;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 2px solid #3498DB;
+    position: relative;
+    margin-left: 2%;
+    margin-top: 20px;
+    float: left;
+}
+.center .gzbz ul {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}
+.center .gzbz ul li {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+}
+.center .money {
+    width: 100%;
+    float: left;
+}
+.center .money ul {
+    margin-top: 0;
+    margin-left: 75px;
+    float: none;
+    height: 25px;
+    line-height: 25px;
+    border-bottom: 1px dotted #666;
+}
+.center .time_hf {
+    width: 100%;
+    float: left;
+    margin-bottom: 40px;
+}
+.center .time_hf ul {
+    margin-top: 0;
+    float: none;
+    width: 50%;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px dotted #666;
+}
+.center .time_hf ul li {
+    margin-left: 20px;
+    height: 25px;
+    line-height: 25px;
+}
+#ddzx {
+    float: left;
+    width: 55%;
+}
+#ddzx ul {
+    float: left;
+    width: 46%;
+}
+.whereCenter {
+    width: 500px;
+}
+.whereCenter ul {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+}
+.whereCenter li {
+    font-size: 16px;
+    float: left;
+    text-align: right;
+}
+.whereCenter li input {
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    float: left;
+    border: 1px solid #CCC;
+    margin-top: 15px;
+}
+.whereCenter li select {
+    height: 24px;
+    line-height: 24px;
+    font-size: 16px;
+    float: left;
+    border: 1px solid #CCC;
+    margin-top: 15px;
+}
+.whereCenter .button {
+    width: 120px;
+    height: 35px;
+    line-height: 35px;
+    background: #3498DB;
+    text-align: center;
+    margin-top: 10px;
+    float: right;
+}
+.whereCenter .button a {
+    display: block;
+    color: white;
+    font-size: 17px;
+}
+.whereCenter .button a:hover {
+    color: white;
+}
+	

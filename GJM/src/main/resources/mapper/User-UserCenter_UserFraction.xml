@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 职工表 GJP_UserCenter_Employee -->
+<mapper namespace="com.gjp.dao.UserCenterUserFractionDAO">
+
+	<sql id="menberEcpId">
+		uf_fraction,
+		uf_content,
+		uf_people,
+		uf_date,
+		md_id,
+		so_id,
+		em_id,
+		uf_image
+	</sql>
+
+	<sql id="insert">
+		#{uf_fraction},
+		#{uf_content },
+		#{uf_people },
+		NOW(),
+		#{md_id },
+		#{so_id},
+		#{em_id },
+		#{uf_image }
+	</sql>
+
+	<!-- 插入评价分数 -->
+	<insert id="addUserCenterUserFraction" useGeneratedKeys="true" parameterType="com.gjp.model.UserCenterFraction" keyProperty="uf_id">
+		insert into GJP_UserCenter_UserFraction
+		(<include refid="menberEcpId"></include>)
+		values
+		(<include refid="insert"></include>)
+	</insert>
+	
+	<!-- 查询评价分数 -->
+	<select id="selectUserCenterUserFractiony" resultType="com.gjp.model.UserCenterFraction">
+		select * from GJP_UserCenter_UserFraction where
+		<if test="md_id != null">
+			md_id=#{md_id}
+		</if>
+		<if test="so_id != null">
+			so_id=#{so_id}
+		</if>
+
+	</select>
+</mapper>

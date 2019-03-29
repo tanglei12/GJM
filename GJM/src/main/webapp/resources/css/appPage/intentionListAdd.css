@@ -1,0 +1,336 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+	color: #666;
+	background: #F4F4F4;
+}
+ul,li{
+	list-style: none;
+}
+.content{
+	margin-top: 5px;
+}
+.content .messageContent{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	background-color: #FFF;
+}
+
+.content .messageContent dt span{
+	color: #E74C3C;
+	height: 50px;
+	line-height: 56px;
+	display: block;
+	float: right;
+	margin-right: 2px;
+}
+.content .messageContent dt label{
+	float: right;
+}
+.content .messageContent dl{
+	height: auto;
+	overflow: hidden;
+	border-bottom: 1px solid #F2F2F2;
+	height: 50px;
+	line-height: 50px;
+	margin: 0;
+	margin-left: 8px;
+	display: flex;
+}
+.content .messageContent dl.bottom{
+	border-bottom: none;
+}
+.content .messageContent dt{
+	font-size: 13px;
+	float: left;
+	width: 21%;
+	text-align: right;
+}
+.content .messageContent dd{
+	font-size: 13px;
+	float: left;
+	margin-left: 10px;
+	width: 73%;
+	position: relative;
+}
+.content .messageContent dd input{
+	height: 30px;
+	line-height: 30px;
+	width: 87%;
+	border: none;
+	outline: none;
+	font-size: 13px;
+	padding:0;
+}
+.content .messageContent dd select{
+    height: 30px;
+    line-height: 30px;
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	border: none;
+	background-color: #FFF;
+	padding-left: 77%;
+	color: #000;
+	outline: none;
+	font-size: 13px;
+	padding:0;
+}
+.content .messageContent dd input.select{
+	text-align: right;
+}
+.content .messageContent dd .houseTSW{
+	height: 30px;
+	line-height: 30px;
+	width: 31%;
+	border: none;
+	outline: none;
+	display: block;
+	float: left;
+    margin-top: 9px;
+}
+.content .messageContent dd .houseTSW input{
+	width: 56%;
+	text-align: center;
+}
+
+.content .messageContent dd .font-icon {
+	position: absolute;
+	top: 2px;
+	right: 0px;
+    display: inline;
+    width: 8px;
+    margin: 18px 2px 0 10px;
+    background: none!important;
+    height: 8px;
+    border: solid gray;
+    border-width: 1px 1px 0 0;
+    -webkit-transform: rotate(45deg);
+    margin-right: 15px;
+}
+
+.checkbox{
+	min-width: 43px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #F2F2F2;
+	float: left;
+	height: 22px;
+	line-height: 22px;
+	margin-right: 10%;
+	margin-bottom: 10%;
+	text-align: center;
+}
+.checkbox.click{
+	background-color:#FF6666;
+	color:#FFF;
+}
+.checkbox i{
+	font-style:normal;
+	font-size: 13px;
+}
+.checkbox input{
+	display: none;
+}
+
+.textFont{
+    width: 85%;
+    display: block;
+    margin-top: -35px;
+    text-align: right;
+    height: 25px;
+    line-height: 25px;
+}
+.textFont .fontSize{
+	color: #FF6666;
+}
+
+.moneyPrice{
+	color: #FF6666;
+}
+.moneys{
+	color: #FF6666;
+}
+.title_class {
+	position: relative;
+	text-indent: 10px;
+	font-size: 14px;
+	height: 25px;
+	line-height: 25px;
+	margin-top: 10px;
+}
+
+.title_class:AFTER {
+	content: "";
+	display: block;
+	width: 4px;
+	height: 12px;
+	position: absolute;
+	background: #FF6666;
+	top: 6px;
+	border-radius: 2px;
+	visibility: visible;
+}
+
+.submit{
+	width: 100%;
+	border: 0;
+	background-color: #FF6666;
+	color: #FFFFFF;
+	height: 45px;
+	line-height: 45px;
+	font-size: 3.7vw;
+	margin-top: 15px;
+}
+
+.mui-preview-image.mui-fullscreen {
+		position: fixed;
+		z-index: 20;
+		background-color: #000;
+	}
+	.mui-preview-header,
+	.mui-preview-footer {
+		position: absolute;
+		width: 100%;
+		left: 0;
+		z-index: 10;
+	}
+	.mui-preview-header {
+		height: 44px;
+		top: 0;
+	}
+	.mui-preview-footer {
+		height: 50px;
+		bottom: 0px;
+	}
+	.mui-preview-header .mui-preview-indicator {
+		display: block;
+		line-height: 25px;
+		color: #fff;
+		text-align: center;
+		margin: 15px auto 4;
+		width: 70px;
+		background-color: rgba(0, 0, 0, 0.4);
+		border-radius: 12px;
+		font-size: 16px;
+	}
+	.mui-preview-image {
+		display: none;
+		-webkit-animation-duration: 0.5s;
+		animation-duration: 0.5s;
+		-webkit-animation-fill-mode: both;
+		animation-fill-mode: both;
+	}
+	.mui-preview-image.mui-preview-in {
+		-webkit-animation-name: fadeIn;
+		animation-name: fadeIn;
+	}
+	.mui-preview-image.mui-preview-out {
+		background: none;
+		-webkit-animation-name: fadeOut;
+		animation-name: fadeOut;
+	}
+	.mui-preview-image.mui-preview-out .mui-preview-header,
+	.mui-preview-image.mui-preview-out .mui-preview-footer {
+		display: none;
+	}
+	.mui-zoom-scroller {
+		position: absolute;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		-webkit-backface-visibility: hidden;
+	}
+	.mui-zoom {
+		-webkit-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+	}
+	.mui-slider .mui-slider-group .mui-slider-item img {
+		max-width: 100%;
+		max-height: 100%;
+	}
+	.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+		width: 100%;
+	}
+	.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+		display: inline-table;
+	}
+	.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+		display: table-cell;
+		vertical-align: middle;
+	}
+	.mui-preview-loading {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		display: none;
+	}
+	.mui-preview-loading.mui-active {
+		display: block;
+	}
+	.mui-preview-loading .mui-spinner-white {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -25px;
+		margin-top: -25px;
+		height: 50px;
+		width: 50px;
+	}
+	.mui-preview-image img.mui-transitioning {
+		-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+		transition: transform 0.5s ease, opacity 0.5s ease;
+	}
+	@-webkit-keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+	@-webkit-keyframes fadeOut {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+	@keyframes fadeOut {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+	p img {
+		max-width: 100%;
+		height: auto;
+	}

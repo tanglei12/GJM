@@ -1,0 +1,332 @@
+@CHARSET "UTF-8";
+
+* {
+	padding: 0;
+	margin: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+::after, ::before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* 
+内容说明一 
+		样式支持扩展
+内容说明二 
+		扩展时不要改变class名称和html布局
+		只需改变css样式
+内容说明三 
+
+*/
+/**APP上传插件样式*/
+.appImageBox {
+	position: relative;
+	overflow: hidden;
+	padding: 16px 0;
+}
+
+.appImageBox .image-item-add {
+	display: block;
+	position: relative;
+	float: left;
+	width: 70px;
+	height: 70px;
+	cursor: pointer;
+	background: url(/resources/image/uploadPhoto.png) no-repeat 18px 9px;
+	border: 1px dashed #e2e2e2;
+	border-radius: 3px;
+}
+
+.appImageBox .image-item-add .shade-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: none;
+}
+
+.appImageBox .image-item-add .imagefont {
+	color: #999;
+	margin-top: 42px;
+	display: block;
+	text-align: center;
+	font-size: 13px;
+	line-height: initial;
+}
+
+.appImageBox .image-item-add #image-file {
+	display: none;
+}
+
+.appImageBox .image-item-add .item-limit {
+	display: none;
+}
+
+.appImageBox .image-item-wait {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: url("/resources/image/svg/rolling.svg") no-repeat center;
+	background-size: 30px;
+	background-color: rgba(0, 0, 0, 0.38);
+	display: none;
+}
+
+.appImageBox .image-item {
+	display: block;
+	float: left;
+	position: relative;
+	width: 70px;
+	height: 70px;
+	cursor: pointer;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.appImageBox .image-item .image-item-img {
+	width: 70px;
+	height: 70px;
+	border: none;
+	border-radius: 4px;
+}
+
+.appImageBox .image-item .image-item-close {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	display: block;
+	text-align: center;
+	width: 30px;
+	line-height: 30px;
+	background: #E74C3C;
+	font-size: 14px;
+	color: #fff;
+	border-radius: 17px;
+}
+
+.appImageBox .image-item:HOVER .image-item-close {
+	display: block;
+}
+
+.appImageBox .image-file {
+	display: none;
+}
+
+/**上传插件公共样式**/
+.imageUpload {
+	position: relative;
+	overflow: hidden;
+	padding: 16px;
+	border: 1px solid #dcdcdc;
+	background: #fff;
+}
+
+.imageUpload .image-item {
+	display: block;
+	float: left;
+	position: relative;
+	width: 165px;
+	height: 114px;
+	cursor: pointer;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
+	overflow: hidden;
+}
+
+.imageUpload .image-item .image-item-img {
+	width: 100%;
+	height: 100%;
+	border: none;
+	-moz-user-select: none; /*火狐*/
+	-webkit-user-select: none; /*webkit浏览器*/
+	-ms-user-select: none; /*IE10*/
+	-khtml-user-select: none; /*早期浏览器*/
+	user-select: none;
+}
+
+.imageUpload .image-item .image-item-close {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	display: none;
+	text-align: center;
+	width: 30px;
+	line-height: 30px;
+	background: #E74C3C;
+	font-size: 14px;
+	color: #fff;
+}
+
+.imageUpload .image-item:HOVER .image-item-close {
+	display: block;
+}
+
+.imageUpload .image-item-add {
+	display: block;
+	position: relative;
+	float: left;
+	width: 165px;
+	height: 114px;
+	border: 1px dashed #dcdcdc;
+	border-radius: 3px;
+	background: url('/resources/common/imageUpload/images/add_photo.png')
+		no-repeat center;
+}
+
+.imageUpload .image-item-add .shade-button {
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	border: none;
+	outline: none;
+	margin: 0;
+	cursor: pointer;
+}
+
+.imageUpload .image-item-add .image-file {
+	display: none;
+}
+
+.imageUpload .image-item-add .item-limit em {
+	font-style: normal;
+}
+
+.imageUpload .image-item-limit {
+	position: absolute;
+	display: block;
+	bottom: 0;
+	right: 0;
+	height: 22px;
+	color: #929292;
+	font-size: 13px;
+	line-height: 22px;
+	margin-right: 5px;
+}
+
+.imageUpload .image-item-limit em {
+	font-style: normal;
+}
+
+.imageUpload .image-item-wait {
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: url("/resources/image/svg/rolling.svg") no-repeat center;
+	background-size: 30px;
+	background-color: rgba(0, 0, 0, 0.38);
+	display: none;
+}
+
+/**图片剪切工具样式**/
+.image-show {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+}
+
+.image-show-mask {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.29);
+}
+
+.image-show>.image-show-head {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	background: #f5f5f5;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
+}
+
+.image-show>.image-show-head:AFTER {
+	content: "";
+	display: block '';
+	clear: both;
+}
+
+.image-show>.image-show-main {
+	position: relative;
+	top: 40px;
+	height: 100%;
+}
+
+.image-show-head-title {
+	position: relative;
+	float: left;
+	line-height: 40px;
+	padding: 0 12px;
+	font-size: 14px;
+}
+
+.image-show-head-option {
+	position: relative;
+	float: right;
+}
+
+.image-show-head-option>ul {
+	position: relative;
+	display: table;
+}
+
+.image-show-head-option>ul>li {
+	position: relative;
+	display: table-cell;
+	line-height: 40px;
+	padding: 0 12px;
+	font-size: 14px;
+}
+
+.image-show-head-option>ul>li.image-show-icon:HOVER {
+	background: #18bc9c;
+	color: #fff;
+	cursor: pointer;
+}
+
+.image-show-head-option>ul>li.image-show-ok:HOVER {
+	background: #3498DB;
+	color: #fff;
+	cursor: pointer;
+}
+
+.image-show-head-option>ul>li.image-show-icon:LAST-CHILD:HOVER {
+	background: #E74C3C;
+	color: #fff;
+}
+
+.image-show>.image-show-main>.image-content {
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	margin-top: 16%;
+	width: 600px;
+	height: 600px;
+}
+
+.image-show>.image-show-main .cropper-bg {
+	background: none
+}

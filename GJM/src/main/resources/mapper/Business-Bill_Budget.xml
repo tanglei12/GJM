@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预算管理 -->
+<mapper namespace="com.gjp.dao.BaseDAO">
+
+    <!--预算管理分页数据-->
+    <select id="queryBudget" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+          *
+        FROM
+            (
+            SELECT
+            t1.bcb_id,
+            t1.bcb_code,
+            t1.bco_code,
+            t12.totalRepayment,
+            t12.totalRealpayment,
+            t1.bcb_cycle,
+            t1.bcb_type,
+            t1.bcb_balPay,
+            t1.bcb_uccId,
+            t1.bcb_repayment,
+            t1.bcb_realPayment,
+            t1.bcb_balance,
+            t1.bcb_state,
+            t1.bcb_budgetState,
+            t1.bcb_repaymentDate,
+            t1.bcb_realPaymentDate,
+            t1.bcb_agreedDate,
+            t1.bcb_payWay,
+            t1.bcb_overdueDay,
+            t1.bcb_isRepay,
+            t1.bcb_creator,
+            t1.bcb_operater,
+            t1.bcb_remarks,
+            t1.bcb_createTime,
+            t5.house_address,
+            t6.cc_name,
+            t7.ccp_phone,
+            t6.cc_id,
+            t3.ContractObject_Code,
+            t3.contractObject_State,
+            t3.contractObject_FillTime,
+            t3.contractObject_OptionState,
+            t3.contractObject_Type,
+            t4.ContractBody_StartTOEnd,
+            t4.ContractBody_PayType,
+            t9.em_id AS em_id,
+            t9.em_name AS em_name,
+            t9.em_phone AS em_phone,
+            t11.ucc_id,
+            t11.ucc_name,
+            t11.ucc_pid
+            FROM
+            GJP_business.GJP_Bill_ContractBill AS t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_Body AS t4 ON t4.ContractObject_Code = t3.ContractObject_Code
+            LEFT JOIN GJP_product.view_GJP_HouseAddress AS t5 ON t5.hi_code = t2.hi_code
+            LEFT JOIN GJP_user.GJP_UserCenter_Customer AS t6 ON t2.bco_customer = t6.cc_code
+            LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS t7 ON t6.cc_id = t7.cc_id
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id
+            AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            LEFT JOIN (
+                select
+                    Sum(IF(t1.bcb_balPay = 1, -t1.bcb_repayment, t1.bcb_repayment)) AS totalRepayment,
+                    Sum(IF(t1.bcb_balPay = 1, -t1.bcb_realpayment, t1.bcb_realpayment)) AS totalRealpayment,
+                    t1.bco_code,
+                    t1.bcb_code,
+                    t1.bcb_cycle,
+                    t1.bcb_repaymentDate,
+                    t1.bcb_state,
+                    t1.bcb_balPay,
+                    t1.bcb_type,
+                    t3.contractObject_OptionState,
+                    t3.contractObject_Type,
+                    t11.ucc_id
+                from GJP_business.GJP_Bill_ContractBill t1
+                LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+                LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.contractObject_Code
+                LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+                LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+                LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+                LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+                  WHERE t1.bco_code in (
+                    SELECT
+                      bco_code
+                    FROM (
+                    SELECT
+                        t1.bcb_id,
+                        t1.bco_code,
+                        t1.bcb_state,
+                        t1.bcb_repaymentDate,
+                        t1.bcb_balPay,
+                        t1.bcb_type,
+                        t3.contractObject_OptionState,
+                        t3.contractObject_Type,
+                        t11.ucc_id
+                    FROM
+                    GJP_business.GJP_Bill_ContractBill AS t1
+                    LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+                    LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+                    LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+                    LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+                    LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+                    LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+                    )T
+                    <where>
+                        <choose>
+                            <when test="where !=null and where != '' ">${where}</when>
+                        </choose>
+                        <choose>
+                            <when test="t !=null">
+                                <if test="t.bcb_state != null">
+                                    AND bcb_state=#{t.bcb_state}
+                                </if>
+                                <if test="t.contractObject_OptionState != null">
+                                    AND contractObject_OptionState=#{t.contractObject_OptionState}
+                                </if>
+                                <if test="t.day !=null ">
+                                    AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                                </if>
+                            </when>
+                        </choose>
+                    </where>
+                      GROUP BY bcb_id
+                )
+                GROUP BY bcb_id
+                HAVING 1=1
+                    <choose>
+                        <when test="where !=null and where != '' ">AND ${where}</when>
+                    </choose>
+                    <choose>
+                        <when test="t !=null">
+                            <if test="t.bcb_state != null">
+                                AND bcb_state=#{t.bcb_state}
+                            </if>
+                            <if test="t.contractObject_OptionState != null">
+                                AND contractObject_OptionState=#{t.contractObject_OptionState}
+                            </if>
+                            <if test="t.day !=null ">
+                                AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                            </if>
+                        </when>
+                    </choose>
+              ) t12 ON t12.bcb_code = t1.bcb_code
+            )T
+            <where>
+                <choose>
+                    <when test="where !=null and where != '' ">${where}</when>
+                </choose>
+                <choose>
+                    <when test="t !=null">
+                        <if test="t.bcb_state != null">
+                            AND bcb_state=#{t.bcb_state}
+                        </if>
+                        <if test="t.contractObject_OptionState != null">
+                            AND contractObject_OptionState=#{t.contractObject_OptionState}
+                        </if>
+                        <if test="t.day !=null ">
+                           AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                        </if>
+                    </when>
+                </choose>
+            </where>
+            GROUP BY bcb_id
+    </select>
+
+    <select id="queryBudgetPageRecord" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+        (
+        SELECT
+        t1.bcb_id,
+        t1.bcb_code,
+        t1.bco_code,
+        t12.totalRepayment,
+        t12.totalRealpayment,
+        t1.bcb_cycle,
+        t1.bcb_type,
+        t1.bcb_balPay,
+        t1.bcb_uccId,
+        t1.bcb_repayment,
+        t1.bcb_realPayment,
+        t1.bcb_balance,
+        t1.bcb_state,
+        t1.bcb_budgetState,
+        t1.bcb_repaymentDate,
+        t1.bcb_realPaymentDate,
+        t1.bcb_agreedDate,
+        t1.bcb_payWay,
+        t1.bcb_overdueDay,
+        t1.bcb_isRepay,
+        t1.bcb_creator,
+        t1.bcb_operater,
+        t1.bcb_remarks,
+        t1.bcb_createTime,
+        t5.house_address,
+        t6.cc_name,
+        t7.ccp_phone,
+        t6.cc_id,
+        t3.ContractObject_Code,
+        t3.contractObject_State,
+        t3.contractObject_FillTime,
+        t3.contractObject_OptionState,
+        t3.contractObject_Type,
+        t4.ContractBody_StartTOEnd,
+        t4.ContractBody_PayType,
+        t9.em_id AS em_id,
+        t9.em_name AS em_name,
+        t9.em_phone AS em_phone,
+        t11.ucc_id,
+        t11.ucc_name,
+        t11.ucc_pid
+        FROM
+        GJP_business.GJP_Bill_ContractBill AS t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS t4 ON t4.ContractObject_Code = t3.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS t5 ON t5.hi_code = t2.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS t6 ON t2.bco_customer = t6.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS t7 ON t6.cc_id = t7.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id
+        AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+        LEFT JOIN (
+        select
+            Sum(IF(t1.bcb_balPay = 1, -t1.bcb_repayment, t1.bcb_repayment)) AS totalRepayment,
+            Sum(IF(t1.bcb_balPay = 1, -t1.bcb_realpayment, t1.bcb_realpayment)) AS totalRealpayment,
+            t1.bco_code,
+            t1.bcb_code,
+            t1.bcb_cycle,
+            t1.bcb_repaymentDate,
+            t1.bcb_state,
+            t1.bcb_balPay,
+            t1.bcb_type,
+            t3.contractObject_OptionState,
+            t3.contractObject_Type,
+            t11.ucc_id
+        from GJP_business.GJP_Bill_ContractBill t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.contractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+        WHERE t1.bco_code in (
+            SELECT
+        bco_code
+        FROM (
+        SELECT
+        t1.bcb_id,
+        t1.bco_code,
+        t1.bcb_state,
+        t1.bcb_repaymentDate,
+        t1.bcb_balPay,
+        t1.bcb_type,
+        t3.contractObject_OptionState,
+        t3.contractObject_Type,
+        t11.ucc_id
+        FROM
+        GJP_business.GJP_Bill_ContractBill AS t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+        )T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                </when>
+            </choose>
+        </where>
+        GROUP BY bcb_id
+        )
+        GROUP BY bcb_id
+        HAVING 1=1
+        <choose>
+            <when test="where !=null and where != '' ">AND ${where}</when>
+        </choose>
+        <choose>
+            <when test="t !=null">
+                <if test="t.bcb_state != null">
+                    AND bcb_state=#{t.bcb_state}
+                </if>
+                <if test="t.contractObject_OptionState != null">
+                    AND contractObject_OptionState=#{t.contractObject_OptionState}
+                </if>
+                <if test="t.day !=null ">
+                    AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                </if>
+            </when>
+        </choose>
+        ) t12 ON t12.bcb_code = t1.bcb_code
+        )T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!--预算管理分页数据-->
+    <select id="queryBudgetList" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+          *
+        FROM
+        (
+        SELECT
+            t1.bcb_id,
+            t1.bcb_code,
+            t1.bco_code,
+            t12.totalRepayment,
+            t12.totalRealpayment,
+            t1.bcb_cycle,
+            t1.bcb_type,
+            t1.bcb_balPay,
+            t1.bcb_uccId,
+            t1.bcb_repayment,
+            t1.bcb_realPayment,
+            t1.bcb_balance,
+            t1.bcb_state,
+            t1.bcb_budgetState,
+            t1.bcb_repaymentDate,
+            t1.bcb_realPaymentDate,
+            t1.bcb_agreedDate,
+            t1.bcb_payWay,
+            t1.bcb_overdueDay,
+            t1.bcb_isRepay,
+            t1.bcb_creator,
+            t1.bcb_operater,
+            t1.bcb_remarks,
+            t1.bcb_createTime,
+            t5.house_address,
+            t6.cc_name,
+            t7.ccp_phone,
+            t6.cc_id,
+            t3.ContractObject_Code,
+            t3.contractObject_State,
+            t3.contractObject_FillTime,
+            t3.contractObject_OptionState,
+            t3.contractObject_Type,
+            t4.ContractBody_StartTOEnd,
+            t4.ContractBody_PayType,
+            t9.em_id AS em_id,
+            t9.em_name AS em_name,
+            t9.em_phone AS em_phone,
+            t11.ucc_id,
+            t11.ucc_name,
+            t11.ucc_pid
+        FROM
+        GJP_business.GJP_Bill_ContractBill AS t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS t4 ON t4.ContractObject_Code = t3.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS t5 ON t5.hi_code = t2.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS t6 ON t2.bco_customer = t6.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS t7 ON t6.cc_id = t7.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id= t8.contractObject_Id AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id =t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id =t10.ucc_id
+        LEFT JOIN (
+            select
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_repayment, t1.bcb_repayment)) AS totalRepayment,
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_realpayment, t1.bcb_realpayment)) AS totalRealpayment,
+                t1.bco_code,
+                t1.bcb_code,
+                t1.bcb_cycle,
+                t1.bcb_repaymentDate,
+                t1.bcb_state,
+                t1.bcb_balPay,
+                t1.bcb_type,
+                t3.contractObject_OptionState,
+                t3.contractObject_Type,
+                t11.ucc_id
+            from GJP_business.GJP_Bill_ContractBill t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.contractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            WHERE t1.bco_code in (
+            SELECT
+              bco_code
+            FROM (
+            SELECT
+                t1.bcb_id,
+                t1.bco_code,
+                t1.bcb_state,
+                t1.bcb_repaymentDate,
+                t1.bcb_balPay,
+                t1.bcb_type,
+                t3.contractObject_OptionState,
+                t3.contractObject_Type,
+                t11.ucc_id
+            FROM
+            GJP_business.GJP_Bill_ContractBill AS t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            )T
+            <where>
+                <choose>
+                    <when test="where !=null and where != '' ">${where}</when>
+                </choose>
+                <choose>
+                    <when test="t !=null">
+                        <if test="t.bcb_state != null">
+                            AND bcb_state=#{t.bcb_state}
+                        </if>
+                        <if test="t.contractObject_OptionState != null">
+                            AND contractObject_OptionState=#{t.contractObject_OptionState}
+                        </if>
+                        <if test="t.day !=null ">
+                            AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                        </if>
+                        <if test="t.bcb_type != null">
+                            AND (bcb_type != 0 AND bcb_type != 1)
+                        </if>
+                        <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                            AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                        </if>
+                    </when>
+                </choose>
+            </where>
+        GROUP BY bcb_id
+        )
+        GROUP BY bcb_id
+        HAVING 1=1
+            <choose>
+                <when test="where !=null and where != '' ">AND ${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                    <if test="t.bcb_type != null">
+                        AND (bcb_type != 0 AND bcb_type != 1)
+                    </if>
+                    <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                        AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                    </if>
+                </when>
+            </choose>
+        ) t12 ON t12.bcb_code = t1.bcb_code
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                    <if test="t.bcb_type != null">
+                        AND (bcb_type != 0 AND bcb_type != 1)
+                    </if>
+                    <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                        AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                    </if>
+                </when>
+            </choose>
+        </where>
+        GROUP BY bcb_id
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryBudgetListPageRecord" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM
+          (
+        SELECT
+            t1.bcb_id,
+            t1.bcb_code,
+            t1.bco_code,
+            t12.totalRepayment,
+            t12.totalRealpayment,
+            t1.bcb_cycle,
+            t1.bcb_type,
+            t1.bcb_balPay,
+            t1.bcb_uccId,
+            t1.bcb_repayment,
+            t1.bcb_realPayment,
+            t1.bcb_balance,
+            t1.bcb_state,
+            t1.bcb_budgetState,
+            t1.bcb_repaymentDate,
+            t1.bcb_realPaymentDate,
+            t1.bcb_agreedDate,
+            t1.bcb_payWay,
+            t1.bcb_overdueDay,
+            t1.bcb_isRepay,
+            t1.bcb_creator,
+            t1.bcb_operater,
+            t1.bcb_remarks,
+            t1.bcb_createTime,
+            t5.house_address,
+            t6.cc_name,
+            t7.ccp_phone,
+            t6.cc_id,
+            t3.ContractObject_Code,
+            t3.contractObject_State,
+            t3.contractObject_FillTime,
+            t3.contractObject_OptionState,
+            t3.contractObject_Type,
+            t4.ContractBody_StartTOEnd,
+            t4.ContractBody_PayType,
+            t9.em_id AS em_id,
+            t9.em_name AS em_name,
+            t9.em_phone AS em_phone,
+            t11.ucc_id,
+            t11.ucc_name,
+            t11.ucc_pid
+        FROM
+        GJP_business.GJP_Bill_ContractBill AS t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS t4 ON t4.ContractObject_Code = t3.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS t5 ON t5.hi_code = t2.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS t6 ON t2.bco_customer = t6.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS t7 ON t6.cc_id = t7.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id= t8.contractObject_Id AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id =t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id =t10.ucc_id
+        LEFT JOIN (
+            select
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_repayment, t1.bcb_repayment)) AS totalRepayment,
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_realpayment, t1.bcb_realpayment)) AS totalRealpayment,
+                t1.bco_code,
+                t1.bcb_code,
+                t1.bcb_cycle,
+                t1.bcb_repaymentDate,
+                t1.bcb_state,
+                t1.bcb_balPay,
+                t1.bcb_type,
+                t3.contractObject_OptionState,
+                t3.contractObject_Type,
+                t11.ucc_id
+            from GJP_business.GJP_Bill_ContractBill t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.contractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            WHERE t1.bco_code in (
+            SELECT
+              bco_code
+            FROM (
+            SELECT
+                t1.bcb_id,
+                t1.bco_code,
+                t1.bcb_state,
+                t1.bcb_repaymentDate,
+                t1.bcb_balPay,
+                t1.bcb_type,
+                t3.contractObject_OptionState,
+                t3.contractObject_Type,
+                t11.ucc_id
+            FROM
+            GJP_business.GJP_Bill_ContractBill AS t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            )T
+            <where>
+                <choose>
+                    <when test="where !=null and where != '' ">${where}</when>
+                </choose>
+                <choose>
+                    <when test="t !=null">
+                        <if test="t.bcb_state != null">
+                            AND bcb_state=#{t.bcb_state}
+                        </if>
+                        <if test="t.contractObject_OptionState != null">
+                            AND contractObject_OptionState=#{t.contractObject_OptionState}
+                        </if>
+                        <if test="t.day !=null ">
+                            AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                        </if>
+                        <if test="t.bcb_type != null">
+                            AND (bcb_type != 0 AND bcb_type != 1)
+                        </if>
+                        <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                            AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                        </if>
+                    </when>
+                </choose>
+            </where>
+            GROUP BY bcb_id
+            )
+            GROUP BY bcb_id
+            HAVING 1=1
+            <choose>
+                <when test="where !=null and where != '' "> AND ${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                    <if test="t.bcb_type != null">
+                        AND (bcb_type != 0 AND bcb_type != 1)
+                    </if>
+                    <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                        AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                    </if>
+                </when>
+            </choose>
+        ) t12 ON t12.bcb_code = t1.bcb_code
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+            <choose>
+                <when test="t !=null">
+                    <if test="t.bcb_state != null">
+                        AND bcb_state=#{t.bcb_state}
+                    </if>
+                    <if test="t.contractObject_OptionState != null">
+                        AND contractObject_OptionState=#{t.contractObject_OptionState}
+                    </if>
+                    <if test="t.day !=null ">
+                        AND (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &lt; #{t.day}) and (TO_DAYS(bcb_repaymentDate)-TO_DAYS(NOW()) &gt;= 0)
+                    </if>
+                    <if test="t.bcb_type != null">
+                        AND (bcb_type != 0 AND bcb_type != 1)
+                    </if>
+                    <if test="t.bcb_repaymentDate != null and t.bcb_repaymentDate != '' ">
+                        AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{t.bcb_repaymentDate}) &lt; 0
+                    </if>
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!--今天为止之前未完成的账单-->
+    <select id="queryContractBill" resultType="com.gjp.model.ContractBillVo">
+        SELECT
+          *
+        FROM
+        (
+        SELECT
+            t1.bcb_id,
+            t1.bcb_code,
+            t12.totalRepayment,
+            t12.totalRealpayment,
+            t1.bco_code,
+            t1.bcb_cycle,
+            t1.bcb_type,
+            t1.bcb_balPay,
+            t1.bcb_uccId,
+            t1.bcb_repayment,
+            t1.bcb_realPayment,
+            t1.bcb_balance,
+            t1.bcb_state,
+            t1.bcb_budgetState,
+            t1.bcb_repaymentDate,
+            t1.bcb_realPaymentDate,
+            t1.bcb_agreedDate,
+            t1.bcb_payWay,
+            t1.bcb_overdueDay,
+            t1.bcb_isRepay,
+            t1.bcb_creator,
+            t1.bcb_operater,
+            t1.bcb_remarks,
+            t1.bcb_createTime,
+            t5.house_address,
+            t6.cc_name,
+            t7.ccp_phone,
+            t6.cc_id,
+            t3.ContractObject_Code,
+            t3.contractObject_State,
+            t3.contractObject_FillTime,
+            t3.contractObject_OptionState,
+            t3.contractObject_Type,
+            t4.ContractBody_StartTOEnd,
+            t4.ContractBody_PayType,
+            t9.em_id AS em_id,
+            t9.em_name AS em_name,
+            t9.em_phone AS em_phone,
+            t11.ucc_id,
+            t11.ucc_name,
+            t11.ucc_pid
+        FROM GJP_business.GJP_Bill_ContractBill AS t1
+        LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+        LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+        LEFT JOIN GJP_business.GJP_Contract_Body AS t4 ON t4.ContractObject_Code = t3.ContractObject_Code
+        LEFT JOIN GJP_product.view_GJP_HouseAddress AS t5 ON t5.hi_code = t2.hi_code
+        LEFT JOIN GJP_user.GJP_UserCenter_Customer AS t6 ON t2.bco_customer = t6.cc_code
+        LEFT JOIN GJP_user.GJP_UserCenter_CustomerPhone AS t7 ON t6.cc_id = t7.cc_id
+        LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+        LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+        LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+        LEFT JOIN (
+            SELECT
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_repayment, t1.bcb_repayment)) AS totalRepayment,
+                Sum(IF(t1.bcb_balPay = 1, -t1.bcb_realpayment, t1.bcb_realpayment)) AS totalRealpayment,
+                t1.bco_code,
+                t1.bcb_code,
+                t1.bcb_cycle,
+                t1.bcb_repaymentDate,
+                t1.bcb_state,
+                t1.bcb_balPay,
+                t1.bcb_type,
+                t3.contractObject_OptionState,
+                t3.contractObject_Type,
+                t11.ucc_id
+            FROM GJP_business.GJP_Bill_ContractBill t1
+            LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+            LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.contractObject_Code
+            LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+            LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+            LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+            WHERE t1.bco_code IN (
+                SELECT
+                  bco_code
+                FROM
+                (
+                SELECT
+                    t1.bcb_id,
+                    t1.bco_code,
+                    t1.bcb_state,
+                    t1.bcb_repaymentDate,
+                    t1.bcb_balPay,
+                    t1.bcb_type,
+                    t3.contractObject_OptionState,
+                    t3.contractObject_Type,
+                    t11.ucc_id
+                FROM GJP_business.GJP_Bill_ContractBill AS t1
+                LEFT JOIN GJP_business.GJP_Bill_ContractOrder AS t2 ON t1.bco_code = t2.bco_code
+                LEFT JOIN GJP_business.GJP_Contract_Object AS t3 ON t2.contractObject_code = t3.ContractObject_Code
+                LEFT JOIN GJP_business.GJP_Contract_RelaEmp AS t8 ON t3.contractObject_Id = t8.contractObject_Id AND t8.cre_role = 1
+                LEFT JOIN GJP_user.GJP_UserCenter_Employee AS t9 ON t8.em_id = t9.em_id
+                LEFT JOIN GJP_user.GJP_UserCenter_CompanyPserson AS t10 ON t9.em_id = t10.em_id
+                LEFT JOIN GJP_user.GJP_UserCenter_Company AS t11 ON t11.ucc_id = t10.ucc_id
+                ) T
+                WHERE 1 = 1
+                <if test="where != null and where != '' ">
+                    AND #{where}
+                </if>
+                <if test="bcb_repaymentDate != null and bcb_repaymentDate != '' ">
+                    AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{bcb_repaymentDate}) &lt; 0
+                </if>
+                <if test="bcb_state != null and bcb_state != '' ">
+                    AND bcb_state=#{bcb_state}
+                </if>
+                <if test="contractObject_OptionState != null and contractObject_OptionState != '' ">
+                    AND contractObject_OptionState=#{contractObject_OptionState}
+                </if>
+                <if test="contractObject_Type != null">
+                    AND  contractObject_Type =#{contractObject_Type}
+                </if>
+                <if test="bcb_type != null">
+                    AND bcb_type =#{bcb_type}
+                </if>
+                GROUP BY bcb_id
+            )
+            GROUP BY bcb_id
+            HAVING 1 = 1
+            <if test="where != null and where != '' ">
+                AND #{where}
+            </if>
+            <if test="bcb_repaymentDate != null and bcb_repaymentDate != '' ">
+                AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{bcb_repaymentDate}) &lt; 0
+            </if>
+            <if test="bcb_state != null and bcb_state != '' ">
+                AND bcb_state=#{bcb_state}
+            </if>
+            <if test="contractObject_OptionState != null and contractObject_OptionState != '' ">
+                AND contractObject_OptionState=#{contractObject_OptionState}
+            </if>
+            <if test="contractObject_Type != null">
+                AND  contractObject_Type =#{contractObject_Type}
+            </if>
+            <if test="bcb_type != null">
+                AND bcb_type =#{bcb_type}
+            </if>
+        ) t12 ON t12.bcb_code = t1.bcb_code
+    ) T
+	    WHERE  1=1
+        <if test="where != null and where != '' ">
+             AND #{where}
+        </if>
+        <if test="bcb_repaymentDate != null and bcb_repaymentDate != '' ">
+            AND TO_DAYS(bcb_repaymentDate)-TO_DAYS(#{bcb_repaymentDate}) &lt; 0
+        </if>
+        <if test="bcb_state != null and bcb_state != '' ">
+            AND bcb_state=#{bcb_state}
+        </if>
+        <if test="contractObject_OptionState != null and contractObject_OptionState != '' ">
+            AND contractObject_OptionState=#{contractObject_OptionState}
+        </if>
+        <if test="contractObject_Type != null">
+            AND  contractObject_Type =#{contractObject_Type}
+        </if>
+        <if test="bcb_type != null">
+            AND bcb_type =#{bcb_type}
+        </if>
+        <if test="ucc_id != null">
+            AND ucc_id =#{ucc_id}
+        </if>
+        GROUP BY bcb_id
+    </select>
+</mapper>

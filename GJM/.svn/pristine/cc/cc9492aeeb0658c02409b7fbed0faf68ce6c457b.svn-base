@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PropertyTransferDao">
+
+	<sql id="allmenbers">
+		transferSheet_id,
+		water_card,
+		electric_card,
+		gas_card,
+		intelligent_card,
+		payment_card,
+		access_card_num,
+		security_door_num,
+		bedroom_door_num,
+		mailbox_num,
+		other_num,
+		set_top_box,
+		tv,
+		air_conditioner,
+		other,
+		water_start,
+		water_end,
+		electric_start,
+		electric_end,
+		gas_start,
+		gas_end,
+		clean_state,
+		maintenance_state,
+		userType,
+		hi_code,
+		contractObject_No,
+		pu_name,
+		transfer_time,
+		warranty_card,
+		transfer_state,
+		transfer_remark,
+		transfer_people
+	</sql>
+
+	<!-- 查询物业交接信息 -->
+	<select id="queryHandoverPropertyMain" resultType="com.gjp.model.HandoverPropertyMainVo">
+		SELECT
+		main.hpm_id,
+		main.hpm_code,
+		main.hi_code,
+		main.contractObject_code,
+		main.hpm_type,
+		main.hpm_handoverPersonIn,
+		emp1.em_name AS hpm_handoverPersonInName,
+		main.hpm_handoverDateIn,
+		main.hpm_handoverPersonOut,
+		emp2.em_name AS hpm_handoverPersonOutName,
+		main.hpm_handoverDateOut,
+		main.hpm_state,
+		main.hpm_path,
+		main.hpm_remark,
+		main.hpm_createTime
+		FROM
+		GJP_business.GJP_HandoverProperty_Main AS main
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp1 ON main.hpm_handoverPersonIn = emp1.em_id
+		LEFT JOIN GJP_user.GJP_UserCenter_Employee AS emp2 ON main.hpm_handoverPersonOut = emp2.em_id
+		WHERE
+		<choose>
+			<when test="contractObject_code != null">main.contractObject_code =#{contractObject_code}</when>
+			<when test="hi_code !=null ">main.hi_code =#{hi_code}</when>
+		</choose>
+		<if test="hpm_type !=null">AND main.hpm_type=#{hpm_type}</if>
+		<if test="hpm_state !=null">AND main.hpm_state=#{hpm_state}</if>
+		LIMIT 1
+	</select>
+
+	<!-- 查询能源卡信息 -->
+	<select id="queryHandoverPropertyEnergyCardValueList" resultType="com.gjp.model.HandoverPropertyEnergyCardVo">
+		SELECT
+		ec.hpec_id,
+		ec.hi_code,
+		ec.hpec_type,
+		ec.hpec_number,
+		ec.hpec_newNumber,
+		ec.hpec_remark,
+		ec.hpec_createTime,
+		ev.hpv_id,
+		ev.hpm_id,
+		ev.hpv_type,
+		ev.hpv_start,
+		ev.hpv_end
+		FROM
+		GJP_HandoverProperty_EnergyCard AS ec
+		LEFT JOIN (SELECT * FROM GJP_HandoverProperty_EnergyValue WHERE hpm_id =#{hpm_id}) AS ev ON ec.hpec_type = ev.hpv_type
+		WHERE
+		ec.hi_code = #{hi_code}
+	</select>
+
+	<!-- 查询能源卡信息 -->
+	<select id="queryHandoverPropertyEnergyCardList" resultType="com.gjp.model.HandoverPropertyEnergyCardVo">
+		SELECT * FROM
+		GJP_HandoverProperty_EnergyCard
+		WHERE
+		hi_code=#{hi_code}
+	</select>
+
+	<!-- 查询能源卡数值信息 -->
+	<select id="queryHandoverPropertyEnergyValueList" resultType="com.gjp.model.HandoverPropertyEnergyValueVo">
+		SELECT * FROM
+		GJP_HandoverProperty_EnergyValue
+		WHERE
+		hpm_id=#{hpm_id}
+	</select>
+
+	<!-- 查询交接物品配置列表信息 -->
+	<select id="queryHandoverPropertyGoodsList" resultType="com.gjp.model.HandoverPropertyGoodsVo">
+		SELECT * FROM
+		GJP_HandoverProperty_Goods
+		WHERE
+		hpm_id=#{hpm_id}
+	</select>
+
+	<!-- 查询交接装饰情况信息 -->
+	<select id="queryHandoverPropertyDecorationList" resultType="com.gjp.model.HandoverPropertyDecorationVo">
+		SELECT * FROM
+		GJP_HandoverProperty_Decoration
+		WHERE
+		hpm_id=#{hpm_id}
+	</select>
+
+	<!-- 更新物业交接单 -->
+	<update id="updateHandoverPropertyMain">
+		UPDATE GJP_HandoverProperty_Main
+		<set>
+			<if test="hpm_code !=null">hpm_code=#{hpm_code},</if>
+			<if test="hi_code !=null">hi_code=#{hi_code},</if>
+			<if test="contractObject_code !=null">contractObject_code=#{contractObject_code},</if>
+			<if test="hpm_type !=null">hpm_type=#{hpm_type},</if>
+			<if test="hpm_handoverPersonIn !=null">hpm_handoverPersonIn=#{hpm_handoverPersonIn},</if>
+			<if test="hpm_handoverDateIn !=null">hpm_handoverDateIn=#{hpm_handoverDateIn},</if>
+			<if test="hpm_handoverPersonOut !=null">hpm_handoverPersonOut=#{hpm_handoverPersonOut},</if>
+			<if test="hpm_handoverDateOut !=null">hpm_handoverDateOut=#{hpm_handoverDateOut},</if>
+			<if test="hpm_state !=null">hpm_state=#{hpm_state},</if>
+			<if test="hpm_path !=null">hpm_path=#{hpm_path},</if>
+			<if test="hpm_remark !=null">hpm_remark=#{hpm_remark},</if>
+			<if test="hpm_createTime !=null">hpm_createTime=#{hpm_createTime},</if>
+		</set>
+		WHERE
+		hpm_id = #{hpm_id}
+	</update>
+
+	<!-- 更新物业交接单 -->
+	<update id="updateHandoverPropertyMainForState">
+		UPDATE GJP_HandoverProperty_Main
+		<set>
+			<if test="hpm_state !=null">hpm_state=#{hpm_state},</if>
+		</set>
+		WHERE
+		contractObject_code=#{contractObject_code}
+	</update>
+
+	<!-- 更新物业能源卡数据 -->
+	<update id="updateHandoverPropertyEnergyCard">
+		UPDATE GJP_HandoverProperty_EnergyCard
+		<set>
+			<if test="hpec_newNumber !=null ">hpec_newNumber =#{hpec_newNumber},</if>
+			<if test="hpec_remark !=null ">hpec_remark =#{hpec_remark},</if>
+		</set>
+		WHERE
+		hpec_id =#{hpec_id}
+		AND
+		hpec_type =#{hpec_type}
+	</update>
+
+	<!-- 添加物业交接单 -->
+	<insert id="addHandoverPropertyMain" useGeneratedKeys="true" keyProperty="hpm_id">
+		INSERT INTO GJP_HandoverProperty_Main(
+		hpm_code,
+		hi_code,
+		contractObject_code,
+		hpm_type,
+		hpm_handoverPersonIn,
+		hpm_handoverDateIn,
+		hpm_handoverPersonOut,
+		hpm_handoverDateOut,
+		hpm_state,
+		hpm_path,
+		hpm_remark,
+		hpm_createTime
+		) VALUES (
+		#{hpm_code},
+		#{hi_code},
+		#{contractObject_code},
+		#{hpm_type},
+		#{hpm_handoverPersonIn},
+		#{hpm_handoverDateIn},
+		#{hpm_handoverPersonOut},
+		#{hpm_handoverDateOut},
+		#{hpm_state},
+		#{hpm_path},
+		#{hpm_remark},
+		#{hpm_createTime}
+		)
+	</insert>
+
+	<!-- 添加能源卡号 -->
+	<insert id="addHandPropertyEnergyCard" useGeneratedKeys="true" keyProperty="hpec_id">
+		INSERT INTO GJP_HandoverProperty_EnergyCard(
+		hi_code,
+		hpec_type,
+		hpec_number,
+		hpec_newNumber,
+		hpec_remark,
+		hpec_createTime
+		) VALUES (
+		#{hi_code},
+		#{hpec_type},
+		#{hpec_number},
+		#{hpec_newNumber},
+		#{hpec_remark},
+		#{hpec_createTime}
+		)
+	</insert>
+
+	<!-- 添加能源卡数值 -->
+	<insert id="addHandPropertyEnergyValue" useGeneratedKeys="true" keyProperty="hpv_id">
+		INSERT INTO GJP_HandoverProperty_EnergyValue(
+		hpv_type,
+		hpm_id,
+		hpv_start,
+		hpv_end
+		) VALUES (
+		#{hpv_type},
+		#{hpm_id},
+		#{hpv_start},
+		#{hpv_end}
+		)
+	</insert>
+
+	<!-- 添加交接物品 -->
+	<insert id="addHandPropertyGoods" useGeneratedKeys="true" keyProperty="hpg_id">
+		INSERT INTO GJP_HandoverProperty_Goods(
+		hpm_id,
+		hpg_roomType,
+		hpg_itemType,
+		hpg_itemName,
+		hpg_itemBrand,
+		hpg_number,
+		hpg_on,
+		hpg_gb,
+		hpg_createTime
+		) VALUES (
+		#{hpm_id},
+		#{hpg_roomType},
+		#{hpg_itemType},
+		#{hpg_itemName},
+		#{hpg_itemBrand},
+		#{hpg_number},
+		#{hpg_on},
+		#{hpg_gb},
+		#{hpg_createTime}
+		)
+	</insert>
+
+	<!-- 添加交接装饰情况 -->
+	<insert id="addHandPropertyDecoration" useGeneratedKeys="true" keyProperty="hpd_id">
+		INSERT INTO GJP_HandoverProperty_Decoration(
+		hpm_id,
+		hpd_roomType,
+		hpd_decoType,
+		hpd_decoState,
+		hpd_desc,
+		hpd_createTime
+		) VALUES (
+		#{hpm_id},
+		#{hpd_roomType},
+		#{hpd_decoType},
+		#{hpd_decoState},
+		#{hpd_desc},
+		#{hpd_createTime}
+		)
+	</insert>
+
+	<!-- 刪除能源卡信息 -->
+	<delete id="deleteHandPropertyEnergyCard">
+		DELETE FROM GJP_HandoverProperty_EnergyCard
+		WHERE
+		hi_code=#{hi_code}
+	</delete>
+
+	<!-- 刪除能源卡信息 -->
+	<delete id="deleteHandPropertyEnergyValue">
+		DELETE FROM GJP_HandoverProperty_EnergyValue
+		WHERE
+		hpm_id = #{hpm_id}
+	</delete>
+
+	<!-- 刪除交接物品信息 -->
+	<delete id="deleteHandPropertyGoods">
+		DELETE FROM GJP_HandoverProperty_Goods
+		WHERE
+		hpm_id = #{hpm_id}
+	</delete>
+
+	<!-- 刪除交接装饰情况信息 -->
+	<delete id="deleteHandPropertyDecoration">
+		DELETE FROM GJP_HandoverProperty_Decoration
+		WHERE
+		hpm_id = #{hpm_id}
+	</delete>
+
+</mapper>

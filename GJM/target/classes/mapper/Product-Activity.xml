@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ActivityDao">
+    <!--获奖记录列表数据-->
+    <select id="queryPrizeRecordList" resultType="com.gjp.model.ActivityPrizeRecordVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.ap_name,
+        t3.aip_path,
+        t4.am_id,
+        t4.am_title,
+        t5.ai_path,
+        t6.user_realName,
+        t6.user_nickName,
+        t6.user_phone
+        FROM
+        GJP_product.GJP_Activity_PrizeRecord t1
+        LEFT JOIN GJP_product.GJP_Activity_Prize t2 ON t2.ap_id=t1.ap_id
+        LEFT JOIN GJP_product.GJP_Activity_PrizeImage t3 ON t3.ap_id=t1.ap_id
+        LEFT JOIN GJP_product.GJP_Activity_Manage t4 ON t4.am_code=t1.am_code
+        LEFT JOIN GJP_product.GJP_Activity_Image t5 ON t5.am_code=t1.am_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t6 ON t6.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        GROUP BY apr_id
+        ORDER BY apr_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--获奖记录总条数-->
+    <select id="queryPrizeRecordListPageRecord" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.ap_name,
+        t3.aip_path,
+        t4.am_id,
+        t4.am_title,
+        t5.ai_path,
+        t6.user_realName,
+        t6.user_nickName,
+        t6.user_phone
+        FROM
+        GJP_product.GJP_Activity_PrizeRecord t1
+        LEFT JOIN GJP_product.GJP_Activity_Prize t2 ON t2.ap_id=t1.ap_id
+        LEFT JOIN GJP_product.GJP_Activity_PrizeImage t3 ON t3.ap_id=t1.ap_id
+        LEFT JOIN GJP_product.GJP_Activity_Manage t4 ON t4.am_code=t1.am_code
+        LEFT JOIN GJP_product.GJP_Activity_Image t5 ON t5.am_code=t1.am_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t6 ON t6.user_id = t1.user_id
+        GROUP BY apr_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+    <!--分享记录列表数据-->
+    <select id="queryShareList" resultType="com.gjp.model.ActivityShareRecordVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.am_id,
+        t2.am_title,
+        t3.ai_path,
+        t4.user_realName,
+        t4.user_nickName,
+        t4.user_phone
+        FROM GJP_product.GJP_Activity_ShareRecord t1
+        LEFT JOIN GJP_product.GJP_Activity_Manage t2 ON t2.am_code=t1.am_code
+        LEFT JOIN GJP_product.GJP_Activity_Image t3 ON t3.am_code=t1.am_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t4 ON t4.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY as_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--分享记录总条数-->
+    <select id="queryShareListPageRecord" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.am_id,
+        t2.am_title,
+        t3.ai_path,
+        t4.user_realName,
+        t4.user_nickName,
+        t4.user_phone
+        FROM GJP_product.GJP_Activity_ShareRecord t1
+        LEFT JOIN GJP_product.GJP_Activity_Manage t2 ON t2.am_code=t1.am_code
+        LEFT JOIN GJP_product.GJP_Activity_Image t3 ON t3.am_code=t1.am_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t4 ON t4.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+    <!--查询活动标题-->
+    <select id="selectActivityManageTitle" resultType="com.gjp.model.ActivityManageVo">
+        SELECT * FROM GJP_product.GJP_Activity_Manage
+    </select>
+    <!--查询奖品名称-->
+    <select id="selectPrizeName" resultType="com.gjp.model.ActivityPrizeVo">
+        SELECT * FROM GJP_product.GJP_Activity_Prize
+        WHERE 1=1
+        <if test="am_code !=null and am_code !='' ">
+            AND am_code =#{am_code}
+        </if>
+    </select>
+
+    <insert id="addActivityMange" useGeneratedKeys="true" keyProperty="am_id">
+        INSERT INTO GJP_Activity_Manage
+        (
+            am_code,
+            am_channel,
+            am_type,
+            am_title,
+            am_description,
+            am_url,
+            am_state,
+            am_release_time,
+            am_start_time,
+            am_end_time,
+            am_create_time
+        ) VALUES (
+            #{am_code},
+            #{am_channel},
+            #{am_type},
+            #{am_title},
+            #{am_description},
+            #{am_url},
+            #{am_state},
+            #{am_release_time},
+            #{am_start_time},
+            #{am_end_time},
+            NOW()
+        )
+    </insert>
+
+    <update id="updateActivityManage">
+        UPDATE GJP_Activity_Manage
+        <set>
+            <if test="am_code != null">am_code = #{am_code},</if>
+            <if test="am_type != null">am_type = #{am_type},</if>
+            <if test="am_title != null">am_title = #{am_title},</if>
+            <if test="am_description != null">am_description = #{am_description},</if>
+            <if test="am_url != null">am_url = #{am_url},</if>
+            <if test="am_state != null">am_state = #{am_state},</if>
+            <if test="am_release_time != null">am_release_time = #{am_release_time},</if>
+            <if test="am_start_time != null">am_start_time = #{am_start_time},</if>
+            <if test="am_end_time != null">am_end_time = #{am_end_time},</if>
+        </set>
+        WHERE am_id = #{am_id}
+    </update>
+
+    <select id="queryActivityManage" resultType="com.gjp.model.ActivityManageVo">
+        SELECT * FROM (
+        SELECT * FROM GJP_Activity_Manage
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY so_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryActivityManageCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM (
+        SELECT * FROM GJP_Activity_Manage
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY so_createTime DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryActivityList" resultType="com.gjp.model.ActivityManageVo">
+        SELECT * FROM GJP_Activity_Manage
+        WHERE 1=1
+        <if test="t.where != null and t.where != ''">
+            AND (
+            am_title LIKE #{t.where}
+            OR am_state LIKE #{t.where}
+            )
+        </if>
+        limit #{pageNo}, #{pageSize}
+    </select>
+
+    <select id="queryActivityPrize" resultType="com.gjp.model.ActivityManageVo">
+        SELECT * FROM (
+        SELECT * FROM GJP_Activity_Prize
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY ap_create_time DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryActivityPrizeCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM (
+        SELECT * FROM GJP_Activity_Prize
+        ) TMP
+        <where>
+            <choose>
+                <when test="where !=null">${where}</when>
+            </choose>
+        </where>
+        <choose>
+            <when test="orderBy != null">${orderBy}</when>
+            <otherwise>ORDER BY ap_create_time DESC</otherwise>
+        </choose>
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <select id="queryPrizeListByCode" resultType="com.gjp.model.ActivityPrizeVo">
+        SELECT * FROM GJP_Activity_Prize WHERE am_code = #{am_code}
+    </select>
+
+    <select id="queryActivityInfo" resultType="com.gjp.model.ActivityManageVo">
+        SELECT * FROM GJP_product.GJP_Activity_Manage WHERE am_id = #{am_id}
+    </select>
+
+    <select id="queryActivityPrizeInfo" resultType="com.gjp.model.ActivityPrizeVo">
+        SELECT
+          ap.*, pr.pr_name, uc.uccfg_name
+          FROM GJP_product.GJP_Activity_Prize ap
+          LEFT JOIN GJP_product.GJP_Product_Recharge pr ON ap.pr_sn = pr.pr_sn
+          LEFT JOIN GJP_user.GJP_User_CouponsConfig uc ON uc.uccfg_code = ap.uccfg_code
+        WHERE ap_id = #{ap_id}
+    </select>
+
+    <insert id="addActivityPrize" useGeneratedKeys="true" keyProperty="ap_id">
+        INSERT INTO GJP_Activity_Prize(
+            am_code,
+            ap_name,
+            ap_type,
+            ap_way,
+            pr_sn,
+            uccfg_code,
+            ap_value,
+            ap_description,
+            ap_odds,
+            ap_user_limit,
+            ap_total_number,
+            ap_remaining_number,
+            ap_create_time,
+            ap_andgle,
+            is_used
+        ) VALUES (
+            #{am_code},
+            #{ap_name},
+            #{ap_type},
+            #{ap_way},
+            #{pr_sn},
+            #{uccfg_code},
+            #{ap_value},
+            #{ap_description},
+            #{ap_odds},
+            #{ap_user_limit},
+            #{ap_total_number},
+            #{ap_remaining_number},
+            NOW(),
+            #{ap_andgle},
+            #{is_used}
+        )
+    </insert>
+
+    <update id="updateActivityPrize">
+        UPDATE GJP_Activity_Prize
+        <set>
+            <if test="am_code != null">am_code = #{am_code},</if>
+            <if test="ap_name != null">ap_name = #{ap_name},</if>
+            <if test="ap_type != null">ap_type = #{ap_type},</if>
+            <if test="ap_way != null">ap_way = #{ap_way},</if>
+            <if test="pr_sn != null">pr_sn = #{pr_sn},</if>
+            <if test="uccfg_code != null">uccfg_code = #{uccfg_code},</if>
+            <if test="ap_value != null">ap_value = #{ap_value},</if>
+            <if test="ap_description != null">ap_description = #{ap_description},</if>
+            <if test="ap_odds != null">ap_odds = #{ap_odds},</if>
+            <if test="ap_user_limit != null">ap_user_limit = #{ap_user_limit},</if>
+            <if test="ap_total_number != null">ap_total_number = #{ap_total_number},</if>
+            <if test="ap_remaining_number != null">ap_remaining_number = #{ap_remaining_number},</if>
+            <if test="ap_andgle != null">ap_andgle = #{ap_andgle},</if>
+            <if test="is_used != null and is_used != ''">is_used = #{is_used},</if>
+        </set>
+        WHERE ap_id = #{ap_id}
+    </update>
+
+    <insert id="addActivityPrizeImage" useGeneratedKeys="true" keyProperty="aip_id">
+        INSERT INTO GJP_Activity_PrizeImage
+        (
+            ap_id,
+            aip_type,
+            aip_path,
+            aip_create_time
+        ) VALUES (
+            #{ap_id},
+            #{aip_type},
+            #{aip_path},
+            NOW()
+        )
+    </insert>
+
+    <delete id="deleteActiviPrizeImage">
+        DELETE FROM GJP_Activity_PrizeImage
+        WHERE ap_id = #{ap_id}
+        <if test="aip_type != null">
+            AND aip_type = #{aip_type}
+        </if>
+    </delete>
+
+    <select id="queryPrizeImage" resultType="com.gjp.model.ActivityPrizeImageVo">
+        SELECT * FROM GJP_Activity_PrizeImage
+        WHERE ap_id = #{ap_id}
+        <if test="aip_type != null">
+            AND aip_type = #{aip_type}
+        </if>
+    </select>
+
+    <select id="queryActivityPrizeList" resultType="com.gjp.model.ActivityPrizeVo">
+        SELECT
+        ap.*,
+        am.am_type,
+        am.am_state,
+        am.am_release_time,
+        am.am_start_time,
+        am.am_end_time
+        FROM
+        GJP_Activity_Prize AS ap
+        LEFT JOIN GJP_Activity_Manage AS am ON ap.am_code = am.am_code
+        <where>
+            <if test="am_type != null">AND am.am_type=#{am_type}</if>
+            <if test="am_state != null">AND am.am_state=#{am_state}</if>
+            <if test="pr_sn != null">AND pr_sn=#{pr_sn}</if>
+        </where>
+    </select>
+
+    <insert id="addActivityImage" useGeneratedKeys="true" keyProperty="ai_id">
+        INSERT INTO GJP_Activity_Image
+        (
+            am_code,
+            ai_type,
+            ai_path,
+            ai_create_time
+        ) VALUES (
+            #{am_code},
+            #{ai_type},
+            #{ai_path},
+            NOW()
+        )
+    </insert>
+
+    <delete id="deleteActivityImage">
+        DELETE FROM GJP_Activity_Image
+        WHERE am_code = #{am_code}
+        <if test="ai_type != null">
+            AND ai_type = #{ai_type}
+        </if>
+    </delete>
+
+    <select id="queryActivityImageByCode" resultType="com.gjp.model.ActivityImageVo">
+        SELECT * FROM GJP_Activity_Image
+        WHERE am_code = #{am_code}
+        <if test="ai_type != null">
+            AND ai_type = #{ai_type}
+        </if>
+    </select>
+
+    <!--会员管理列表-->
+    <select id="queryUserMember" resultType="com.gjp.model.UserMemberVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.user_realName,
+        t2.user_nickName,
+        t2.user_phone,
+        t2.user_loginState,
+        t2.user_type,
+        t2.user_sex
+        FROM
+        GJP_user.GJP_User_Member t1
+        LEFT JOIN GJP_user.GJP_UserCenter_User t2 ON t2.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY um_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--会员管理总条数-->
+    <select id="queryUserMemberPageRecord" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.user_realName,
+        t2.user_nickName,
+        t2.user_phone,
+        t2.user_loginState,
+        t2.user_type,
+        t2.user_sex
+        FROM
+        GJP_user.GJP_User_Member t1
+        LEFT JOIN GJP_user.GJP_UserCenter_User t2 ON t2.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="queryUccfgByCode" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM GJP_Activity_Prize WHERE am_code = #{am_code} AND uccfg_code = #{uccfg_code}
+    </select>
+
+</mapper>

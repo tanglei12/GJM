@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="GJM:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="GJM-1.0.0.war">
+      <element id="artifact" artifact-name="GJM:war exploded" />
+    </root>
+  </artifact>
+</component>

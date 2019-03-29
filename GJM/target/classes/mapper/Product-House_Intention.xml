@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 意向房源 GJP_House_Intention -->
+<mapper namespace="com.gjp.dao.HouseIntentionDao">
+	<sql id="allmenbers">
+		phi_id,
+		phi_name,
+		hi_code,
+		phi_money,
+		phi_status,
+		phi_floor,
+		phi_total_floor,
+		phi_address,
+		phi_user,
+		phi_phone,
+		phi_configure,
+		phi_source,
+		phi_type,
+		em_id,
+		phi_state,
+		phi_explain,
+		phi_date,
+		propertyInfo_Id,
+		hi_area,
+		hi_district,
+		hi_track,
+		hb_id,
+		hi_content,
+		RecommendGroup_Id,
+		hi_project,
+		hi_version,
+		hi_houseW,
+		hi_houseT,
+		hi_houseS,
+		hi_measure,
+		hi_function,
+		hi_situation,
+		phi_user_sex,
+		buildType,
+		phi_beginTime,
+		phi_endTine,
+		protect_cause
+		phi_new_addTime,
+		phi_new_emId,
+		cc_code,
+		phi_rentDay,
+		phi_style
+	</sql>
+
+	<sql id="menberEcpId">
+		phi_name,
+		hi_code,
+		phi_money,
+		phi_status,
+		phi_floor,
+		phi_total_floor,
+		phi_address,
+		phi_user,
+		phi_phone,
+		phi_configure,
+		phi_source,
+		phi_type,
+		em_id,
+		phi_state,
+		phi_explain,
+		phi_date,
+		propertyInfo_Id,
+		hi_area,
+		hi_district,
+		hi_track,
+		hb_id,
+		hi_content,
+		RecommendGroup_Id,
+		hi_project,
+		hi_version,
+		hi_houseW,
+		hi_houseT,
+		hi_houseS,
+		hi_measure,
+		hi_function,
+		hi_situation,
+		phi_user_sex,
+		buildType,
+		phi_beginTime,
+		phi_endTime,
+		protect_cause,
+		phi_new_addTime,
+		phi_new_emId,
+		cc_code,
+		phi_rentDay,
+		phi_style
+	</sql>
+
+	<sql id="insert">
+		#{phi_name } ,
+		#{hi_code } ,
+		#{phi_money } ,
+		#{phi_status } ,
+		#{phi_floor } ,
+		#{phi_total_floor } ,
+		#{phi_address } ,
+		#{phi_user } ,
+		#{phi_phone } ,
+		#{phi_configure } ,
+		#{phi_source } ,
+		#{phi_type } ,
+		#{em_id } ,
+		#{phi_state } ,
+		#{phi_explain } ,
+		#{phi_date },
+		#{propertyInfo_Id },
+		#{hi_area },
+		#{hi_district },
+		#{hi_track },
+		#{hb_id},
+		#{hi_content },
+		#{RecommendGroup_Id },
+		#{hi_project },
+		#{hi_version },
+		#{hi_houseW },
+		#{hi_houseT },
+		#{hi_houseS },
+		#{hi_measure },
+		#{hi_function },
+		#{hi_situation },
+		#{phi_user_sex },
+		#{buildType},
+		#{phi_beginTime},
+		#{phi_endTime},
+		#{protect_cause},
+		#{phi_new_addTime},
+		#{phi_new_emId},
+		#{cc_code},
+		#{phi_rentDay},
+		#{phi_style}
+	</sql>
+
+	<sql id="update">
+		<if test="hi_code != null and hi_code != ''">
+			hi_code=#{hi_code },
+		</if>
+		<if test="phi_name != null and phi_name != ''">
+			phi_name=#{phi_name },
+		</if>
+		<if test="phi_money != null and phi_money != ''">
+			phi_money=#{phi_money },
+		</if>
+		<if test="phi_status != null and phi_status != ''">
+			phi_status=#{phi_status },
+		</if>
+		<if test="phi_floor != null and phi_floor != ''">
+			phi_floor=#{phi_floor },
+		</if>
+		<if test="phi_total_floor != null and phi_total_floor != ''">
+			phi_total_floor=#{phi_total_floor},
+		</if>
+		<if test="phi_address != null and phi_address != ''">
+			phi_address=#{phi_address },
+		</if>
+		<if test="phi_user != null and phi_user != ''">
+			phi_user=#{phi_user },
+		</if>
+		<if test="phi_phone != null and phi_phone != ''">
+			phi_phone=#{phi_phone },
+		</if>
+		<if test="phi_configure != null and phi_configure != ''">
+			phi_configure=#{phi_configure },
+		</if>
+		<if test="phi_source != null and phi_source != ''">
+			phi_source=#{phi_source },
+		</if>
+		<if test="em_id != null and em_id != ''">
+			em_id=#{em_id },
+		</if>
+		<if test="phi_state != null and phi_state != ''">
+			phi_state=#{phi_state },
+		</if>
+		<if test="phi_explain != null and phi_explain != ''">
+			phi_explain=#{phi_explain },
+		</if>
+		<if test="phi_date != null and phi_date != ''">
+			phi_date=#{phi_date },
+		</if>
+		<if test="propertyInfo_Id != null and propertyInfo_Id != ''">
+			propertyInfo_Id=#{propertyInfo_Id },
+		</if>
+		<if test="hi_area != null and hi_area != ''">
+			hi_area=#{hi_area },
+		</if>
+		<if test="hi_district != null and hi_district != ''">
+			hi_district=#{hi_district },
+		</if>
+		<if test="hi_track != null and hi_track != ''">
+			hi_track=#{hi_track },
+		</if>
+		<if test="hb_id != null and hb_id != ''">
+			hb_id=#{hb_id },
+		</if>
+		<if test="hi_content != null and hi_content != ''">
+			hi_content=#{hi_content },
+		</if>
+		<if test="RecommendGroup_Id != null and RecommendGroup_Id != ''">
+			RecommendGroup_Id=#{RecommendGroup_Id },
+		</if>
+		<if test="hi_project != null and hi_project != ''">
+			hi_project=#{hi_project },
+		</if>
+		<if test="hi_version != null and hi_version != ''">
+			hi_version=#{hi_version },
+		</if>
+		<if test="hi_houseW != null and hi_houseW != ''">
+			hi_houseW=#{hi_houseW },
+		</if>
+		<if test="hi_houseT != null and hi_houseT != ''">
+			hi_houseT=#{hi_houseT },
+		</if>
+		<if test="hi_houseS != null and hi_houseS != ''">
+			hi_houseS=#{hi_houseS },
+		</if>
+		<if test="hi_measure != null and hi_measure != ''">
+			hi_measure=#{hi_measure },
+		</if>
+		<if test="hi_function != null and hi_function != ''">
+			hi_function=#{hi_function },
+		</if>
+		<if test="hi_situation != null">
+			hi_situation=#{hi_situation },
+		</if>
+		<if test="phi_price != null and phi_price != ''">
+			phi_price=#{phi_price },
+		</if>
+		<if test="phi_user_sex != null and phi_user_sex != ''">
+			phi_user_sex=#{phi_user_sex },
+		</if>
+		<if test="buildType != null and buildType != ''">
+			buildType=#{buildType },
+		</if>
+		<if test="phi_beginTime != null and phi_beginTime != ''">
+			phi_beginTime=#{phi_beginTime },
+		</if>
+		<if test="phi_endTime != null and phi_endTime != ''">
+			phi_endTime=#{phi_endTime },
+		</if>
+		<if test="protect_cause != null and protect_cause != ''">
+			protect_cause=#{protect_cause },
+		</if>
+		<if test="phi_new_addTime != null and phi_new_addTime != ''">
+			phi_new_addTime=#{phi_new_addTime },
+		</if>
+		<if test="phi_new_emId != null and phi_new_emId != ''">
+			phi_new_emId=#{phi_new_emId },
+		</if>
+		<if test="cc_code != null and cc_code != ''">
+			cc_code=#{cc_code },
+		</if>
+		<if test="phi_rentDay != null and phi_rentDay != ''">
+			phi_rentDay=#{phi_rentDay },
+		</if>
+		<if test="phi_style != null and phi_style != ''">
+			phi_style=#{phi_style },
+		</if>
+		phi_type=#{phi_type }
+	</sql>
+
+	<!-- 添加意向房源 -->
+	<insert id="addHouseIntention" useGeneratedKeys="true" parameterType="com.gjp.model.HouseIntention" keyProperty="phi_id">
+		insert into GJP_House_Intention(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 修改意向房源 -->
+	<update id="updateHouseIntention" parameterType="com.gjp.model.HouseIntention">
+		update GJP_House_Intention set
+		<include refid="update"></include>
+		where phi_id = #{phi_id}
+	</update>
+
+	<update id="updateHouseIntentionNewPerson" parameterType="com.gjp.model.HouseIntention">
+		UPDATE GJP_House_Intention SET phi_new_addTime=#{phi_new_addTime},phi_new_emId=#{phi_new_emId} WHERE
+		phi_id=#{phi_id}
+	</update>
+
+	<!-- 插入意向房源图片 -->
+	<insert id="addHouseIntentionImage" useGeneratedKeys="true" parameterType="com.gjp.model.HouseIntention" keyProperty="him_id">
+		INSERT INTO
+		GJP_House_Intention_Image(
+		him_name,
+		him_type,
+		him_path,
+		hi_code,
+		him_time
+		) VALUES (
+		#{him_name},
+		#{him_type},
+		#{him_path},
+		#{him_time},
+		#{hi_code},
+		NOW()
+		)
+	</insert>
+
+	<!-- 插入意向房源跟进信息 -->
+	<insert id="addHouseFollow" useGeneratedKeys="true" parameterType="com.gjp.model.HouseFollow" keyProperty="ghf_id">
+		insert into
+		GJP_House_Follow(
+		ghf_item,
+		phi_id,
+		em_id,
+		ghf_time,
+		ghf_state,
+		ghf_date,
+		hi_code
+		)
+		values
+		(
+		#{ghf_item },
+		#{phi_id },
+		#{em_id },
+		NOW(),
+		#{ghf_state },
+		NOW(),
+		#{hi_code}
+		)
+	</insert>
+
+	<!-- 根据账号查询房源待看数据并分页 -->
+	<select id="queryHouseIntentionEM" resultType="com.gjp.model.HouseIntention">
+		select
+		hi.phi_id,hi.phi_name,hi.phi_address,hi.phi_money,hi.phi_user,hi.phi_phone,hi.phi_type,pi.propertyInfo_Id
+		from GJP_House_Intention hi,GJP_PropertyInfo pi where
+		hi.propertyInfo_Id = pi.propertyInfo_Id and hi.em_id=#{em_id}
+		<if test="phi_name != null and phi_name !=''">
+			and (hi.phi_name LIKE CONCAT('%', #{phi_name}, '%') or
+			pi.propertyInfo_Name LIKE CONCAT('%', #{propertyInfo_Name}, '%'))
+		</if>
+		order by hi.phi_date desc
+		LIMIT #{start},#{end}
+	</select>
+	<!-- 根据账号查询房源待看数据并分页 -->
+	<select id="selectHouseIntentiongzjl" resultType="com.gjp.model.HouseFollow">
+		select * from
+		GJP_House_Follow where phi_id=#{phi_id}
+	</select>
+
+	<select id="queryHouseIntentionSource" resultType="String">
+		SELECT
+		REPLACE(REPLACE(REPLACE(REPLACE(COLUMN_TYPE,'enum',''),'(',''),')',''),'\'','')
+		FROM
+		information_schema.COLUMNS
+		WHERE
+		TABLE_SCHEMA = 'GJP_product'
+		AND
+		TABLE_NAME = 'GJP_House_Intention'
+		AND COLUMN_NAME = #{name}
+	</select>
+
+
+	<!-- 根据账号查询房源待看数据并分页 -->
+	<select id="queryHouseIntentionEMXiangXi" resultType="com.gjp.model.HouseIntention">
+		select * from view_GJP_HouseIntention_PropertyInfo
+		where 1=1
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >= DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= ${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.em_id != null">
+			and em_id = #{houseModel.em_id}
+		</if>
+		<if test="houseModel.ucc_id != null">
+			and ucc_id = #{houseModel.ucc_id}
+		</if>
+		${houseModel.sqlOrderBy}
+		LIMIT #{pageNo},#{pageSize}
+	</select>
+
+	<select id="queryHouseIntentionWhere" resultType="com.gjp.model.HouseIntention">
+		SELECT
+		*
+		FROM
+		GJP_House_Intention
+		WHERE
+		phi_id = #{phi_id}
+		LIMIT 1
+	</select>
+
+	<!-- 根据物业编号、电话号码、内部人员编码 房屋室 房号 查询是否存在该房源 -->
+	<select id="queryHouseIntentionCount" resultType="com.gjp.model.HouseIntention">
+		select count(*) as size from GJP_House_Intention hi,GJP_PropertyInfo
+		pi where hi.propertyInfo_Id = pi.propertyInfo_Id
+		<if test="em_id != null and em_id != ''">
+			and hi.em_id=#{em_id}
+		</if>
+		and hi.phi_phone=#{phi_phone }
+		and hi.propertyInfo_Id=#{propertyInfo_Id
+		}
+		and hi.hi_houseS = #{hi_houseS}
+		and hi.phi_address = #{phi_address}
+	</select>
+	
+	<!-- 根据物业编号、电话号码、内部人员编码 房屋室 房号 查询是否存在该房源 -->
+	<select id="queryHouseIntentionBool" resultType="com.gjp.model.HouseIntention">
+		select * from GJP_House_Intention hi
+		left join GJP_PropertyInfo pi on hi.propertyInfo_Id = pi.propertyInfo_Id
+		left join GJP_user.GJP_UserCenter_Employee em on hi.phi_new_emId = em.em_id
+		where 1=1
+		and hi.phi_phone=#{phi_phone }
+		and hi.propertyInfo_Id=#{propertyInfo_Id}
+		ORDER BY hi.phi_date desc
+		limit 1
+	</select>
+
+	<!-- 根据意向房源编码查询意向房源 -->
+	<select id="queryHouseIntentionID" resultType="com.gjp.model.HouseIntention">
+		SELECT * FROM
+		view_GJP_HouseIntentionPropertyFormationState
+		WHERE 1=1
+		<choose>
+			<when test="phi_id !=null"> and phi_id=#{phi_id}</when>
+			<when test="hi_code !=null"> and hi_code=#{hi_code}</when>
+		</choose>
+		LIMIT 1
+	</select>
+	
+	<!-- 查询意向房源状态 -->
+	<select id="queryIntentionState" resultType="com.gjp.model.HouseIntention">
+		select phi_type,hi_code from GJP_House_Intention where phi_id=#{phi_id}
+	</select>
+	
+	<!-- 查询意向房源的推荐群体 -->
+	<select id="selectHoseRecommendGroup" resultType="com.gjp.model.HoseRecommendGroup">
+		SELECT * FROM GJP_House_RecommendGroup
+	</select>
+
+	<!-- 根据意向房源编码查询意向房源总条数 -->
+	<select id="selectHouseIntentionByEm_idCount" resultType="int">
+		select count(*) from view_GJP_HouseIntention_PropertyInfo
+		where 1=1
+		<if test="houseModel.sqlWhere != null and houseModel.sqlWhere!= ''">
+			${houseModel.sqlWhere}
+		</if>
+		<if test="houseModel.dateStart != null and houseModel.dateStart != ''">
+			and ${houseModel.dateTitle} >= DATE_FORMAT(#{houseModel.dateStart},'%Y-%m-%d')
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= ${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.dateEnd != null and houseModel.dateEnd != ''">
+			and DATE_FORMAT(#{houseModel.dateEnd},'%Y-%m-%d') >= ${houseModel.dateTitle}
+		</if>
+		<if test="houseModel.em_id != null">
+			and em_id = #{houseModel.em_id}
+		</if>
+		<if test="houseModel.ucc_id != null">
+			and ucc_id = #{houseModel.ucc_id}
+		</if>
+	</select>
+
+	<!-- <delete id="deleteStudent" parameterType="int"> delete from users_name where id = #{id} </delete> <update id="updateStudent" parameterType="Student"> update users_name set name = #{name} where id = #{id} </update> <select id="queryStudentById" parameterType="int" resultType="Student"> select * from users_name where id=#{id} </select> <select id="queryAllStudents" resultType="Student"> select * from users_name </select> -->
+
+
+	<select id="selSimilarPhonePhiidCount" resultType="int">
+		select
+		count(*) from GJP_House_Intention hi,GJP_PropertyInfo pi where
+		hi.propertyInfo_Id = pi.propertyInfo_Id
+		and hi.propertyInfo_Id=#{propertyInfo_Id}
+		and hi.hi_houseS=#{hi_houseS}
+		and hi.phi_phone=#{phi_phone}
+	</select>
+	<!-- 计时器 将私盘2天后修改为公盘 -->
+	<update id="updateHouseIntentionBulidType">
+		UPDATE GJP_House_Intention SET buildType='公盘' WHERE
+		(DATE_FORMAT(NOW(), '%Y%c%d')-DATE_FORMAT(phi_new_addTime,'%Y%c%d'))>2
+		AND
+		buildType='私盘'
+	</update>
+	<!-- 计时器 将保护N天后修改为私盘 -->
+	<update id="updateHouseIntentionBulidTypePrivate">
+		UPDATE GJP_House_Intention SET buildType='私盘' WHERE
+		(DATE_FORMAT(NOW(), '%Y%c%d')-DATE_FORMAT(phi_endTime,'%Y%c%d'))>0
+		AND buildType='保护'
+	</update>
+
+
+	<select id="selectHouseFollowPhiIdOne">
+		select * from GJP_House_Follow where hi_code =
+		#{hi_code}
+	</select>
+
+	<select id="selectHouseIntentionOne">
+		select * from GJP_House_Intention where phi_id =
+		#{phi_id}
+	</select>
+
+	<!-- 查询列表_房屋集中式、分散式类型 -->
+	<select id="queryHouseInfoStateList" resultType="com.gjp.model.HouseInformationState">
+		SELECT
+		his_id,
+		his_name,
+		his_pid,
+		his_spid,
+		his_date
+		FROM
+		GJP_House_HouseInformationState
+		WHERE
+		1=1
+		<if test="his_spid !=null and his_spid !='' ">his_spid =#{his_spid}</if>
+	</select>
+
+	<select id="queryHouseInfoStateListRelation" resultType="com.gjp.model.HouseInformationStateRelation">
+		SELECT
+		hisr_id,
+		hi_code,
+		his_id
+		FROM GJP_House_HouseInformationState_Relation
+		WHERE
+		hi_code = #{hi_code}
+		ORDER BY his_id ASC
+	</select>
+
+	<!-- 查询列表_意向房源图片 -->
+	<select id="queryHouseImageList" resultType="com.gjp.model.HouseIntentionImage">
+		SELECT
+		him_id,
+		him_name,
+		him_type,
+		him_path,
+		him_time,
+		hi_code
+		FROM
+		GJP_House_Intention_Image
+		WHERE
+		hi_code =#{hi_code}
+	</select>
+	
+	<!-- APP根据账号查询房源待看数据并分页 -->
+	<select id="queryHouseIntentionAPP" resultType="com.gjp.model.HouseIntention">
+		select phi_id,house_address,phi_source,phi_money,phi_type,phi_floor,buildType,new_emName,new_emPhone,em_id,ucc_id,phi_new_addTime,hi_measure,phi_user from view_GJP_HouseIntention_PropertyInfo
+		where 1=1
+		<if test="ucc_id != null">
+			and ucc_id = #{ucc_id}
+		</if>
+		<if test="house_address != null and house_address != ''">
+			and house_address LIKE CONCAT('%', #{house_address}, '%')
+		</if>
+		and (buildType = '公盘' or phi_new_emId = #{em_id})
+		order by phi_new_addTime desc
+		LIMIT #{start},#{end}
+	</select>
+	
+	<!-- 查询意向图片 -->
+	<select id="queryHouseIntentionImageType" resultType="com.gjp.model.HouseIntention">
+		select him_path from GJP_House_Intention_ImageType as itype
+		left join GJP_House_Intention_Image as iimage on itype.him_id = iimage.him_id
+		where 1=1
+		and hint_type = 'page'
+		<if test="phi_id != null">
+		and phi_id = #{phi_id}
+		</if>
+	</select>
+	
+	<!-- 删除图片 -->
+	<delete id="deleteIntentionImage">
+		delete itype,iimage from GJP_House_Intention_ImageType as itype
+		left join GJP_House_Intention_Image as iimage on itype.him_id = iimage.him_id
+		 where him_path = #{him_path}
+	</delete>
+	
+	<!-- 查询意向房源信息 -->
+	<select id="queryIntentionHouseByHiCode" resultType="com.gjp.model.HouseIntention">
+		select * from view_GJP_HouseIntention_PropertyInfo where hi_code = #{hi_code} LIMIT 1
+	</select>
+
+	<!--根据图片地址删除图片-->
+	<delete id="deleteHouseIntentionImage">
+		DELETE FROM GJP_House_Intention_Image
+		WHERE 1=1
+		<if test="him_path != null">
+			AND him_path =#{him_path}
+		</if>
+	</delete>
+
+	<!--根据图片地址查询图片信息-->
+	<select id="selectHouseIntentionImages" resultType="com.gjp.model.HouseIntentionImage">
+		SELECT * FROM GJP_House_Intention_Image
+		WHERE 1=1
+		<if test="him_path != null">
+			AND him_path =#{him_path}
+		</if>
+	</select>
+
+	<!--根据图片id删除图片文件类型-->
+	<delete id="deleteHouseIntentionImageType">
+		DELETE FROM GJP_House_Intention_ImageType
+		WHERE 1=1
+		<if test="him_id != null">
+			AND him_id =#{him_id}
+		</if>
+	</delete>
+
+
+</mapper>

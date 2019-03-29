@@ -1,0 +1,490 @@
+@charset "utf-8";
+/* CSS Document */
+@import url("body.css");
+	
+.category_center{
+	width:1210px;
+	height:auto;
+	overflow:hidden;
+	margin-left:auto;
+	margin-right:auto;
+	font-family:"微软雅黑";
+	}
+	
+/*类别分类*/
+.category_center .category_title{
+	width:100%;
+	padding:10px 0;
+	height:auto;
+	overflow:hidden;
+	border-bottom:1px solid #C4C5BF;
+	}
+.category_center .category_title li{
+	border-right:1px solid #C4C5BF;
+	float:left;
+	padding:0 30px;
+	}
+.category_center .category_ctontent{
+	height:auto;
+	overflow:hidden;
+	padding:5px 10px;
+	border-bottom:1px dotted #C4C5BF;
+	}
+.category_center .category_ctontent .category_text{
+	height:30px;
+	text-align:center;
+	margin-top:10px;
+	margin-bottom:10px;
+	}
+.category_center .category_ctontent .category_text select{
+	height:30px;
+	line-height:30px;
+	padding: 0px 5px 0px 5px;
+	text-align:center;
+	border:1px solid #CCC;
+	color:#666;
+	}
+.category_center .category_ctontent .category_text ul{
+	float:left;
+	}
+.category_center .category_ctontent .category_text ul li{
+	background-color:#FFF;
+	float:left;
+	height:30px;
+	line-height:30px;
+	padding:0 15px;
+	}
+.category_center .category_ctontent .category_text ul .fontColor{
+	color:#FF0000;
+	}
+.category_center .category_ctontent .category_text .category_text_title{
+	height:30px;
+	}
+.category_center .category_ctontent .category_text .category_text_title li{
+	background-color:#F3F3F3;
+	height:30px;
+	line-height:30px;
+	}
+	
+
+.category_center .category_select{
+	height:auto;
+	overflow:hidden;
+	}
+.category_center .category_select ul{
+	float:left;
+	}
+.category_center .category_select .category_select_title{
+	width:80px;
+	height:25px;
+	line-height:25px;
+	margin-top:10px;
+	margin-bottom:10px;
+	}
+
+.category_center .category_select .category_select_content{
+	margin-top:10px;
+	margin-bottom:10px;
+	}	
+.category_center .category_select .category_select_content li{
+	height:25px;
+	line-height:25px;
+	border:1px solid #CCC;
+	padding:0 30px 0 10px;
+	}
+.category_center .category_select a{
+	display:block;
+	color:#0099FF;
+	margin-top:15px;
+	float:left;
+	margin-left:10px;
+	}
+.category_center .category_select .category_select_content i{
+	display:block;
+	position:absolute;
+	text-align:center;
+	width:18px;
+	height:18px;
+	line-height:18px;
+	border:1px solid #CCC;
+	margin-top:-23px;
+	margin-left:52px;
+	font-style:normal;
+	cursor:pointer;
+	}
+	
+/*内容列表*/
+.category_center .contents{
+	width:894px;
+	height:auto;
+	margin-top:10px;
+	overflow:hidden;
+	position:relative;
+	float:left;
+	}
+.category_center .contents .contents_title{
+	width:100%;
+	height:37px;
+	background-color:#F7F7F7;
+	}
+.category_center .contents .contents_title li{
+	height:37px;
+	line-height:37px;
+	padding:0 20px;
+	margin-right:5px;
+	float:left;
+	background-color:#EEEEEE;
+	cursor:pointer;
+	}
+
+.category_center .contents .contents_title .contents_title_li{
+	height:37px;
+	line-height:37px;
+	padding:0 30px 0 20px;
+	margin-right:5px;
+	float:left;
+	background-color:#EEEEEE;
+	}
+
+.category_center .contents .contents_title li i{
+	display:block;
+	width:9px;
+	height:10px;
+	background:url(../image/bottom.png) no-repeat;
+	position:absolute;
+	margin-top:-22px;
+	margin-left:29px;
+	}
+
+.category_center .contents .content{
+	  position:relative;
+	  padding: 15px 0px;
+	  height:auto;
+	  overflow:hidden;
+	  border-bottom:1px solid #CCCCCC;
+	}
+.category_center .contents .content ul li{
+	float:left;
+	}
+.category_center .contents .content ul .content_img{
+	width:300px;
+	height:172px;
+	}
+.category_center .contents .content ul .content_text{
+	width:570px;
+	height:172px;
+	margin-left:24px;
+	}
+.category_center .contents .content img{
+	width:300px;
+	height:172px;
+	}content
+	
+.category_center .contents .content .content_txt{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	}
+.category_center .contents .content .content_txt h3{
+	font-family:"微软雅黑";
+	font-size:14px;
+	margin-bottom:50px;
+	}
+.category_center .contents .content .content_txt .content_txt_class{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	}
+.category_center .contents .content .content_txt .content_txt_class li{
+	height:auto;
+	overflow:hidden;
+	padding:3px 10px;
+	background-color:#1ABC9C;
+	margin-right:10px;
+	color:#FFF;
+	}
+
+.category_center .contents .content .content_txt .content_txt_font{
+	width:100%;
+	}
+.category_center .contents .content .content_txt .content_txt_font li{
+	width:100%;
+	margin-top:20px;
+	}
+.category_center .contents .content .content_txt .content_txt_font .font_content{
+	color:#999;
+	margin-top:7px;
+	}
+	
+.category_center .contents .content .content_txt .content_money{
+	width:115px;
+	position:absolute;
+	top:60px;
+	right:30px;
+	}
+.category_center .contents .content .content_txt .content_money li{
+	width:100%;
+	}
+.category_center .contents .content .content_txt .content_money .money{
+	font-family: Georgia;
+	font-size:24px;
+	color:#E74C3C;
+	}
+.category_center .contents .content .content_txt .content_money .compare{
+	width:70px;
+	text-align:center;
+	color:#FFF;
+	height:25px;
+	line-height:25px;
+	background-color:#E74C3C;
+	margin-top:30px;
+	float:right;
+	margin-right:7px;
+	}
+.category_center .contents .content .content_txt .content_money .compare input{
+	margin-top:7px;
+	margin-left:15px;
+	float:left;
+	}
+.category_center .contents .content .content_txt .content_money .compare span{
+	display:block;
+	float:left;
+	}
+	
+/*推荐房源*/
+.category_center .recommend{
+	width:296px;
+	height:auto;
+	overflow:hidden;
+	float:right;
+	}
+.category_center .recommend .recommend_title{
+	width:100%;
+	height:36px;
+	line-height:36px;
+	font-size:18px;
+	margin-top:10px;
+	border-bottom:1px solid #CCC;
+	}
+.category_center .recommend .recommend_content{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	margin:15px 0;
+	}
+.category_center .recommend .recommend_content ul{
+	float:left;
+	}
+.category_center .recommend .recommend_content .recommend_content_img{
+	width:130px;
+	height:75px;
+	}
+.category_center .recommend .recommend_content .recommend_content_img img{
+	width:130px;
+	height:75px;
+	}
+.category_center .recommend .recommend_content .recommend_content_txt{
+	width:149px;
+	height:75px;
+	float:right;
+	}
+.category_center .recommend .recommend_content .recommend_content_txt .recommend_content_font{
+	margin-top:3px;
+	}
+.category_center .recommend .recommend_content .recommend_content_txt .recommend_content_money{
+	font-family: Georgia;
+	color:#E74C3C;
+	margin-top:3px;
+	}
+	
+/*最近浏览过的房源*/
+.category_center .recently{
+	width:296px;
+	height:auto;
+	overflow:hidden;
+	float:right;
+	}
+.category_center .recently .recently_title{
+	width:100%;
+	height:36px;
+	line-height:36px;
+	font-size:18px;
+	margin-top:40px;
+	border-bottom:1px solid #CCC;
+	}
+.category_center .recently .recently_title i{
+	width:17px;
+	height:23px;
+	display:block;
+	background:url(../image/ioc_cy.png) no-repeat;
+	background-position:0 0;
+	margin-top:7px;
+	margin-right:8px;
+	float:right;
+	cursor:pointer;
+	}
+.category_center .recently .recently_title i:hover{
+	background:url(../image/ioc_cy.png) no-repeat;
+	background-position:0 -23px;
+	}
+.category_center .recently #recently_content{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	margin:5px 0;
+	}
+.category_center .recently .recently_content{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	padding:10px 0;
+	border-bottom:1px dotted #CCC;
+	}
+.category_center .recently .recently_content li{
+	float:left;
+	}
+.category_center .recently .recently_content .recently_content_title{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	}
+.category_center .recently .recently_content .recently_content_title a:hover{
+	color:#E74C3C;
+	}
+.category_center .recently .recently_content .recently_content_money{
+	margin-top:5px;
+	font-family: Georgia;
+	color:#E74C3C;
+	}
+.category_center .recently .recently_content .recently_content_time{
+	float:right;
+	margin-top:5px;
+	}
+
+
+/*对比层*/
+.category_center #contrast{
+	/*display: none;*/
+	position: fixed;
+	bottom: 5px;
+	right: 50%;
+	margin-right: -196px;
+	z-index: 100;
+	width: 800px;
+	height: 139px;
+	background: #fff;
+	-moz-box-shadow: 0 0 15px rgba(221,221,221,0.8);
+	-webkit-box-shadow: 0 0 15px rgba(221,221,221,0.8);
+	box-shadow: 0 0 15px rgba(221,221,221,0.8);
+	border:1px solid #ECF0F1;
+	}
+.category_center #contrast .contrast_title{
+	  position: relative;
+	  width:100%;
+	  height:32px;
+	  border-bottom:2px solid #7abd54;
+	}
+.category_center #contrast .contrast_title .contrast_none{
+	float:right;
+	}
+.category_center #contrast .contrast_title .contrast_none a{
+	color:#005aa0;
+	font-size:12px;
+	}
+.category_center #contrast .contrast_title .current{
+	position:relative;
+	left: -1px;
+	margin-top: -4px;
+	width:84px;
+	float:left;
+	height: 35px;
+	line-height:35px;
+	text-align:center;
+	background: #fff;
+	border: 2px solid #7abd54;
+	border-bottom:2px solid #FFF;
+	font: 14px/30px 'microsoft yahei';
+	}
+.category_center #contrast .contrast_title li{
+	  float: left;
+	  position: relative;
+	  width: 80px;
+	  height: 30px;
+	  line-height: 30px;
+	  text-align: center;
+	  font: 14px/30px 'microsoft yahei';
+	}
+.category_center #contrast .contrast_content{
+	padding: 6px;
+	color: #ccc;
+	height: 92px;
+	overflow: hidden;
+	position:relative;
+	float:left;
+	}
+.category_center #contrast .contrast_content_cons{
+	border: 2px solid #7abd54;
+	width:798px;
+	left: -1px;
+	position:absolute;
+  	border-top: 0;
+	}
+.category_center #contrast .contrast_content dl{
+	float: left;
+	overflow: hidden;
+	margin-right: 10px;
+	padding: 14px 10px 12px 0;
+	border-right: 1px dotted #7abd54;
+	}
+.category_center #contrast .contrast_content dl dt{
+	float: left;
+	margin-right: 5px;
+	width: 48px;
+	height: 48px;
+	text-align: center;
+	color: #ccc;
+	font: 36px/48px arial;
+	overflow: hidden;
+	}
+dd{
+	float: left;
+ 	width: 140px;
+	height:54px;
+	margin-left:5px;
+	}
+.category_center #contrast .contrast_content a.contrast_content_name {
+  height: 3em;
+  line-height: 1.5em;
+  overflow: hidden;
+  display: block;
+  color: #333;
+}
+.category_center #contrast .contrast_content .contrast_content_money .money{
+	font: 12px/150% Arial,Verdana,"\5b8b\4f53";
+	  color: #E74C3C;
+	}
+
+.category_center #contrast .contrast_bottom{
+	width:85px;
+	height:59px;
+	float:right;
+	margin-top:25px;
+	margin-right:5px;
+	}
+.category_center #contrast .contrast_bottom .contrast_button{
+	display:block;
+	width:70px;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	color:#FFF;
+	background-color:#E74C3C;
+	}
+.category_center #contrast .contrast_bottom .contrast_clear{
+	display:block;
+	color:#005aa0;
+	width:70px;
+	text-align:center;
+	margin-top:10px;
+	}
+	

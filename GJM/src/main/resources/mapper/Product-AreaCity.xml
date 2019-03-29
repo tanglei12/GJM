@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 适合推荐群体 GJP_House_RecommendGroup -->
+<mapper namespace="com.gjp.dao.AreaCityDAO">
+
+	<select id="queryAreaCity" resultType="com.gjp.model.AreaCityStreet">
+		SELECT * from GJP_Area_City_Street
+		WHERE 1=1
+		<if test="parent_id != '' and parent_id != null">
+			and parent_id = #{parent_id}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 意向房源 GJP_House_Intention -->
+<mapper namespace="com.gjp.dao.HouseIntentionImageDao">
+	
+	<!-- 根据意向房源图片ID查询出该房源的封面图片信息 -->
+	<select id="selectHouseIntentionImagePage" resultType="com.gjp.model.HouseIntentionImage">
+		SELECT * FROM GJP_House_Intention_Image
+		WHERE
+			hi_code = (
+				SELECT hi_code FROM GJP_House_Intention_Image
+					WHERE him_id = #{him_id})
+			AND him_type = #{him_type}
+	</select>
+	
+	<!-- 根据意向房源图片ID查询出该房源图片信息 -->
+	<select id="selectHouseIntentionImage" resultType="com.gjp.model.HouseIntentionImage">
+		SELECT * FROM GJP_House_Intention_Image
+		WHERE him_id = #{him_id}
+	</select>
+	
+	<!-- 根据意向房源图片ID查询出该房源图片信息 -->
+	<select id="selectHouseIntentionImageList" resultType="com.gjp.model.HouseIntentionImage">
+		SELECT * FROM GJP_House_Intention_Image
+		WHERE hi_code = #{hi_code}
+	</select>
+	
+	
+	<!-- 修改意向房源图片类型 -->
+	<update id="updateHouseIntentionImageHimType" parameterType="com.gjp.model.HouseIntentionImage">
+		update GJP_House_Intention_Image set him_type=#{him_type}
+		where him_id = #{him_id} 
+	</update>
+	
+	<!-- 修改意向房源图片类型表的类型 -->
+	<update id="updateHouseIntentionImageTypehintType" parameterType="com.gjp.model.HouseIntentionImageType">
+		update GJP_House_Intention_ImageType set hint_type=#{hint_type}
+		where him_id = #{him_id} 
+	</update>
+</mapper>

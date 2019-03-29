@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 组织权限 -->
+<mapper namespace="com.gjp.dao.CustomerDemandDAO">
+
+	<sql id="menberEcpId">
+		ccd_id,
+		ccd_content,
+		ccd_date,
+		ccd_time,
+		ccd_text,
+		cc_id
+	</sql>
+
+	<sql id="insert">
+		#{ccd_content },
+		#{ccd_date },
+		#{ccd_time },
+		#{ccd_text },
+		#{cc_id }
+	</sql>
+	
+	<!-- 查询所有客户需求 -->
+	<select id="selectAllCustomerDemand" resultType="com.gjp.model.UserCustomerDemand">
+		select * from GJP_UserCenter_CustomerDemand
+	</select>
+	
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.BusinesTypeDao">
+
+	<!-- 查询产品库类型字典 -->
+	<select id="queryBusinesType" resultType="com.gjp.model.BusinesTypeVo">
+		SELECT
+		*
+		FROM
+		GJP_Business_Type
+		WHERE
+		bt_parentCode = #{bt_parentCode}
+		<choose>
+			<when test="type == 'NOT' and types != null">
+				AND bt_code NOT IN
+				<foreach item="item" index="index" collection="types" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</when>
+			<when test="type != 'NOT' and types != null">
+				AND bt_code IN
+				<foreach item="item" index="index" collection="types" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</when>
+		</choose>
+		ORDER BY bt_order DESC
+	</select>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 托管房屋 GJP_House_RecommendGroup -->
+<mapper namespace="com.gjp.dao.DepositHouseDao">
+         
+         <sql id="allmenbers">
+            ts_id,
+		    ts_name,
+		    ts_phone,
+		    ts_houseT,
+		    ts_houseType,
+		    ts_address,
+		    ts_time,
+		    ts_state,
+		    ts_txt
+         </sql>
+         
+         <sql id="menberEcpId">
+		    ts_name,
+		    ts_phone,
+		    ts_houseT,
+		    ts_houseType,
+		    ts_address,
+		    ts_time,
+		    ts_state,
+		    ts_txt
+         </sql>
+         
+         <sql id="insert">
+           	#{ts_name},
+			#{ts_phone},
+			#{ts_houseT},
+			#{ts_houseType},
+			#{ts_address},
+			#{ts_time},
+			#{ts_state},
+			#{ts_txt}
+         </sql>
+         
+        <!-- 分页查询房屋托管信息 -->
+         <select id="selectTrusteeships" resultType="com.gjp.model.Trusteeship">
+             select 
+               *
+			 from GJP_House_TrusteeshipSubmit where 1 = 1
+			<if test="sqlWhere != null and sqlWhere!= ''">
+				${sqlWhere}
+			</if>
+			<if test="dateStart != null and dateStart != ''">
+				and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+			</if>
+			<if test="dateEnd != null and dateEnd != ''">
+				and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+			</if>
+			 order by ts_time desc
+			 LIMIT #{pageNo},#{pageSize}
+         </select>
+         
+         <!-- 查询房屋托管信息总条数 -->
+         <select id="selectTrusteeshipTotal" resultType="int">
+             select count(*) from GJP_House_TrusteeshipSubmit where 1 = 1
+            <if test="sqlWhere != null and sqlWhere!= ''">
+				${sqlWhere}
+			</if>
+			<if test="dateStart != null and dateStart != ''">
+				and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+			</if>
+			<if test="dateEnd != null and dateEnd != ''">
+				and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+			</if>
+         </select>
+		
+		<!-- 分页查询预约信息 -->
+         <select id="selectHouseAppointment" resultType="com.gjp.model.HouseAppointment">
+             SELECT
+				IF (
+					pin.upn_code IS NULL
+					OR pin.upn_code = '',
+					CONCAT(
+						pin.upn_sname,
+						hi.hi_address
+					),
+					CONCAT(
+						pin.upn_sname,
+						pin.upn_code,
+						'-',
+						hi.hi_address
+					)
+				) AS house_address,
+				 haa_id,
+				 haa_name,
+				 haa_phone,
+				 haa_time,
+				 ha.hi_id,
+				 ha_operationState,
+				 haa_num,
+				 haa_type,
+				 haa_txt,
+				 haa_source
+				FROM
+					GJP_House_HouseAnonymousAppointment ha
+				LEFT JOIN GJP_House_HouseInformation hi ON ha.hi_id = hi.hi_id
+				LEFT JOIN GJP_PropertyInfo pi ON pi.propertyInfo_Id = hi.propertyInfo_Id
+				LEFT JOIN GJP_PropertyInfo_PropertyInfoName pin ON pi.upn_id = pin.upn_id
+			 where 1=1
+			<if test="sqlWhere != null and sqlWhere!= ''">
+				${sqlWhere}
+			</if>
+			<if test="dateStart != null and dateStart != ''">
+				and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+			</if>
+			<if test="dateEnd != null and dateEnd != ''">
+				and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+			</if>
+			  order by haa_time desc
+			 LIMIT #{pageNo},#{pageSize}
+         </select>
+         
+         <!-- 查询预约信息总条数 -->
+         <select id="selectHouseAppointmentTotal" resultType="int">
+             SELECT
+				count(*)
+				FROM
+					GJP_House_HouseAnonymousAppointment ha
+				LEFT JOIN GJP_House_HouseInformation hi ON ha.hi_id = hi.hi_id
+				LEFT JOIN GJP_PropertyInfo pi ON pi.propertyInfo_Id = hi.propertyInfo_Id
+				LEFT JOIN GJP_PropertyInfo_PropertyInfoName pin ON pi.upn_id = pin.upn_id
+			 where 1=1
+            <if test="sqlWhere != null and sqlWhere!= ''">
+				${sqlWhere}
+			</if>
+			<if test="dateStart != null and dateStart != ''">
+				and ${dateTitle} >= DATE_FORMAT(#{dateStart},'%Y-%m-%d')
+			</if>
+			<if test="dateEnd != null and dateEnd != ''">
+				and DATE_FORMAT(#{dateEnd},'%Y-%m-%d') >= ${dateTitle}
+			</if>
+         </select>
+         
+         <!-- 查询房屋地址根据房屋编号 -->
+         <select id="selectHouseAddById" resultType="com.gjp.model.HouseAppointment">
+             select 
+             	hi.hi_address,
+			    pi.propertyInfo_Name
+			 from 
+			 	GJP_House_HouseInformation hi,GJP_PropertyInfo pi
+             where 
+             	hi.propertyInfo_Id = pi.propertyInfo_Id and hi.hi_id=#{hi_id}
+         </select>
+         
+         <!-- 查询单条托管申请 -->
+         <select id="selectTrusteeship" resultType="com.gjp.model.Trusteeship">
+             select 
+             	*
+			 from 
+			 	GJP_House_TrusteeshipSubmit
+             where 
+             	 ts_id=#{ts_id}
+         </select>
+         
+         <!-- 查询单条预约申请 -->
+         <select id="selectBespeakHe" resultType="com.gjp.model.HouseAppointment">
+             select 
+             	*
+			 from 
+			 	GJP_House_HouseAnonymousAppointment
+             where 
+             	 haa_id=#{haa_id}
+         </select>
+         
+         <!-- 修改托管状态 -->
+         <update id="updateHe" parameterType="com.gjp.model.Trusteeship">
+             update GJP_House_TrusteeshipSubmit set 
+               ts_state=#{ts_state},
+			   ts_txt=#{ts_txt}
+             where 
+               ts_id=#{ts_id}
+         </update>
+         
+         <!-- 修改托管状态 -->
+         <update id="updateBespeakHe" parameterType="com.gjp.model.HouseAppointment">
+             update GJP_House_HouseAnonymousAppointment set 
+               ha_operationState=#{ha_operationState},
+			   haa_txt=#{haa_txt}
+             where 
+               haa_id=#{haa_id}
+         </update>
+</mapper>

@@ -1,0 +1,23 @@
+main{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.box-dl {
+
+}
+
+.box-dl .box-dl-dt {
+}
+
+.box-dl .box-dl-dt .dl-dt-title {
+}
+
+.box-dl .box-dl-dt .dl-dt-content {
+}
+
+.box-dl .box-dl-dd {
+}
+
+.box-dl .box-dl-dd .dl-dd-item {
+}

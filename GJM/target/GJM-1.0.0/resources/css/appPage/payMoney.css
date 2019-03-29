@@ -1,0 +1,142 @@
+dl {
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+.content {
+    position: relative;
+    box-shadow: 0 1px 13px 0 rgba(0, 0, 0, .14);
+    margin: 30px 12px 0;
+    border-radius: 5px;
+    background: #FFF;
+}
+.content .title {
+    width: 100%;
+    text-align: center;
+    color: #666;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    border-bottom: 1px solid #f2f2f2;
+}
+.content .code-div {
+    position: relative;
+    background-color: #FFF;
+    font-size: 14px;
+}
+.content .code-div .code-title {
+    position: relative;
+    color: #000;
+    text-align: center;
+    padding: 16px 0;
+}
+.content .code-div .code-money {
+    position: relative;
+    font-size: 16px;
+    color: #FF6666;
+    text-align: center;
+}
+.content .code-div .code-main {
+    position: relative;
+    text-align: center;
+    padding: 30px 0 40px;
+}
+#qrcode {
+    position: relative;
+    margin: 0 auto;
+    width: 170px;
+    height: 170px;
+}
+.content .code-div .code-main > .code {
+    font-size: 100px;
+    width: 100px;
+    height: 170px;
+    line-height: 150px;
+}
+.content .code-div .code-main > img.logo {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 50%;
+    top: 50%;
+    margin: -20px;
+    background: #fff;
+    padding: 3px;
+    border-radius: 3px;
+}
+.content .code-div .code-tip {
+    position: relative;
+    text-align: center;
+    height: 36px;
+    line-height: 2em;
+}
+.content .code-div .code-bottom {
+    position: relative;
+    height: 60px;
+    line-height: 60px;
+    background: #e7e7e7;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    border-radius: 0 0 5px 5px;
+}
+.content .code-div .code-bottom:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 100%;
+    height: 9px;
+    background: url(/resources/image/appPage/yuan.png);
+}
+.content .code-div .code-bottom-wx {
+    background: #00c800;
+    color: #fff;
+}
+.content .code-div .code-bottom-zfb {
+    background: #0AE;
+    color: #fff;
+}
+/*.content .code-div .code-bottom .bottom-yuan {*/
+/*position: absolute;*/
+/*left: 0;*/
+/*top: -2px;*/
+/*width: 100%;*/
+/*height: 9px;*/
+/*background: url(/resources/image/appPage/yuan.png);*/
+/*}*/
+.content .code-div .code-bottom .bottom-font {
+    font-size: 14px;
+}
+.biils {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 30px;
+}
+.content .code-div .code-bottom .payImage {
+    position: absolute;
+    left: 32%;
+    top: 0;
+    height: 22px;
+    width: 22px;
+}
+.content .code-div .code-bottom label {
+    position: absolute;
+    left: 41%;
+    top: 0;
+}
+.paySuccess {
+    width: 150px;
+    margin: 0 auto;
+    height: 60px;
+}
+.paySuccess img {
+    width: 22px;
+    height: 22px;
+    float: left;
+    margin-top: 18px;
+    margin-left: 8%;
+}
+

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 适合推荐群体 GJP_House_RecommendGroup -->
+<mapper namespace="com.gjp.dao.LSFOrderDAO">
+         
+         <sql id="allmenbers">
+            lsfo_id,
+			lsfo_orderCode,
+			lsfo_contractNo,
+			lsfo_orderStatus,
+			lsfo_orderTitle,
+			lsfo_imageFile,
+			lsfo_contactName,
+			lsfo_contactPhone,
+			lsfo_agentName,
+			lsfo_agentPhone,
+			lsfo_dealingDat,
+			lsfo_firstPay,
+			lsfo_totalpay,
+			lsfo_type,
+			lsfo_orderBy,
+			lsfo_payMoney
+         </sql>
+         
+         <sql id="menberEcpId">
+           	lsfo_orderCode,
+			lsfo_contractNo,
+			lsfo_orderStatus,
+			lsfo_orderTitle,
+			lsfo_imageFile,
+			lsfo_contactName,
+			lsfo_contactPhone,
+			lsfo_agentName,
+			lsfo_agentPhone,
+			lsfo_dealingDat,
+			lsfo_firstPay,
+			lsfo_totalpay,
+			lsfo_type,
+			lsfo_orderBy,
+			lsfo_payMoney
+         </sql>
+         
+         <sql id="insert">
+           	#{lsfo_orderCode},
+			#{lsfo_contractNo},
+			#{lsfo_orderStatus},
+			#{lsfo_orderTitle},
+			#{lsfo_imageFile},
+			#{lsfo_contactName},
+			#{lsfo_contactPhone},
+			#{lsfo_agentName},
+			#{lsfo_agentPhone},
+			#{lsfo_dealingDat},
+			#{lsfo_firstPay},
+			#{lsfo_totalpay},
+			#{lsfo_type},
+			#{lsfo_orderBy},
+			#{lsfo_payMoney}
+         </sql>
+         
+         <sql id="update">
+           	lsfo_orderCode=#{lsfo_orderCode},
+			lsfo_contractNo=#{lsfo_contractNo},
+			lsfo_orderStatus=#{lsfo_orderStatus},
+			lsfo_orderTitle=#{lsfo_orderTitle},
+			lsfo_imageFile=#{lsfo_imageFile},
+			lsfo_contactName=#{lsfo_contactName},
+			lsfo_contactPhone=#{lsfo_contactPhone},
+			lsfo_agentName=#{lsfo_agentName},
+			lsfo_agentPhone=#{lsfo_agentPhone},
+			lsfo_dealingDat=#{lsfo_dealingDat},
+			lsfo_firstPay=#{lsfo_firstPay},
+			lsfo_totalpay=#{lsfo_totalpay},
+			lsfo_type=#{lsfo_type},
+			lsfo_orderBy=#{lsfo_orderBy},
+			lsfo_payMoney=#{lsfo_payMoney}
+         </sql>
+         
+         <!-- 添加乐首付订单 -->
+          <insert id="addLSFOrder" useGeneratedKeys="true" parameterType="com.gjp.model.LSFOrder" keyProperty="lsfo_id">
+	         insert into GJP_LSF_Order(<include refid="menberEcpId"></include>)  
+	         values (<include refid="insert"></include>)
+         </insert> 
+         
+         <!-- 查询所有订单 -->
+		<select id="selectLSFOrderAll" resultType="com.gjp.model.LSFOrder">
+			select * from GJP_LSF_Order
+		</select>
+         
+		<!-- 查询订单最新一条数据的时间 -->
+		<select id="selectLSFOrderNow" resultType="com.gjp.model.LSFOrder">
+			select lsfo_dealingDat from GJP_LSF_Order order by lsfo_dealingDat desc limit 0,1
+		</select>
+		
+		<!-- 查询订单总数 -->
+		<select id="selectLSFOrderSize" resultType="com.gjp.model.LSFOrder">
+			select count(*) as size from GJP_LSF_Order where 1=1
+			<if test="whereList != null and whereList !=''">  
+	        and (lsfo_orderCode like CONCAT('%',#{whereList},'%') 
+	        or lsfo_contactName like CONCAT('%',#{whereList},'%') 
+	        or lsfo_contactPhone like CONCAT('%',#{whereList},'%')
+	        or lsfo_agentName like CONCAT('%',#{whereList},'%') 
+	        or lsfo_agentPhone like CONCAT('%',#{whereList},'%') )
+	        </if>
+	        <if test="lsfo_type != null and lsfo_type !=''">  
+	         and lsfo_type=#{lsfo_type}
+	        </if>
+			order by lsfo_orderBy desc
+		</select>
+		
+		<!-- 分页查询 -->
+		<select id="selectLSFOrder" resultType="com.gjp.model.LSFOrder">
+        select *,(select count(*) from GJP_LSF_Order where lsfo_type !='退租') as size from GJP_LSF_Order where 1=1 
+        <if test="whereList != null and whereList !=''">  
+        and (lsfo_orderCode like CONCAT('%',#{whereList},'%') 
+        or lsfo_contactName like CONCAT('%',#{whereList},'%') 
+        or lsfo_contactPhone like CONCAT('%',#{whereList},'%')
+        or lsfo_agentName like CONCAT('%',#{whereList},'%') 
+        or lsfo_agentPhone like CONCAT('%',#{whereList},'%') )
+        </if>
+        <if test="lsfo_type != null and lsfo_type !=''">  
+         and lsfo_type=#{lsfo_type}
+        </if>
+        order by lsfo_orderBy desc
+   		<if test="start !=null and end !=null">  
+        limit #{start},#{end}
+        </if>
+    	</select>
+    	
+    	<!-- 查询是否存在该订单 -->
+		<select id="selectLSFOrderBool" resultType="com.gjp.model.LSFOrder">
+			select count(*) as size from GJP_LSF_Order where lsfo_orderCode=#{lsfo_orderCode}
+		</select>
+		
+        <!-- 修改订单数据-->
+		<update id="updateSFBillType" parameterType="com.gjp.model.LSFOrder">
+			update GJP_LSF_Order set lsfo_type=#{lsfo_type},lsfo_orderBy=#{lsfo_orderBy},lsfo_payMoney=#{lsfo_payMoney} where lsfo_orderCode=#{lsfo_orderCode}
+		</update>
+		
+        <!-- 同步订单数据-->
+		<update id="updateOrder" parameterType="com.gjp.model.LSFOrder">
+			update GJP_LSF_Order set <include refid="update"></include> where lsfo_orderCode=#{lsfo_orderCode}
+		</update>
+		
+</mapper>

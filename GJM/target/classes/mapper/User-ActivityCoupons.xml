@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.ActivityCouponsDAO">
+    <!--查询优惠券配置列表数据-->
+    <select id="queryCouponsConfigList" resultType="com.gjp.model.UserCouponsConfigVo">
+        SELECT * FROM GJP_user.GJP_User_CouponsConfig
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY uccfg_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--查询查询优惠券配置总条数-->
+    <select id="queryCouponsConfigListPageRecord" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM GJP_user.GJP_User_CouponsConfig
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+    <!--查询优惠券配置列表数据-->
+    <select id="queryCouponsConfigPageList" resultType="com.gjp.model.UserCouponsConfigVo">
+        SELECT * FROM GJP_user.GJP_User_CouponsConfig
+        WHERE 1=1
+        <if test="t.where != null">
+            AND uccfg_name LIKE CONCAT("%", #{t.where}, "%")
+        </if>
+        ORDER BY uccfg_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--查询查询优惠券配置总条数-->
+    <select id="queryCouponsConfigCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM GJP_user.GJP_User_CouponsConfig
+        WHERE 1=1
+        <if test="t.where != null">
+            AND uccfg_name LIKE CONCAT("%", #{t.where}, "%")
+        </if>
+    </select>
+    <!--添加优惠券配置-->
+    <insert id="addCouponsConfig" useGeneratedKeys="true" parameterType="com.gjp.model.UserCouponsConfigVo" keyProperty="uccfg_id">
+        INSERT INTO GJP_user.GJP_User_CouponsConfig (
+          uccfg_code,
+          uccfg_source,
+          uccfg_status,
+          uccfg_name,
+          uccfg_description,
+          uccfg_way,
+          uccfg_price,
+          uccfg_valid_way,
+          uccfg_valid_value,
+          uccfg_invalid_way,
+          uccfg_use,
+          uccfg_use_limit,
+          uccfg_use_description,
+          uccfg_remarks,
+          uccfg_create_time
+        ) VALUES (
+          #{uccfg_code},
+          #{uccfg_source},
+          #{uccfg_status},
+          #{uccfg_name},
+          #{uccfg_description},
+          #{uccfg_way},
+          #{uccfg_price},
+          #{uccfg_valid_way},
+          #{uccfg_valid_value},
+          #{uccfg_invalid_way},
+          #{uccfg_use},
+          #{uccfg_use_limit},
+          #{uccfg_use_description},
+          #{uccfg_remarks},
+          #{uccfg_create_time}
+        )
+    </insert>
+    <!--修改优惠券配置-->
+    <update id="updateCouponsConfig" parameterType="com.gjp.model.UserCouponsConfigVo">
+        UPDATE GJP_user.GJP_User_CouponsConfig
+        <set>
+            <if test="uccfg_code !=null">uccfg_code =#{uccfg_code},</if>
+            <if test="uccfg_source != null">uccfg_source =#{uccfg_source},</if>
+            <if test="uccfg_status !=null">uccfg_status =#{uccfg_status},</if>
+            <if test="uccfg_name != null">uccfg_name =#{uccfg_name},</if>
+            <if test="uccfg_description != null">uccfg_description =#{uccfg_description},</if>
+            <if test="uccfg_way != null">uccfg_way =#{uccfg_way},</if>
+            <if test="uccfg_price != null">uccfg_price =#{uccfg_price},</if>
+            <if test="uccfg_valid_way !=null">uccfg_valid_way =#{uccfg_valid_way},</if>
+            <if test="uccfg_valid_value !=null">uccfg_valid_value =#{uccfg_valid_value},</if>
+            <if test="uccfg_invalid_way !=null">uccfg_invalid_way =#{uccfg_invalid_way},</if>
+            <if test="uccfg_use !=null">uccfg_use =#{uccfg_use},</if>
+            <if test="uccfg_use_limit !=null">uccfg_use_limit =#{uccfg_use_limit},</if>
+            <if test="uccfg_use_description !=null">uccfg_use_description =#{uccfg_use_description},</if>
+            <if test="uccfg_remarks !=null">uccfg_remarks =#{uccfg_remarks},</if>
+            <if test="uccfg_create_time !=null">uccfg_create_time =#{uccfg_create_time},</if>
+        </set>
+        WHERE uccfg_id =#{uccfg_id}
+    </update>
+    <!--查询优惠券配置-->
+    <select id="selectCouponsConfig" resultType="com.gjp.model.UserCouponsConfigVo">
+        SELECT * FROM GJP_user.GJP_User_CouponsConfig
+        WHERE 1=1
+        <if test="uccfg_id != null">
+            AND uccfg_id = #{uccfg_id}
+        </if>
+    </select>
+    <!--查询优惠券列表数据-->
+    <select id="queryCouponsList" resultType="com.gjp.model.UserCouponsVo">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.uccfg_id,
+        t2.uccfg_source,
+        t2.uccfg_name,
+        t2.uccfg_description,
+        t2.uccfg_price,
+        t2.uccfg_valid_way,
+        t2.uccfg_valid_value,
+        t2.uccfg_invalid_way,
+        t2.uccfg_status,
+        t2.uccfg_remarks,
+        t2.uccfg_create_time,
+        t3.user_realName,
+        t3.user_nickName,
+        t3.user_phone
+        FROM
+        GJP_user.GJP_User_Coupons t1
+        LEFT JOIN GJP_user.GJP_User_CouponsConfig t2 ON t2.uccfg_code = t1.uccfg_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t3 ON t3.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY uc_create_time DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--查询优惠券总条数-->
+    <select id="queryCouponsListPageRecord" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        (
+        SELECT
+        t1.*,
+        t2.uccfg_id,
+        t2.uccfg_source,
+        t2.uccfg_name,
+        t2.uccfg_description,
+        t2.uccfg_price,
+        t2.uccfg_valid_way,
+        t2.uccfg_valid_value,
+        t2.uccfg_invalid_way,
+        t2.uccfg_status,
+        t2.uccfg_remarks,
+        t2.uccfg_create_time,
+        t3.user_realName,
+        t3.user_nickName,
+        t3.user_phone
+        FROM
+        GJP_user.GJP_User_Coupons t1
+        LEFT JOIN GJP_user.GJP_User_CouponsConfig t2 ON t2.uccfg_code = t1.uccfg_code
+        LEFT JOIN GJP_user.GJP_UserCenter_User t3 ON t3.user_id = t1.user_id
+        ) T
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+    <!--查询优惠券名称-->
+    <select id="selectuccfgName" resultType="com.gjp.model.UserCouponsConfigVo">
+        SELECT * FROM GJP_user.GJP_User_CouponsConfig
+    </select>
+
+    <!--查询优惠券用途-->
+    <select id="queryCouponsUse" resultType="com.gjp.model.UserCouponsUse">
+        SELECT * FROM GJP_User_CouponsUse
+        WHERE 1=1
+        <if test="ucu_pn != null">
+            AND ucu_pn =#{ucu_pn}
+        </if>
+        ORDER BY ucu_sort ASC
+    </select>
+</mapper>

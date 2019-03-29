@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 房屋扩展信息 GJP_House_HouseExtended -->
+<mapper namespace="com.gjp.dao.HouseInformationStateRelationDAO">
+
+	<sql id="menberEcpId">
+		hi_code,
+		his_id
+	</sql>
+
+	<sql id="insert">
+		#{hi_code},
+		#{his_id }
+	</sql>
+	
+	<!-- 添加房屋类型关联表 -->
+	<insert id="addHouseInformationStateRelation" useGeneratedKeys="true"
+		parameterType="com.gjp.model.HouseInformationStateRelation" keyProperty="hisr_id">
+		insert into
+		GJP_House_HouseInformationState_Relation(
+		<include refid="menberEcpId"></include>
+		)
+		values
+		(
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 查询房屋状态 -->
+	<select id="selectHouseInformationStateRelation" resultType="com.gjp.model.HouseInformationStateRelation">
+		select * from view_GJP_HouseInformationState where hi_code = #{hi_code}
+	</select>
+
+	<!-- 删除房屋类型关联表 -->
+	<delete id="deleteHouseInformationStateRelation">
+         delete from GJP_House_HouseInformationState_Relation where hi_code = #{hi_code}
+     </delete>
+
+</mapper>

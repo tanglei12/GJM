@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 测评人GJP_UserCenter_EvaluationPerson -->
+<mapper namespace="com.gjp.dao.UserMessageContentDAO">
+
+	<sql id="allmenbers">
+		umc_id,
+		umc_name,
+		umc_content,
+		umc_href,
+		umc_date,
+		em_id,
+		umc_bool
+	</sql>
+
+	<sql id="menberEcpId">
+		umc_name,
+		umc_content,
+		umc_href,
+		umc_date,
+		em_id,
+		umc_bool
+	</sql>
+	
+	<sql id="insert">
+		#{umc_name},
+		#{umc_content },
+		#{umc_href },
+		NOW(),
+		#{em_id },
+		#{umc_bool }
+	</sql>
+	
+	<!-- 插入消息提醒 -->
+	<insert id="addUserMessageContent" useGeneratedKeys="true" parameterType="com.gjp.model.UserMessageContent" keyProperty="umc_id">
+		insert into GJP_UserCenter_UserMessageContent
+		(<include refid="menberEcpId"></include>)
+		values
+		(<include refid="insert"></include>)
+	</insert>
+	
+	<!-- 根据用户ID查询消息提醒 -->
+	<select id="selectUserMessageContent" resultType="com.gjp.model.UserMessageContent">
+		select * from GJP_UserCenter_UserMessageContent where em_id=#{em_id}
+	</select>
+	
+</mapper>

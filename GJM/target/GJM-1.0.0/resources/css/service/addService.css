@@ -1,0 +1,1084 @@
+@CHARSET "UTF-8";
+.button {
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 10px;
+    border-radius: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.tableBill { width: 100%; }
+.tableBill td { border: 1px solid #666; padding-left: 10px; padding-right: 10px; }
+.bg-green {
+    background: #18bc9c;
+    color: white;
+}
+.bg-red {
+    background: #18bc9c;
+    color: white;
+}
+.bg-blue {
+    background: #3498DB;
+    color: white;
+}
+#main-box {
+    padding: 20px;
+}
+#main-box #main-box-title {
+    background: #fff;
+    margin-bottom: 14px;
+    padding-left: 20px;
+    height: 60px;
+}
+#main-box #main-box-title .title-sub {
+    color: #fff;
+    background: #ddd;
+    position: relative;
+    display: block;
+    float: left;
+    margin-top: 14px;
+    line-height: 16px;
+    border-radius: 15px;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+#main-box #main-box-title .title-sub-ok {
+    background: #3498DB !important;
+}
+#main-box #main-box-title .title-sub-over {
+    background: #c5e0ef !important;
+}
+#main-box #main-box-title .title-bottom {
+    display: block;
+    float: left;
+    width: 100px;
+    height: 29px;
+    border-bottom: 2px dashed #ddd;
+}
+#main-box #main-box-title .title-bottom-ok {
+    border-bottom-color: #3498DB !important;
+}
+#main-box #main-box-title .title-bottom-over {
+    border-bottom: 2px solid #c5e0ef !important;
+}
+#main-box #main-box-content {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 30px 20px 0 20px;
+    height: auto;
+    background: #fff;
+}
+#main-box #main-box-content .content-title {
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #cae2f0;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    color: #100F0F;
+}
+/***/
+dl.content-dl {
+}
+dl.content-dl dt {
+    position: relative;
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    width: 120px;
+    text-align: right;
+    font-size: 14px;
+    padding-right: 10px;
+}
+dl.content-dl dt em {
+    position: relative;
+    top: 2px;
+    margin-right: 8px;
+    font-size: 14px;
+    color: #FF1800;
+}
+dl.content-dl dd {
+    position: relative;
+    width: 500px;
+    line-height: 36px;
+    font-size: 14px;
+    float: left;
+}
+dl.content-dl dd.msg {
+    position: relative;
+    clear: both;
+    margin-left: 130px;
+    width: 320px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    float: left;
+}
+select.from-data {
+    display: block;
+    float: left;
+    width: 180px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 12px;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #BDC6CF;
+    border-radius: 4px;
+}
+input[type="text"].from-data {
+    display: block;
+    float: left;
+    width: 180px;
+    line-height: 32px;
+    padding: 0 12px;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #555;
+    border: 1px solid #BDC6CF;
+    border-radius: 4px;
+}
+textarea.from-data {
+    display: block;
+    float: left;
+    width: 334px;
+    max-width: 334px;
+    height: 80px;
+    max-height: 80px;
+    padding: 10px 12px;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #555;
+    border: 1px solid #BDC6CF;
+    border-radius: 4px;
+}
+input[type="button"].from-data, input[type="submit"].from-data {
+    display: block;
+    float: left;
+    width: 90px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
+    margin-top: 3px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: #3498DB;
+    color: #fff;
+    cursor: pointer;
+}
+.from-data-state {
+    color: #FF1800;
+    margin-left: 10px;
+}
+#desc-box {
+    min-height: 36px;
+}
+#desc-box > label {
+    height: 36px;
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 14px;
+    color: #069;
+}
+#desc-box > label > input[type="radio"] {
+    position: relative;
+    top: 2px;
+}
+/** 索引房屋编码*/
+#queryList {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    height: auto;
+    clear: both;
+    display: none;
+    min-width: 424px;
+    border: 1px solid #dddddd; /* #CAE2F0; */
+    background-color: #fff;
+    z-index: 99;
+    -moz-box-shadow: 0px 0px 13px #BFBFBF;
+    -webkit-box-shadow: 0px 0px 13px #BFBFBF;
+    box-shadow: 0px 0px 13px #BFBFBF;
+    font-size: 12px;
+}
+/** 索引房屋编码*/
+#queryList2 {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    height: auto;
+    clear: both;
+    display: none;
+    min-width: 424px;
+    border: 1px solid #dddddd; /* #CAE2F0; */
+    background-color: #fff;
+    z-index: 99;
+    -moz-box-shadow: 0px 0px 13px #BFBFBF;
+    -webkit-box-shadow: 0px 0px 13px #BFBFBF;
+    box-shadow: 0px 0px 13px #BFBFBF;
+    font-size: 12px;
+}
+/** 索引房屋编码*/
+[name=queryList] {
+    position: absolute;
+    /*top: 40px;*/
+    left: 0;
+    height: auto;
+    clear: both;
+    display: none;
+    min-width: 424px;
+    border: 1px solid #dddddd; /* #CAE2F0; */
+    background-color: #fff;
+    z-index: 99;
+    -moz-box-shadow: 0px 0px 13px #BFBFBF;
+    -webkit-box-shadow: 0px 0px 13px #BFBFBF;
+    box-shadow: 0px 0px 13px #BFBFBF;
+    font-size: 12px;
+}
+#search-box input[type="text"] {
+    width: 100%;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    text-indent: 10px;
+    outline: none;
+    background-color: #f8f8f8;
+}
+#search-box2 input[type="text"] {
+    width: 100%;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    text-indent: 10px;
+    outline: none;
+    background-color: #f8f8f8;
+    margin: 0;
+}
+[name=search-box2] input[type="text"] {
+    width: 100%;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    text-indent: 10px;
+    outline: none;
+    background-color: #f8f8f8;
+    margin: 0;
+}
+#search-show {
+    min-height: 34px;
+}
+#search-show2 {
+    min-height: 34px;
+}
+[name=search-show] {
+    min-height: 34px;
+}
+.search-tisp {
+    color: #666;
+    line-height: 34px;
+    text-indent: 10px;
+}
+#queryList table {
+    width: 100%;
+}
+#queryList2 table {
+    width: 100%;
+}
+[name=queryList] table {
+    width: 100%;
+}
+#queryList table tr {
+    border-bottom: 1px solid #e6e6e6;
+}
+#queryList2 table tr {
+    border-bottom: 1px solid #e6e6e6;
+}
+[name=queryList] table tr {
+    border-bottom: 1px solid #e6e6e6;
+}
+#queryList table tbody > tr:HOVER, tr.item-hover {
+    background-color: #e1eff7;
+    cursor: pointer;
+}
+#queryList2 table tbody > tr:HOVER, tr.item-hover {
+    background-color: #e1eff7;
+    cursor: pointer;
+}
+[name=queryList] table tbody > tr:HOVER, tr.item-hover {
+    background-color: #e1eff7;
+    cursor: pointer;
+}
+#queryList table tr th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+#queryList2 table tr th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+[name=queryList] table tr th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+#queryList table tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+#queryList2 table tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+[name=queryList] table tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
+    height: 34px;
+    text-align: left;
+}
+/** 索引房屋编码end*/
+.img-box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    float: left;
+    margin-right: 6px;
+}
+.img-box:HOVER .img-mark {
+    display: block;
+}
+.img-box:HOVER .img-title {
+    display: block;
+}
+.img-img {
+    width: 100%;
+    height: 100%;
+}
+#img-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #ddd;
+    background-color: #FCFEFC;
+    width: 99%;
+    height: 99%;
+    text-align: center;
+}
+#img-loading i {
+    display: block;
+    height: 30px;
+    width: 30px;
+    margin: 0 auto;
+    margin-top: 38px;
+    background: url("../../image/load.gif") no-repeat center;
+}
+.img-mark {
+    position: absolute;
+    display: none;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    background: #666;
+    color: #fff;
+    opacity: 0.8;
+}
+.img-title {
+    position: absolute;
+    display: none;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    color: #fff;
+}
+.img-title:HOVER {
+    color: #E74C3C;
+}
+/***/
+.main-box-info {
+    position: relative;
+    padding: 20px 20px 0 20px;
+    height: auto;
+    background: #fff;
+}
+#main-box-main {
+    position: relative;
+    padding: 0 20px 20px 20px;
+    height: auto;
+    background: #fff;
+}
+#info-applyInfo {
+}
+#info-applyInfo .info-title {
+    border-bottom: 1px solid #bac5cb;
+}
+#info-applyInfo .info-title span {
+    display: block;
+    line-height: 40px;
+    font-size: 16px;
+    width: 120px;
+    text-indent: 20px;
+    font-weight: 600;
+    color: #555555;
+}
+.info-main {
+    padding-top: 20px;
+}
+.info-main dl {
+    height: auto;
+    line-height: 30px;
+}
+.info-main dl dt {
+    position: relative;
+    float: left;
+    width: 128px;
+    text-align: right;
+    font-size: 14px;
+    padding-right: 10px;
+    color: #999;
+}
+.info-main dl dd {
+    position: relative;
+    min-width: 120px;
+    font-size: 14px;
+    float: left;
+    color: #222;
+    max-width: 800px;
+}
+.from-data[readonly], .from-data[disabled] {
+    background: #edeff1;
+}
+/***/
+.span-checked {
+    border: 1px solid #1ABC9C !important;
+    color: #1ABC9C !important;
+}
+.span-checked i {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 14px;
+    height: 14px;
+    background-image: url("../../image/true.png");
+    background-repeat: no-repeat;
+}
+.type-label {
+    position: relative;
+    top: 1px;
+    border: 1px solid #ccc;
+    color: #888;
+    padding: 2px 18px;
+    font-size: 14px;
+    display: block;
+    line-height: normal;
+    cursor: pointer;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+.type-label-name {
+    display: block;
+    text-align: left;
+    width: 100%;
+    /*font-size: 16px;*/
+    line-height: 28px;
+    color: #666;
+    height: 28px;
+    overflow: hidden;
+}
+.type-label-state {
+    /*font-size: 12px;*/
+    display: block;
+    text-align: right;
+    width: 100%;
+    line-height: 24px;
+    color: #1ABC9C;
+}
+.type-label input[type="radio"] {
+    display: none;
+    height: 0;
+    opacity: 0;
+}
+.state-model {
+    position: relative;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 16px;
+}
+.state-box {
+    position: absolute;
+    left: 86px;
+    bottom: 0;
+    margin-left: 10px;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+    z-index: 100;
+}
+.state-box table {
+    width: 100%;
+    /* 	table-layout: fixed; */
+}
+.state-box table tr {
+    width: 100%;
+}
+.state-box table tr th {
+    padding: 0 10px;
+    overflow: hidden;
+    text-align: left;
+    background: #f7f7f7;
+    width: 100%;
+    height: 30px !important;
+    max-height: 30px;
+    word-break: keep-all; /* 不换行 */
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow: ellipsis;
+    /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用*/
+}
+.state-box table tr td {
+    padding: 0 10px;
+    width: 100%;
+    height: 30px !important;
+    max-height: 30px;
+    word-break: keep-all; /* 不换行 */
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow: ellipsis;
+    /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用*/
+}
+.typeRadio {
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 9px;
+    color: #069;
+    float: left;
+    cursor: pointer;
+}
+.radio {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 15px;
+}
+.radio.click {
+    border: 1px solid #1ABC9C;
+    color: #1ABC9C;
+}
+.typeRadio input[type="radio"] {
+    position: relative;
+    top: 2px;
+}
+.moneyTable {
+    width: 100%;
+    border: 1px solid #bac5cb;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 12px;
+}
+.moneyTable tr {
+    height: 28px;
+}
+.moneyTable td {
+    border: 1px solid #bac5cb;
+}
+/**派单流程**/
+#main-box .center-content {
+    background-color: #FFF;
+    position: relative;
+}
+#main-box .center-content .content-title {
+    display: flex;
+    padding: 0 10px;
+    font-size: 15px;
+    border-bottom: 1px solid #ddd;
+    text-indent: 13px;
+    height: 42px;
+    line-height: 42px;
+}
+#main-box .center-content .content-title:AFTER {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 16px;
+    position: absolute;
+    background: #3498DB;
+    top: 12px;
+    border-radius: 2px;
+    visibility: visible;
+}
+.content1 {
+    border-bottom: 1px solid #e8e8e8;
+}
+#main-box .center-content .content-div {
+    padding: 0 30px;
+    overflow: hidden;
+}
+#main-box .center-content .content-div dl {
+    margin: 15px 0;
+}
+#main-box .center-content .content-div dl dt {
+    float: left;
+}
+#main-box .center-content .content-div dl dd {
+    float: left;
+    margin-left: 10px;
+}
+.date-content {
+    padding: 15px 0;
+}
+.date-content .date-content-list {
+    padding: 0 30px;
+    position: relative;
+}
+.date-content .date-content-list .content-list {
+    display: none;
+}
+.date-content .date-content-list dl {
+    /*height: 35px;*/
+    line-height: 35px;
+    margin-left: 50px;
+    margin-left: 158px;
+}
+.date-content .date-content-list dl dt {
+    float: left;
+}
+.date-content .date-content-list dl dd {
+    float: left;
+}
+.date-content .date-content-list .date-content-list-title {
+    height: 40px;
+    line-height: 40px;
+}
+.date-content .date-content-list .date-content-list-title .dates {
+    color: #999;
+}
+.date-content .date-content-list .date-content-list-title .titles {
+    margin-left: 20px;
+}
+.date-content .date-content-list .date-content-list-title i {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid #3498DB;
+    position: absolute;
+    margin-top: 16px;
+    margin-left: 8px;
+}
+.date-content .date-content-list .date-content-list-title button {
+    height: 28px;
+    line-height: 28px;
+    padding: 0 20px;
+    color: #FFF;
+    background: #3498DB;
+    border-radius: 3px;
+    float: right;
+    cursor: pointer;
+    margin-top: 10px;
+}
+/*服务流程处理界面*/
+.addService {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+}
+.addService .serviceBg {
+    background-color: #000;
+    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.addService .serviceContent {
+    position: absolute;
+    height: 100%;
+    width: 800px;
+    letter-spacing: 2px;
+    padding: 0 20px;
+    right: -600px;
+    top: 0;
+    z-index: 1;
+    background-color: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .14);
+}
+.addService .serviceContent .close {
+    position: absolute;
+    left: -44px;
+    top: 0;
+    background-color: #E74C3C;
+    cursor: pointer;
+    color: #FFF;
+}
+.addService .serviceContent .fa-close {
+    font-size: 18px;
+    margin: 12px 14px;
+}
+.addService .serviceContent .content-title {
+    border-bottom: 1px solid #ddd;
+}
+.addService .serviceContent .content-title .title-name {
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.addService .serviceContent .content_add {
+    margin: 20px 0;
+    width: 100%;
+    min-height: 580px;
+    position: relative;
+    /*overflow: hidden;*/
+}
+.addService .serviceContent .content_add .people_s {
+    width: 130px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid #3498DB;
+    padding: 10px 0;
+}
+.addService .serviceContent .content_add .people_s label {
+    width: 100%;
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+.addService .serviceContent .content_submit {
+    overflow: hidden;
+}
+.addService button {
+    display: block;
+    float: left;
+    width: 90px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
+    margin-top: 3px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: #3498DB;
+    color: #fff;
+    cursor: pointer;
+}
+/**费用明细**/
+.moneyList thead td {
+    padding-right: 10px;
+}
+.moneyList .btn {
+    position: relative;
+    display: block;
+    padding: 0 6px;
+    line-height: 28px;
+    border-radius: 2px;
+    text-indent: initial;
+    margin-top: 10px;
+    cursor: pointer;
+    background: #ccc;
+}
+.moneyList .bg-ok {
+    background: #18bc9c;
+    color: white;
+}
+/**评价样式**/
+#simplestar {
+    display: flex;
+    padding: 6px 0 5px;
+}
+#simplestar img {
+    margin-right: 3px;
+}
+.tooltip {
+    display: none;
+    position: absolute;
+    padding-top: 8px;
+    font-size: 12px;
+    z-index: 99;
+    top: 32px;
+    left: 0;
+    visibility: visible;
+}
+.tip-inner {
+    border: 1px solid #f60;
+    background-color: #fff;
+    color: #666;
+    width: 180px;
+    padding: 5px 10px;
+}
+.tip-arrow {
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    border-bottom: 6px solid #f60;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    _border-left-color: pink;
+    _border-right-color: pink;
+    _filter: chroma(color=#ffc0cb);
+    top: 2px;
+    left: 95px;
+}
+.tip-inner strong {
+    font-weight: 600;
+    margin-top: 0;
+    display: block;
+    height: 20px;
+    line-height: 20px;
+}
+.tip-inner span {
+    display: block;
+    width: 100%;
+    height: auto;
+    line-height: normal;
+}
+.tip-arrow-inner {
+    left: 50%;
+    margin-left: -6px;
+    top: 4px;
+    left: 101px;
+    border-bottom: 6px solid #fff;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+}
+.fraction {
+    float: left;
+    display: none;
+    height: 30px;
+    line-height: 32px;
+    margin-left: 6px;
+}
+.fraction em {
+    color: #F60;
+    font-weight: 700;
+    font-size: 14px;
+}
+.content-title button {
+    height: 28px;
+    line-height: 28px;
+    padding: 0 20px;
+    color: #FFF;
+    background: #3498DB;
+    border-radius: 3px;
+    float: right;
+    cursor: pointer;
+    margin-top: 7px;
+    margin-left: 10px;
+}
+.problemList {
+    width: 460px;
+}
+.problemList li {
+    line-height: 35px;
+    border-bottom: 1px dashed #e8e8e8;
+    overflow: hidden;
+    height: auto;
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+.problemList .fa-minus-circle {
+    color: #FF6666;
+    margin-left: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.problem_content li {
+    border-bottom: 1px dashed #e8e8e8;
+    line-height: 35px;
+    overflow: hidden;
+    height: auto;
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+.content-div > div {
+    height: 36px;
+    line-height: 36px;
+}
+.search-inputBox {
+    width: 100%;
+    height: 34px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    text-indent: 10px;
+    outline: none;
+    background-color: #f8f8f8;
+    margin: 0;
+}
+/*弹框样式3*/
+.cd-popup3 {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    z-index: 100;
+}
+.cd-popup3.is-visible3 {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+.cd-popup-container3 {
+    position: absolute;
+    left: 25%;
+    top: 10%;
+    width: 850px;
+    height: 575px;
+    background: #FFF;
+    border-radius: .4rem .4rem .4rem .4rem;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    /*-webkit-transform: scale(0.8);*/
+    /*-moz-transform: scale(0.8);*/
+    /*-ms-transform: scale(0.8);*/
+    /*-o-transform: scale(0.8);*/
+    /*transform: scale(0.8);*/
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+.cd-popup-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10;
+    width: auto;
+    height: 1.25rem;
+    display: block;
+    font-size: 14px;
+}
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.ordertable {
+    border-collapse: collapse;
+    text-align: center;
+    width: 638px;
+    border: 1px solid #ccc;
+}
+.ordertable td {
+    border: 1px solid #ccc;
+}
+.mapImg {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+.check-item {
+    position: relative;
+    display: block;
+    float: left;
+    line-height: 28px;
+    padding: 0px 10px;
+    margin: 10px 10px 10px 0;
+    border: 1px solid #ccc;
+    user-select: none;
+    cursor: pointer;
+}
+.check-item input {
+    display: none;
+}
+.check-item-ok {
+    border-color: #1ABC9C;
+    background: #1ABC9C;
+    color: #FFFFFF;
+}
+.common-checkbox2 > input[type='checkbox'],
+.common-checkbox2 { position: relative; height: 20px; line-height: 20px; width: auto; text-indent: 24px; display: block; float: left; cursor: pointer; -moz-user-select: none; -webkit-user-select: none; }
+.common-checkbox2:BEFORE { content: ""; display: block; position: absolute; top: 0; left: 0; width: 20px; height: 20px; background-image: url("/resources/image/checkbox.png"); background-position: 0 -90px; background-repeat: no-repeat; }
+.common-checkbox-checked2:BEFORE { background-position: -60px -30px !important; }

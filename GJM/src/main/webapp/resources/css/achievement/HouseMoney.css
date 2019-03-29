@@ -1,0 +1,53 @@
+.HouseMoney_title{
+    width: 100%;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+}
+.houseTitle label{
+    display: block;
+    width: 100%;
+    color: #000000;
+}
+.houseTitle .titleFont{
+    font-size: 18px;
+}.houseTitle .titleDate{
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.houseContent{
+    border-top: 1px solid #CCCCCC;
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+.houseContent label{
+    font-size: 15px;
+}
+.sumMoney{
+    margin-right: 20px;
+}
+.sMoney{
+    margin-right: 20px;
+}
+.fMoney{
+    margin-right: 20px;
+}
+.houseBody{
+    margin-top: 10px;
+}
+
+a{
+    cursor: pointer;
+}
+
+.selectCheck{
+    padding: 0 10px;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+}
+.selectCheck.check{
+    color: #FFF;
+    background-color: #1ABC9C;
+}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gjp.dao.PurchaseArticleDAO">
+	<sql id="menberEcpId">
+		art_code,
+		pur_code,
+		art_type,
+		art_name,
+		art_brand,
+		art_price,
+		art_count,
+		art_priceSum,
+		art_payer,
+		art_addTime,
+		art_on,
+		art_spec,
+		art_supplier,
+		art_remark
+	</sql>
+
+	<sql id="insert">
+		#{art_code},
+		#{pur_code},
+		#{art_type},
+		#{art_name},
+		#{art_brand},
+		#{art_price},
+		#{art_count},
+		#{art_priceSum},
+		#{art_payer},
+		#{art_addTime},
+		#{art_on},
+		#{art_spec},
+		#{art_supplier},
+		#{art_remark}
+	</sql>
+
+	<!-- 采购单物品详情添加 -->
+	<insert id="addPurchaseArticle" useGeneratedKeys="true" keyProperty="art_id">
+		insert into GJP_Purchase_Article(
+		<include refid="menberEcpId"></include>
+		)
+		values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<!-- 采购单物品列表 -->
+	<select id="selectPurchaseArticleList" resultType="com.gjp.model.PurchaseArticle">
+		select * from GJP_Purchase_Article where 1=1
+		<if test="pur_code != null and pur_code != ''">
+			and pur_code = #{pur_code}
+		</if>
+
+	</select>
+
+</mapper>

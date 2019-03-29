@@ -1,0 +1,152 @@
+body {
+    background: #F4F4F4;
+}
+.content {
+    overflow: hidden;
+}
+.content .centerContent {
+    margin-top: 15px;
+    background-color: #FFFFFF;
+}
+.content .centerContent dl {
+    display: flex;
+    font-size: 14px;
+    line-height: 2.78em;
+}
+.content .centerContent dl dt {
+    padding-left: 14px;
+    width: 80px;
+}
+.content .centerContent dl dd {
+    flex: 1;
+    text-align: right;
+    color: #999999;
+    padding: 0 14px;
+}
+.content .centerContent .line {
+    background-color: #E3E3E3;
+    height: 1px;
+    margin-left: 14px;
+}
+.content .centerContent .lines {
+    background-color: #E3E3E3;
+    width: 100%;
+    height: 1px;
+}
+.content button {
+    width: 100%;
+    height: 46px;
+    background-color: #FFFFFF;
+    border: none;
+    color: #FF6666;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.content button img {
+    width: 20px;
+    height: 20px;
+}
+.content button label {
+    height: 20px;
+    line-height: 20px;
+    margin-left: 10px;
+}
+.show-pay {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+.show-pay .show-bg {
+    flex: 1;
+    opacity: 0.2;
+    background: #000000;
+}
+.show-pay .show-content {
+    position: relative;
+    flex: 1;
+    min-height: 300px;
+    background-color: #FFFFFF;
+}
+.show-pay .show-content .show-title {
+    height: 46px;
+    line-height: 46px;
+}
+.show-pay .show-content .fa-times {
+    font-size: 18px;
+}
+.show-pay .show-content .text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    left: 0;
+    font-size: 3.7vw;
+    font-weight: bold;
+    color: #575757;
+}
+.show-pay .show-content .lines {
+    background-color: #E3E3E3;
+    width: 100%;
+    height: 1px;
+}
+.show-pay .show-content .pay-money {
+    text-align: center;
+    padding-bottom: 15px;
+}
+.show-pay .show-content .pay-money label {
+    font-size: 3.5vw;
+    line-height: 24px;
+    display: block;
+    margin-top: 12px;
+    color: #999999;
+}
+.show-pay .show-content .pay-money label i {
+    font-style: normal;
+    font-size: 3.5vw;
+}
+.show-pay .show-content .show-payType {
+    position: relative;
+}
+.show-pay .show-content .show-payType dl {
+    line-height: 36px;
+    margin: 0;
+    padding: 4px 0;
+}
+.show-pay .show-content .show-payType dt {
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    width: 13%;
+}
+.show-pay .show-content .show-payType dd {
+    float: left;
+    margin-left: 3%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 3.5vw;
+    position: relative;
+    width: 84%;
+}
+.show-pay .show-content .show-payType dd .fa-check-circle {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 5vw;
+    color: #E8E8E8;
+}
+.show-pay .show-content button {
+    width: 100%;
+    height: 48px;
+    background-color: #FF6666;
+    color: #FFFFFF;
+    border: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

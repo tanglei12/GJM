@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 企业管理 GJB_enterprise_registration -->
+<mapper namespace="com.gjp.dao.EnterpriseDAO">
+
+    <!--企业列表-->
+    <select id="queryEnterpriseList" resultType="com.gjp.model.ZkdEnterprise">
+        SELECT
+        er.er_id,
+        er.er_address,
+        er.er_bnusinessLicense,
+        er.er_cardNo,
+        er.er_code,
+        er.er_companyBool,
+        er.er_createTime,
+        er.er_jname,
+        er.er_leaseType,
+        er.er_name,
+        er.er_people,
+        er.er_person,
+        er.er_phone,
+        er.er_region,
+        er.er_registerAddress,
+        er.er_scale,
+        er.er_state,
+        cg.cg_startDate,
+        cg.cg_endDate,
+        cg.cg_create
+        FROM GJB_enterprise_registration er
+        LEFT JOIN GJB_company_grade cg ON cg.er_id = er.er_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY er_createTime DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+    <!--企业列表数量-->
+    <select id="queryEnterpriseListCount" resultType="int">
+        SELECT COUNT(*) FROM GJB_enterprise_registration er
+        LEFT JOIN GJB_company_grade cg ON cg.er_id = er.er_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+
+    <!--企业注册信息详情-->
+    <select id="queryEnterprise" resultType="com.gjp.model.ZkdEnterprise">
+        SELECT
+        er.er_id,
+        er.er_address,
+        er.er_bnusinessLicense,
+        er.er_bnusinessLicenseimage,
+        er.er_cardNo,
+        er.er_code,
+        er.er_companyBool,
+        er.er_createTime,
+        er.er_jname,
+        er.er_leaseType,
+        er.er_logo,
+        er.er_name,
+        er.er_oppositeImage,
+        er.er_people,
+        er.er_people,
+        er.er_person,
+        er.er_phone,
+        er.er_positiveImage,
+        er.er_region,
+        er.er_registerAddress,
+        er.er_scale,
+        er.er_state,
+        er.er_checkFeedback,
+        cg.cg_startDate,
+        cg.cg_endDate,
+        cg.cg_type,
+        cg.cg_state
+        FROM GJB_enterprise_registration er
+        LEFT JOIN GJB_company_grade cg ON cg.er_id = er.er_id
+        <where>
+            <if test="er_id != null">er.er_id=#{er_id}</if>
+        </where>
+    </select>
+
+    <!-- 修改企业信息 -->
+    <update id="updataEnterprise">
+        UPDATE GJB_enterprise_registration
+        <set>
+            <if test="er_name != null">er_name = #{er_name},</if>
+            <if test="er_jname != null">er_jname = #{er_jname},</if>
+            <if test="er_phone != null">er_phone = #{er_phone},</if>
+            <if test="er_person != null">er_person = #{er_person},</if>
+            <if test="er_cardNo != null">er_cardNo = #{er_cardNo},</if>
+            <if test="er_positiveImage != null">er_positiveImage = #{er_positiveImage},</if>
+            <if test="er_oppositeImage != null">er_oppositeImage = #{er_oppositeImage},</if>
+            <if test="er_bnusinessLicense != null">er_bnusinessLicense = #{er_bnusinessLicense},</if>
+            <if test="er_bnusinessLicenseimage != null">er_bnusinessLicenseimage = #{er_bnusinessLicenseimage},</if>
+            <if test="er_registerAddress != null">er_registerAddress = #{er_registerAddress},</if>
+            <if test="er_companyBool != null">er_companyBool = #{er_companyBool},</if>
+            <if test="er_leaseType != null">er_leaseType = #{er_leaseType},</if>
+            <if test="er_region != null">er_region = #{er_region},</if>
+            <if test="er_address != null">er_address = #{er_address},</if>
+            <if test="er_scale != null">er_scale = #{er_scale},</if>
+            <if test="er_people != null">er_people = #{er_people},</if>
+            <if test="er_logo != null">er_logo = #{er_logo},</if>
+            <if test="er_state != null">er_state = #{er_state},</if>
+            <if test="er_createTime != null">er_createTime = #{er_createTime},</if>
+            <if test="er_checkFeedback != null">er_checkFeedback = #{er_checkFeedback},</if>
+        </set>
+        WHERE
+        er_id = #{er_id}
+    </update>
+
+    <!--修改企业账户状态-->
+    <update id="updatazkdCompanyAccount">
+        UPDATE GJB_company_account
+        <set>
+            <if test=" bca_state != null">bca_state=#{bca_state}</if>
+        </set>
+        WHERE cy_id=#{cy_id}
+    </update>
+
+    <!-- 插入费用会员等级 -->
+    <insert id="insertCompanyGrade" useGeneratedKeys="true" keyProperty="cg_id">
+        INSERT INTO GJB_company_grade
+        (
+        cg_type,
+        cg_create,
+        er_id,
+        cg_state,
+        cg_startDate,
+        cg_endDate
+        ) VALUES (
+        #{cg_type},
+        now(),
+        #{er_id},
+        #{cg_state},
+        #{cg_startDate},
+        #{cg_endDate}
+        )
+    </insert>
+
+    <!--查询关联的公司信息-->
+    <select id="queryCompanyInfo" resultType="com.gjp.model.ZkdCompany">
+        SELECT
+        gp.cy_id
+        FROM GJB_company gp
+        <where>
+            <if test="er_id != null">AND gp.er_id=#{er_id}</if>
+            <if test="cy_sid != null">AND gp.cy_sid=#{cy_sid}</if>
+        </where>
+    </select>
+
+    <!--查询企业费用等级-->
+    <select id="querycompanyGrade" resultType="com.gjp.model.CompanyGrade">
+        SELECT
+        gpg.cg_id
+        FROM GJB_company_grade gpg
+        <where>
+            <if test="er_id != null">AND gpg.er_id=#{er_id}</if>
+        </where>
+    </select>
+
+
+    <!--**********************************************房管员审核************************************************-->
+
+    <!--房管员列表-->
+    <select id="queryAgentExamineList" resultType="com.gjp.model.ZkdCompanyAgent">
+        select
+        *
+        from
+        GJB_company_agent gca
+        left join GJB_company_agentInfo gcai on gcai.ca_id = gca.ca_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY gca.ca_create DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!--房管员列表数量-->
+    <select id="queryAgentExamineListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM
+        GJB_company_agent gca
+        LEFT JOIN GJB_company_agentInfo gcai ON gcai.ca_id = gca.ca_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+
+    <!--房管员注册信息详情-->
+    <select id="queryAgentInfo" resultType="com.gjp.model.ZkdCompanyAgent">
+        select
+        *
+        from
+        GJB_company_agent gca
+        left join GJB_company_agentInfo gcai on gcai.ca_id = gca.ca_id
+        <where>
+            <if test="ca_id != null">gca.ca_id=#{ca_id}</if>
+        </where>
+    </select>
+
+
+    <!--修改房管员信息-->
+    <update id="updataZkdCompanyAgent">
+        update GJB_company_agent
+        <set>
+            <if test="ca_state">ca_state=#{ca_state}</if>
+        </set>
+        where ca_id=#{ca_id}
+    </update>
+
+    <!--添加圈子-->
+    <insert id="insertCreateTopic" useGeneratedKeys="true" keyProperty="t_id">
+        INSERT INTO GJB_topic
+        (
+            t_title,
+            t_cover,
+            t_coverSmall,
+            t_content,
+            t_createEm,
+            t_createTime,
+            t_releaseEm,
+            t_releaseTime,
+            t_isDelete,
+            t_isRelease,
+            t_createEmName
+        )VALUES (
+            #{t_title},
+            #{t_cover},
+            #{t_coverSmall},
+            #{t_content},
+            #{t_createEm},
+            now(),
+            #{t_releaseEm},
+            #{t_releaseTime},
+            #{t_isDelete},
+            #{t_isRelease},
+            #{t_createEmName}
+        )
+    </insert>
+
+
+    <insert id="releaseTopic" useGeneratedKeys="true" keyProperty="r_id">
+        INSERT INTO GJB_topic_release
+        (
+        r_tid,
+        r_releaseEm,
+        r_createTime
+        )VALUES (
+        #{r_tid},
+        #{r_releaseEm},
+        now()
+        )
+    </insert>
+    
+    <update id="updateTopic">
+        UPDATE GJB_topic
+        <set>
+            <if test="t_title != null">t_title=#{t_title},</if>
+            <if test="t_cover != null">t_cover=#{t_cover},</if>
+            <if test="t_coverSmall != null">t_coverSmall=#{t_coverSmall},</if>
+            <if test="t_content != null">t_content=#{t_content},</if>
+            <if test="t_createEm != null">t_createEm=#{t_createEm},</if>
+            <if test="t_createTime != null">t_createTime=#{t_createTime},</if>
+            <if test="t_releaseEm != null">t_releaseEm=#{t_releaseEm},</if>
+            <if test="t_releaseTime != null">t_releaseTime=#{t_releaseTime},</if>
+            <if test="t_isDelete != null">t_isDelete=#{t_isDelete},</if>
+            <if test="t_isRelease != null">t_isRelease=#{t_isRelease}</if>
+        </set>
+        <where>
+            <if test="t_id != null">t_id=#{t_id}</if>
+        </where>
+    </update>
+
+    <!--圈子列表-->
+    <select id="queryTopicList" resultType="com.gjp.model.TopicVo">
+        select
+        gt.*,
+        uem.em_name
+        from
+        GJB_zkd.GJB_topic gt
+        left join GJP_user.GJP_UserCenter_Employee uem ON gt.t_createEm=uem.em_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+        ORDER BY gt.t_createTime DESC
+        <if test="isPage">LIMIT #{pageNo},#{pageSize}</if>
+    </select>
+
+    <!--圈子列表数量-->
+    <select id="queryTopicListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM
+        GJB_zkd.GJB_topic gt
+        left join GJP_user.GJP_UserCenter_Employee uem ON gt.t_createEm=uem.em_id
+        <where>
+            <choose>
+                <when test="where !=null and where != '' ">${where}</when>
+            </choose>
+        </where>
+    </select>
+    <select id="queryTopicVoList" resultType="com.gjp.model.TopicVo" >
+        SELECT * FROM GJB_zkd.GJB_topic gt
+        <where>
+        <if test="t.t_title != null and t.t_title != ''">
+            AND gt.t_title like
+            CONCAT('%',#{t.t_title},'%')
+        </if>
+        </where>
+
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryTopicVoListCount" resultType="int" >
+        SELECT COUNT(*) FROM GJB_zkd.GJB_topic gt
+        <where>
+        <if test="t.t_title != null and t.t_title != '' ">
+            AND gt.t_title like
+            CONCAT('%',#{t.t_title},'%')
+        </if>
+        </where>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="queryTopicdetail" resultType="com.gjp.model.TopicVo" >
+        SELECT * FROM GJB_zkd.GJB_topic gt
+        <where>
+            <if test="t_id != null and t_id != ''">t_id=#{t_id} </if>
+        </where>
+    </select>
+</mapper>

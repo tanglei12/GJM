@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.2.xsd
+    http://www.springframework.org/schema/websocket
+    http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.gjp.controller"/>
+
+    <!-- 注册requestMappingHandlerMapping,requestMappingHandlerAdapter, 使mvc注释@controller提前配置 -->
+    <mvc:annotation-driven/>
+
+    <!-- 静态资源解析 -->
+    <mvc:resources location="/resources/" mapping="/resources/**"/>
+
+    <!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+    </bean>
+
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+        <property name="definitions" value="classpath:/conf/tiles-config.xml"/>
+    </bean>
+    <!-- 启动JSON格式的配置 -->
+    <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <!--解决 HttpMediaTypeNotAcceptableException: Could not find acceptable representation(406) -->
+        <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
+    </bean>
+    <!-- 上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="204800000"/>
+    </bean>
+    <!-- 解析视图名到对应的文件/WEB-INF/index/*.jsp中 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 注解定时器配置 -->
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
+
+    <!-- 系统邮件消息提示 -->
+    <bean id="meessageSocket" class="com.gjp.websocket.MeessageSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/meessageSocket" handler="meessageSocket"/>
+    </websocket:handlers>
+
+    <!-- 聊天系统 -->
+    <bean id="chatSocket" class="com.gjp.websocket.ChatSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/chatSocket" handler="chatSocket"/>
+    </websocket:handlers>
+
+    <!-- 服务 -->
+    <bean id="serviceBillSocket" class="com.gjp.websocket.ServiceBillSocket"/>
+    <websocket:handlers>
+        <websocket:mapping path="/serviceBillSocket" handler="serviceBillSocket"/>
+    </websocket:handlers>
+
+</beans>

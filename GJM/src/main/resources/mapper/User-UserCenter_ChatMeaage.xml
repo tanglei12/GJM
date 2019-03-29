@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 职工表 GJP_UserCenter_Employee -->
+<mapper namespace="com.gjp.dao.ChatMeaageDAO">
+
+	<sql id="menberEcpId">
+		cm_sendAccount,
+		cm_content,
+		cm_receiveAccount,
+		cm_timer,
+		offlinePerson,
+		department,
+		name
+	</sql>
+
+	<sql id="insert">
+		#{cm_sendAccount},
+		#{cm_content},
+		#{cm_receiveAccount},
+		#{cm_timer},
+		#{offlinePerson},
+		#{department},
+		#{name}
+	</sql>
+
+	<sql id="update">
+		cm_sendAccount=#{cm_sendAccount},
+		cm_content=#{cm_content},
+		cm_receiveAccount=#{cm_receiveAccount},
+		cm_timer=#{cm_timer},
+		offlinePerson=#{offlinePerson},
+		department=#{department},
+		name=#{name}
+	</sql>
+
+	<insert id="insertChatMeaage" useGeneratedKeys="true"
+		parameterType="com.gjp.model.ChatMeaage" keyProperty="cm_id">
+		insert into GJP_UserCenter_ChatMeaage(
+		<include refid="menberEcpId"></include>
+		) values (
+		<include refid="insert"></include>
+		)
+	</insert>
+
+	<update id="updatetChatMeaage" parameterType="com.gjp.model.ChatMeaage">
+		update GJP_UserCenter_ChatMeaage set
+		<include refid="update"></include>
+		where cm_id=#{cm_id}
+	</update>
+
+	<!-- 模糊查询离线接受者的聊天信息 -->
+	<select id="selectChatMeaage" resultType="com.gjp.model.ChatMeaage">
+		select * from GJP_UserCenter_ChatMeaage where offlinePerson LIKE CONCAT('%',#{offlinePerson}, '%') and cm_receiveAccount = #{cm_receiveAccount} and cm_sendAccount = #{cm_sendAccount}
+	</select>
+	
+	<!-- 开始离线查询模糊发送 -->
+	<select id="selectChatMeaageStart" resultType="com.gjp.model.ChatMeaage">
+		select * from GJP_UserCenter_ChatMeaage where offlinePerson LIKE CONCAT('%',#{offlinePerson}, '%')
+		<if test="cm_receiveAccount != null and cm_receiveAccount !=''">
+		and cm_receiveAccount = #{cm_receiveAccount}
+		</if>
+	</select>
+	
+	<!-- 查看历史记录 -->
+	<select id="selectChatMeaageHistory" resultType="com.gjp.model.ChatMeaage">
+		select * from GJP_UserCenter_ChatMeaage where 1=1
+		<if test="cm_sendAccount != null and cm_sendAccount != ''">
+			and ((cm_receiveAccount = #{cm_receiveAccount} and cm_sendAccount = #{cm_sendAccount}) or (cm_receiveAccount = #{cm_sendAccount} and cm_sendAccount = #{cm_receiveAccount}))
+		</if>
+		<if test="cm_sendAccount == null or cm_sendAccount == ''">
+			and cm_receiveAccount = #{cm_receiveAccount}
+		</if>
+		order by cm_timer desc LIMIT #{start},4
+	</select>
+	
+	<select id="selectChatMeaageHistoryCount" resultType="com.gjp.model.ChatMeaage">
+		select count(cm_id) as size from GJP_UserCenter_ChatMeaage where 1=1
+		<if test="cm_sendAccount != null and cm_sendAccount != ''">
+			and ((cm_receiveAccount = #{cm_receiveAccount} and cm_sendAccount = #{cm_sendAccount}) or (cm_receiveAccount = #{cm_sendAccount} and cm_sendAccount = #{cm_receiveAccount}))
+		</if>
+		<if test="cm_sendAccount == null or cm_sendAccount == ''">
+			and cm_receiveAccount = #{cm_receiveAccount}
+		</if>
+	</select>
+	
+</mapper>

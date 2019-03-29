@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 预约 GJP_business.GJP_House_BookConfig -->
+<mapper namespace="com.gjp.dao.HousePartnerPublishDao">
+	
+	<insert id="addHousePartnerPublish" useGeneratedKeys="true" parameterType="com.gjp.model.HousePartnerPublish" keyProperty="hpp_id">
+		insert into 
+			GJP_House_HousePartnerPublish (
+				hpp_sellId, 
+				hpp_url, 
+				hpp_data, 
+				hpp_partner, 
+				hpp_createTime, 
+				hi_code,
+				hpp_status
+			)values(
+				#{hpp_sellId},
+				#{hpp_url},
+				#{hpp_data},
+				#{hpp_partner},
+				#{hpp_createTime},
+				#{hi_code},
+				#{hpp_status}
+			)
+	</insert>
+	
+	<update id="updHousePartnerPublish" parameterType="com.gjp.model.HousePartnerPublish">
+		update GJP_House_HousePartnerPublish
+			set hpp_id = #{hpp_id}
+			<if test="hpp_sellId !=null and hpp_sellId != ''">
+				,hpp_sellId = #{hpp_sellId}
+			</if>
+			<if test="hpp_url !=null and hpp_url != ''">
+				,hpp_url = #{hpp_url}
+			</if>
+			<if test="hpp_data !=null and hpp_data != ''">
+				,hpp_data = #{hpp_data}
+			</if>
+			<if test="hpp_partner !=null and hpp_partner != ''">
+				,hpp_partner = #{hpp_partner}
+			</if>
+			<if test="hpp_createTime !=null and hpp_createTime != ''">
+				,hpp_createTime = #{hpp_createTime}
+			</if>
+			<if test="hi_code !=null and hi_code != ''">
+				,hi_code = #{hi_code}
+			</if>
+			<if test="hpp_status !=null and hpp_status != ''">
+				,hpp_status = #{hpp_status}
+			</if>
+			where hpp_id = #{hpp_id}
+	</update>
+	
+	<select id="queryHousePartnerPublishList" resultType="com.gjp.model.HousePartnerPublish">
+		select 
+			hpp_id, 
+			hpp_sellId, 
+			hpp_url, 
+			hpp_data, 
+			hpp_partner, 
+			hpp_createTime, 
+			hi_code,
+			hpp_status
+		from
+			GJP_House_HousePartnerPublish
+		where hi_code = #{hi_code}
+	</select>
+	
+	<select id="queryHousePartnerPublishByHiCode" resultType="com.gjp.model.HousePartnerPublish">
+		select 
+			hpp_id, 
+			hpp_sellId, 
+			hpp_url, 
+			hpp_data, 
+			hpp_partner, 
+			hpp_createTime, 
+			hi_code,
+			hpp_status
+		from
+			GJP_House_HousePartnerPublish
+		where hi_code = #{hi_code}
+		order by hpp_createTime desc
+		limit 1
+	</select>
+
+</mapper>

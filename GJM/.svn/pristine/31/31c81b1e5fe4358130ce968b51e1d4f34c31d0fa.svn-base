@@ -1,0 +1,199 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Comic Sans MS", "幼圆", "黑体", sans-serif;
+    color: #666;
+    background: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: #666;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+}
+
+dl {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+.content {
+    background-color: #f6f6f6;
+}
+
+.serviceDiv {
+    margin: 8px;
+    background-color: #FFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.serviceDiv .serviceDiv_title {
+    border-bottom: 1px solid #F4F4F4;
+    padding: 10px;
+    position: relative;
+}
+
+.serviceDiv .title_name {
+    font-size: 16px;
+    display: block;
+}
+
+.serviceDiv .title_date {
+    color: #999;
+    font-size: 13px;
+    min-width: 103px;
+    height: 15px;
+    display: block;
+    margin-top: 5px;
+}
+
+.serviceDiv .title_state {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    color: #FFF;
+    font-size: 14px;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.serviceDiv .serviceDiv_content {
+    padding: 10px;
+}
+
+.serviceDiv .address {
+    display: block;
+    font-size: 14px;
+    position: relative;
+    text-indent: 10px;
+}
+
+.serviceDiv .address:AFTER {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    background: #3e97c9;
+    top: 8px;
+    border-radius: 3px;
+    visibility: visible;
+}
+
+.serviceDiv .type {
+    display: block;
+    font-size: 14px;
+    position: relative;
+    text-indent: 10px;
+}
+
+.serviceDiv .type:AFTER {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    background: #FF6666;
+    top: 8px;
+    border-radius: 3px;
+    visibility: visible;
+}
+
+.serviceDiv .person {
+    display: block;
+    font-size: 14px;
+    position: relative;
+    text-indent: 10px;
+}
+
+.serviceDiv .person:AFTER {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    background: #2ECC71;
+    top: 8px;
+    border-radius: 3px;
+    visibility: visible;
+}
+
+.serviceDiv button {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: transparent;
+    border: none;
+}
+
+.error {
+    background-color: #FF6666;
+}
+
+.success {
+    background-color: #1ABC9C;
+}
+
+.yellow {
+    background-color: #F39C12;
+}
+
+button {
+    outline: none;
+}
+
+.top-nav {
+
+    background: #fff;
+    display: flex;
+    font-size: 16px;
+}
+
+.nav {
+    text-align: center;
+    line-height: 52px;
+    /*flex: 1;*/
+    float: left;
+    width: 25%;
+}
+
+.on span {
+    border-bottom: #ff6666 solid 2px;
+    color: #ff6666;
+    height: 52px;
+    line-height: 52px;
+    padding: 15px 10px;
+}
+
+.serviceDiv .serviceDiv_title #serviceBillSubmit {
+    width: 80px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    left: 76%;
+    top: 20px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 3px;
+
+}
